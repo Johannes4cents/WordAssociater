@@ -1,0 +1,2 @@
+rootProject.name = "WordAssociater"
+include ':app'

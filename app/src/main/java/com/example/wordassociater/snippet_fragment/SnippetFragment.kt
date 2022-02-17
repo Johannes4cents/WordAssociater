@@ -1,0 +1,57 @@
+package com.example.wordassociater.snippet_fragment
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.example.wordassociater.Frags
+import com.example.wordassociater.Main
+import com.example.wordassociater.R
+import com.example.wordassociater.databinding.FragmentSnippetsBinding
+import com.example.wordassociater.utils.Snippet
+
+class SnippetFragment: Fragment() {
+    lateinit var b: FragmentSnippetsBinding
+
+    companion object {
+        lateinit var navController: NavController
+        val snippetListTrigger = MutableLiveData<Unit>()
+        var selectedSnippet : Snippet? = null
+        lateinit var snippetAdapter: SnippetAdapter
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        b = FragmentSnippetsBinding.inflate(inflater)
+        Main.inFragment = Frags.SNIPPET
+        navController = findNavController()
+        setSnippetRecycler()
+        setClickListener()
+        setObserver()
+        return b.root
+    }
+
+    private fun setSnippetRecycler() {
+        snippetAdapter = SnippetAdapter()
+        b.snippetsRecycler.adapter = snippetAdapter
+    }
+
+
+
+    private fun setClickListener() {
+        b.backBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_snippetFragment_to_startFragment)
+        }
+    }
+
+    private fun setObserver() {
+        snippetListTrigger.observe(viewLifecycleOwner) {
+            snippetAdapter.submitList(Main.snippetList)
+        }
+
+
+    }
+}

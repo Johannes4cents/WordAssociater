@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/back_icon"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <com.example.wordassociater.words_list_fragment.SelectWordTypeButton
+            app:selectCat="hero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <com.example.wordassociater.words_list_fragment.SelectWordTypeButton
+            app:selectCat="person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <com.example.wordassociater.words_list_fragment.SelectWordTypeButton
+            app:selectCat="adjective"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <com.example.wordassociater.words_list_fragment.SelectWordTypeButton
+            app:selectCat="action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <com.example.wordassociater.words_list_fragment.SelectWordTypeButton
+            app:selectCat="object"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <com.example.wordassociater.words_list_fragment.SelectWordTypeButton
+            app:selectCat="place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/wordRecycler"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

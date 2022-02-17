@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:layout_marginTop="8dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/backButton"
+            android:src="@drawable/back_icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minHeight="70dp"
+        android:id="@+id/characterDescriptionLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/characterPortrait"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/icon_character" />
+        <TextView
+            android:id="@+id/characterName"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Christopher \n Trevisani"
+            />
+
+        <ImageView
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:id="@+id/buttonStrains"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:src="@drawable/icon_strains"
+            />
+
+        <ImageView
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:id="@+id/buttonSnippets"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:src="@drawable/icon_snippets"
+            />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:id="@+id/specificCharacterRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

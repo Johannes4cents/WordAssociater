@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/btnAndWordsLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="35dp"
+            android:layout_height="45dp"
+            android:src="@drawable/back_icon" />
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/deleteBtn"
+            android:layout_width="35dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_red_x" />
+
+        <TextView
+            android:id="@+id/associatedWords"
+            android:minHeight="45dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bus Bahn, Social Media Influencer" />
+
+        <ImageView
+            android:id="@+id/characterBtn"
+            android:layout_width="60dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_edit_character" />
+
+        <ImageView
+            android:id="@+id/saveBtn"
+            android:layout_width="60dp"
+            android:layout_height="45dp"
+            android:src="@drawable/btn_save_strain" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/characterRecycler"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+
+    <EditText
+        android:id="@+id/headerInput"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:hint="Strain"
+        android:maxLength="32"
+        android:inputType="text"
+        android:lines="1"
+        android:textColor="@color/black" />
+
+    <EditText
+        android:id="@+id/strainInput"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_weight="1"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:hint="" />
+</LinearLayout>

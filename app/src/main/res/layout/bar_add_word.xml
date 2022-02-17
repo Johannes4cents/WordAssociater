@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/openWordsFragmentButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/btn_open_words_list"/>
+
+        <LinearLayout
+            android:id="@+id/foldLineal"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/wordInput"
+                android:background="@color/light_blue"
+                android:layout_width="180dp"
+                android:layout_height="45dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="Enter Word"
+                android:paddingStart="4dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="14sp"
+                android:maxLines="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/selectTypeSpinner"
+                android:background="@drawable/spinner_bg"
+                android:layout_width="130dp"
+                android:layout_height="45dp"
+                android:spinnerMode="dropdown"
+                app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/standInView"
+            android:layout_weight="10"
+            android:layout_width="200dp"
+            android:layout_height="45dp"/>
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/unfoldSaveBtn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/btn_unfold"/>
+    </LinearLayout>
+</LinearLayout>

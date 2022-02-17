@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/searchStrainsInput"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="4"
+        android:hint="Search strains"
+        android:inputType="text"
+        android:lines="1" />
+    <ImageView
+        android:src="@drawable/sign_or"
+        android:padding="10dp"
+        android:layout_weight="1"
+        android:id="@+id/andOrSwitch"
+        android:layout_width="0dp"
+        android:layout_height="50dp"/>
+
+</LinearLayout>

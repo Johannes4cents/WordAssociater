@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startFragment">
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.wordassociater.start_fragment.StartFragment"
+        android:label="StartFragment" >
+        <action
+            android:id="@+id/action_startFragment_to_readFragment"
+            app:destination="@id/readFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_writeFragment"
+            app:destination="@id/writeFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_snippetFragment"
+            app:destination="@id/snippetFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_characterListFragment"
+            app:destination="@id/characterListFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_storyFragment"
+            app:destination="@id/storyFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_wordsListFragment"
+            app:destination="@id/wordsListFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_notesFragment"
+            app:destination="@id/notesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/readFragment"
+        android:name="com.example.wordassociater.strain_list_fragment.StrainListFragment"
+        android:label="ReadFragment">
+        <action
+            android:id="@+id/action_readFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+        <action
+            android:id="@+id/action_readFragment_to_writeFragment"
+            app:destination="@id/writeFragment" />
+        <action
+            android:id="@+id/action_readFragment_to_connectStrainsFragment2"
+            app:destination="@id/connectStrainsFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/writeFragment"
+        android:name="com.example.wordassociater.strain_edit_fragment.StrainEditFragment"
+        android:label="WriteFragment" >
+        <action
+            android:id="@+id/action_writeFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+        <action
+            android:id="@+id/action_writeFragment_to_readFragment"
+            app:destination="@id/readFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/snippetFragment"
+        android:name="com.example.wordassociater.snippet_fragment.SnippetFragment"
+        android:label="SnippetFragment" >
+        <action
+            android:id="@+id/action_snippetFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+        <action
+            android:id="@+id/action_snippetFragment_to_connectSnippetsFragment"
+            app:destination="@id/connectSnippetsFragment" />
+        <action
+            android:id="@+id/action_snippetFragment_to_editSnippetFragment"
+            app:destination="@id/editSnippetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterFragment"
+        android:name="com.example.wordassociater.character.CharacterFragment"
+        android:label="CharacterFragment" >
+        <action
+            android:id="@+id/action_characterFragment_to_characterListFragment"
+            app:destination="@id/characterListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterListFragment"
+        android:name="com.example.wordassociater.character.CharacterListFragment"
+        android:label="CharacterListFragment" >
+        <action
+            android:id="@+id/action_characterListFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+        <action
+            android:id="@+id/action_characterListFragment_to_characterFragment"
+            app:destination="@id/characterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/connectSnippetsFragment"
+        android:name="com.example.wordassociater.connect_snippets_fragment.ConnectSnippetsFragment"
+        android:label="ConnectSnippetsFragment" >
+        <action
+            android:id="@+id/action_connectSnippetsFragment_to_snippetFragment"
+            app:destination="@id/snippetFragment" />
+        <action
+            android:id="@+id/action_connectSnippetsFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/storyFragment"
+        android:name="com.example.wordassociater.story.StoryFragment"
+        android:label="StoryFragment" >
+        <action
+            android:id="@+id/action_storyFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editSnippetFragment"
+        android:name="com.example.wordassociater.edit_snippet_fragment.EditSnippetFragment"
+        android:label="EditSnippetFragment" >
+        <action
+            android:id="@+id/action_editSnippetFragment_to_snippetFragment"
+            app:destination="@id/snippetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/wordsListFragment"
+        android:name="com.example.wordassociater.words_list_fragment.WordsListFragment"
+        android:label="WordsListFragment" >
+        <action
+            android:id="@+id/action_wordsListFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+        <action
+            android:id="@+id/action_wordsListFragment_to_wordDetailedFragment"
+            app:destination="@id/wordDetailedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/wordDetailedFragment"
+        android:name="com.example.wordassociater.word_detailed_fragment.WordDetailedFragment"
+        android:label="WordDetailedFragment" >
+        <action
+            android:id="@+id/action_wordDetailedFragment_to_wordsListFragment"
+            app:destination="@id/wordsListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/notesFragment"
+        android:name="com.example.wordassociater.notes.NotesFragment"
+        android:label="NotesFragment" >
+        <action
+            android:id="@+id/action_notesFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/connectStrainsFragment2"
+        android:name="com.example.wordassociater.connect_strains_fragment.ConnectStrainsFragment"
+        android:label="ConnectStrainsFragment" >
+        <action
+            android:id="@+id/action_connectStrainsFragment2_to_readFragment"
+            app:destination="@id/readFragment" />
+    </fragment>
+</navigation>

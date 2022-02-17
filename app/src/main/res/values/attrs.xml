@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AddWordButton">
+        <attr name="category" format="enum">
+            <enum name="adjective" value="0"/>
+            <enum name="action" value="1"/>
+            <enum name="person" value="2"/>
+            <enum name="hero" value="3"/>
+            <enum name="object" value="4"/>
+            <enum name="place" value="5"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="BlueButton">
+        <attr name="blueButtonType" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="SelectWordTypeButton">
+        <attr name="selectCat" format="enum">
+            <enum name="adjective" value="0"/>
+            <enum name="action" value="1"/>
+            <enum name="person" value="2"/>
+            <enum name="hero" value="3"/>
+            <enum name="object" value="4"/>
+            <enum name="place" value="5"/>
+        </attr>
+    </declare-styleable>
+</resources>

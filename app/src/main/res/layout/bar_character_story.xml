@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/openCharacterListButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/icon_character"
+            />
+
+        <LinearLayout
+            android:id="@+id/storyLinear"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/viewStoriesBtn"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/icon_story"
+                    />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/writeStoryButton"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingEnd="5dp"
+                android:src="@drawable/icon_write_story"
+                />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/writeCharacterButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/icon_edit_character"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
