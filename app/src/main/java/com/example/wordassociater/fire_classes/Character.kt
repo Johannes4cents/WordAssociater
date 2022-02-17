@@ -1,7 +1,4 @@
-package com.example.wordassociater.character
-
-import com.example.wordassociater.utils.Snippet
-import com.example.wordassociater.strain_edit_fragment.Strain
+package com.example.wordassociater.fire_classes
 
 data class Character(
 

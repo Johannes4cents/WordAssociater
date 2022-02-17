@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderNoteBinding
+import com.example.wordassociater.fire_classes.Note
 
 class NoteAdapter: ListAdapter<Note, RecyclerView.ViewHolder>(NoteDiff()) {
 

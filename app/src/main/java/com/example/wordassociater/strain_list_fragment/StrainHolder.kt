@@ -8,9 +8,9 @@ import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.connect_strains_fragment.ConnectStrainsFragment
 import com.example.wordassociater.databinding.HolderStrainBinding
-import com.example.wordassociater.start_fragment.Word
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.start_fragment.WordLinear
-import com.example.wordassociater.strain_edit_fragment.Strain
+import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.firestore.FireStrains
 
 class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) {
@@ -22,7 +22,7 @@ class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) 
     }
 
 
-    fun onBind(strain:Strain) {
+    fun onBind(strain: Strain) {
         this.strain = strain
         setStrain()
         setClickListener()

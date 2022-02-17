@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.wordassociater.*
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentEditStrainBinding
+import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.strain_list_fragment.StrainListFragment
 import com.example.wordassociater.start_fragment.WordLinear

@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import com.example.wordassociater.R
 import com.example.wordassociater.bars.HandleWordsBar
 import com.example.wordassociater.databinding.ButtonAddWordBinding
+import com.example.wordassociater.fire_classes.Word
 
 class AddWordButton(context: Context, attributeSet: AttributeSet?): LinearLayout(context, attributeSet) {
     val b = ButtonAddWordBinding.inflate(LayoutInflater.from(context), this, true)

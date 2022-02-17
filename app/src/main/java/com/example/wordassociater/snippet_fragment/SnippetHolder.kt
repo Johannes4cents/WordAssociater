@@ -12,7 +12,7 @@ import com.example.wordassociater.edit_snippet_fragment.EditSnippetFragment
 import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.utils.Snippet
+import com.example.wordassociater.fire_classes.Snippet
 
 class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter): RecyclerView.ViewHolder(b.root) {
     lateinit var snippet : Snippet

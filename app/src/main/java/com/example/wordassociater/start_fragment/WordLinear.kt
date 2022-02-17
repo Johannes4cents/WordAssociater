@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.bars.HandleWordsBar
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.WordLinearBinding
+import com.example.wordassociater.fire_classes.Word
 
 class WordLinear(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     companion object {

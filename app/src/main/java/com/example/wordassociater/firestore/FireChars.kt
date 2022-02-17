@@ -2,7 +2,7 @@ package com.example.wordassociater.firestore
 
 import android.content.Context
 import android.widget.Toast
-import com.example.wordassociater.character.Character
+import com.example.wordassociater.fire_classes.Character
 
 object FireChars {
     fun add(character: Character, context: Context?) {

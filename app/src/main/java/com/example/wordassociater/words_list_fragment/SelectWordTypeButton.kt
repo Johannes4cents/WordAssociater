@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.ButtonSelectWordTypeBinding
-import com.example.wordassociater.start_fragment.Word
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.Helper
 
 class SelectWordTypeButton(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {

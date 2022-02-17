@@ -1,7 +1,5 @@
-package com.example.wordassociater.strain_edit_fragment
+package com.example.wordassociater.fire_classes
 
-import com.example.wordassociater.character.Character
-import com.example.wordassociater.start_fragment.Word
 import com.example.wordassociater.utils.StoryPart
 
 data class Strain(

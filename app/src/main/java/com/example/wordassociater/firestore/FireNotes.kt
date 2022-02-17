@@ -2,7 +2,7 @@ package com.example.wordassociater.firestore
 
 import android.content.Context
 import android.widget.Toast
-import com.example.wordassociater.notes.Note
+import com.example.wordassociater.fire_classes.Note
 
 object FireNotes {
     fun add(note: Note, context: Context?) {

@@ -12,16 +12,16 @@ import androidx.navigation.NavController
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.BarSnippetsStrainsBinding
-import com.example.wordassociater.start_fragment.WordLinear
-import com.example.wordassociater.story.Story
+import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.firestore.FireStats
+import com.example.wordassociater.start_fragment.WordLinear
+import com.example.wordassociater.story.Story
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.utils.Snippet
 
 class SnippetsStrainsBar(context: Context, attrs: AttributeSet): ConstraintLayout(context, attrs) {
     val b = BarSnippetsStrainsBinding.inflate(LayoutInflater.from(context), this, true)
-    val snippetInputOpen = MutableLiveData(false)
+    private val snippetInputOpen = MutableLiveData(false)
     lateinit var navController: NavController
 
     init {

@@ -3,7 +3,7 @@ package com.example.wordassociater.firestore
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import com.example.wordassociater.utils.Snippet
+import com.example.wordassociater.fire_classes.Snippet
 
 object FireSnippets {
     fun delete(snippet: Snippet) {

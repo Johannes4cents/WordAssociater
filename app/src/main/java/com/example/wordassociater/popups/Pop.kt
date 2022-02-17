@@ -12,13 +12,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.character.Character
+import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.PopupCharacterRecyclerBinding
 import com.example.wordassociater.databinding.PopupConfirmDeletionBinding
 import com.example.wordassociater.databinding.PopupWordRecyclerBinding
 import com.example.wordassociater.strain_list_fragment.StrainListFragment
-import com.example.wordassociater.start_fragment.Word
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.story.Story
 import com.example.wordassociater.utils.Helper
 

@@ -7,7 +7,7 @@ import com.example.wordassociater.R
 import com.example.wordassociater.databinding.HolderWordBinding
 import com.example.wordassociater.databinding.HolderWordPopupBinding
 import com.example.wordassociater.start_fragment.StartFragment
-import com.example.wordassociater.start_fragment.Word
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.start_fragment.getLineCount
 import com.example.wordassociater.start_fragment.getShortenedWord
 

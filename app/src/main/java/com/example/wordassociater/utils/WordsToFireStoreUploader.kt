@@ -1,6 +1,6 @@
 package com.example.wordassociater.utils
 
-import com.example.wordassociater.start_fragment.Word
+import com.example.wordassociater.fire_classes.Word
 
 object WordsToFireStoreUploader {
     private val adjectivesList = mutableListOf<String>(

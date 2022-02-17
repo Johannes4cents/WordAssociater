@@ -11,15 +11,15 @@ import com.bumptech.glide.Glide
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.character.Character
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentConnectSnippetsBinding
-import com.example.wordassociater.popups.Pop
-import com.example.wordassociater.start_fragment.Word
+import com.example.wordassociater.fire_classes.Character
+import com.example.wordassociater.fire_classes.Snippet
+import com.example.wordassociater.fire_classes.Strain
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireLists
+import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.utils.Snippet
-import com.example.wordassociater.strain_edit_fragment.Strain
 
 class ConnectSnippetsFragment: Fragment() {
     lateinit var b: FragmentConnectSnippetsBinding

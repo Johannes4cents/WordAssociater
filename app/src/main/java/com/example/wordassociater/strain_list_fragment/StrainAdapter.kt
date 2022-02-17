@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderStrainBinding
-import com.example.wordassociater.strain_edit_fragment.Strain
+import com.example.wordassociater.fire_classes.Strain
 
 class StrainAdapter: ListAdapter<Strain, RecyclerView.ViewHolder>(StrainDiff()) {
 

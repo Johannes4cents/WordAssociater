@@ -1,16 +1,10 @@
 package com.example.wordassociater.firestore
-
 import android.util.Log
 import com.example.wordassociater.Main
-import com.example.wordassociater.character.Character
-import com.example.wordassociater.notes.Note
+import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.snippet_fragment.SnippetFragment
-import com.example.wordassociater.start_fragment.Word
 import com.example.wordassociater.start_fragment.WordLinear
-import com.example.wordassociater.strain_edit_fragment.Strain
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.utils.Snippet
-import com.example.wordassociater.utils.Stats
 
 object FireStoreListener {
 
@@ -74,6 +68,7 @@ object FireStoreListener {
             if(docs != null) {
                 val newStrainList = mutableListOf<Strain>()
                 for(doc in docs) {
+                    Log.i("wordId", "$doc")
                     val strain = doc.toObject(Strain::class.java)
                     newStrainList.add(strain)
                     if(strain.connectionLayer > Main.maxLayers) Main.maxLayers = strain.connectionLayer
@@ -101,13 +96,38 @@ object FireStoreListener {
         }
     }
 
+    private fun getWordsOneTime(type: Word.Type) {
+        val collectionReference = FireLists.getCollectionRef(type)
+        collectionReference.get().addOnSuccessListener { docs ->
+            if(docs != null) {
+                var toDeleteWords = mutableListOf<Word>()
+                for(doc in docs) {
+                    val word = doc.toObject(Word::class.java)
+                    word.selected = false
+                    Helper.getWordList(type).add(word)
+                    Log.i("WordId", "word id is: ${doc.id} length: ${doc.id.length}")
+                    if(doc.id.length > 4) {
+                        word.id = doc.id
+                        toDeleteWords.add(word)
+                    }
+                }
+
+                for(w in toDeleteWords) {
+                    FireWords.delete(w)
+                }
+            }
+
+        }
+    }
+
+
     private fun getWords(type: Word.Type) {
         val collectionReference = FireLists.getCollectionRef(type)
         collectionReference.addSnapshotListener { docs, error ->
             if(docs != null) {
                 for(doc in docs) {
                     val word = doc.toObject(Word::class.java)
-                    word.id = doc.id
+
                     word.selected = false
                     Helper.getWordList(type).add(word)
                     WordLinear.allword.add(word)
@@ -117,10 +137,10 @@ object FireStoreListener {
                 for(w in WordLinear.allword) {
                     w.id = wordId.toString()
                     wordId++
-
+                    FireWords.update(w)
+                    Log.i("wordId", "$wordId")
                 }
             }
-
 
         }
     }

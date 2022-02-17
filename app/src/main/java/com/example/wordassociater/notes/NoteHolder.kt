@@ -2,8 +2,9 @@ package com.example.wordassociater.notes
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderNoteBinding
-import com.example.wordassociater.popups.Pop
+import com.example.wordassociater.fire_classes.Note
 import com.example.wordassociater.firestore.FireNotes
+import com.example.wordassociater.popups.Pop
 
 class NoteHolder(val b : HolderNoteBinding) : RecyclerView.ViewHolder(b.root) {
     lateinit var note: Note

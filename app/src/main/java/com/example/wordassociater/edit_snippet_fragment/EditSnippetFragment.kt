@@ -11,15 +11,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.character.Character
+import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentEditSnippetBinding
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.popups.Pop
-import com.example.wordassociater.start_fragment.Word
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.utils.Snippet
+import com.example.wordassociater.fire_classes.Snippet
 
 class EditSnippetFragment: Fragment() {
     lateinit var b : FragmentEditSnippetBinding

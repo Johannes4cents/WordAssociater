@@ -10,10 +10,10 @@ import android.widget.LinearLayout
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.BarWordsButtonsBinding
-import com.example.wordassociater.popups.Pop
-import com.example.wordassociater.start_fragment.Word
-import com.example.wordassociater.start_fragment.WordLinear
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.popups.Pop
+import com.example.wordassociater.start_fragment.WordLinear
 import com.google.android.gms.common.util.CollectionUtils
 
 class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {

@@ -11,6 +11,7 @@ import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentCharacterListBinding
+import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.firestore.FireLists
 
 class CharacterListFragment: Fragment() {

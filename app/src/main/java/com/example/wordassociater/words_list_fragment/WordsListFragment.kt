@@ -11,7 +11,7 @@ import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentWordsListBinding
-import com.example.wordassociater.start_fragment.Word
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.word_detailed_fragment.WordDetailedFragment
 
 class WordsListFragment: Fragment() {

@@ -9,6 +9,7 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.connect_snippets_fragment.ConnectSnippetsFragment
 import com.example.wordassociater.databinding.HolderCharacterBinding
+import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.strain_list_fragment.StrainListFragment
 import com.example.wordassociater.strain_edit_fragment.StrainEditFragment
@@ -17,7 +18,7 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
     lateinit var character: Character
     lateinit var adapter: CharacterAdapter
     lateinit var func: (char: Character) -> Unit
-    fun onBind(character: Character , adapter: CharacterAdapter, func:( (char: Character) -> Unit)? = null) {
+    fun onBind(character: Character, adapter: CharacterAdapter, func:( (char: Character) -> Unit)? = null) {
         this.adapter = adapter
         this.character = character
         if(func != null) this.func = func

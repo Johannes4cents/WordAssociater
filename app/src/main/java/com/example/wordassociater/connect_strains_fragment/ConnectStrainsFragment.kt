@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentConnectStrainsBinding
-import com.example.wordassociater.start_fragment.Word
-import com.example.wordassociater.strain_edit_fragment.Strain
+import com.example.wordassociater.fire_classes.Strain
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireStrains
 import com.example.wordassociater.utils.Helper

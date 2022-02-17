@@ -12,6 +12,7 @@ import com.example.wordassociater.R
 import com.example.wordassociater.bars.HandleWordsBar
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.HolderWordBinding
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.Helper
 
 class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null ): ConstraintLayout(context, attrs) {
@@ -113,26 +114,7 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
 
 }
 
-data class Word(
-    val text: String = "",
-    val type: Type = Type.NONE,
-    var id: String = "",
-    var used: Int = 0,
-    var selected : Boolean = false,
-    var lineCount : Int = 1,
-    var charNumber: Long = 0,
-    var imgUrl: String = "")
-    {
-    var isHeader = false
-    enum class Type(val text: String) {
-        Adjective("Adjective"),
-        Person("Person"),
-        Place("Place"),
-        Action("Action"),
-        Object("Object"),
-        CHARACTER("Character"),
-        NONE("None") }
-}
+
 
 fun getLineCount(word: Word) {
     if((14..100).contains(word.text.length)) word.lineCount = 2

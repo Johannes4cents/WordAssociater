@@ -14,7 +14,7 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentStrainsListBinding
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.strain_edit_fragment.Strain
+import com.example.wordassociater.fire_classes.Strain
 
 class StrainListFragment: Fragment() {
 

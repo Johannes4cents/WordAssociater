@@ -12,7 +12,7 @@ import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentSnippetsBinding
-import com.example.wordassociater.utils.Snippet
+import com.example.wordassociater.fire_classes.Snippet
 
 class SnippetFragment: Fragment() {
     lateinit var b: FragmentSnippetsBinding

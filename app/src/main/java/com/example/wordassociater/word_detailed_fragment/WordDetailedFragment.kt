@@ -10,11 +10,11 @@ import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentWordDetailedBinding
 import com.example.wordassociater.strain_list_fragment.StrainAdapter
 import com.example.wordassociater.snippet_fragment.SnippetAdapter
-import com.example.wordassociater.start_fragment.Word
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireLists
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.utils.Snippet
-import com.example.wordassociater.strain_edit_fragment.Strain
+import com.example.wordassociater.fire_classes.Snippet
+import com.example.wordassociater.fire_classes.Strain
 
 class WordDetailedFragment: Fragment() {
     lateinit var b: FragmentWordDetailedBinding

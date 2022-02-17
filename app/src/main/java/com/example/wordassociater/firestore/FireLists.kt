@@ -1,15 +1,7 @@
 package com.example.wordassociater.firestore
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
-import com.example.wordassociater.character.Character
-import com.example.wordassociater.notes.Note
-import com.example.wordassociater.start_fragment.Word
-import com.example.wordassociater.strain_edit_fragment.Strain
-import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.utils.Snippet
-import com.example.wordassociater.utils.Stats
+import com.example.wordassociater.fire_classes.Stats
+import com.example.wordassociater.fire_classes.Word
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase

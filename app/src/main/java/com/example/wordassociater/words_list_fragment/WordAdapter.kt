@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderWordBinding
 import com.example.wordassociater.databinding.HolderWordPopupBinding
 import com.example.wordassociater.popups.WHolder
-import com.example.wordassociater.start_fragment.Word
+import com.example.wordassociater.fire_classes.Word
 
 class WordAdapter(
         private val onClickFunc: (word: Word) -> Unit,

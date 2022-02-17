@@ -1,7 +1,7 @@
 package com.example.wordassociater.utils
 
 import android.content.Context
-import com.example.wordassociater.character.Character
+import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.firestore.FireChars
 
 object CharacterUploader {
