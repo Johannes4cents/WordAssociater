@@ -53,7 +53,7 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
 
     private fun selectCharacter() {
         if(word?.type == Word.Type.CHARACTER) {
-            var character = Main.characterList.find { char ->
+            var character = Main.characterList.value?.find { char ->
                 char.charNumber == word.charNumber
             }
             if(character != null) {
@@ -66,8 +66,8 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
 
     private fun deselectCharacter() {
         if(word?.type == Word.Type.CHARACTER) {
-            var character = Main.characterList.find { char ->
-                char.name.equals(word.text, ignoreCase = true)
+            var character = Main.characterList.value?.find { char ->
+                char.charNumber == word.charNumber
             }
             if(character != null) {
                 CharacterAdapter.selectedCharacterList.remove(character)
@@ -101,7 +101,7 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
 
     private fun setPortrait() {
         if(word!!.type == Word.Type.CHARACTER) {
-            val character = Main.characterList.find { char ->
+            val character = Main.characterList.value?.find { char ->
                 char.name.equals(word.text, ignoreCase = true)
             }
             if(character != null) {

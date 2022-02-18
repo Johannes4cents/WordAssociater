@@ -12,11 +12,11 @@ import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentCharacterBinding
-import com.example.wordassociater.strain_list_fragment.StrainAdapter
-import com.example.wordassociater.snippet_fragment.SnippetAdapter
-import com.example.wordassociater.firestore.FireLists
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Strain
+import com.example.wordassociater.firestore.FireLists
+import com.example.wordassociater.snippet_fragment.SnippetAdapter
+import com.example.wordassociater.strain_list_fragment.StrainAdapter
 
 class CharacterFragment: Fragment() {
     lateinit var b: FragmentCharacterBinding
@@ -89,7 +89,6 @@ class CharacterFragment: Fragment() {
             if(docs != null) {
                 for(doc in docs) {
                     val strain = doc.toObject(Strain::class.java)
-                    strain.id = doc.id
                     if(strain.characterList.contains(CharacterListFragment.selectedCharacter.value)) {
                         characterStrainList.add(strain)
                     }

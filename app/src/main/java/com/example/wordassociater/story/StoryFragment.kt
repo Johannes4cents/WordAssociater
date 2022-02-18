@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentCharacterBinding
-import com.example.wordassociater.strain_list_fragment.StrainAdapter
-import com.example.wordassociater.snippet_fragment.SnippetAdapter
-import com.example.wordassociater.firestore.FireLists
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Strain
+import com.example.wordassociater.firestore.FireLists
+import com.example.wordassociater.snippet_fragment.SnippetAdapter
+import com.example.wordassociater.strain_list_fragment.StrainAdapter
 
 class StoryFragment: Fragment() {
     lateinit var b : FragmentCharacterBinding
@@ -40,7 +40,6 @@ class StoryFragment: Fragment() {
                 val strainList = mutableListOf<Strain>()
                 for(doc in docs) {
                     val strain = doc.toObject(Strain::class.java)
-                    strain.id = doc.id
                     if(strain.isStory) strainList.add(strain)
                 }
                 strainAdapter.submitList(strainList)
@@ -73,7 +72,6 @@ class StoryFragment: Fragment() {
             val strainList = mutableListOf<Strain>()
             for(doc in docs) {
                 val strain = doc.toObject(Strain::class.java)
-                strain.id = doc.id
                 if(strain.isStory) strainList.add(strain)
             }
             strainAdapter.submitList(strainList)

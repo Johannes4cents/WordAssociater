@@ -11,7 +11,7 @@ object FireSnippets {
     }
 
     fun add(newSnippet: Snippet, context: Context?) {
-        FireLists.snippetsList.document(FireLists.stats?.snippetNumber.toString()).set(newSnippet).addOnSuccessListener {
+        FireLists.snippetsList.document(newSnippet.id.toString()).set(newSnippet).addOnSuccessListener {
             Toast.makeText(context, "Snippet saved", Toast.LENGTH_SHORT).show()
 
         }.addOnFailureListener {

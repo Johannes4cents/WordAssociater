@@ -1,5 +1,14 @@
 package com.example.wordassociater.utils
 
-import com.example.wordassociater.fire_classes.Word
+open class StoryPart(open var wordList: MutableList<String>, open var content: String, open var id : Long) {
 
-open class StoryPart(var words: MutableList<Word>, open var content: String)
+    companion object {
+        fun getIdList(wordsList: MutableList<StoryPart>): List<Long> {
+            var idList = mutableListOf<Long>()
+            for(w in wordsList) {
+                idList.add(w.id)
+            }
+            return idList
+        }
+    }
+}

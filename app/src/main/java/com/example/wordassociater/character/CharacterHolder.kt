@@ -11,8 +11,8 @@ import com.example.wordassociater.connect_snippets_fragment.ConnectSnippetsFragm
 import com.example.wordassociater.databinding.HolderCharacterBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.popups.Pop
-import com.example.wordassociater.strain_list_fragment.StrainListFragment
 import com.example.wordassociater.strain_edit_fragment.StrainEditFragment
+import com.example.wordassociater.strain_list_fragment.StrainListFragment
 
 class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.root) {
     lateinit var character: Character
@@ -82,8 +82,8 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
                     StrainEditFragment.adapter.notifyDataSetChanged()
 
                     // Marks Character as selected in the Update Popup character List
-                    val index = Pop.characterListUpdate.indexOf(character)
-                    Pop.characterListUpdate[index].selected = !Pop.characterListUpdate[index].selected
+                    val index = Pop.characterListUpdate!!.indexOf(character)
+                    Pop.characterListUpdate!![index].selected = !Pop.characterListUpdate!![index].selected
                     Pop.characterAdapter.submitList(Pop.characterListUpdate)
                 }
             }
@@ -109,7 +109,7 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
     }
 
     private fun removeSelectedFromCharacterWord() {
-        var character = Main.characterList.find { char ->
+        var character = Main.characterList.value?.find { char ->
             char.name.equals(character.name, ignoreCase = true)
         }
         if(character != null) {

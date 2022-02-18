@@ -12,15 +12,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.PopupCharacterRecyclerBinding
 import com.example.wordassociater.databinding.PopupConfirmDeletionBinding
 import com.example.wordassociater.databinding.PopupWordRecyclerBinding
-import com.example.wordassociater.strain_list_fragment.StrainListFragment
+import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.start_fragment.WordLinear
 import com.example.wordassociater.story.Story
-import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.strain_list_fragment.StrainListFragment
 
 class Pop(val context: Context) {
     private val popWindow = PopupWindow(context)
@@ -28,17 +28,16 @@ class Pop(val context: Context) {
 
     companion object {
         lateinit var characterAdapter: CharacterAdapter
-        var characterListSelect = Main.characterList.toMutableList()
-        var characterListUpdate = Main.characterList.toMutableList()
+        var characterListSelect = Main.characterList.value?.toMutableList()
+        var characterListUpdate = Main.characterList.value?.toMutableList()
     }
 
-    private fun windowSetup(view: View, fromWhere: View) {
+    fun windowSetup(view: View, fromWhere: View) {
         popWindow.isOutsideTouchable = true
         popWindow.isFocusable = true
         popWindow.contentView = view
         popWindow.showAtLocation(fromWhere, Gravity.CENTER, 0 , 0)
         popWindow.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-
     }
 
     fun wordRecycler(
@@ -63,7 +62,7 @@ class Pop(val context: Context) {
         val b = PopupCharacterRecyclerBinding.inflate(LayoutInflater.from(context), null, false)
         val adapter = CharacterAdapter(CharacterAdapter.Mode.EDITSNIPPETS, selectFunc = func)
         b.characterRecycler.adapter = adapter
-        adapter.submitList(Main.characterList)
+        adapter.submitList(Main.characterList.value)
         popWindow.height = 1000
         popWindow.width = 900
         windowSetup(b.root, from)
@@ -82,7 +81,7 @@ class Pop(val context: Context) {
         val binding = PopupCharacterRecyclerBinding.inflate(LayoutInflater.from(context), null, false)
         var adapter = CharacterAdapter(CharacterAdapter.Mode.CONNECTSNIPPETS, characterList)
         binding.characterRecycler.adapter = adapter
-        adapter.submitList(Main.characterList)
+        adapter.submitList(Main.characterList.value)
         popWindow.height = 1000
         popWindow.width = 900
         windowSetup(binding.root, view)
@@ -107,7 +106,7 @@ class Pop(val context: Context) {
         binding.clearAllBtn.setOnClickListener {
             CharacterAdapter.selectedCharacterList.clear()
             CharacterAdapter.selectedNameChars.clear()
-            Helper.deselectWords()
+            WordLinear.deselectWords()
             CharacterAdapter.characterListTrigger.value = Unit
         }
     }
@@ -116,10 +115,10 @@ class Pop(val context: Context) {
         when(charMode) {
             CharacterAdapter.Mode.UPDATE -> {
                 for(char in StrainListFragment.openStrain.value?.characterList!!) {
-                    var charakter = characterListUpdate.find { c -> c.name == char.name }
+                    var charakter = characterListUpdate!!.find { c -> c.name == char.name }
                     if(charakter != null) {
-                        var index = characterListUpdate.indexOf(charakter)
-                        characterListUpdate[index].selected = true
+                        var index = characterListUpdate?.indexOf(charakter)
+                        characterListUpdate!![index!!].selected = true
                     }
                 }
                 characterAdapter.submitList(characterListUpdate)

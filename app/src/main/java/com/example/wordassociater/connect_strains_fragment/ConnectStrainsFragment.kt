@@ -12,7 +12,6 @@ import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentConnectStrainsBinding
 import com.example.wordassociater.fire_classes.Strain
-import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireStrains
 import com.example.wordassociater.utils.Helper
@@ -56,23 +55,23 @@ class ConnectStrainsFragment:Fragment() {
     }
 
     private fun setWords() {
-        val wordList = mutableListOf<Word>()
+        val wordList = mutableListOf<String>()
         for(strain in strainList) {
             for(w in strain.wordList) {
-                Log.i("connectStrains", "word is: ${w.text}")
                 if(!wordList.contains(w)) wordList.add(w)
             }
         }
         Log.i("connectStrains", "$wordList")
-        b.associatedWords.text = Helper.setWordsToMultipleLines(wordList)
         newStrain.wordList = wordList
+        b.associatedWords.text = Helper.setWordsToMultipleLines(newStrain.getWords())
+
     }
 
     private fun saveStrain() {
         if(b.strainInput.text.isNotEmpty()) {
             newStrain.content = b.strainInput.text.toString()
             newStrain.connectionLayer = setConnectionLayer()
-            newStrain.id = FireStats.getStrainNumber().toString()
+            newStrain.id = FireStats.getStoryPartNumber()
             newStrain.isStory = isStory
             newStrain.header = b.headerInput.text.toString()
 

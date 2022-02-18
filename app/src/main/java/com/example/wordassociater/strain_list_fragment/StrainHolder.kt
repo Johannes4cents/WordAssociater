@@ -8,10 +8,10 @@ import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.connect_strains_fragment.ConnectStrainsFragment
 import com.example.wordassociater.databinding.HolderStrainBinding
-import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.start_fragment.WordLinear
 import com.example.wordassociater.fire_classes.Strain
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireStrains
+import com.example.wordassociater.start_fragment.WordLinear
 
 class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) {
     lateinit var strain: Strain
@@ -50,7 +50,7 @@ class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) 
     private fun setAssociatedWords() {
         var wordList = ""
         var wordRow = ""
-        for(w: Word in strain.wordList!!) {
+        for(w: Word in strain.getWords()) {
             if(wordRow.length < 25) {
                 wordRow += "${w.text}, "
                 wordList = wordRow
@@ -70,7 +70,7 @@ class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) 
 
     private fun setClickListener() {
         b.root.setOnClickListener {
-            WordLinear.wordList = strain.wordList ?: mutableListOf()
+            WordLinear.wordList = strain.getWords() ?: mutableListOf()
             StrainListFragment.openStrain.postValue(strain)
         }
 

@@ -16,7 +16,6 @@ import com.example.wordassociater.databinding.FragmentConnectSnippetsBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Strain
-import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireLists
 import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.utils.Helper
@@ -61,13 +60,13 @@ class ConnectSnippetsFragment: Fragment() {
     }
 
     private fun makeWordsList() {
-        val wordsList = mutableListOf<Word>()
-        for(w in snippetOne.wordsUsed) {
+        val wordsList = mutableListOf<String>()
+        for(w in snippetOne.wordList) {
             if(!wordsList.contains(w)) {
                 wordsList.add(w)
             }
         }
-        for(w in snippetTwo.wordsUsed) {
+        for(w in snippetTwo.wordList) {
             if(!wordsList.contains(w)) {
                 wordsList.add(w)
             }
@@ -92,7 +91,7 @@ class ConnectSnippetsFragment: Fragment() {
     }
 
     private fun setContent() {
-        Helper.setWords(newStrain.wordList!!, b.associatedWords)
+        Helper.setWords(newStrain.getWords(), b.associatedWords)
         b.strainInput.setText(newStrain.content)
         handleCharacter()
     }

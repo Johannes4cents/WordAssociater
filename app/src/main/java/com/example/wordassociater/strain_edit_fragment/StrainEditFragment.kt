@@ -8,18 +8,21 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.wordassociater.*
+import com.example.wordassociater.Frags
+import com.example.wordassociater.Main
+import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentEditStrainBinding
 import com.example.wordassociater.fire_classes.Strain
-import com.example.wordassociater.popups.Pop
-import com.example.wordassociater.strain_list_fragment.StrainListFragment
-import com.example.wordassociater.start_fragment.WordLinear
-import com.example.wordassociater.story.Story
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireLists
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireStrains
 import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.popups.Pop
+import com.example.wordassociater.start_fragment.WordLinear
+import com.example.wordassociater.story.Story
+import com.example.wordassociater.strain_list_fragment.StrainListFragment
 import com.example.wordassociater.utils.Helper
 
 class StrainEditFragment: Fragment() {
@@ -30,7 +33,7 @@ class StrainEditFragment: Fragment() {
         lateinit var adapter: CharacterAdapter
     }
 
-    var wordsList = StrainListFragment.openStrain.value?.wordList ?: WordLinear.selectedWords
+    var wordsList = StrainListFragment.openStrain.value?.getWords() ?: WordLinear.selectedWords
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -117,8 +120,6 @@ class StrainEditFragment: Fragment() {
         }
     }
 
-
-
     private fun setContent() {
         if(StrainListFragment.openStrain.value != null) {
             b.strainInput.setText(StrainListFragment.openStrain.value?.content!!.toString())
@@ -128,12 +129,18 @@ class StrainEditFragment: Fragment() {
 
     private fun saveStrain() {
         if(b.strainInput.text.isNotEmpty()) {
+
             var header = b.headerInput.text ?: "Strain"
             var strain = Strain(
                     b.strainInput.text.toString(),
-                    WordLinear.selectedWords, header.toString(),
-                    id = FireStats.getCharNumber().toString()
+                    Word.convertToIdList(WordLinear.selectedWords), header.toString(),
+                    id = FireStats.getStoryPartNumber()
             )
+
+            for(w in WordLinear.selectedWords) {
+                w.strainsList.add(strain.id)
+                FireWords.update(w, strainsList = w.strainsList)
+            }
             if(Story.storyModeActive) strain.isStory = true
             for(char in CharacterAdapter.selectedCharacterList) {
                 char.selected = false
@@ -167,7 +174,7 @@ class StrainEditFragment: Fragment() {
                 strain.characterList.add(char)
             }
         }
-        FireLists.fireStrainsList.document(StrainListFragment.openStrain.value!!.id).set(strain)
+        FireLists.fireStrainsList.document(StrainListFragment.openStrain.value!!.id.toString()).set(strain)
         WordLinear.selectedWords.clear()
         findNavController().navigate(R.id.action_writeFragment_to_readFragment)
         Helper.getIMM(requireContext()).hideSoftInputFromWindow(b.strainInput.windowToken, 0)

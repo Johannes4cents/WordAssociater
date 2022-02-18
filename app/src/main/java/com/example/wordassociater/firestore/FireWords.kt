@@ -1,15 +1,13 @@
 package com.example.wordassociater.firestore
 
 import android.util.Log
-import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.start_fragment.WordLinear
 
 object FireWords {
     fun add(newWord: Word) {
         val collectionReference = FireLists.getCollectionRef(newWord.type)
-        val list = Helper.getWordList(newWord.type)
+        val list = WordLinear.getWordList(newWord.type)
         collectionReference.document(newWord.id).set(newWord)
         list.add(newWord)
     }
@@ -28,13 +26,15 @@ object FireWords {
     fun update(word: Word,
                imgUrl: String? = null,
                text: String? = null,
-               snippetsList : MutableList<Snippet>? = null,
-               strainsList : MutableList<Strain>? = null
+               snippetsList : MutableList<Long>? = null,
+               strainsList : MutableList<Long>? = null,
+               cat: Word.Cat? = null
     ) {
         val collectionReference = FireLists.getCollectionRef(word.type)
         if(imgUrl != null) collectionReference.document(word.id).update("imgUrl", imgUrl)
         if(text != null) collectionReference.document(word.id).update("text", text)
         if(snippetsList != null) collectionReference.document(word.id).update("strainsList", imgUrl)
         if(strainsList != null) collectionReference.document(word.id).update("snippetsList", imgUrl)
+        if(cat != null) collectionReference.document(word.id).update("cat", cat)
     }
 }

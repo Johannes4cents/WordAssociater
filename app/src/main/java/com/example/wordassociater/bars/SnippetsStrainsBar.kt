@@ -105,10 +105,10 @@ class SnippetsStrainsBar(context: Context, attrs: AttributeSet): ConstraintLayou
         if(b.snippetInput.text.isNotEmpty()) {
             val newSnippet = Snippet(
                 content = b.snippetInput.text.toString(),
-                id = FireStats.getSnippetNumber()
+                id = FireStats.getStoryPartNumber()
             )
             for(word in WordLinear.selectedWords) {
-                newSnippet.wordsUsed.add(word)
+                newSnippet.wordList.add(word.id)
             }
             handleCharacters(newSnippet)
             if(Story.storyModeActive) newSnippet.isStory = true
@@ -118,7 +118,7 @@ class SnippetsStrainsBar(context: Context, attrs: AttributeSet): ConstraintLayou
         else {
             closeSnippetInput()
         }
-        Helper.deselectWords()
+        WordLinear.deselectWords()
     }
 
     private fun handleCharacters(snippet: Snippet) {

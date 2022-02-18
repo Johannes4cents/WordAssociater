@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.ButtonSelectWordTypeBinding
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.start_fragment.WordLinear
 
 class SelectWordTypeButton(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = ButtonSelectWordTypeBinding.inflate(LayoutInflater.from(context), this, true)
@@ -97,7 +97,7 @@ class SelectWordTypeButton(context: Context, attributeSet: AttributeSet): Linear
 
     private fun observeToSubmitList() {
         selectedButton.observe(context as LifecycleOwner) {
-            if(it == this) WordsListFragment.currentList.value = Helper.getWordList(type)
+            if(it == this) WordsListFragment.currentList.value = WordLinear.getWordList(type)
         }
     }
 }

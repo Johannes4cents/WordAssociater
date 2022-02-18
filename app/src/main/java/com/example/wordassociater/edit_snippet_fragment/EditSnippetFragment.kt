@@ -11,15 +11,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentEditSnippetBinding
+import com.example.wordassociater.fire_classes.Character
+import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.fire_classes.Snippet
 
 class EditSnippetFragment: Fragment() {
     lateinit var b : FragmentEditSnippetBinding
@@ -68,7 +68,7 @@ class EditSnippetFragment: Fragment() {
     private fun saveSnippet() {
         for(w in newlyCreatedWordsList) {
             if(!Helper.checkIfWordExists(w, requireContext())) FireWords.add(w)
-            else snippet.wordsUsed.remove(w)
+            else snippet.wordList.remove(w.id)
         }
         snippet.content = b.snippetInput.text.toString()
         FireSnippets.update(snippet, context)
@@ -76,20 +76,20 @@ class EditSnippetFragment: Fragment() {
 
     private fun addNewWordToList(word: Word) {
         newlyCreatedWordsList.add(word)
-        snippet.wordsUsed.add(word)
-        liveWordList.value = snippet.wordsUsed
+        snippet.wordList.add(word.id)
+        liveWordList.value = snippet.getWords()
     }
 
     private fun deleteUsedWord(word: Word) {
-        snippet.wordsUsed.remove(word)
+        snippet.wordList.remove(word.id)
         newlyCreatedWordsList.remove(word)
-        liveWordList.value = snippet.wordsUsed
+        liveWordList.value = snippet.getWords()
     }
 
     private fun setContent() {
         b.snippetInput.setText(snippet.content)
-        b.associatedWords.text =  Helper.setWordsToMultipleLines(snippet.wordsUsed)
-        liveWordList.value = snippet.wordsUsed
+        b.associatedWords.text =  Helper.setWordsToMultipleLines(snippet.getWords())
+        liveWordList.value = snippet.getWords()
     }
 
     private fun setObserver() {
@@ -106,7 +106,7 @@ class EditSnippetFragment: Fragment() {
     }
 
     private fun handleCharacterSelected(char: Character) {
-        val c = Main.characterList.find { c -> c.id == char.id }
+        val c = Main.getCharacter(char.id)
         val charInSnippet = snippet.characterList.find { char -> char.id == c!!.id }
         if(charInSnippet != null ) {
             snippet.characterList.remove(charInSnippet)

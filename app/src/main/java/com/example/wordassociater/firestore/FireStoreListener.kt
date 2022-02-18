@@ -2,9 +2,7 @@ package com.example.wordassociater.firestore
 import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.fire_classes.*
-import com.example.wordassociater.snippet_fragment.SnippetFragment
 import com.example.wordassociater.start_fragment.WordLinear
-import com.example.wordassociater.utils.Helper
 
 object FireStoreListener {
 
@@ -27,7 +25,7 @@ object FireStoreListener {
                     character.id = doc.id
                     charList.add(character)
                 }
-                Main.characterList = charList
+                Main.characterList.value = charList
             }
             else {
             }
@@ -41,8 +39,7 @@ object FireStoreListener {
                     val snippet = doc.toObject(Snippet::class.java)
                     newSnippetList.add(snippet)
                 }
-                Main.snippetList = newSnippetList
-                SnippetFragment.snippetListTrigger.value = Unit
+                Main.snippetList.value = newSnippetList
             }
             else {
             }
@@ -104,7 +101,7 @@ object FireStoreListener {
                 for(doc in docs) {
                     val word = doc.toObject(Word::class.java)
                     word.selected = false
-                    Helper.getWordList(type).add(word)
+                    WordLinear.getWordList(type).add(word)
                     Log.i("WordId", "word id is: ${doc.id} length: ${doc.id.length}")
                     if(doc.id.length > 4) {
                         word.id = doc.id
@@ -120,28 +117,17 @@ object FireStoreListener {
         }
     }
 
-
     private fun getWords(type: Word.Type) {
         val collectionReference = FireLists.getCollectionRef(type)
         collectionReference.addSnapshotListener { docs, error ->
             if(docs != null) {
                 for(doc in docs) {
                     val word = doc.toObject(Word::class.java)
-
                     word.selected = false
-                    Helper.getWordList(type).add(word)
-                    WordLinear.allword.add(word)
-                }
-
-                var wordId: Long = 10
-                for(w in WordLinear.allword) {
-                    w.id = wordId.toString()
-                    wordId++
-                    FireWords.update(w)
-                    Log.i("wordId", "$wordId")
+                    WordLinear.getWordList(type).add(word)
+                    WordLinear.allWords.add(word)
                 }
             }
-
         }
     }
 }

@@ -1,7 +1,12 @@
 package com.example.wordassociater.utils
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.Gravity
+import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import com.example.wordassociater.Main
@@ -26,19 +31,9 @@ object Helper {
         v.text = wordsString
     }
 
-    fun deselectWords() {
-        for(w in WordLinear.selectedWords) {
-            w.selected = false
-            val index = WordLinear.wordList.indexOf(w)
-            WordLinear.wordList.remove(w)
-            WordLinear.wordList.add(index, w)
-        }
-        WordLinear.selectedWords.clear()
-        WordLinear.wordListTriger.value = Unit
-    }
 
     fun checkIfWordExists(word: Word, context: Context): Boolean {
-        val wordList = getWordList(word.type)
+        val wordList = WordLinear.getWordList(word.type)
         var exists = false
         for(w in wordList) {
             if (w.text.toLowerCase(Locale.ROOT).replace("\\s".toRegex(), "") == word.text.toLowerCase(Locale.ROOT).replace("\\s".toRegex(), "")) {
@@ -50,20 +45,16 @@ object Helper {
         return exists
     }
 
-    fun getWordList(type: Word.Type): MutableList<Word> {
-        return when(type) {
-            Word.Type.Adjective -> WordLinear.adjectivesList
-            Word.Type.Person -> WordLinear.personsList
-            Word.Type.Place -> WordLinear.placesList
-            Word.Type.Action -> WordLinear.actionsList
-            Word.Type.Object -> WordLinear.objectsList
-            Word.Type.CHARACTER -> WordLinear.characterList
-            Word.Type.NONE -> WordLinear.objectsList
-        }
-    }
-
     private fun wordToList(word: Word): List<String> {
         return word.text.split("\\s".toRegex())
+    }
+
+    fun getWords(wordList: List<String>): MutableList<Word> {
+        val words = mutableListOf<Word>()
+        for(string in wordList) {
+            words.add(Main.getWord(string)!!)
+        }
+        return words
     }
 
     fun getOrFilteredStoryPartList(filterWords: List<String>, searchList: List<StoryPart>): MutableList<StoryPart> {
@@ -79,33 +70,32 @@ object Helper {
                 }
             }
             if(!match) {
-                for(w in storyPart.words) {
+                for(w in getWords(storyPart.wordList)) {
                     var destructedWord = wordToList(w)
                     for(str in destructedWord) {
                         if(filterWords.contains(stripWord(str))) match = true ; break
                     }
                 }
             }
-
             if(!match && storyPart is Strain) {
                 var stringList = (storyPart as Strain).header.split("\\s".toRegex())
                 for(string in stringList) {
 
                 }
-
             }
             if(match) submitList.add(storyPart)
         }
         return submitList
     }
 
-    fun getStrainsById(idList : List<String>): List<Strain> {
-        val foundStrains = mutableListOf<Strain>()
-        for(id in idList) {
-            val strain = Main.strainsList.value?.find { s -> s.id == id }
-            if(strain != null ) foundStrains.add(strain)
-        }
-        return foundStrains
+    fun getPopUp(view: View, fromWhere: View, context: Context): PopupWindow {
+        val popWindow = PopupWindow(context)
+        popWindow.isOutsideTouchable = true
+        popWindow.isFocusable = true
+        popWindow.contentView = view
+        popWindow.showAtLocation(fromWhere, Gravity.CENTER, 0 , 0)
+        popWindow.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        return popWindow
     }
 
     fun toast(text: String, context: Context) {

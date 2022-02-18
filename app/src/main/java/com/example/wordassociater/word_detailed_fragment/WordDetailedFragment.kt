@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentWordDetailedBinding
-import com.example.wordassociater.strain_list_fragment.StrainAdapter
-import com.example.wordassociater.snippet_fragment.SnippetAdapter
-import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.firestore.FireLists
-import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Strain
+import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.firestore.FireLists
+import com.example.wordassociater.snippet_fragment.SnippetAdapter
+import com.example.wordassociater.strain_list_fragment.StrainAdapter
+import com.example.wordassociater.utils.Helper
 
 class WordDetailedFragment: Fragment() {
     lateinit var b: FragmentWordDetailedBinding
@@ -59,7 +59,7 @@ class WordDetailedFragment: Fragment() {
             for(doc in docs) {
                 val strain = doc.toObject(Strain::class.java)
                 var contains = false
-                for(w in strain.wordList!!) {
+                for(w in strain.getWords()) {
                     if(word.id == w.id) contains = true ; break
                 }
                 if(contains) strainsList.add(strain)
@@ -74,7 +74,7 @@ class WordDetailedFragment: Fragment() {
             for(doc in docs) {
                 val snippet = doc.toObject(Snippet::class.java)
                 var contains = false
-                for(w in snippet.wordsUsed) {
+                for(w in snippet.getWords()) {
                     if(word.id == w.id) contains = true ; break
                 }
                 if(contains) snippetsList.add(snippet)

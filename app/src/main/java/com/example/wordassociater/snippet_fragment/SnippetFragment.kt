@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Frags
@@ -19,7 +18,6 @@ class SnippetFragment: Fragment() {
 
     companion object {
         lateinit var navController: NavController
-        val snippetListTrigger = MutableLiveData<Unit>()
         var selectedSnippet : Snippet? = null
         lateinit var snippetAdapter: SnippetAdapter
     }
@@ -48,8 +46,9 @@ class SnippetFragment: Fragment() {
     }
 
     private fun setObserver() {
-        snippetListTrigger.observe(viewLifecycleOwner) {
-            snippetAdapter.submitList(Main.snippetList)
+        snippetAdapter.submitList(Main.snippetList.value)
+        Main.snippetList.observe(viewLifecycleOwner) {
+            snippetAdapter.submitList(it)
         }
 
 
