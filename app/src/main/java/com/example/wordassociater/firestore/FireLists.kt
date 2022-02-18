@@ -14,7 +14,10 @@ object FireLists {
     private val heroesList by lazy { db.collection("words").document("wordCollections").collection("heroes") }
     private val placesList by lazy { db.collection("words").document("wordCollections").collection("places") }
     private val objectsList by lazy { db.collection("words").document("wordCollections").collection("objects") }
+
     val fireStats by lazy { db.collection("stats").document("stats") }
+    val bubbleList by lazy { db.collection("bubbles") }
+    val dialogueList by lazy { db.collection("dialogue") }
     val characterList by lazy { db.collection("character") }
     val fireStrainsList by lazy { db.collection("strains") }
     val snippetsList by lazy { db.collection("snippets") }

@@ -30,6 +30,12 @@
         <action
             android:id="@+id/action_startFragment_to_notesFragment"
             app:destination="@id/notesFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_dialogueListFragment"
+            app:destination="@id/dialogueListFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_editDialogueFragment"
+            app:destination="@id/editDialogueFragment" />
     </fragment>
     <fragment
         android:id="@+id/readFragment"
@@ -150,5 +156,27 @@
         <action
             android:id="@+id/action_connectStrainsFragment2_to_readFragment"
             app:destination="@id/readFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dialogueListFragment"
+        android:name="com.example.wordassociater.dialogue.DialogueListFragment"
+        android:label="DialogueListFragment" >
+        <action
+            android:id="@+id/action_dialogueListFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+        <action
+            android:id="@+id/action_dialogueListFragment_to_editDialogueFragment"
+            app:destination="@id/editDialogueFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editDialogueFragment"
+        android:name="com.example.wordassociater.dialogue.EditDialogueFragment"
+        android:label="EditDialogueFragment" >
+        <action
+            android:id="@+id/action_editDialogueFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+        <action
+            android:id="@+id/action_editDialogueFragment_to_dialogueListFragment"
+            app:destination="@id/dialogueListFragment" />
     </fragment>
 </navigation>

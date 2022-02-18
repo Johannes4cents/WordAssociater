@@ -13,6 +13,8 @@ object FireStoreListener {
         getStats()
         getSnippets()
         getWords()
+        getDialogues()
+        getBubbles()
     }
 
     private fun getCharacters() {
@@ -85,35 +87,38 @@ object FireStoreListener {
         }
     }
 
+    private fun getBubbles() {
+        FireLists.bubbleList.addSnapshotListener { docs, error ->
+            if(docs != null) {
+                val bubbleList = mutableListOf<Bubble>()
+                for(doc in docs) {
+                    val bubble = doc.toObject(Bubble::class.java)
+                    bubbleList.add(bubble)
+                }
+                Main.bubbleList.value = bubbleList
+            }
+        }
+    }
+
+    private fun getDialogues() {
+        FireLists.dialogueList.addSnapshotListener { docs, error ->
+            if(docs != null) {
+                val dialogueList = mutableListOf<Dialogue>()
+                for(doc in docs) {
+                    val dialogue = doc.toObject(Dialogue::class.java)
+                    dialogueList.add(dialogue)
+                }
+                Main.dialogueList.value = dialogueList
+            }
+        }
+    }
+
+
     private fun getWords() {
         val typeList = mutableListOf(Word.Type.Object, Word.Type.Person, Word.Type.Place, Word.Type.CHARACTER,
                 Word.Type.Action, Word.Type.Adjective)
         for(type in typeList) {
             getWords(type)
-        }
-    }
-
-    private fun getWordsOneTime(type: Word.Type) {
-        val collectionReference = FireLists.getCollectionRef(type)
-        collectionReference.get().addOnSuccessListener { docs ->
-            if(docs != null) {
-                var toDeleteWords = mutableListOf<Word>()
-                for(doc in docs) {
-                    val word = doc.toObject(Word::class.java)
-                    word.selected = false
-                    WordLinear.getWordList(type).add(word)
-                    Log.i("WordId", "word id is: ${doc.id} length: ${doc.id.length}")
-                    if(doc.id.length > 4) {
-                        word.id = doc.id
-                        toDeleteWords.add(word)
-                    }
-                }
-
-                for(w in toDeleteWords) {
-                    FireWords.delete(w)
-                }
-            }
-
         }
     }
 

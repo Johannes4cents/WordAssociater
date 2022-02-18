@@ -15,6 +15,8 @@ class Main : AppCompatActivity() {
         var snippetList = MutableLiveData<List<Snippet>?>()
         var strainsList = MutableLiveData<List<Strain>?>()
         var notesList = MutableLiveData<List<Note>?>()
+        var bubbleList = MutableLiveData<List<Bubble>?>()
+        var dialogueList = MutableLiveData<List<Dialogue>?>()
         var maxLayers = 0
 
         fun getCharacter(id: String): Character? {
@@ -35,6 +37,14 @@ class Main : AppCompatActivity() {
 
         fun getWord(id: String): Word? {
             return WordLinear.allWords.find { w -> w.id == id }
+        }
+
+        fun getBubble(id: Long): Bubble? {
+            return bubbleList.value?.find { b -> b.id == id }
+        }
+
+        fun getDialogue(id: Long): Dialogue? {
+            return dialogueList.value?.find { d -> d.id == id }
         }
     }
 

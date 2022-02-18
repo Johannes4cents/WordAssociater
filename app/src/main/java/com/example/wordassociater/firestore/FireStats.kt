@@ -19,6 +19,18 @@ object FireStats {
         return number
     }
 
+    fun getDialogueNumber(): Long {
+        val number = FireLists.stats!!.dialogueNumber + 1
+        FireLists.fireStats.update("dialogueNumber", number)
+        return number
+    }
+
+    fun getBubbleNumber(): Long {
+        val number = FireLists.stats!!.dialogueNumber + 1
+        FireLists.fireStats.update("dialogueNumber", number)
+        return number
+    }
+
     fun getWordNumber(): Long {
         val number = FireLists.stats!!.wordNumber + 1
         FireLists.fireStats.update("wordNumber", number)

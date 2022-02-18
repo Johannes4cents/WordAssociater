@@ -12,3 +12,4 @@ open class StoryPart(open var wordList: MutableList<String>, open var content: S
         }
     }
 }
+
