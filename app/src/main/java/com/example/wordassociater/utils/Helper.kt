@@ -88,11 +88,13 @@ object Helper {
         return submitList
     }
 
-    fun getPopUp(view: View, fromWhere: View, context: Context): PopupWindow {
-        val popWindow = PopupWindow(context)
+    fun getPopUp(layout: View, fromWhere: View, width: Int, height: Int): PopupWindow {
+        val popWindow = PopupWindow(fromWhere.context)
+        popWindow.height = height
+        popWindow.width = width
         popWindow.isOutsideTouchable = true
         popWindow.isFocusable = true
-        popWindow.contentView = view
+        popWindow.contentView = layout
         popWindow.showAtLocation(fromWhere, Gravity.CENTER, 0 , 0)
         popWindow.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         return popWindow

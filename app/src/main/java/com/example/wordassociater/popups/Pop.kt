@@ -60,7 +60,7 @@ class Pop(val context: Context) {
 
     fun characterRecycler(from: View, func: (char: Character) -> Unit) {
         val b = PopupCharacterRecyclerBinding.inflate(LayoutInflater.from(context), null, false)
-        val adapter = CharacterAdapter(CharacterAdapter.Mode.EDITSNIPPETS, selectFunc = func)
+        val adapter = CharacterAdapter(CharacterAdapter.Mode.MAIN, selectFunc = func)
         b.characterRecycler.adapter = adapter
         adapter.submitList(Main.characterList.value)
         popWindow.height = 1000

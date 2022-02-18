@@ -3,6 +3,7 @@ package com.example.wordassociater.character
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wordassociater.Main
@@ -18,6 +19,7 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
     lateinit var character: Character
     lateinit var adapter: CharacterAdapter
     lateinit var func: (char: Character) -> Unit
+    val charTrigger = MutableLiveData<Unit>()
     fun onBind(character: Character, adapter: CharacterAdapter, func:( (char: Character) -> Unit)? = null) {
         this.adapter = adapter
         this.character = character
@@ -28,7 +30,7 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
     }
 
     private fun setContent() {
-        character.selected = CharacterAdapter.selectedCharacterList.contains(character)
+        if( adapter.mode == CharacterAdapter.Mode.SELECT ) character.selected = CharacterAdapter.selectedCharacterList.contains(character)
         b.characterName.text = character.name
         if(character.imgUrl != "") Glide.with(b.characterPortrait).load(character.imgUrl).into(b.characterPortrait)
 
@@ -38,6 +40,10 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
 
     private fun setObserver() {
         CharacterAdapter.characterListTrigger.observe(b.root.context as LifecycleOwner) {
+            setContent()
+        }
+
+        charTrigger.observe(b.root.context as LifecycleOwner) {
             setContent()
         }
 
@@ -100,9 +106,11 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
                     ConnectSnippetsFragment.adapter.notifyDataSetChanged()
                 }
             }
-            CharacterAdapter.Mode.EDITSNIPPETS -> {
+            CharacterAdapter.Mode.MAIN -> {
                 b.root.setOnClickListener {
+                    character.selected = !character.selected
                     func(character)
+                    charTrigger.value = Unit
                 }
             }
         }
@@ -124,7 +132,7 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
             CharacterAdapter.Mode.LIST -> {
                 b.buttonSelected.setImageResource(R.drawable.arrow_right)
             }
-            CharacterAdapter.Mode.SELECT -> {
+            CharacterAdapter.Mode.SELECT, CharacterAdapter.Mode.MAIN -> {
                 if(character.selected) {
                     b.buttonSelected.setImageResource(R.drawable.checked_box)
                 }
@@ -132,7 +140,7 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
                     b.buttonSelected.setImageResource(R.drawable.unchecked_box)
                 }
             }
-            CharacterAdapter.Mode.PREVIEW, CharacterAdapter.Mode.UPDATE, CharacterAdapter.Mode.CONNECTSNIPPETS, CharacterAdapter.Mode.EDITSNIPPETS  -> {
+            CharacterAdapter.Mode.PREVIEW, CharacterAdapter.Mode.UPDATE, CharacterAdapter.Mode.CONNECTSNIPPETS  -> {
                 b.buttonSelected.visibility = View.GONE
                 b.characterPortrait.layoutParams.height = 80
                 b.characterPortrait.layoutParams.width = 80

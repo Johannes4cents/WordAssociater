@@ -12,4 +12,8 @@
     <color name="green">#00ff00</color>
     <color name="gold">#D6BA00</color>
     <color name="brown">#873C02</color>
+    <color name="bubbleOrange">#d0750b</color>
+    <color name="bubbleBlue">#449bf4</color>
+    <color name="bubbleYellow">#b8ba02</color>
+    <color name="bubbleGreen">#43ca3f</color>
 </resources>

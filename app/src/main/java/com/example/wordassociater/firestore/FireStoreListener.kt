@@ -1,6 +1,7 @@
 package com.example.wordassociater.firestore
 import android.util.Log
 import com.example.wordassociater.Main
+import com.example.wordassociater.bars.DialogueNotesBar
 import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.start_fragment.WordLinear
 
@@ -15,6 +16,8 @@ object FireStoreListener {
         getWords()
         getDialogues()
         getBubbles()
+
+        getCharactersOneTimeForSelectionList()
     }
 
     private fun getCharacters() {
@@ -33,6 +36,24 @@ object FireStoreListener {
             }
         }
     }
+
+    private fun getCharactersOneTimeForSelectionList() {
+        FireLists.characterList.get().addOnSuccessListener{ docs->
+            if(docs != null) {
+                var charList = mutableListOf<Character>()
+                for(doc in docs) {
+                    Log.i("fireProb", "$doc")
+                    val character = doc.toObject(Character::class.java)
+                    character.id = doc.id
+                    charList.add(character)
+                }
+                DialogueNotesBar.popUpCharacterList.value = charList
+            }
+            else {
+            }
+        }
+    }
+
     private fun getSnippets() {
         FireLists.snippetsList.addSnapshotListener { docs, firebaseFirestoreException ->
             val newSnippetList = mutableListOf<Snippet>()

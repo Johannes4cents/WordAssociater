@@ -13,7 +13,7 @@ import com.example.wordassociater.fire_classes.Character
 class CharacterAdapter(
         var mode: Mode, val characterList : MutableList<Character>? = null,
         val selectFunc: ((char: Character) -> Unit)? = null): ListAdapter<Character, RecyclerView.ViewHolder>(CharacterDiff()) {
-    public enum class Mode { MAIN, LIST, SELECT, PREVIEW, UPDATE, CONNECTSNIPPETS, EDITSNIPPETS}
+    public enum class Mode { MAIN, LIST, SELECT, PREVIEW, UPDATE, CONNECTSNIPPETS}
 
     companion object {
         var selectedCharacterList = mutableListOf<Character>()

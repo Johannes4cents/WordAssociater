@@ -25,4 +25,13 @@
             <enum name="place" value="5"/>
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="ButtonBubbleAdd">
+        <attr name="bubbleColor" format="enum">
+            <enum name="blue" value="0"/>
+            <enum name="yellow" value="1"/>
+            <enum name="green" value="2"/>
+            <enum name="orange" value="3"/>
+        </attr>
+    </declare-styleable>
 </resources>
