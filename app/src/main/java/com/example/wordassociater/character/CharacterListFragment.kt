@@ -6,21 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
+import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.databinding.FragmentCharacterListBinding
 import com.example.wordassociater.fire_classes.Character
+import com.example.wordassociater.utils.Page
 
 class CharacterListFragment: Fragment() {
     lateinit var b: FragmentCharacterListBinding
     lateinit var characterAdapter: CharacterAdapter
-
-    companion object {
-        val selectedCharacter = MutableLiveData<Character?>()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,30 +31,27 @@ class CharacterListFragment: Fragment() {
     }
 
     private fun handleRecycler() {
-        characterAdapter = CharacterAdapter(CharacterAdapter.Mode.LIST)
+        characterAdapter = CharacterAdapter(CharacterAdapter.Mode.LIST,null, ::handleCharacterSelected)
         b.characterListRecycler.adapter = characterAdapter
         getCharacter()
-        setObserver()
         setClickListener()
     }
 
     private fun getCharacter() {
         Main.characterList.observe(context as LifecycleOwner) {
-            characterAdapter.submitList(it)
+            characterAdapter.submitList(it?.sortedBy { c -> c.name })
         }
     }
 
     private fun setClickListener() {
         b.backButton.setOnClickListener {
-            findNavController().navigate(R.id.action_characterListFragment_to_startFragment)
+            ViewPagerFragment.goTopage(Page.Start)
         }
     }
 
-    private fun setObserver() {
-        selectedCharacter.observe(viewLifecycleOwner) {
-            if(it != null) {
-                findNavController().navigate(R.id.action_characterListFragment_to_characterFragment)
-            }
-        }
+    private fun handleCharacterSelected(character: Character) {
+        CharacterFragment.character = character
+        findNavController().navigate(R.id.action_ViewPagerFragment_to_characterFragment)
     }
+
 }

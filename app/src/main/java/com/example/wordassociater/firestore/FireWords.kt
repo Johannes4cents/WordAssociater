@@ -13,7 +13,7 @@ object FireWords {
     }
 
     fun delete(word: Word) {
-        Log.i("WordId", "deletedWord is ${word.id} | word type is ")
+        Log.i("WordId", "deletedWord is ${word.id} | word type is ${word.type} ")
         val collectionReference = FireLists.getCollectionRef(word.type)
         collectionReference.document(word.id).delete()
     }

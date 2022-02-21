@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.R
+import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.databinding.FragmentWordDetailedBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Strain
@@ -15,6 +16,7 @@ import com.example.wordassociater.firestore.FireLists
 import com.example.wordassociater.snippet_fragment.SnippetAdapter
 import com.example.wordassociater.strains.StrainAdapter
 import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.utils.Page
 
 class WordDetailedFragment: Fragment() {
     lateinit var b: FragmentWordDetailedBinding
@@ -40,7 +42,10 @@ class WordDetailedFragment: Fragment() {
     }
 
     private fun setClickListener() {
-        b.backButton.setOnClickListener { findNavController().navigate(R.id.action_wordDetailedFragment_to_wordsListFragment) }
+        b.backButton.setOnClickListener {
+            findNavController().navigate(R.id.action_wordDetailedFragment_to_ViewPagerFragment)
+            ViewPagerFragment.comingFrom = Page.Words
+        }
 
         b.buttonStrains.setOnClickListener {
             b.wordDetailedRecycler.adapter = strainAdapter

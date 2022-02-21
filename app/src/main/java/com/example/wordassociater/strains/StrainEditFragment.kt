@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
+import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentEditStrainBinding
 import com.example.wordassociater.fire_classes.Character
@@ -25,6 +26,7 @@ import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.popups.popCharacterSelector
 import com.example.wordassociater.popups.popSearchWord
 import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.utils.Page
 import com.example.wordassociater.words.WordLinear
 
 class StrainEditFragment: Fragment() {
@@ -107,7 +109,10 @@ class StrainEditFragment: Fragment() {
 
     private fun setClickListener() {
         b.backBtn.setOnClickListener {
-            if(comingFrom == Frags.START) findNavController().navigate(R.id.action_writeFragment_to_startFragment)
+            if(comingFrom == Frags.START) {
+                ViewPagerFragment.comingFrom = Page.Start
+                findNavController().navigate(R.id.action_writeFragment_to_startFragment)
+            }
             else if(comingFrom == Frags.READ) findNavController().navigate(R.id.action_writeFragment_to_readFragment)
         }
 

@@ -9,6 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.R
+import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentDialogueEditBinding
 import com.example.wordassociater.fire_classes.Bubble
@@ -17,6 +18,7 @@ import com.example.wordassociater.firestore.FireBubbles
 import com.example.wordassociater.firestore.FireDialogue
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.utils.Page
 
 class EditDialogueFragment: Fragment() {
     lateinit var b: FragmentDialogueEditBinding
@@ -38,6 +40,7 @@ class EditDialogueFragment: Fragment() {
 
     private fun setClickListener() {
         b.backBtn.setOnClickListener {
+            ViewPagerFragment.comingFrom = Page.Start
             findNavController().navigate(R.id.action_editDialogueFragment_to_startFragment)
         }
 

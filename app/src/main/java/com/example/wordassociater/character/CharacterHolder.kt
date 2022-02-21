@@ -8,19 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.snippets.ConnectSnippetsFragment
 import com.example.wordassociater.databinding.HolderCharacterBinding
 import com.example.wordassociater.fire_classes.Character
+import com.example.wordassociater.snippets.ConnectSnippetsFragment
 
 class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.root) {
     lateinit var character: Character
     lateinit var adapter: CharacterAdapter
-    lateinit var func: (char: Character) -> Unit
+    lateinit var takeCharacterFunc: (char: Character) -> Unit
     val charTrigger = MutableLiveData<Unit>()
-    fun onBind(character: Character, adapter: CharacterAdapter, func:( (char: Character) -> Unit)? = null) {
+    fun onBind(character: Character, adapter: CharacterAdapter, takeCharacterFunc:( (char: Character) -> Unit)? = null) {
         this.adapter = adapter
         this.character = character
-        if(func != null) this.func = func
+        if(takeCharacterFunc != null) this.takeCharacterFunc = takeCharacterFunc
         setContent()
         setClickListener()
         setObserver()
@@ -50,7 +50,7 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
         when(adapter.mode) {
             CharacterAdapter.Mode.LIST -> {
                 b.root.setOnClickListener {
-                    CharacterListFragment.selectedCharacter.value = character
+                    takeCharacterFunc(character)
                 }
             }
             CharacterAdapter.Mode.SELECT -> {
@@ -85,7 +85,7 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
             CharacterAdapter.Mode.MAIN -> {
                 b.root.setOnClickListener {
                     character.selected = !character.selected
-                    func(character)
+                    takeCharacterFunc(character)
                     charTrigger.value = Unit
                 }
             }

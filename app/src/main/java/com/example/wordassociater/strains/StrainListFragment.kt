@@ -12,9 +12,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
+import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.databinding.FragmentStrainsListBinding
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.utils.Page
 
 class StrainListFragment: Fragment() {
 
@@ -61,6 +63,7 @@ class StrainListFragment: Fragment() {
     }
     private fun setClickListener() {
         b.backBtn.setOnClickListener {
+            ViewPagerFragment.comingFrom = Page.Start
             findNavController().navigate(R.id.action_readFragment_to_startFragment)
         }
     }

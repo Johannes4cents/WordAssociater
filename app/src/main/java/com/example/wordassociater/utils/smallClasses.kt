@@ -26,3 +26,5 @@ enum class WordColor(path: Int)
 
 enum class AdapterType { List, Popup }
 
+enum class Page(number: Int) {Chars(0), Start(1), Words(2)}
+

@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.*
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.findNavController
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.BarAddWordBinding
 import com.example.wordassociater.fire_classes.Character
@@ -17,9 +16,9 @@ import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireChars
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireWords
-import com.example.wordassociater.words.WordLinear
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Helper.getIMM
+import com.example.wordassociater.words.WordLinear
 import com.google.android.gms.common.util.CollectionUtils.listOf
 
 class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
@@ -70,9 +69,6 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
             }
         }
 
-        b.openWordsFragmentButton.setOnClickListener {
-            findNavController().navigate(R.id.action_startFragment_to_wordsListFragment)
-        }
     }
 
     private fun handleFolding() {

@@ -10,10 +10,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
+import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.databinding.FragmentSnippetsBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.snippet_fragment.SnippetAdapter
 import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.utils.Page
 
 class SnippetFragment: Fragment() {
     lateinit var b: FragmentSnippetsBinding
@@ -51,6 +53,7 @@ class SnippetFragment: Fragment() {
 
     private fun setClickListener() {
         b.backBtn.setOnClickListener {
+            ViewPagerFragment.comingFrom = Page.Start
             findNavController().navigate(R.id.action_snippetFragment_to_startFragment)
         }
     }

@@ -11,12 +11,15 @@ import com.bumptech.glide.Glide
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
+import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.databinding.FragmentCharacterBinding
+import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.firestore.FireLists
 import com.example.wordassociater.snippet_fragment.SnippetAdapter
 import com.example.wordassociater.strains.StrainAdapter
+import com.example.wordassociater.utils.Page
 
 class CharacterFragment: Fragment() {
     lateinit var b: FragmentCharacterBinding
@@ -24,6 +27,8 @@ class CharacterFragment: Fragment() {
     companion object {
         val characterSnippetsAdapter = SnippetAdapter()
         val characterStrainAdapter = StrainAdapter()
+
+        var character = Character("")
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,18 +49,16 @@ class CharacterFragment: Fragment() {
     }
 
     private fun setContent() {
-        var imgUrl = ""
-        if(CharacterListFragment.selectedCharacter.value != null) imgUrl = CharacterListFragment.selectedCharacter.value?.imgUrl!!
-        if(imgUrl != "") {
-            Glide.with(b.characterPortrait).load(imgUrl).into(b.characterPortrait)
+        if(character.imgUrl != "") {
+            Glide.with(b.characterPortrait).load(character.imgUrl).into(b.characterPortrait)
         }
-        b.characterName.text = CharacterListFragment.selectedCharacter.value!!.name
+        b.characterName.text = character.name
     }
 
     private fun setClickListener() {
         b.backButton.setOnClickListener {
-            CharacterListFragment.selectedCharacter.value = null
-            findNavController().navigate(R.id.action_characterFragment_to_characterListFragment)
+            ViewPagerFragment.comingFrom = Page.Chars
+            findNavController().navigate(R.id.action_characterFragment_to_ViewPagerFragment)
         }
 
         b.buttonSnippets.setOnClickListener {
@@ -65,7 +68,7 @@ class CharacterFragment: Fragment() {
                 if(docs != null) {
                     for(doc in docs) {
                         val snippet = doc.toObject(Snippet::class.java)
-                        if(snippet.characterList.contains(CharacterListFragment.selectedCharacter.value)) {
+                        if(snippet.characterList.contains(character.id)) {
                             characterSnippetList.add(snippet)
                         }
                     }
@@ -89,7 +92,7 @@ class CharacterFragment: Fragment() {
             if(docs != null) {
                 for(doc in docs) {
                     val strain = doc.toObject(Strain::class.java)
-                    if(strain.characterList.contains(CharacterListFragment.selectedCharacter.value)) {
+                    if(strain.characterList.contains(character.id)) {
                         characterStrainList.add(strain)
                     }
                 }

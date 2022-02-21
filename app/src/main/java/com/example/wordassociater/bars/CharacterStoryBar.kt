@@ -23,9 +23,6 @@ class CharacterStoryBar(context: Context, attributeSet: AttributeSet): LinearLay
     }
 
     private fun setClickListener() {
-        b.openCharacterListButton.setOnClickListener {
-            navController.navigate(R.id.action_startFragment_to_characterListFragment)
-        }
         b.writeCharacterButton.setOnClickListener {
             Pop(context).characterRecycler(it, CharacterAdapter.Mode.SELECT)
         }

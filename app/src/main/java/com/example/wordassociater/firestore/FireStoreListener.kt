@@ -3,8 +3,8 @@ import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.bars.DialogueNotesBar
 import com.example.wordassociater.fire_classes.*
-import com.example.wordassociater.words.WordLinear
 import com.example.wordassociater.strains.StrainEditFragment
+import com.example.wordassociater.words.WordLinear
 
 object FireStoreListener {
 
@@ -137,7 +137,6 @@ object FireStoreListener {
 
 
     private fun getWords() {
-        Log.i("wordDeletion", "in Get words")
         val typeList = mutableListOf(Word.Type.Object, Word.Type.Person, Word.Type.Place, Word.Type.CHARACTER,
                 Word.Type.Action, Word.Type.Adjective)
         for(type in typeList) {
@@ -150,12 +149,20 @@ object FireStoreListener {
     private fun getWords(type: Word.Type) {
         val collectionReference = FireLists.getCollectionRef(type)
         collectionReference.addSnapshotListener { docs, error ->
+            val nameList = mutableListOf<String>()
             if(docs != null) {
                 for(doc in docs) {
                     val word = doc.toObject(Word::class.java)
-                    word.selected = false
-                    WordLinear.getWordList(type).add(word)
-                    WordLinear.allWords.add(word)
+                    if(!nameList.contains(word.text)) {
+                        nameList.add(word.text)
+                        word.selected = false
+                        WordLinear.getWordList(type).add(word)
+                        WordLinear.allWords.add(word)
+                    }
+                    else {
+                        Log.i("duplicateWords", "Word is: ${word.text}")
+                        FireWords.delete(word)
+                    }
                 }
             }
         }

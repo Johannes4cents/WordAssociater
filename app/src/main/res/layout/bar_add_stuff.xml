@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/rightSnippetButton"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:src="@drawable/btn_new_snippet" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/btnNewDialogue"
+            android:layout_marginStart="15dp"
+            android:padding="10dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/btn_new_dialogue"
+            />
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/writeBtn"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_write" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/openWordsFragmentButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/btn_open_words_list"/>
+
+    </LinearLayout>
+</LinearLayout>
