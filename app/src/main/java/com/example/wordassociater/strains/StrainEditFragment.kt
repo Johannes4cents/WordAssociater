@@ -1,4 +1,4 @@
-package com.example.wordassociater.strain_edit_fragment
+package com.example.wordassociater.strains
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,9 +24,8 @@ import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.popups.popCharacterSelector
 import com.example.wordassociater.popups.popSearchWord
-import com.example.wordassociater.start_fragment.WordLinear
-import com.example.wordassociater.strain_list_fragment.StrainListFragment
 import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.words.WordLinear
 
 class StrainEditFragment: Fragment() {
     lateinit var b : FragmentEditStrainBinding
@@ -40,7 +39,7 @@ class StrainEditFragment: Fragment() {
 
         var comingFrom = Frags.START
 
-        val popUpCharacterList = MutableLiveData<List<Character>>()
+        val popUpCharacterList = MutableLiveData<List<Character>>(listOf())
 
     }
 
@@ -58,6 +57,8 @@ class StrainEditFragment: Fragment() {
         setContent()
         handleDeleteButton()
         handleRecycler()
+        setObserver()
+        handleWordIcon()
         Main.inFragment = Frags.WRITE
         return b.root
     }
@@ -67,6 +68,20 @@ class StrainEditFragment: Fragment() {
         if(comingFrom == Frags.READ) wordsList.value = strain.getWords()
     }
 
+    private fun updateWordList() {
+        b.strainWords.text = Helper.setWordsToString(strain.getWords())
+    }
+
+    private fun handleWordIcon() {
+        if(wordsList.value!!.isEmpty()) {
+            b.wordIcon.visibility = View.VISIBLE
+            b.strainWords.visibility = View.GONE
+        }
+        else {
+            b.wordIcon.visibility = View.GONE
+            b.strainWords.visibility = View.VISIBLE
+        }
+    }
 
 
     private fun handleDeleteButton() {
@@ -114,6 +129,9 @@ class StrainEditFragment: Fragment() {
             popCharacterSelector(b.characterBtn, findNavController(), popUpCharacterList, ::handleSelectedCharacter)
         }
 
+        b.wordIcon.setOnClickListener {
+            popCharacterSelector(b.characterBtn, findNavController(), popUpCharacterList, ::handleSelectedCharacter)
+        }
     }
 
     private fun handleSelectedCharacter(character: Character) {
@@ -126,10 +144,18 @@ class StrainEditFragment: Fragment() {
     }
 
     private fun handleWordSelected(word: Word) {
-        val newList = wordsList.value?.toMutableList()
-        newList?.add(word)
-        word.isPicked = true
-        wordsList.value = newList
+        word.isPicked = !word.isPicked
+        if(!word.isPicked) {
+            val selectedWordsList = wordsList.value!!.toMutableList()
+            selectedWordsList.remove(word)
+            wordsList.value = selectedWordsList
+        }
+        else {
+            var selectedWordsList = mutableListOf<Word>()
+            if(wordsList.value != null) selectedWordsList = wordsList.value!!.toMutableList()
+            selectedWordsList.add(word)
+            wordsList.value = selectedWordsList
+        }
     }
 
     private fun setContent() {
@@ -190,6 +216,9 @@ class StrainEditFragment: Fragment() {
 
         adapter.submitList(strain.getCharacters())
 
+    }
+
+    private fun setObserver() {
         popUpCharacterList.observe(context as LifecycleOwner) {
             val selectedList = it.filter { c -> c.selected }
             adapter.submitList(selectedList)
@@ -199,5 +228,10 @@ class StrainEditFragment: Fragment() {
             }
         }
 
+        wordsList.observe(context as LifecycleOwner) {
+            strain.wordList = Word.convertToIdList(it)
+            updateWordList()
+            handleWordIcon()
+        }
     }
 }

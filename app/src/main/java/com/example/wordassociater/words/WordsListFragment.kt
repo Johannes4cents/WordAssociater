@@ -1,4 +1,4 @@
-package com.example.wordassociater.words_list_fragment
+package com.example.wordassociater.words
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,8 +13,6 @@ import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentWordsListBinding
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.AdapterType
-import com.example.wordassociater.word.WordAdapter
-import com.example.wordassociater.word_detailed_fragment.WordDetailedFragment
 
 class WordsListFragment: Fragment() {
     lateinit var b : FragmentWordsListBinding

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderSnippetBinding
 import com.example.wordassociater.fire_classes.Snippet
+import com.example.wordassociater.snippets.SnippetHolder
 
 
 class SnippetAdapter: ListAdapter<Snippet, RecyclerView.ViewHolder>(SnippetDiff()) {

@@ -1,4 +1,4 @@
-package com.example.wordassociater.snippet_fragment
+package com.example.wordassociater.snippets
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,7 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentSnippetsBinding
 import com.example.wordassociater.fire_classes.Snippet
+import com.example.wordassociater.snippet_fragment.SnippetAdapter
 import com.example.wordassociater.utils.Helper
 
 class SnippetFragment: Fragment() {

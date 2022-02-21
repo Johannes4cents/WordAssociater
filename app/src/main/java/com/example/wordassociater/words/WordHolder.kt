@@ -1,4 +1,4 @@
-package com.example.wordassociater.start_fragment
+package com.example.wordassociater.words
 
 import android.content.Context
 import android.util.AttributeSet

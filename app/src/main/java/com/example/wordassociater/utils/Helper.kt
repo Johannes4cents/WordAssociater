@@ -12,7 +12,7 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.start_fragment.WordLinear
+import com.example.wordassociater.words.WordLinear
 import java.util.*
 
 object Helper {

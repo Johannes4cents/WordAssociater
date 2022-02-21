@@ -39,6 +39,7 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
                 return@OnKeyListener true
             }
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                Helper.toast("list is empty", context)
                 updateList()
                 return@OnKeyListener true
             }

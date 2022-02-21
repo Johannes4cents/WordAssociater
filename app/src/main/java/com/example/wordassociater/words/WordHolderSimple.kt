@@ -1,4 +1,4 @@
-package com.example.wordassociater.word
+package com.example.wordassociater.words
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,11 +12,13 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
     private lateinit var takeWordFunc: (word: Word) -> Unit
     private lateinit var adapterType: AdapterType
     private var rightButtonFunc: ((word: Word) -> Unit)? = null
+    private var firstSet = true
 
     fun onBind(word: Word, adapterType: AdapterType, takeWordFunc: (word: Word) -> Unit, rightButtonFunc: ((word: Word) -> Unit) ? = null) {
         this.takeWordFunc = takeWordFunc
         this.word = word
         this.rightButtonFunc = rightButtonFunc
+        this.adapterType = adapterType
         setContent()
         setClickListener()
     }
@@ -25,8 +27,18 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
         b.content.text = word.text
         if(word.imgUrl != "") Glide.with(b.root).load(word.imgUrl).into(b.characterPortrait)
         if(adapterType == AdapterType.Popup) b.checkbox.setImageResource(if(word.isPicked) R.drawable.checked_box else R.drawable.unchecked_box)
-        else b.checkbox.setImageResource(R.drawable.arrow_right)
+        else {
+            if(firstSet) {
+                b.checkbox.layoutParams.width = b.checkbox.layoutParams.width * 2
+                b.checkbox.layoutParams.height = b.checkbox.layoutParams.height * 2
+                b.checkbox.requestLayout()
+                b.checkbox.setImageResource(R.drawable.arrow_right)
+                firstSet = false
+            }
+
+        }
         b.typeInitials.text = setTypeInitials(word.type)
+        b.typeInitials.setBackgroundColor(b.root.context.resources.getColor(word.getColor(word.type)))
     }
 
     private fun setClickListener() {

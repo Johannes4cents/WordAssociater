@@ -1,4 +1,4 @@
-package com.example.wordassociater.connect_snippets_fragment
+package com.example.wordassociater.snippets
 
 import android.os.Bundle
 import android.view.LayoutInflater

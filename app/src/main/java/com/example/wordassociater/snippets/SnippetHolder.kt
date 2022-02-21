@@ -1,16 +1,15 @@
-package com.example.wordassociater.snippet_fragment
+package com.example.wordassociater.snippets
 
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
-import com.example.wordassociater.connect_snippets_fragment.ConnectSnippetsFragment
 import com.example.wordassociater.databinding.HolderSnippetBinding
-import com.example.wordassociater.edit_snippet_fragment.EditSnippetFragment
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.popups.Pop
+import com.example.wordassociater.snippet_fragment.SnippetAdapter
 import com.example.wordassociater.utils.Helper
 
 class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter): RecyclerView.ViewHolder(b.root) {

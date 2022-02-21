@@ -1,44 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:gravity="center"
+    android:layout_marginTop="4dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/characterPortrait"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:src="@drawable/btn_open_words_list"
-        />
-
-    <TextView
-        android:fontFamily="@font/roboto_bold"
-        android:layout_weight="1"
-        android:id="@+id/content"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/typeInitials"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="4dp"
+    >
+    <LinearLayout
         android:gravity="center"
-        android:background="@color/green"
-        android:text="A"
-        android:fontFamily="@font/roboto_bold"
-        android:textColor="@color/black"
-        android:layout_width="45dp"
-        android:layout_height="wrap_content"
-        android:textSize="24dp"
-        />
 
-    <ImageView
-        android:id="@+id/checkbox"
-        android:layout_marginStart="4dp"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/unchecked_box"
-        />
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/characterPortrait"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/btn_open_words_list"
+            />
+
+        <TextView
+            android:fontFamily="@font/roboto_bold"
+            android:layout_weight="1"
+            android:id="@+id/content"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/typeInitials"
+            android:gravity="center"
+            android:background="@color/green"
+            android:text="A"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/black"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:textSize="10dp"
+            />
+
+        <ImageView
+            android:id="@+id/checkbox"
+            android:layout_marginStart="4dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/unchecked_box"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
 </LinearLayout>

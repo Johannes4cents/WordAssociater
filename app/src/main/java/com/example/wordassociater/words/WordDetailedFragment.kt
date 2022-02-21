@@ -1,4 +1,4 @@
-package com.example.wordassociater.word_detailed_fragment
+package com.example.wordassociater.words
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireLists
 import com.example.wordassociater.snippet_fragment.SnippetAdapter
-import com.example.wordassociater.strain_list_fragment.StrainAdapter
+import com.example.wordassociater.strains.StrainAdapter
 import com.example.wordassociater.utils.Helper
 
 class WordDetailedFragment: Fragment() {

@@ -19,7 +19,9 @@
             android:layout_height="30dp"
             android:src="@drawable/connect" />
         <TextView
+            android:visibility="gone"
             android:layout_weight="1"
+            android:minHeight="30dp"
             android:id="@+id/associatedWordsStrain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,6 +30,20 @@
             android:textColor="@color/dark_gray"
             android:fontFamily="@font/roboto_bold"
             android:textSize="12sp" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/associatedWordsIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:src="@drawable/btn_open_words_list"
+            android:textColor="@color/dark_gray"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="12sp" />
+
+
         <com.example.wordassociater.buttons.StrainLayerButton
             android:layout_marginEnd="4dp"
             android:id="@+id/strainLayerButton"

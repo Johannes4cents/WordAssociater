@@ -1,4 +1,4 @@
-package com.example.wordassociater.strain_list_fragment
+package com.example.wordassociater.strains
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

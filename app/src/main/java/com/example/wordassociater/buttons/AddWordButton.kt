@@ -1,4 +1,4 @@
-package com.example.wordassociater.start_fragment
+package com.example.wordassociater.buttons
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,10 +8,11 @@ import com.example.wordassociater.R
 import com.example.wordassociater.bars.HandleWordsBar
 import com.example.wordassociater.databinding.ButtonAddWordBinding
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.words.WordLinear
 
 class AddWordButton(context: Context, attributeSet: AttributeSet?): LinearLayout(context, attributeSet) {
     val b = ButtonAddWordBinding.inflate(LayoutInflater.from(context), this, true)
-    val category: Int
+    private val category: Int
 
     init {
         context.theme.obtainStyledAttributes(

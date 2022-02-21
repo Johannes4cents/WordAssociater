@@ -1,4 +1,4 @@
-package com.example.wordassociater.connect_strains_fragment
+package com.example.wordassociater.strains
 
 import android.os.Bundle
 import android.util.Log

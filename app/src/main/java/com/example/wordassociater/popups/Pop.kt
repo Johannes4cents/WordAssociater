@@ -18,11 +18,11 @@ import com.example.wordassociater.databinding.PopupConfirmDeletionBinding
 import com.example.wordassociater.databinding.PopupWordRecyclerBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.start_fragment.WordLinear
 import com.example.wordassociater.story.Story
-import com.example.wordassociater.strain_list_fragment.StrainListFragment
+import com.example.wordassociater.strains.StrainListFragment
 import com.example.wordassociater.utils.AdapterType
-import com.example.wordassociater.word.WordAdapter
+import com.example.wordassociater.words.WordAdapter
+import com.example.wordassociater.words.WordLinear
 
 class Pop(val context: Context) {
     private val popWindow = PopupWindow(context)

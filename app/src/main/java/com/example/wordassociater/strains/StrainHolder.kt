@@ -1,4 +1,4 @@
-package com.example.wordassociater.strain_list_fragment
+package com.example.wordassociater.strains
 
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
@@ -8,12 +8,10 @@ import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
-import com.example.wordassociater.connect_strains_fragment.ConnectStrainsFragment
 import com.example.wordassociater.databinding.HolderStrainBinding
 import com.example.wordassociater.fire_classes.Strain
-import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireStrains
-import com.example.wordassociater.strain_edit_fragment.StrainEditFragment
+import com.example.wordassociater.utils.Helper
 
 class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) {
     lateinit var strain: Strain
@@ -50,20 +48,7 @@ class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) 
     }
 
     private fun setAssociatedWords() {
-        var wordList = ""
-        var wordRow = ""
-        for(w: Word in strain.getWords()) {
-            if(wordRow.length < 25) {
-                wordRow += "${w.text}, "
-                wordList = wordRow
-            }
-            else {
-                wordRow += "\n"
-                wordList += wordRow
-                wordRow = ""
-            }
-        }
-        b.associatedWordsStrain.text = wordList
+        b.associatedWordsStrain.text = Helper.setWordsToMultipleLines(strain.getWords())
     }
 
     private fun setHeader() {
@@ -92,7 +77,16 @@ class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) 
                     connectStrains(selectedStrain!!, strain)
                 }
             }
+        }
 
+        b.associatedWordsIcon.setOnClickListener {
+            it.visibility = View.GONE
+            b.associatedWordsStrain.visibility = View.VISIBLE
+        }
+
+        b.associatedWordsStrain.setOnClickListener {
+            it.visibility = View.GONE
+            b.associatedWordsIcon.visibility = View.VISIBLE
         }
     }
 

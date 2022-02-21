@@ -2,7 +2,7 @@ package com.example.wordassociater.firestore
 
 import android.util.Log
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.start_fragment.WordLinear
+import com.example.wordassociater.words.WordLinear
 
 object FireWords {
     fun add(newWord: Word) {

@@ -16,9 +16,9 @@ import com.example.wordassociater.databinding.BarSnippetsStrainsBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.firestore.FireStats
-import com.example.wordassociater.start_fragment.WordLinear
+import com.example.wordassociater.words.WordLinear
 import com.example.wordassociater.story.Story
-import com.example.wordassociater.strain_edit_fragment.StrainEditFragment
+import com.example.wordassociater.strains.StrainEditFragment
 import com.example.wordassociater.utils.Helper
 
 class SnippetsStrainsBar(context: Context, attrs: AttributeSet): ConstraintLayout(context, attrs) {

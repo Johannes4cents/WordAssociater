@@ -1,4 +1,4 @@
-package com.example.wordassociater.start_fragment
+package com.example.wordassociater.words
 
 import android.content.Context
 import android.util.AttributeSet
@@ -25,25 +25,25 @@ class WordLinear(context: Context, attributeSet: AttributeSet): LinearLayout(con
         val characterList = mutableListOf<Word>()
 
         fun deselectWords() {
-            for(w in WordLinear.selectedWords) {
+            for(w in selectedWords) {
                 w.selected = false
-                val index = WordLinear.wordList.indexOf(w)
-                WordLinear.wordList.remove(w)
-                WordLinear.wordList.add(index, w)
+                val index = wordList.indexOf(w)
+                wordList.remove(w)
+                wordList.add(index, w)
             }
-            WordLinear.selectedWords.clear()
-            WordLinear.wordListTriger.value = Unit
+            selectedWords.clear()
+            wordListTriger.value = Unit
         }
 
         fun getWordList(type: Word.Type): MutableList<Word> {
             return when(type) {
-                Word.Type.Adjective -> WordLinear.adjectivesList
-                Word.Type.Person -> WordLinear.personsList
-                Word.Type.Place -> WordLinear.placesList
-                Word.Type.Action -> WordLinear.actionsList
-                Word.Type.Object -> WordLinear.objectsList
-                Word.Type.CHARACTER -> WordLinear.characterList
-                Word.Type.NONE -> WordLinear.objectsList
+                Word.Type.Adjective -> adjectivesList
+                Word.Type.Person -> personsList
+                Word.Type.Place -> placesList
+                Word.Type.Action -> actionsList
+                Word.Type.Object -> objectsList
+                Word.Type.CHARACTER -> characterList
+                Word.Type.NONE -> objectsList
             }
         }
     }

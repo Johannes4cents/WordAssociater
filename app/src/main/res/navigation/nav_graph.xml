@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.example.wordassociater.start_fragment.StartFragment"
+        android:name="com.example.wordassociater.StartFragment"
         android:label="StartFragment" >
         <action
             android:id="@+id/action_startFragment_to_readFragment"
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/readFragment"
-        android:name="com.example.wordassociater.strain_list_fragment.StrainListFragment"
+        android:name="com.example.wordassociater.strains.StrainListFragment"
         android:label="ReadFragment">
         <action
             android:id="@+id/action_readFragment_to_startFragment"
@@ -53,7 +53,7 @@
     </fragment>
     <fragment
         android:id="@+id/writeFragment"
-        android:name="com.example.wordassociater.strain_edit_fragment.StrainEditFragment"
+        android:name="com.example.wordassociater.strains.StrainEditFragment"
         android:label="WriteFragment" >
         <action
             android:id="@+id/action_writeFragment_to_startFragment"
@@ -64,7 +64,7 @@
     </fragment>
     <fragment
         android:id="@+id/snippetFragment"
-        android:name="com.example.wordassociater.snippet_fragment.SnippetFragment"
+        android:name="com.example.wordassociater.snippets.SnippetFragment"
         android:label="SnippetFragment" >
         <action
             android:id="@+id/action_snippetFragment_to_startFragment"
@@ -97,7 +97,7 @@
     </fragment>
     <fragment
         android:id="@+id/connectSnippetsFragment"
-        android:name="com.example.wordassociater.connect_snippets_fragment.ConnectSnippetsFragment"
+        android:name="com.example.wordassociater.snippets.ConnectSnippetsFragment"
         android:label="ConnectSnippetsFragment" >
         <action
             android:id="@+id/action_connectSnippetsFragment_to_snippetFragment"
@@ -116,7 +116,7 @@
     </fragment>
     <fragment
         android:id="@+id/editSnippetFragment"
-        android:name="com.example.wordassociater.edit_snippet_fragment.EditSnippetFragment"
+        android:name="com.example.wordassociater.snippets.EditSnippetFragment"
         android:label="EditSnippetFragment" >
         <action
             android:id="@+id/action_editSnippetFragment_to_snippetFragment"
@@ -124,7 +124,7 @@
     </fragment>
     <fragment
         android:id="@+id/wordsListFragment"
-        android:name="com.example.wordassociater.words_list_fragment.WordsListFragment"
+        android:name="com.example.wordassociater.words.WordsListFragment"
         android:label="WordsListFragment" >
         <action
             android:id="@+id/action_wordsListFragment_to_startFragment"
@@ -135,7 +135,7 @@
     </fragment>
     <fragment
         android:id="@+id/wordDetailedFragment"
-        android:name="com.example.wordassociater.word_detailed_fragment.WordDetailedFragment"
+        android:name="com.example.wordassociater.words.WordDetailedFragment"
         android:label="WordDetailedFragment" >
         <action
             android:id="@+id/action_wordDetailedFragment_to_wordsListFragment"
@@ -151,7 +151,7 @@
     </fragment>
     <fragment
         android:id="@+id/connectStrainsFragment2"
-        android:name="com.example.wordassociater.connect_strains_fragment.ConnectStrainsFragment"
+        android:name="com.example.wordassociater.strains.ConnectStrainsFragment"
         android:label="ConnectStrainsFragment" >
         <action
             android:id="@+id/action_connectStrainsFragment2_to_readFragment"

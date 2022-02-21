@@ -3,8 +3,8 @@ import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.bars.DialogueNotesBar
 import com.example.wordassociater.fire_classes.*
-import com.example.wordassociater.start_fragment.WordLinear
-import com.example.wordassociater.strain_edit_fragment.StrainEditFragment
+import com.example.wordassociater.words.WordLinear
+import com.example.wordassociater.strains.StrainEditFragment
 
 object FireStoreListener {
 

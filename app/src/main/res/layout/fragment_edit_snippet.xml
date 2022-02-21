@@ -25,15 +25,25 @@
             android:src="@drawable/icon_red_x" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/associatedWords"
             android:minHeight="45dp"
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="14sp"
             android:layout_weight="1"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Bus Bahn, Social Media Influencer" />
+
+        <ImageView
+            android:id="@+id/wordIcon"
+            android:src="@drawable/btn_open_words_list"
+            android:layout_weight="1"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="10dp"
+            />
 
         <ImageView
             android:id="@+id/characterBtn"

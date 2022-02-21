@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.connect_snippets_fragment.ConnectSnippetsFragment
+import com.example.wordassociater.snippets.ConnectSnippetsFragment
 import com.example.wordassociater.databinding.HolderCharacterBinding
 import com.example.wordassociater.fire_classes.Character
 

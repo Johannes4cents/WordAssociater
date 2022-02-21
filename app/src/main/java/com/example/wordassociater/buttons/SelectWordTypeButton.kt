@@ -9,8 +9,8 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.ButtonSelectWordTypeBinding
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.start_fragment.WordLinear
-import com.example.wordassociater.words_list_fragment.WordsListFragment
+import com.example.wordassociater.words.WordLinear
+import com.example.wordassociater.words.WordsListFragment
 
 class SelectWordTypeButton(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = ButtonSelectWordTypeBinding.inflate(LayoutInflater.from(context), this, true)

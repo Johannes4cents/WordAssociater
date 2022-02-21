@@ -1,4 +1,4 @@
-package com.example.wordassociater.start_fragment
+package com.example.wordassociater
 
 import android.os.Bundle
 import android.view.LayoutInflater

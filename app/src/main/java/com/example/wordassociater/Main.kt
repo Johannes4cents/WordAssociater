@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.firestore.FireStoreListener
-import com.example.wordassociater.start_fragment.WordLinear
+import com.example.wordassociater.words.WordLinear
 
 class Main : AppCompatActivity() {
 

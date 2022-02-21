@@ -12,7 +12,7 @@ import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.firestore.FireLists
 import com.example.wordassociater.snippet_fragment.SnippetAdapter
-import com.example.wordassociater.strain_list_fragment.StrainAdapter
+import com.example.wordassociater.strains.StrainAdapter
 
 class StoryFragment: Fragment() {
     lateinit var b : FragmentCharacterBinding

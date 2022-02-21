@@ -1,4 +1,4 @@
-package com.example.wordassociater.word
+package com.example.wordassociater.words
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
