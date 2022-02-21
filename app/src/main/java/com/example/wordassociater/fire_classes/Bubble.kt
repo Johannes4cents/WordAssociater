@@ -8,7 +8,7 @@ data class Bubble(
         var id: Long = 0,
         var content: String = "",
         var index: Int = 0,
-        var character: String = "",
+        var character: Long = 0,
         var color: Color = Color.Green,
         var dialogue: Long = 0, ) {
 

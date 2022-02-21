@@ -62,7 +62,7 @@ class NotesFragment: Fragment() {
 
     private fun saveNote() {
         if(b.noteInput.text.isNotEmpty()) {
-            val newNote = Note(FireStats.getNoteNumber(), b.noteInput.text.toString())
+            val newNote = Note(FireStats.getNoteId(), b.noteInput.text.toString())
             FireNotes.add(newNote, requireContext())
             b.noteInput.setText("")
         }

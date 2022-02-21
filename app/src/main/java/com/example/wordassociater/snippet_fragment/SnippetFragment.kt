@@ -12,6 +12,7 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentSnippetsBinding
 import com.example.wordassociater.fire_classes.Snippet
+import com.example.wordassociater.utils.Helper
 
 class SnippetFragment: Fragment() {
     lateinit var b: FragmentSnippetsBinding
@@ -29,12 +30,20 @@ class SnippetFragment: Fragment() {
         setSnippetRecycler()
         setClickListener()
         setObserver()
+        setSearchBar()
         return b.root
     }
 
     private fun setSnippetRecycler() {
         snippetAdapter = SnippetAdapter()
         b.snippetsRecycler.adapter = snippetAdapter
+    }
+
+    private fun setSearchBar() {
+        b.searchSnippetsInput.searchWords.observe(viewLifecycleOwner) {
+            if(it.isNotEmpty()) snippetAdapter.submitList(Helper.getOrFilteredStoryPartList(it, Main.snippetList.value!!) as List<Snippet>)
+            else snippetAdapter.submitList(Main.snippetList.value)
+        }
     }
 
 

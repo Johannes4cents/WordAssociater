@@ -21,7 +21,7 @@ class BubbleHeader(val b: HeaderBubbleBinding, val characterList: List<Character
 
     private fun clickCharacter(character: Character, color: Bubble.Color) {
         val bubble = Bubble(
-                id = FireStats.getBubbleNumber(),
+                id = FireStats.getBubbleId(),
                 character = character.id,
                 color = color
         )

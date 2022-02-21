@@ -29,7 +29,6 @@ class BubbleHolder(val b: HolderBubbleBinding, val takeBubble: (bubble: Bubble)-
         b.deleteSaveBtn.setOnClickListener {
             if(inEdit.value!!) {
                 bubble.content = b.dialogueInput.text.toString()
-                takeBubble(bubble)
                 closeInput()
             }
             else {
@@ -61,7 +60,7 @@ class BubbleHolder(val b: HolderBubbleBinding, val takeBubble: (bubble: Bubble)-
         b.dialogueInput.isFocusable = true
         b.dialogueInput.isFocusableInTouchMode = true
         b.dialogueInput.requestFocus()
-        Helper.getIMM(b.root.context).showSoftInput(b.dialogueInput, 0)
+        Helper.getIMM(b.root.context).showSoftInput(b.dialogueInput, 1)
         inEdit.value = true
     }
 

@@ -1,26 +1,27 @@
-package com.example.wordassociater.words_list_fragment
+package com.example.wordassociater.word
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wordassociater.databinding.HolderWordBinding
-import com.example.wordassociater.databinding.HolderWordPopupBinding
-import com.example.wordassociater.popups.WHolder
+import com.example.wordassociater.databinding.HolderWordSimpleBinding
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.utils.AdapterType
 
 class WordAdapter(
-        private val onClickFunc: (word: Word) -> Unit,
-        private val btnNewWordFunc: (word:Word) -> Unit): ListAdapter<Word, RecyclerView.ViewHolder>(WordDiff()) {
+        private val adapterType: AdapterType,
+        private val takeWordFunc: (word: Word) -> Unit,
+        private val rightButtonFunc: ((word:Word) -> Unit)?)
+    : ListAdapter<Word, RecyclerView.ViewHolder>(WordDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return  WHolder(HolderWordPopupBinding.inflate(LayoutInflater.from(parent.context)), true)
+        return  WordHolderSimple(HolderWordSimpleBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val word = currentList[position]
-        (holder as WHolder).onBind(word, onClickFunc, btnNewWordFunc)
+        (holder as WordHolderSimple).onBind(word, adapterType, takeWordFunc, rightButtonFunc)
     }
 }
 

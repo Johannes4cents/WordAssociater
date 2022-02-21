@@ -5,7 +5,7 @@ import com.google.firebase.firestore.Exclude
 
 data class Dialogue(
         var id: Long = 0,
-        var charList: MutableList<String> = mutableListOf(),
+        var charList: MutableList<Long> = mutableListOf(),
         var content: MutableList<Long> = mutableListOf()
 ) {
     @Exclude

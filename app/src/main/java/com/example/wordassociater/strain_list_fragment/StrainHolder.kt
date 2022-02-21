@@ -4,6 +4,8 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wordassociater.Frags
+import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.connect_strains_fragment.ConnectStrainsFragment
@@ -11,7 +13,7 @@ import com.example.wordassociater.databinding.HolderStrainBinding
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireStrains
-import com.example.wordassociater.start_fragment.WordLinear
+import com.example.wordassociater.strain_edit_fragment.StrainEditFragment
 
 class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) {
     lateinit var strain: Strain
@@ -70,8 +72,10 @@ class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) 
 
     private fun setClickListener() {
         b.root.setOnClickListener {
-            WordLinear.wordList = strain.getWords() ?: mutableListOf()
-            StrainListFragment.openStrain.postValue(strain)
+            StrainEditFragment.strain = strain
+            Main.inFragment = Frags.WRITE
+            StrainEditFragment.comingFrom  = Frags.READ
+            StrainListFragment.navController.navigate(R.id.action_readFragment_to_writeFragment)
         }
 
         b.connectBtn.setOnClickListener {
@@ -109,6 +113,6 @@ class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) 
         b.characterRecycler.visibility = if(strain.characterList.isNotEmpty()) View.VISIBLE else View.GONE
         val adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
         b.characterRecycler.adapter = adapter
-        adapter.submitList(strain.characterList)
+        adapter.submitList(strain.getCharacters())
     }
 }

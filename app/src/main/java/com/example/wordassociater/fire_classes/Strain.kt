@@ -9,7 +9,7 @@ data class Strain(
         override var wordList: MutableList<String> = mutableListOf(),
         var header: String = "Strain",
         override var id: Long = 0,
-        var characterList : MutableList<Character> = mutableListOf(),
+        var characterList : MutableList<Long> = mutableListOf(),
         var isStory: Boolean = false,
         var connections: Int = 0,
         var connectionLayer: Int = 1,
@@ -40,5 +40,15 @@ data class Strain(
             words.add(Main.getWord(string)!!)
         }
         return words
+    }
+
+    @Exclude
+    fun getCharacters(): List<Character> {
+        val chars = mutableListOf<Character>()
+        for(id in characterList) {
+            val char = Main.characterList.value?.find { c -> c.id == id }
+            if(char != null) chars.add(char)
+        }
+        return chars
     }
 }

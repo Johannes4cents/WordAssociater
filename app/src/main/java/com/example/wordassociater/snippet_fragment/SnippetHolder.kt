@@ -1,6 +1,5 @@
 package com.example.wordassociater.snippet_fragment
 
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +17,6 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter): R
     lateinit var snippet : Snippet
     fun onBind(snippet: Snippet) {
         this.snippet = snippet
-        Log.i("snippet", "SnippetHolder/onBind")
         setContent()
 
         setClickListener()
@@ -38,7 +36,6 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter): R
         for(w in snippet.getWords()) {
             wordString += "${w.text} "
         }
-        Toast.makeText(b.root.context, "Words are: $wordString", Toast.LENGTH_SHORT).show()
     }
 
     private fun setBackground() {
@@ -104,7 +101,7 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter): R
     private fun setRecycler() {
         val adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
         b.characterRecycler.adapter = adapter
-        adapter.submitList(snippet.characterList)
+        adapter.submitList(snippet.getCharacters())
         if(snippet.characterList.isNotEmpty()) b.characterRecycler.visibility = View.VISIBLE
     }
 

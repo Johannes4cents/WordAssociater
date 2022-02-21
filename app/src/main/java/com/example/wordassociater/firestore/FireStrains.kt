@@ -7,6 +7,7 @@ import com.example.wordassociater.fire_classes.Strain
 
 object FireStrains {
     fun add(strain: Strain, context: Context?) {
+        Log.i("strainProb", "Strain in Add Strain")
         FireLists.fireStrainsList.document(strain.id.toString()).set(strain).addOnSuccessListener {
             Log.i("strainProb", "Strain saved to Firestore")
             if(context != null) Toast.makeText(context, "Strain saved to Firestore", Toast.LENGTH_SHORT).show()

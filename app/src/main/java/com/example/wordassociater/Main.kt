@@ -19,7 +19,7 @@ class Main : AppCompatActivity() {
         var dialogueList = MutableLiveData<List<Dialogue>?>()
         var maxLayers = 0
 
-        fun getCharacter(id: String): Character? {
+        fun getCharacter(id: Long): Character? {
             return characterList.value?.find { c -> c.id == id }
         }
 

@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
+import com.example.wordassociater.Frags
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.BarSnippetsStrainsBinding
@@ -17,6 +18,7 @@ import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.start_fragment.WordLinear
 import com.example.wordassociater.story.Story
+import com.example.wordassociater.strain_edit_fragment.StrainEditFragment
 import com.example.wordassociater.utils.Helper
 
 class SnippetsStrainsBar(context: Context, attrs: AttributeSet): ConstraintLayout(context, attrs) {
@@ -35,6 +37,7 @@ class SnippetsStrainsBar(context: Context, attrs: AttributeSet): ConstraintLayou
         }
 
         b.writeBtn.setOnClickListener {
+            StrainEditFragment.comingFrom = Frags.START
             navController.navigate(R.id.action_startFragment_to_writeFragment)
         }
 
@@ -105,7 +108,7 @@ class SnippetsStrainsBar(context: Context, attrs: AttributeSet): ConstraintLayou
         if(b.snippetInput.text.isNotEmpty()) {
             val newSnippet = Snippet(
                 content = b.snippetInput.text.toString(),
-                id = FireStats.getStoryPartNumber()
+                id = FireStats.getStoryPartId()
             )
             for(word in WordLinear.selectedWords) {
                 newSnippet.wordList.add(word.id)
@@ -123,7 +126,7 @@ class SnippetsStrainsBar(context: Context, attrs: AttributeSet): ConstraintLayou
 
     private fun handleCharacters(snippet: Snippet) {
         for(char in CharacterAdapter.selectedCharacterList) {
-            snippet.characterList.add(char)
+            snippet.characterList.add(char.id)
         }
         CharacterAdapter.selectedCharacterList.clear()
         CharacterAdapter.selectedNameChars.clear()

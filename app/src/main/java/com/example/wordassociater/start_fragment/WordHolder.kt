@@ -54,7 +54,7 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
     private fun selectCharacter() {
         if(word?.type == Word.Type.CHARACTER) {
             var character = Main.characterList.value?.find { char ->
-                char.charNumber == word.charNumber
+                char.connectId == word.connectId
             }
             if(character != null) {
                 CharacterAdapter.selectedCharacterList.add(character)
@@ -67,7 +67,7 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
     private fun deselectCharacter() {
         if(word?.type == Word.Type.CHARACTER) {
             var character = Main.characterList.value?.find { char ->
-                char.charNumber == word.charNumber
+                char.connectId == word.connectId
             }
             if(character != null) {
                 CharacterAdapter.selectedCharacterList.remove(character)

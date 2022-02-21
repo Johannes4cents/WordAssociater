@@ -13,8 +13,8 @@ import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentStrainsListBinding
-import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.fire_classes.Strain
+import com.example.wordassociater.utils.Helper
 
 class StrainListFragment: Fragment() {
 
@@ -66,12 +66,6 @@ class StrainListFragment: Fragment() {
     }
 
     private fun setObserver() {
-        openStrain.observe(context as LifecycleOwner) {
-            if(it != null && Main.inFragment == Frags.READ) {
-                Main.inFragment = Frags.WRITE
-                findNavController().navigate(R.id.action_readFragment_to_writeFragment)
-            }
-        }
 
         Main.strainsList.observe(context as LifecycleOwner) {
             if(it != null) {

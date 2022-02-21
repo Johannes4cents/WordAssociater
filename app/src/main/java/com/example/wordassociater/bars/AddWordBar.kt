@@ -2,6 +2,7 @@ package com.example.wordassociater.bars
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -106,13 +107,16 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
             val newWord = Word(
                     b.wordInput.text.toString(),
                     selectedType,
-            id = FireStats.getWordNumber().toString())
+            id = FireStats.getWordId().toString())
             if(takesWordFunc == null) {
 
                 if(!Helper.checkIfWordExists(newWord, context)) {
-                    val newWord = Word(b.wordInput.text.toString(), selectedType)
-                    val charNumber = FireStats.getCharNumber()
-                    handleCharacter(charNumber, newWord)
+                    val newWord = Word(
+                            b.wordInput.text.toString(),
+                            selectedType,
+                            id = FireStats.getWordId().toString())
+                    val connectId = FireStats.getCharConnectId()
+                    handleCharacter(connectId, newWord)
                     handleWordLinear(newWord)
                     FireWords.add(newWord)
                     hideVisuals()
@@ -127,11 +131,12 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
             unfolded.value = false
         }
     }
-    private fun handleCharacter(charNumber: Long, newWord: Word) {
+    private fun handleCharacter(connectId: Long, newWord: Word) {
+        Log.i("fuckshit", "AddWordBar handleCharacter")
         if(selectedType == Word.Type.CHARACTER) {
-            val character = Character(b.wordInput.text.toString(), charNumber = charNumber)
+            val character = Character(b.wordInput.text.toString(), connectId = connectId)
             FireChars.add(character, context)
-            newWord.charNumber = charNumber
+            newWord.connectId = connectId
         }
     }
 

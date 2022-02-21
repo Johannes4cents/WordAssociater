@@ -1,39 +1,50 @@
 package com.example.wordassociater.firestore
 
+import android.util.Log
+
 object FireStats {
-    fun getStoryPartNumber(): Long {
+    fun getStoryPartId(): Long {
         val number = FireLists.stats!!.storyPartNumber + 1
         FireLists.fireStats.update("storyPartNumber", number)
         return number
     }
 
-    fun getCharNumber() : Long {
+    fun getCharConnectId() : Long {
+        Log.i("fuckshit", "FireStats/GetCharConnectId")
+        val number = FireLists.stats!!.charNumber + 1
+        FireLists.fireStats.update("connectId", number)
+        return number
+    }
+
+    fun getCharId() : Long {
+        Log.i("fuckshit", "FireStats/GetCharId")
         val number = FireLists.stats!!.charNumber + 1
         FireLists.fireStats.update("charNumber", number)
         return number
     }
 
-    fun getNoteNumber(): Long {
+    fun getNoteId(): Long {
         val number = FireLists.stats!!.noteNumber + 1
         FireLists.fireStats.update("noteNumber", number)
         return number
     }
 
-    fun getDialogueNumber(): Long {
+    fun getDialogueId(): Long {
         val number = FireLists.stats!!.dialogueNumber + 1
         FireLists.fireStats.update("dialogueNumber", number)
         return number
     }
 
-    fun getBubbleNumber(): Long {
+    fun getBubbleId(): Long {
         val number = FireLists.stats!!.dialogueNumber + 1
         FireLists.fireStats.update("dialogueNumber", number)
         return number
     }
 
-    fun getWordNumber(): Long {
+    fun getWordId(): Long {
         val number = FireLists.stats!!.wordNumber + 1
         FireLists.fireStats.update("wordNumber", number)
         return number
     }
+
 }

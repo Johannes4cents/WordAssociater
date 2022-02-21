@@ -1,4 +1,4 @@
-package com.example.wordassociater.words_list_fragment
+package com.example.wordassociater.buttons
 
 import android.content.Context
 import android.util.AttributeSet
@@ -10,6 +10,7 @@ import com.example.wordassociater.R
 import com.example.wordassociater.databinding.ButtonSelectWordTypeBinding
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.start_fragment.WordLinear
+import com.example.wordassociater.words_list_fragment.WordsListFragment
 
 class SelectWordTypeButton(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = ButtonSelectWordTypeBinding.inflate(LayoutInflater.from(context), this, true)

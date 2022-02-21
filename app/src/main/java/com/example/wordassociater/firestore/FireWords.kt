@@ -13,7 +13,7 @@ object FireWords {
     }
 
     fun delete(word: Word) {
-        Log.i("WordId", "deletedWord is ${word.id}")
+        Log.i("WordId", "deletedWord is ${word.id} | word type is ")
         val collectionReference = FireLists.getCollectionRef(word.type)
         collectionReference.document(word.id).delete()
     }
@@ -37,4 +37,10 @@ object FireWords {
         if(strainsList != null) collectionReference.document(word.id).update("snippetsList", imgUrl)
         if(cat != null) collectionReference.document(word.id).update("cat", cat)
     }
+
+    fun <T>update(type: Word.Type, id: Long, fieldName: String, value: T) {
+        val collectionReference = FireLists.getCollectionRef(type)
+        collectionReference.document(id.toString()).update(fieldName, value)
+    }
+
 }

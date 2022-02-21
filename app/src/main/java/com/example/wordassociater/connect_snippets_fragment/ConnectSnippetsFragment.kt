@@ -48,7 +48,7 @@ class ConnectSnippetsFragment: Fragment() {
         }
 
         b.characterBtn.setOnClickListener {
-            Pop(b.characterBtn.context).characterRecyclerConnectSnippets(b.characterBtn, newStrain.characterList)
+            Pop(b.characterBtn.context).characterRecyclerConnectSnippets(b.characterBtn, newStrain.getCharacters())
         }
     }
 
@@ -75,7 +75,7 @@ class ConnectSnippetsFragment: Fragment() {
     }
 
     private fun makeCharacterList() {
-        val characterList = mutableListOf<Character>()
+        val characterList = mutableListOf<Long>()
         for(c in snippetOne.characterList) {
             if(!characterList.contains(c)) {
                 characterList.add(c)
@@ -91,14 +91,14 @@ class ConnectSnippetsFragment: Fragment() {
     }
 
     private fun setContent() {
-        Helper.setWords(newStrain.getWords(), b.associatedWords)
+        b.associatedWords.text = Helper.setWordsToString(newStrain.getWords())
         b.strainInput.setText(newStrain.content)
         handleCharacter()
     }
 
     private fun handleCharacter() {
-        if(newStrain.characterList.isNotEmpty() &&newStrain.characterList[0].imgUrl != "") {
-            Glide.with(b.characterBtn.context).load(newStrain.characterList[0].imgUrl).into(b.characterBtn)
+        if(newStrain.characterList.isNotEmpty() && Main.getCharacter(newStrain.characterList[0])?.imgUrl != "") {
+            Glide.with(b.characterBtn.context).load(Main.getCharacter(newStrain.characterList[0])?.imgUrl).into(b.characterBtn)
         }
     }
 
@@ -106,7 +106,7 @@ class ConnectSnippetsFragment: Fragment() {
         adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
         b.characterRecycler.adapter = adapter
         if(newStrain.characterList.isNotEmpty()) {
-            adapter.submitList(newStrain.characterList)
+            adapter.submitList(Character.getCharactersById(newStrain.characterList))
         }
     }
 

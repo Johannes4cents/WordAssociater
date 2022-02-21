@@ -7,7 +7,6 @@ import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
-import android.widget.TextView
 import android.widget.Toast
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
@@ -22,13 +21,13 @@ object Helper {
         return context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
 
-    fun setWords(wordsList: MutableList<Word>, v: TextView) {
+    fun setWordsToString(wordsList: List<Word>) : String{
         var wordsString = ""
         for(w: Word in wordsList) {
             wordsString += "${w.text}, "
             if(wordsString.length > 25) wordsString += "\n"
         }
-        v.text = wordsString
+        return wordsString
     }
 
 
@@ -88,6 +87,14 @@ object Helper {
         return submitList
     }
 
+    fun <T>getResubmitList(item: T, itemList: List<T>): MutableList<T>? {
+        val newList = itemList.toMutableList()
+        val index = newList.indexOf(item)
+        newList.remove(item)
+        newList.add(index, item)
+        return newList
+    }
+
     fun getPopUp(layout: View, fromWhere: View, width: Int, height: Int): PopupWindow {
         val popWindow = PopupWindow(fromWhere.context)
         popWindow.height = height
@@ -136,6 +143,11 @@ object Helper {
         }
         wordList += wordRow
         return wordList
+    }
+
+    fun setStringToMultipleLines(word: String): String {
+        var word = word.split("\\s".toRegex())
+        return "${word[0]} \n ${word[1]}"
     }
 
     fun getWordBg(type: Word.Type): Int {

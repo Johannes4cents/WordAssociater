@@ -16,4 +16,10 @@
     <color name="bubbleBlue">#449bf4</color>
     <color name="bubbleYellow">#b8ba02</color>
     <color name="bubbleGreen">#43ca3f</color>
+    <color name="wordGreen">#78d978</color>
+    <color name="wordPink">#f38db4</color>
+    <color name="wordBlue">#98c4ee</color>
+    <color name="wordGrey">#afafaf</color>
+    <color name="wordPurple">#8d7fff</color>
+    <color name="wordBrown">#a6815c</color>
 </resources>

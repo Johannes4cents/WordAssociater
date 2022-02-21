@@ -2,15 +2,11 @@ package com.example.wordassociater.bars
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.KeyEvent
-import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.EditText
+import android.view.View.OnKeyListener
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.R
@@ -37,7 +33,7 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
     }
 
     private fun setKeyListener() {
-        b.searchStrainsInput.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        b.searchStrainsInput.setOnKeyListener(OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 updateList()
                 return@OnKeyListener true

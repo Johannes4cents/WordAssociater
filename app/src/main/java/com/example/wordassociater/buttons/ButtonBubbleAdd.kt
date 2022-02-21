@@ -9,6 +9,7 @@ import com.example.wordassociater.R
 import com.example.wordassociater.databinding.ButtonBubbleAddBinding
 import com.example.wordassociater.fire_classes.Bubble
 import com.example.wordassociater.fire_classes.Character
+import com.example.wordassociater.utils.Helper
 
 class ButtonBubbleAdd(context: Context, attributeSet: AttributeSet?): ConstraintLayout(context, attributeSet) {
     val b = ButtonBubbleAddBinding.inflate(LayoutInflater.from(context), this, true)
@@ -38,7 +39,7 @@ class ButtonBubbleAdd(context: Context, attributeSet: AttributeSet?): Constraint
     }
 
     private fun setName(name: String) {
-        b.characterName.text = name
+        b.characterName.text = Helper.setStringToMultipleLines(name)
     }
 
     fun setupEditDialogue(character: Character, clickCharacter: (char: Character, color: Bubble.Color) -> Unit) {

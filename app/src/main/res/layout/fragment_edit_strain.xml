@@ -24,7 +24,7 @@
             android:src="@drawable/icon_red_x" />
 
         <TextView
-            android:id="@+id/associatedWords"
+            android:id="@+id/strainWords"
             android:minHeight="45dp"
             android:gravity="center"
             android:textColor="@color/black"

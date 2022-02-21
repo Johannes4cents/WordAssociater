@@ -4,6 +4,7 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.bars.DialogueNotesBar
 import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.start_fragment.WordLinear
+import com.example.wordassociater.strain_edit_fragment.StrainEditFragment
 
 object FireStoreListener {
 
@@ -16,7 +17,6 @@ object FireStoreListener {
         getWords()
         getDialogues()
         getBubbles()
-
         getCharactersOneTimeForSelectionList()
     }
 
@@ -25,9 +25,9 @@ object FireStoreListener {
             if(docs != null) {
                 var charList = mutableListOf<Character>()
                 for(doc in docs) {
-                    Log.i("fireProb", "$doc")
                     val character = doc.toObject(Character::class.java)
-                    character.id = doc.id
+                    Log.i("fuckshit", "doc.id is ${doc.id}")
+                    if(character.id == 0L) FireChars.delete(doc.id)
                     charList.add(character)
                 }
                 Main.characterList.value = charList
@@ -37,17 +37,18 @@ object FireStoreListener {
         }
     }
 
+
+
     private fun getCharactersOneTimeForSelectionList() {
         FireLists.characterList.get().addOnSuccessListener{ docs->
             if(docs != null) {
                 var charList = mutableListOf<Character>()
                 for(doc in docs) {
-                    Log.i("fireProb", "$doc")
                     val character = doc.toObject(Character::class.java)
-                    character.id = doc.id
                     charList.add(character)
                 }
                 DialogueNotesBar.popUpCharacterList.value = charList
+                StrainEditFragment.popUpCharacterList.value = charList
             }
             else {
             }
@@ -136,12 +137,15 @@ object FireStoreListener {
 
 
     private fun getWords() {
+        Log.i("wordDeletion", "in Get words")
         val typeList = mutableListOf(Word.Type.Object, Word.Type.Person, Word.Type.Place, Word.Type.CHARACTER,
                 Word.Type.Action, Word.Type.Adjective)
         for(type in typeList) {
             getWords(type)
         }
     }
+
+
 
     private fun getWords(type: Word.Type) {
         val collectionReference = FireLists.getCollectionRef(type)
@@ -156,4 +160,5 @@ object FireStoreListener {
             }
         }
     }
+
 }

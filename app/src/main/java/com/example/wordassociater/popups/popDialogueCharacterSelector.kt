@@ -27,6 +27,7 @@ fun popCharacterSelector(from: View, navController: NavController, characterList
         adapter.submitList(Main.characterList.value)
     }
 
+
     fun setBinding() {
         b.goToNewDialogueBtn.setOnClickListener {
             EditDialogueFragment.dialogue.charList = Character.getIdList(DialogueNotesBar.selectedCharacters)

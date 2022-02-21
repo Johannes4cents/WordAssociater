@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Frags
@@ -12,7 +13,6 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentCharacterListBinding
 import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.firestore.FireLists
 
 class CharacterListFragment: Fragment() {
     lateinit var b: FragmentCharacterListBinding
@@ -26,7 +26,7 @@ class CharacterListFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         Main.inFragment = Frags.CHARACTERLIST
         b = FragmentCharacterListBinding.inflate(layoutInflater)
         handleRecycler()
@@ -42,14 +42,8 @@ class CharacterListFragment: Fragment() {
     }
 
     private fun getCharacter() {
-        FireLists.characterList.addSnapshotListener { docs, error ->
-            val characterList = mutableListOf<Character>()
-            for(doc in docs!!) {
-                val character = doc.toObject(Character::class.java)
-                character.id = doc.id
-                characterList.add(character)
-            }
-            characterAdapter.submitList(characterList)
+        Main.characterList.observe(context as LifecycleOwner) {
+            characterAdapter.submitList(it)
         }
     }
 

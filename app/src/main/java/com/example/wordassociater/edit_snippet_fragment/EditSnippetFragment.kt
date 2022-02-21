@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
-import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentEditSnippetBinding
@@ -94,26 +92,24 @@ class EditSnippetFragment: Fragment() {
 
     private fun setObserver() {
         liveWordList.observe(context as LifecycleOwner) {
-            Helper.setWords(it, b.associatedWords)
+            b.associatedWords.text = Helper.setWordsToString(it)
         }
     }
 
     private fun setRecycler() {
         charAdapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
         b.characterRecycler.adapter = charAdapter
-        charAdapter.submitList(snippet.characterList)
+        charAdapter.submitList(snippet.getCharacters())
 
     }
 
     private fun handleCharacterSelected(char: Character) {
-        val c = Main.getCharacter(char.id)
-        val charInSnippet = snippet.characterList.find { char -> char.id == c!!.id }
+        val charInSnippet = snippet.characterList.find { id -> id == char.id }
         if(charInSnippet != null ) {
             snippet.characterList.remove(charInSnippet)
         }
-        else snippet.characterList.add(c!!)
-        Toast.makeText(context, "Character is ${c?.name}", Toast.LENGTH_SHORT).show()
-        charAdapter.submitList(snippet.characterList)
+        else snippet.characterList.add(char.id)
+        charAdapter.submitList(snippet.getCharacters())
         charAdapter.notifyDataSetChanged()
     }
 }

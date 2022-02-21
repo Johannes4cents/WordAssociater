@@ -21,6 +21,8 @@ import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.start_fragment.WordLinear
 import com.example.wordassociater.story.Story
 import com.example.wordassociater.strain_list_fragment.StrainListFragment
+import com.example.wordassociater.utils.AdapterType
+import com.example.wordassociater.word.WordAdapter
 
 class Pop(val context: Context) {
     private val popWindow = PopupWindow(context)
@@ -48,7 +50,7 @@ class Pop(val context: Context) {
             addNewWordFunc: (word: Word) -> Unit) {
         val b = PopupWordRecyclerBinding.inflate(LayoutInflater.from(context), null, false)
         windowSetup(b.root, from)
-        val adapter = WordPopUpAdapter(onClickFunc, btnNewWordFunc)
+        val adapter = WordAdapter(AdapterType.Popup,onClickFunc, btnNewWordFunc)
         b.wordRecycler.adapter = adapter
         b.addWordBar.handleTakesWordFunc(addNewWordFunc)
         liveList.observe(context as LifecycleOwner) {
@@ -77,7 +79,7 @@ class Pop(val context: Context) {
     }
 
 
-    fun characterRecyclerConnectSnippets( view: View, characterList: MutableList<Character>) {
+    fun characterRecyclerConnectSnippets( view: View, characterList: List<Character>) {
         val binding = PopupCharacterRecyclerBinding.inflate(LayoutInflater.from(context), null, false)
         var adapter = CharacterAdapter(CharacterAdapter.Mode.CONNECTSNIPPETS, characterList)
         binding.characterRecycler.adapter = adapter
@@ -115,7 +117,7 @@ class Pop(val context: Context) {
         when(charMode) {
             CharacterAdapter.Mode.UPDATE -> {
                 for(char in StrainListFragment.openStrain.value?.characterList!!) {
-                    var charakter = characterListUpdate!!.find { c -> c.name == char.name }
+                    var charakter = characterListUpdate!!.find { c -> c.id == Main.getCharacter(char)?.id }
                     if(charakter != null) {
                         var index = characterListUpdate?.indexOf(charakter)
                         characterListUpdate!![index!!].selected = true

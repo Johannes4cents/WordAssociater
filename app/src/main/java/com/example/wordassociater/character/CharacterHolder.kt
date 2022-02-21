@@ -11,9 +11,6 @@ import com.example.wordassociater.R
 import com.example.wordassociater.connect_snippets_fragment.ConnectSnippetsFragment
 import com.example.wordassociater.databinding.HolderCharacterBinding
 import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.popups.Pop
-import com.example.wordassociater.strain_edit_fragment.StrainEditFragment
-import com.example.wordassociater.strain_list_fragment.StrainListFragment
 
 class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.root) {
     lateinit var character: Character
@@ -70,39 +67,18 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
                     CharacterAdapter.characterListTrigger.value = Unit
                 }
             }
-            CharacterAdapter.Mode.PREVIEW -> {
 
-            }
-            CharacterAdapter.Mode.UPDATE -> {
-                b.root.setOnClickListener {
-
-                    // add Character to the preview Adapter in the WriteFragment
-                    val openStrainCharList = StrainListFragment.openStrain.value?.characterList
-                    if(openStrainCharList?.contains(character)!!) {
-                        StrainListFragment.openStrain.value?.characterList?.remove(character)
-                    }
-                    else {
-                        StrainListFragment.openStrain.value?.characterList?.add(character)
-                    }
-                    StrainEditFragment.adapter.submitList(StrainListFragment.openStrain.value?.characterList)
-                    StrainEditFragment.adapter.notifyDataSetChanged()
-
-                    // Marks Character as selected in the Update Popup character List
-                    val index = Pop.characterListUpdate!!.indexOf(character)
-                    Pop.characterListUpdate!![index].selected = !Pop.characterListUpdate!![index].selected
-                    Pop.characterAdapter.submitList(Pop.characterListUpdate)
-                }
-            }
             CharacterAdapter.Mode.CONNECTSNIPPETS -> {
                 b.root.setOnClickListener {
-                    if (adapter.characterList?.contains(character)!!) {
-                        adapter.characterList!!.remove(character)
+                    val mutableChars = adapter.characterList?.toMutableList()
+                    if (mutableChars?.contains(character)!!) {
+                        mutableChars.remove(character)
                         Toast.makeText(b.root.context, "already contains character", Toast.LENGTH_SHORT).show()
                     } else {
-                        adapter.characterList!!.add(character)
+                        mutableChars.add(character)
                         Toast.makeText(b.root.context, "character Added", Toast.LENGTH_SHORT).show()
                     }
-                    ConnectSnippetsFragment.adapter.submitList(adapter.characterList)
+                    ConnectSnippetsFragment.adapter.submitList(mutableChars)
                     ConnectSnippetsFragment.adapter.notifyDataSetChanged()
                 }
             }
@@ -113,6 +89,7 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
                     charTrigger.value = Unit
                 }
             }
+            else ->  {}
         }
     }
 

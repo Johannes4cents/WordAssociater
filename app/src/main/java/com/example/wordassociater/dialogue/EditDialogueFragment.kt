@@ -50,7 +50,7 @@ class EditDialogueFragment: Fragment() {
         if(bubbleList.value != null && bubbleList.value!!.isNotEmpty()) {
             val list = Bubble.toIdList(bubbleList.value!!)
             dialogue.content = list
-            dialogue.id = FireStats.getDialogueNumber()
+            dialogue.id = FireStats.getDialogueId()
             dialogue.charList = getCharList()
             FireDialogue.add(dialogue, requireContext())
             for(bubble in bubbleList.value!!) {
@@ -63,8 +63,8 @@ class EditDialogueFragment: Fragment() {
 
     }
 
-    private fun getCharList(): MutableList<String> {
-        val idList = mutableListOf<String>()
+    private fun getCharList(): MutableList<Long> {
+        val idList = mutableListOf<Long>()
         if(bubbleList.value != null) {
             for(b in bubbleList.value!!) {
                 idList.add(b.character)

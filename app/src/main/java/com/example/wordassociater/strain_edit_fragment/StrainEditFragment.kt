@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.wordassociater.Frags
@@ -13,48 +15,59 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentEditStrainBinding
+import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.firestore.FireLists
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireStrains
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.Pop
+import com.example.wordassociater.popups.popCharacterSelector
+import com.example.wordassociater.popups.popSearchWord
 import com.example.wordassociater.start_fragment.WordLinear
-import com.example.wordassociater.story.Story
 import com.example.wordassociater.strain_list_fragment.StrainListFragment
 import com.example.wordassociater.utils.Helper
 
 class StrainEditFragment: Fragment() {
     lateinit var b : FragmentEditStrainBinding
 
-
     companion object {
         lateinit var adapter: CharacterAdapter
+
+        var strain = Strain(
+                id = FireStats.getStoryPartId()
+        )
+
+        var comingFrom = Frags.START
+
+        val popUpCharacterList = MutableLiveData<List<Character>>()
+
     }
 
-    var wordsList = StrainListFragment.openStrain.value?.getWords() ?: WordLinear.selectedWords
+    var wordsList = MutableLiveData<List<Word>>(WordLinear.selectedWords)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         b = FragmentEditStrainBinding.inflate(layoutInflater)
-        Helper.setWords(wordsList, b.associatedWords)
+
+        setWordList()
         setClickListener()
         setContent()
         handleDeleteButton()
         handleRecycler()
-        handleCharacter()
         Main.inFragment = Frags.WRITE
         return b.root
     }
 
-    private fun handleCharacter() {
-        if(adapter.currentList.isNotEmpty() && adapter.currentList[0].imgUrl != "") {
-            Glide.with(b.characterBtn.context).load(adapter.currentList[0].imgUrl).into(b.characterBtn)
-        }
+    private fun setWordList() {
+        if(comingFrom == Frags.START) wordsList.value = WordLinear.selectedWords
+        if(comingFrom == Frags.READ) wordsList.value = strain.getWords()
     }
+
+
 
     private fun handleDeleteButton() {
         if(StrainListFragment.openStrain.value != null) {
@@ -79,23 +92,12 @@ class StrainEditFragment: Fragment() {
 
     private fun setClickListener() {
         b.backBtn.setOnClickListener {
-            if(StrainListFragment.openStrain.value == null) {
-                findNavController().navigate(R.id.action_writeFragment_to_startFragment)
-            }
-            else {
-                StrainListFragment.openStrain.value = null
-                findNavController().navigate(R.id.action_writeFragment_to_readFragment)
-            }
+            if(comingFrom == Frags.START) findNavController().navigate(R.id.action_writeFragment_to_startFragment)
+            else if(comingFrom == Frags.READ) findNavController().navigate(R.id.action_writeFragment_to_readFragment)
         }
 
         b.saveBtn.setOnClickListener {
-            if(StrainListFragment.openStrain.value == null) {
-                saveStrain()
-            }
-            else {
-                updateStrain()
-            }
-
+            saveStrain()
         }
 
         b.strainInput.setOnClickListener {
@@ -104,51 +106,58 @@ class StrainEditFragment: Fragment() {
             Helper.getIMM(requireContext()).showSoftInput(it, 0)
         }
 
-        b.associatedWords.setOnClickListener {
-
+        b.strainWords.setOnClickListener {
+            popSearchWord(it, ::handleWordSelected, wordsList)
         }
 
-        if(StrainListFragment.openStrain.value != null) {
-            b.characterBtn.setOnClickListener {
-                Pop(b.characterBtn.context).characterRecycler(b.characterBtn, CharacterAdapter.Mode.UPDATE)
-            }
+        b.characterBtn.setOnClickListener {
+            popCharacterSelector(b.characterBtn, findNavController(), popUpCharacterList, ::handleSelectedCharacter)
         }
-        else {
-            b.characterBtn.setOnClickListener {
-                Pop(b.characterBtn.context).characterRecycler(b.characterBtn, CharacterAdapter.Mode.SELECT)
-            }
+
+    }
+
+    private fun handleSelectedCharacter(character: Character) {
+        if(character.selected && !strain.getCharacters().contains(character)) {
+           strain.characterList.add(character.id)
         }
+        else strain.characterList.remove(character.id)
+
+        popUpCharacterList.value = Helper.getResubmitList(character, popUpCharacterList.value!!)
+    }
+
+    private fun handleWordSelected(word: Word) {
+        val newList = wordsList.value?.toMutableList()
+        newList?.add(word)
+        word.isPicked = true
+        wordsList.value = newList
     }
 
     private fun setContent() {
-        if(StrainListFragment.openStrain.value != null) {
-            b.strainInput.setText(StrainListFragment.openStrain.value?.content!!.toString())
-            b.headerInput.setText(StrainListFragment.openStrain.value?.header)
+        b.strainInput.setText(strain.content)
+        b.headerInput.setText(strain.header)
+
+        b.strainWords.text = Helper.setWordsToString(wordsList.value!!)
+
+        for(character in strain.getCharacters()) {
+            character.selected = true
         }
+
+        b.strainWords.text = Helper.setWordsToMultipleLines(strain.getWords())
     }
 
     private fun saveStrain() {
         if(b.strainInput.text.isNotEmpty()) {
-
-            var header = b.headerInput.text ?: "Strain"
-            var strain = Strain(
-                    b.strainInput.text.toString(),
-                    Word.convertToIdList(WordLinear.selectedWords), header.toString(),
-                    id = FireStats.getStoryPartNumber()
-            )
-
-            for(w in WordLinear.selectedWords) {
-                w.strainsList.add(strain.id)
+            strain.content = b.strainInput.text.toString()
+            strain.header = b.headerInput.text.toString()
+            strain.wordList = Word.convertToIdList(WordLinear.selectedWords)
+            for(w in strain.getWords()) {
+                if(!w.strainsList.contains(strain.id)) w.strainsList.add(strain.id)
                 FireWords.update(w, strainsList = w.strainsList)
             }
-            if(Story.storyModeActive) strain.isStory = true
-            for(char in CharacterAdapter.selectedCharacterList) {
-                char.selected = false
-                strain.characterList.add(char)
-            }
+
             FireStrains.add(strain, requireContext())
 
-            for(w in wordsList) {
+            for(w in wordsList.value!!) {
                 FireWords.increaseWordUse(w)
             }
 
@@ -157,7 +166,11 @@ class StrainEditFragment: Fragment() {
             CharacterAdapter.selectedCharacterList.clear()
             CharacterAdapter.selectedNameChars.clear()
 
-            findNavController().navigate(R.id.action_writeFragment_to_startFragment)
+            strain = Strain(id= FireStats.getStoryPartId())
+
+            if(comingFrom == Frags.START) findNavController().navigate(R.id.action_writeFragment_to_startFragment)
+            else if(comingFrom == Frags.READ) findNavController().navigate(R.id.action_writeFragment_to_readFragment)
+
             Helper.getIMM(requireContext()).hideSoftInputFromWindow(b.strainInput.windowToken, 0)
         }
         else {
@@ -165,29 +178,25 @@ class StrainEditFragment: Fragment() {
         }
     }
 
-    private fun updateStrain() {
-        var header = b.headerInput.text ?: "Strain"
-        var strain = Strain(b.strainInput.text.toString(), StrainListFragment.openStrain.value!!.wordList, header.toString())
-        if(StrainListFragment.openStrain.value?.characterList != null) {
-            for(char in StrainListFragment.openStrain.value?.characterList!!) {
-                char.selected = false
-                strain.characterList.add(char)
-            }
-        }
-        FireLists.fireStrainsList.document(StrainListFragment.openStrain.value!!.id.toString()).set(strain)
-        WordLinear.selectedWords.clear()
-        findNavController().navigate(R.id.action_writeFragment_to_readFragment)
-        Helper.getIMM(requireContext()).hideSoftInputFromWindow(b.strainInput.windowToken, 0)
-    }
+
 
     private fun handleRecycler() {
         adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
         b.characterRecycler.adapter = adapter
-        if(StrainListFragment.openStrain.value == null) {
-            adapter.submitList(CharacterAdapter.selectedCharacterList)
+
+        if(adapter.currentList.isNotEmpty() && adapter.currentList[0].imgUrl != "") {
+            Glide.with(b.characterBtn.context).load(adapter.currentList[0].imgUrl).into(b.characterBtn)
         }
-        else {
-            adapter.submitList(StrainListFragment.openStrain.value?.characterList)
+
+        adapter.submitList(strain.getCharacters())
+
+        popUpCharacterList.observe(context as LifecycleOwner) {
+            val selectedList = it.filter { c -> c.selected }
+            adapter.submitList(selectedList)
+
+            if(adapter.currentList.isNotEmpty() && adapter.currentList[0].imgUrl != "") {
+                Glide.with(b.characterBtn.context).load(adapter.currentList[0].imgUrl).into(b.characterBtn)
+            }
         }
 
     }

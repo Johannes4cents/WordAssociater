@@ -18,9 +18,8 @@
             android:layout_height="45dp"
             android:src="@drawable/back_icon"
             />
-        <EditText
+        <com.example.wordassociater.bars.SearchBar
             android:id="@+id/searchSnippetsInput"
-            android:hint="Search Snippets"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>

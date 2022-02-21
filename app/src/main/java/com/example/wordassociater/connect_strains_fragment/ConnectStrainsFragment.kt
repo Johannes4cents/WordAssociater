@@ -42,6 +42,7 @@ class ConnectStrainsFragment:Fragment() {
         }
 
         b.backBtn.setOnClickListener {
+            strainList.clear()
             findNavController().navigate(R.id.action_connectStrainsFragment2_to_readFragment)
         }
     }
@@ -71,12 +72,13 @@ class ConnectStrainsFragment:Fragment() {
         if(b.strainInput.text.isNotEmpty()) {
             newStrain.content = b.strainInput.text.toString()
             newStrain.connectionLayer = setConnectionLayer()
-            newStrain.id = FireStats.getStoryPartNumber()
+            newStrain.id = FireStats.getStoryPartId()
             newStrain.isStory = isStory
             newStrain.header = b.headerInput.text.toString()
 
             FireStrains.add(newStrain, b.root.context)
             Helper.getIMM(requireContext()).hideSoftInputFromWindow(b.strainInput.windowToken, 0)
+            strainList.clear()
             findNavController().navigate(R.id.action_connectStrainsFragment2_to_readFragment)
         }
         else {
@@ -89,6 +91,7 @@ class ConnectStrainsFragment:Fragment() {
         for (strain in strainList) {
             connectionLayer += strain.connectionLayer
         }
+        Helper.toast(connectionLayer.toString(), requireContext())
         return connectionLayer
     }
 
@@ -98,5 +101,6 @@ class ConnectStrainsFragment:Fragment() {
             break
         }
     }
+
 
 }

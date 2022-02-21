@@ -12,6 +12,8 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentWordsListBinding
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.utils.AdapterType
+import com.example.wordassociater.word.WordAdapter
 import com.example.wordassociater.word_detailed_fragment.WordDetailedFragment
 
 class WordsListFragment: Fragment() {
@@ -41,7 +43,7 @@ class WordsListFragment: Fragment() {
     }
 
     private fun setRecycler() {
-        adapter = WordAdapter(::handleOnClick, ::handleDelete)
+        adapter = WordAdapter(AdapterType.List, ::handleOnClick, null)
         b.wordRecycler.adapter = adapter
     }
 
