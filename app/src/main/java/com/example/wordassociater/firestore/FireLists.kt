@@ -1,5 +1,6 @@
 package com.example.wordassociater.firestore
 
+import com.example.wordassociater.fire_classes.Note
 import com.example.wordassociater.fire_classes.Stats
 import com.example.wordassociater.fire_classes.Word
 import com.google.firebase.firestore.CollectionReference
@@ -14,7 +15,12 @@ object FireLists {
     private val heroesList by lazy { db.collection("words").document("wordCollections").collection("heroes") }
     private val placesList by lazy { db.collection("words").document("wordCollections").collection("places") }
     private val objectsList by lazy { db.collection("words").document("wordCollections").collection("objects") }
-    val charWordsList by lazy {db.collection("words").document("wordCollections").collection("character")}
+
+    // noteLists
+    private val storyNotes by lazy { db.collection("notes").document("noteCollections").collection("story") }
+    private val gameAppNotes by lazy { db.collection("notes").document("noteCollections").collection("gameApp") }
+    private val wordsAppNotes by lazy { db.collection("notes").document("noteCollections").collection("wordsApp") }
+    private val otherNotes by lazy { db.collection("notes").document("noteCollections").collection("other") }
 
     val fireStats by lazy { db.collection("stats").document("stats") }
     val bubbleList by lazy { db.collection("bubbles") }
@@ -34,6 +40,15 @@ object FireLists {
             Word.Type.Object -> objectsList
             Word.Type.CHARACTER -> heroesList
             Word.Type.NONE -> objectsList
+        }
+    }
+
+    fun getNoteCollectionRef(type: Note.Type): CollectionReference {
+        return when(type) {
+            Note.Type.Story -> storyNotes
+            Note.Type.WordsApp -> wordsAppNotes
+            Note.Type.GameApp -> gameAppNotes
+            Note.Type.Other -> otherNotes
         }
     }
 }

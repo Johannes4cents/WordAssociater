@@ -132,6 +132,9 @@
         <action
             android:id="@+id/action_notesFragment_to_startFragment"
             app:destination="@id/ViewPagerFragment" />
+        <action
+            android:id="@+id/action_notesFragment_to_editNoteFragment"
+            app:destination="@id/editNoteFragment" />
     </fragment>
     <fragment
         android:id="@+id/connectStrainsFragment2"
@@ -162,5 +165,13 @@
         <action
             android:id="@+id/action_editDialogueFragment_to_dialogueListFragment"
             app:destination="@id/dialogueListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editNoteFragment"
+        android:name="com.example.wordassociater.notes.EditNoteFragment"
+        android:label="EditNoteFragment" >
+        <action
+            android:id="@+id/action_editNoteFragment_to_notesFragment"
+            app:destination="@id/notesFragment" />
     </fragment>
 </navigation>

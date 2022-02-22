@@ -16,6 +16,28 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="40dp">
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/icon_story"
+            />
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/btnAddCharacter"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/icon_character"
+            />
+
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/btnDramaturgy"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/icon_dramaturgy"
+            />
 
     </LinearLayout>
 

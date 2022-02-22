@@ -3,6 +3,8 @@ import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.bars.DialogueNotesBar
 import com.example.wordassociater.fire_classes.*
+import com.example.wordassociater.lists.NoteLists
+import com.example.wordassociater.notes.NotesFragment
 import com.example.wordassociater.strains.StrainEditFragment
 import com.example.wordassociater.words.WordLinear
 
@@ -38,7 +40,6 @@ object FireStoreListener {
     }
 
 
-
     private fun getCharactersOneTimeForSelectionList() {
         FireLists.characterList.get().addOnSuccessListener{ docs->
             if(docs != null) {
@@ -71,16 +72,22 @@ object FireStoreListener {
     }
 
     private fun getNotes() {
-        FireLists.noteList.addSnapshotListener { docs, error ->
-            val newNotesList = mutableListOf<Note>()
+        val noteTypeList = listOf<Note.Type>(Note.Type.Story, Note.Type.GameApp, Note.Type.Other, Note.Type.WordsApp)
+        for(type in noteTypeList) {
+            getNotes(type)
+        }
+    }
+
+    private fun getNotes(type: Note.Type) {
+        FireLists.getNoteCollectionRef(type).addSnapshotListener { docs, error ->
+            NoteLists.getList(type).clear()
             if(docs != null) {
                 for(doc in docs) {
                     val note = doc.toObject(Note::class.java)
-                    newNotesList.add(note)
+                    NoteLists.getList(type).add(note)
                 }
-                Main.notesList.value = newNotesList
+                NotesFragment.noteTrigger.value = Unit
             }
-
         }
     }
 
@@ -151,6 +158,8 @@ object FireStoreListener {
         collectionReference.addSnapshotListener { docs, error ->
             val nameList = mutableListOf<String>()
             if(docs != null) {
+                WordLinear.getWordList(type).clear()
+                WordLinear.allWords.clear()
                 for(doc in docs) {
                     val word = doc.toObject(Word::class.java)
                     if(!nameList.contains(word.text)) {

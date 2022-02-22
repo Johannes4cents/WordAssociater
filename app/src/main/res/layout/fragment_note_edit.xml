@@ -16,55 +16,10 @@
             android:layout_height="45dp"
             android:src="@drawable/back_icon" />
 
-        <LinearLayout
+        <View
             android:layout_weight="1"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
             android:layout_width="0dp"
-            android:layout_height="45dp">
-
-            <TextView
-                android:id="@+id/btn_words_app"
-                android:layout_weight="1"
-                android:text="Words \n App"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="center"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-            <TextView
-                android:id="@+id/btnStory"
-                android:layout_weight="1"
-                android:text="Story"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="center"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-            <TextView
-                android:id="@+id/btnGameApp"
-                android:layout_weight="1"
-                android:text="Game \n App"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="center"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-            <TextView
-                android:id="@+id/btnOther"
-                android:layout_weight="1"
-                android:text="Other"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="center"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-
-            </LinearLayout>
+            android:layout_height="match_parent"/>
 
 
         <ImageView
@@ -111,13 +66,10 @@
             android:visibility="visible" />
     </RadioGroup>
     <EditText
+        android:gravity="start"
+        android:textAlignment="textStart"
         android:id="@+id/noteInput"
         android:inputType="textMultiLine"
         android:layout_width="match_parent"
-        android:layout_height="100dp"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/noteRecycler"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="400dp"/>
 </LinearLayout>
