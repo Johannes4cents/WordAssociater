@@ -4,14 +4,14 @@ import com.example.wordassociater.R
 import com.example.wordassociater.utils.StoryPart
 import com.google.firebase.firestore.Exclude
 
-class Dramaturgy(
+class Drama(
         override var id: Long = 0,
         override var content: String = "",
         override var wordList: MutableList<String> = mutableListOf(),
-        var characterList: MutableList<Long> = mutableListOf(),
+        override var characterList: MutableList<Long> = mutableListOf(),
         var type: Type = Type.Conflict
-): StoryPart(wordList, content, id) {
-    enum class Type {Conflict, Twist, Plan, Motivation, Goal, Problem, Solution, Hurdle}
+): StoryPart(wordList, content, id, characterList) {
+    enum class Type {Conflict, Twist, Plan, Motivation, Goal, Problem, Solution, Hurdle, None}
 
     @Exclude
     fun getImage(): Int {
@@ -24,6 +24,7 @@ class Dramaturgy(
             Type.Problem -> R.drawable.icon_problem
             Type.Solution -> R.drawable.icon_solution
             Type.Hurdle -> R.drawable.icon_hurdle
+            Type.None -> R.drawable.icon_dramaturgy
         }
     }
 

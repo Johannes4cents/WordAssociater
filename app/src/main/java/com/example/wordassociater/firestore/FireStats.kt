@@ -9,6 +9,24 @@ object FireStats {
         return number
     }
 
+    fun getDramaId(): Long {
+        val number = FireLists.stats!!.dramaNumber + 1
+        FireLists.fireStats.update("dramaNumber", number)
+        return number
+    }
+
+    fun getSphereId(): Long {
+        val number = FireLists.stats!!.sphereNumber + 1
+        FireLists.fireStats.update("sphereNumber", number)
+        return number
+    }
+
+    fun getWordCatId(): Long {
+        val number = FireLists.stats!!.wordCatNumber + 1
+        FireLists.fireStats.update("wordCatNumber", number)
+        return number
+    }
+
     fun getCharConnectId() : Long {
         Log.i("fuckshit", "FireStats/GetCharConnectId")
         val number = FireLists.stats!!.charNumber + 1

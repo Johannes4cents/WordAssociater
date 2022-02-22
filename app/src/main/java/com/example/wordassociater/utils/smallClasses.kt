@@ -1,8 +1,13 @@
 package com.example.wordassociater.utils
 
 import com.example.wordassociater.R
+import com.example.wordassociater.fire_classes.Character
 
-open class StoryPart(open var wordList: MutableList<String>, open var content: String, open var id : Long) {
+open class StoryPart(
+        open var wordList: MutableList<String>,
+        open var content: String,
+        open var id : Long,
+        open var characterList: MutableList<Long>) {
 
     companion object {
         fun getIdList(wordsList: MutableList<StoryPart>): List<Long> {
@@ -27,4 +32,3 @@ enum class WordColor(path: Int)
 enum class AdapterType { List, Popup }
 
 enum class Page(number: Int) {Chars(0), Start(1), Words(2)}
-

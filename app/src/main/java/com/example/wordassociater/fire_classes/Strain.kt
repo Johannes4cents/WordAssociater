@@ -9,12 +9,12 @@ data class Strain(
         override var wordList: MutableList<String> = mutableListOf(),
         var header: String = "Strain",
         override var id: Long = 0,
-        var characterList : MutableList<Long> = mutableListOf(),
+        override var characterList : MutableList<Long> = mutableListOf(),
         var isStory: Boolean = false,
         var connections: Int = 0,
         var connectionLayer: Int = 1,
         var connectionsList: MutableList<Long> = mutableListOf()
-): StoryPart(wordList, content, id) {
+): StoryPart(wordList, content, id, characterList) {
 
     companion object {
         fun convertToIdList(strainList: MutableList<Strain>): List<Long> {
@@ -37,7 +37,8 @@ data class Strain(
     fun getWords(): MutableList<Word> {
         val words = mutableListOf<Word>()
         for(string in wordList) {
-            words.add(Main.getWord(string)!!)
+            val found = Main.getWord(string)
+            if(found != null) words.add(found)
         }
         return words
     }

@@ -18,9 +18,8 @@ class StartFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         b = FragmentStartBinding.inflate(inflater)
-        b.readWriteBar.navController = findNavController()
-        b.characterBar.navController = findNavController()
-        b.dialogueNotesBar.navController = findNavController()
+        b.contentBar.navController = findNavController()
+        b.addStuffBar.navController = findNavController()
         return b.root
     }
 

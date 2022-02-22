@@ -6,7 +6,7 @@ import com.example.wordassociater.words.WordLinear
 
 object FireWords {
     fun add(newWord: Word) {
-        val collectionReference = FireLists.getCollectionRef(newWord.type)
+        val collectionReference = FireLists.getWordCollectionRef(newWord.type)
         val list = WordLinear.getWordList(newWord.type)
         collectionReference.document(newWord.id).set(newWord)
         list.add(newWord)
@@ -14,12 +14,12 @@ object FireWords {
 
     fun delete(word: Word) {
         Log.i("WordId", "deletedWord is ${word.id} | word type is ${word.type} ")
-        val collectionReference = FireLists.getCollectionRef(word.type)
+        val collectionReference = FireLists.getWordCollectionRef(word.type)
         collectionReference.document(word.id).delete()
     }
 
     fun increaseWordUse(word: Word) {
-        val collectionReference = FireLists.getCollectionRef(word.type)
+        val collectionReference = FireLists.getWordCollectionRef(word.type)
         collectionReference.document(word.id).set(word)
     }
 
@@ -30,7 +30,7 @@ object FireWords {
                strainsList : MutableList<Long>? = null,
                cat: Word.Cat? = null
     ) {
-        val collectionReference = FireLists.getCollectionRef(word.type)
+        val collectionReference = FireLists.getWordCollectionRef(word.type)
         if(imgUrl != null) collectionReference.document(word.id).update("imgUrl", imgUrl)
         if(text != null) collectionReference.document(word.id).update("text", text)
         if(snippetsList != null) collectionReference.document(word.id).update("strainsList", imgUrl)
@@ -39,7 +39,7 @@ object FireWords {
     }
 
     fun <T>update(type: Word.Type, id: Long, fieldName: String, value: T) {
-        val collectionReference = FireLists.getCollectionRef(type)
+        val collectionReference = FireLists.getWordCollectionRef(type)
         collectionReference.document(id.toString()).update(fieldName, value)
     }
 

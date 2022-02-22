@@ -7,8 +7,8 @@ import com.google.firebase.firestore.Exclude
 data class Snippet(override var content: String = "", override var id: Long = 0,
                    override var wordList: MutableList<String> = mutableListOf(),
                    val connectedSnippets: MutableList<Long> = mutableListOf(),
-                   val characterList: MutableList<Long> = mutableListOf(),
-                   var isStory: Boolean = false): StoryPart(wordList, content, id) {
+                   override var characterList: MutableList<Long> = mutableListOf(),
+                   var isStory: Boolean = false): StoryPart(wordList, content, id, characterList) {
     @Exclude
     var isHeader = false
     @Exclude

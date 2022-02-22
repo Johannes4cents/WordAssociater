@@ -11,10 +11,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/mainScroller"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:orientation="vertical"
@@ -35,34 +36,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <com.example.wordassociater.bars.SnippetsStrainsBar
-                android:id="@+id/readWriteBar"
-                android:minHeight="45dp"
+            <com.example.wordassociater.bars.AddStuffBar
+                android:id="@+id/addStuffBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
-            <com.example.wordassociater.bars.AddWordBar
-                android:layout_marginTop="8dp"
-                android:minHeight="45dp"
-                android:id="@+id/addWordBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <com.example.wordassociater.bars.CharacterStoryBar
-                android:id="@+id/characterBar"
-                android:minHeight="45dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <com.example.wordassociater.bars.DialogueNotesBar
-                android:layout_marginTop="8dp"
-                android:id="@+id/dialogueNotesBar"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"/>
-
 
         </LinearLayout>
 
     </ScrollView>
+    <com.example.wordassociater.bars.ContentBar
+        android:id="@+id/contentBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

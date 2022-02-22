@@ -1,8 +1,9 @@
 package com.example.wordassociater.firestore
 import android.util.Log
 import com.example.wordassociater.Main
-import com.example.wordassociater.bars.DialogueNotesBar
+import com.example.wordassociater.bars.AddStuffBar
 import com.example.wordassociater.fire_classes.*
+import com.example.wordassociater.lists.DramaLists
 import com.example.wordassociater.lists.NoteLists
 import com.example.wordassociater.notes.NotesFragment
 import com.example.wordassociater.strains.StrainEditFragment
@@ -20,6 +21,7 @@ object FireStoreListener {
         getDialogues()
         getBubbles()
         getCharactersOneTimeForSelectionList()
+        getDramas()
     }
 
     private fun getCharacters() {
@@ -39,6 +41,20 @@ object FireStoreListener {
         }
     }
 
+    private fun getDramas() {
+        for(dramaType in FireDrama.typeList) {
+            FireLists.getDramaCollectionRef(dramaType).addSnapshotListener { docs, error ->
+                if(docs != null) {
+                    DramaLists.getList(dramaType).clear()
+                    for(doc in docs) {
+                        val drama = doc.toObject(Drama::class.java)
+                        DramaLists.getList(dramaType).add(drama)
+                    }
+                }
+            }
+        }
+
+    }
 
     private fun getCharactersOneTimeForSelectionList() {
         FireLists.characterList.get().addOnSuccessListener{ docs->
@@ -48,7 +64,7 @@ object FireStoreListener {
                     val character = doc.toObject(Character::class.java)
                     charList.add(character)
                 }
-                DialogueNotesBar.popUpCharacterList.value = charList
+                AddStuffBar.popUpCharacterList.value = charList
                 StrainEditFragment.popUpCharacterList.value = charList
             }
             else {
@@ -154,7 +170,7 @@ object FireStoreListener {
 
 
     private fun getWords(type: Word.Type) {
-        val collectionReference = FireLists.getCollectionRef(type)
+        val collectionReference = FireLists.getWordCollectionRef(type)
         collectionReference.addSnapshotListener { docs, error ->
             val nameList = mutableListOf<String>()
             if(docs != null) {

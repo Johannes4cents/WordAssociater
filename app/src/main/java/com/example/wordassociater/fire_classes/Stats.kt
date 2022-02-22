@@ -7,4 +7,7 @@ data class Stats(
         var bubbleNumber: Long = 0,
         var dialogueNumber: Long = 0,
         var storyPartNumber: Long = 0,
-        var characterNumber: Long = 0)
+        var dramaNumber: Long = 0,
+        var wordCatNumber: Long = 0,
+        var sphereNumber: Long = 0
+)

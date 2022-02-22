@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginBottom="8dp"
+    >
     <EditText
         android:id="@+id/snippetInput"
         android:gravity="top"
@@ -16,7 +18,17 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="40dp">
+
         <ImageView
+            android:id="@+id/btnBack"
+            android:layout_weight="1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/back_icon"
+            />
+
+        <ImageView
+            android:id="@+id/btnStory"
             android:layout_weight="1"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -33,7 +45,7 @@
 
         <ImageView
             android:layout_weight="1"
-            android:id="@+id/btnDramaturgy"
+            android:id="@+id/btnDrama"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/icon_dramaturgy"

@@ -16,7 +16,9 @@ data class Word(
         var connectId: Long = 0,
         var imgUrl: String = "",
         var cat: Cat = Cat.General,
-        var color:Int = R.color.wordBlue
+        var color:Int = R.color.wordBlue,
+        var spheres: List<Long> = mutableListOf(1),
+        var wordCat: List<Long> = mutableListOf(1)
 )
 {
     @Exclude

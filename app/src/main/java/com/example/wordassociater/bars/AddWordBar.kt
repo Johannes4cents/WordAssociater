@@ -77,7 +77,6 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
             b.foldLineal.visibility = if(unfolded) View.VISIBLE else View.GONE
             if(takesWordFunc == null )b.openWordsFragmentButton.visibility = if(unfolded) View.GONE else View.VISIBLE
             else b.openWordsFragmentButton.visibility = View.GONE
-            b.standInView.visibility = if(unfolded) View.GONE else View.VISIBLE
         }
     }
 

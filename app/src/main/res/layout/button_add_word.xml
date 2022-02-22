@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/descriptionText"
-        android:text="Add \n Adjective"
+        android:text="Adjective"
         android:textAlignment="center"
         android:fontFamily="@font/roboto_bold"
         android:textSize="12sp"

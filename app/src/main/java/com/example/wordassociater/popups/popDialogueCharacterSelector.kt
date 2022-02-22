@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.bars.DialogueNotesBar
+import com.example.wordassociater.bars.AddStuffBar
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.PopupCharacterSelectorBinding
 import com.example.wordassociater.dialogue.EditDialogueFragment
@@ -30,7 +30,7 @@ fun popCharacterSelector(from: View, navController: NavController, characterList
 
     fun setBinding() {
         b.goToNewDialogueBtn.setOnClickListener {
-            EditDialogueFragment.dialogue.charList = Character.getIdList(DialogueNotesBar.selectedCharacters)
+            EditDialogueFragment.dialogue.charList = Character.getIdList(AddStuffBar.selectedCharacters)
             navController.navigate(R.id.action_startFragment_to_editDialogueFragment)
             popUp.dismiss()
         }
@@ -49,7 +49,7 @@ fun popCharacterSelector(from: View, navController: NavController, characterList
     setObserver()
 
     popUp.setOnDismissListener {
-        DialogueNotesBar.selectedCharacters.clear()
+        AddStuffBar.selectedCharacters.clear()
     }
 
 
