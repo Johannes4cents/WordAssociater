@@ -12,6 +12,8 @@ data class Bubble(
         var color: Color = Color.Green,
         var dialogue: Long = 0, ) {
 
+    var isLeft: Boolean = true
+
     enum class Color {Green, Blue, Yellow, Orange}
 
     @Exclude
@@ -19,6 +21,9 @@ data class Bubble(
 
     @Exclude
     var isHeader = false
+
+    @Exclude
+    var deleted = false
 
     @Exclude
     fun getDialogue(): Dialogue? {

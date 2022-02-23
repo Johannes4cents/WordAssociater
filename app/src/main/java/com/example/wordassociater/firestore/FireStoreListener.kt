@@ -3,6 +3,7 @@ import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.StartFragment
 import com.example.wordassociater.bars.AddStuffBar
+import com.example.wordassociater.bars.AddWordBar
 import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.lists.DramaLists
 import com.example.wordassociater.lists.NoteLists
@@ -24,6 +25,8 @@ object FireStoreListener {
         getCharactersOneTimeForSelectionList()
         getDramas()
         getSpheres()
+        getSpheresOneTime()
+        getWordConnections()
     }
 
     private fun getCharacters() {
@@ -42,6 +45,20 @@ object FireStoreListener {
         }
     }
 
+    private fun getWordConnections() {
+        FireLists.wordConnectionList.addSnapshotListener { docs, error ->
+            if(docs != null) {
+                val connectionsList = mutableListOf<WordConnection>()
+                for(doc in docs) {
+                    val wordConnection = doc.toObject(WordConnection::class.java)
+                    if(!WordConnection.idList.contains(wordConnection.id)) WordConnection.idList.add(wordConnection.id)
+                    connectionsList.add(wordConnection)
+                }
+                Main.wordConnectionsList = connectionsList
+            }
+        }
+    }
+
     private fun getDramas() {
         for(dramaType in FireDrama.typeList) {
             FireLists.getDramaCollectionRef(dramaType).addSnapshotListener { docs, error ->
@@ -52,6 +69,19 @@ object FireStoreListener {
                         DramaLists.getList(dramaType).add(drama)
                     }
                 }
+            }
+        }
+    }
+
+    private fun getSpheresOneTime() {
+        FireLists.spheresList.get().addOnSuccessListener { docs ->
+            val sphereList = mutableListOf<Sphere>()
+            if(docs != null) {
+                for(doc in docs) {
+                    val sphere = doc.toObject<Sphere>(Sphere::class.java)
+                    sphereList.add(sphere)
+                }
+                AddWordBar.selectedSphereList.value = sphereList
             }
         }
     }
@@ -74,14 +104,18 @@ object FireStoreListener {
 
     private fun getCharactersOneTimeForSelectionList() {
         FireLists.characterList.get().addOnSuccessListener{ docs->
+
+            var randomPerson = Character()
             if(docs != null) {
                 var charList = mutableListOf<Character>()
                 for(doc in docs) {
                     val character = doc.toObject(Character::class.java)
                     character.selected = false
-                    charList.add(character)
+                    if(character.id != 16L) charList.add(character)
+                    else randomPerson = character
                 }
-                AddStuffBar.popUpCharacterList.value = charList
+                val submitList = listOf(randomPerson) + charList
+                AddStuffBar.popUpCharacterList.value = submitList
                 StrainEditFragment.popUpCharacterList.value = charList
             }
             else {

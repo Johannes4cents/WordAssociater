@@ -3,15 +3,15 @@
   <component name="deploymentTargetDropDown">
     <targetSelectedWithDropDown>
       <Target>
-        <type value="QUICK_BOOT_TARGET" />
+        <type value="PHYSICAL_DEVICE_TARGET" />
         <deviceKey>
           <Key>
-            <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="D:\kotlin\avds\.android\avd\Pixel_4a_API_30.avd" />
+            <type value="SERIAL_NUMBER" />
+            <value value="9YHNW18C24001272" />
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-02-22T23:42:44.156487400Z" />
+    <timeTargetWasSelectedWithDropDown value="2022-02-23T21:00:49.706734400Z" />
   </component>
 </project>

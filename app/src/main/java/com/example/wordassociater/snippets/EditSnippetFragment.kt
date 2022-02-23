@@ -92,15 +92,18 @@ class EditSnippetFragment: Fragment() {
     }
 
     private fun saveSnippet() {
-
         snippet.content = b.snippetInput.text.toString()
-
         val charList = mutableListOf<Long>()
         for(c in characterList.value!!) {
             if(c.selected) charList.add(c.id)
         }
         snippet.characterList = charList
         FireSnippets.add(snippet, context)
+        characterList.value = mutableListOf()
+    }
+
+    private fun handleWordConnections() {
+
     }
 
 

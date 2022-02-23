@@ -16,32 +16,27 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:layout_weight="1"
-            android:gravity="center"
-            android:minHeight="45dp"
-            android:maxHeight="140dp"
-            android:textColor="@color/black"
-            android:text=""
-            android:id="@+id/dialogueContent"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
-        <EditText
+        <ImageView
             android:visibility="gone"
+            android:id="@+id/portraitLeft"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_portrait"
+            />
+        <com.example.wordassociater.utils.WordsInputField
             android:gravity="center"
             android:layout_weight="1"
             android:minHeight="45dp"
             android:maxHeight="140dp"
-            android:textColor="@color/black"
-            android:inputType="textMultiLine"
-            android:id="@+id/dialogueInput"
+            android:id="@+id/wordsInputField"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
         <ImageView
-            android:id="@+id/deleteSaveBtn"
+            android:visibility="gone"
+            android:id="@+id/portraitRight"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/icon_red_x"
+            android:src="@drawable/icon_portrait"
             />
 
     </LinearLayout>

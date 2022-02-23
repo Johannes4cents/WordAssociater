@@ -1,6 +1,7 @@
 package com.example.wordassociater.firestore
 
-import android.util.Log
+import android.content.Context
+import com.example.wordassociater.utils.Helper
 
 object FireStats {
     fun getStoryPartId(): Long {
@@ -40,14 +41,12 @@ object FireStats {
     }
 
     fun getCharConnectId() : Long {
-        Log.i("fuckshit", "FireStats/GetCharConnectId")
-        val number = FireLists.stats!!.charNumber + 1
+        val number = FireLists.stats!!.connectId + 1
         FireLists.fireStats.update("connectId", number)
         return number
     }
 
     fun getCharId() : Long {
-        Log.i("fuckshit", "FireStats/GetCharId")
         val number = FireLists.stats!!.charNumber + 1
         FireLists.fireStats.update("charNumber", number)
         return number
@@ -65,9 +64,11 @@ object FireStats {
         return number
     }
 
-    fun getBubbleId(): Long {
+    fun getBubbleId(context: Context?): Long {
         val number = FireLists.stats!!.dialogueNumber + 1
-        FireLists.fireStats.update("dialogueNumber", number)
+        FireLists.fireStats.update("dialogueNumber", number).addOnSuccessListener {
+            if(context != null) Helper.toast("bubbleNumber increased", context)
+        }
         return number
     }
 

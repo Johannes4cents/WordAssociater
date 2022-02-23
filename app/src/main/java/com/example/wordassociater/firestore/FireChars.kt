@@ -25,8 +25,8 @@ object FireChars {
         FireLists.characterList.document(id).delete()
     }
 
-    fun <T>update(id: Long, fieldName: String, value: T) {
-
+    fun update(id: Long, fieldName: String, value: Any) {
+        FireLists.characterList.document(id.toString()).update(fieldName, value)
     }
 
 }

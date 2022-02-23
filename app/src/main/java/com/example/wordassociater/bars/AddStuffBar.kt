@@ -9,10 +9,12 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.example.wordassociater.Frags
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.BarAddStuffBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.popups.popCharacterSelector
+import com.example.wordassociater.strains.StrainEditFragment
 import com.example.wordassociater.utils.Helper
 
 class AddStuffBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
@@ -34,6 +36,7 @@ class AddStuffBar(context: Context, attributeSet: AttributeSet): LinearLayout(co
     private fun setClickListener() {
 
         b.btnNewDialogue.setOnClickListener {
+
             popCharacterSelector(b.btnNewDialogue, navController, popUpCharacterList, ::handleSelectedCharacter)
         }
 
@@ -42,6 +45,7 @@ class AddStuffBar(context: Context, attributeSet: AttributeSet): LinearLayout(co
         }
 
         b.btnNewStrain.setOnClickListener {
+            StrainEditFragment.comingFrom = Frags.START
             findNavController().navigate(R.id.action_startFragment_to_writeFragment)
         }
 
@@ -70,9 +74,15 @@ class AddStuffBar(context: Context, attributeSet: AttributeSet): LinearLayout(co
         }
         else selectedCharacters.remove(selectedCharacters)
         val newList = popUpCharacterList.value!!.toMutableList()
+
         var index = newList.indexOf(character)
         newList.remove(character)
         newList.add(index, character)
-        popUpCharacterList.value = newList
+
+        val randomPerson = newList.find { c -> c.id == 16L }
+        newList.remove(randomPerson)
+
+
+        popUpCharacterList.value = listOf(randomPerson!!) + newList
     }
 }

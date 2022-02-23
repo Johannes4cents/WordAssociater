@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.example.wordassociater.utils.WordsInputField
+        android:id="@+id/dialogueDescription"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
     <LinearLayout
         android:gravity="center"
         android:orientation="horizontal"
@@ -34,6 +39,28 @@
 
             android:src="@drawable/btn_save_strain"
             />
+    </LinearLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/addWordButton"
+            android:padding="5dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:src="@drawable/btn_open_words_list"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/wordRecycler"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

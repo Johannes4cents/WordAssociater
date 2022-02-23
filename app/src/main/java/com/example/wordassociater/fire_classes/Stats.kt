@@ -11,5 +11,6 @@ data class Stats(
         var wordCatNumber: Long = 0,
         var sphereNumber: Long = 0,
         var nuwNumber: Long = 0,
-        var proseNumber: Long = 0
+        var proseNumber: Long = 0,
+        var connectId: Long = 0
 )

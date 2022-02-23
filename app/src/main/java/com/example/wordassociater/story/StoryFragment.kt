@@ -29,8 +29,8 @@ class StoryFragment: Fragment() {
 
     private fun setContent() {
         b.characterPortrait.setImageResource(R.drawable.icon_story)
-        b.characterName.text = "Story"
-        b.characterName.textSize = 24f
+        b.textCharacterName.text = "Story"
+        b.textCharacterName.textSize = 24f
     }
     private fun setClickListener() {
         b.buttonStrains.setOnClickListener {

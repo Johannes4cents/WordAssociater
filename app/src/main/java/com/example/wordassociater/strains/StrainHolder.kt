@@ -9,6 +9,7 @@ import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.HolderStrainBinding
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.firestore.FireStrains
+import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.utils.Helper
 
 class StrainHolder(
@@ -89,6 +90,14 @@ class StrainHolder(
             }
         }
 
+        b.btnDelete.setOnClickListener {
+            Pop(b.btnDelete.context).confirmationPopUp(b.btnDelete, ::deleteStrainFunc)
+        }
+
+    }
+
+    private fun deleteStrainFunc(confirmation: Boolean) {
+        if(confirmation) FireStrains.delete(strain)
     }
 
     private fun connectStrains(strainOne: Strain, strainTwo: Strain) {

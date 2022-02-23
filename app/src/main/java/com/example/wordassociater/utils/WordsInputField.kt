@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnKeyListener
 import android.widget.LinearLayout
+import android.widget.TableRow
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
@@ -15,27 +16,55 @@ import com.example.wordassociater.fire_classes.Nuw
 
 class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = InputFieldWordsBinding.inflate(LayoutInflater.from(context), this, true)
-    private val nuws = MutableLiveData<List<String>>()
+    var content = ""
+    var takeContentFunc : ((content: String) -> Unit)? = null
+    private val wordInput = MutableLiveData<List<String>>()
+    val nuwList = mutableListOf<Nuw>()
+    private var inputEnabled = true
 
     init {
         setKeyListener()
         onChangeListener()
         setObserver()
+        setClickListener()
+    }
+
+    fun setContentFunc(func: (content: String) -> Unit) {
+        takeContentFunc = func
     }
 
     private fun setClickListener() {
         b.textField.setOnClickListener {
-            showInputField()
+            if(inputEnabled) showInputField()
         }
+
+        b.inputField.setOnClickListener {
+            saveInput()
+            if(takeContentFunc != null) takeContentFunc?.let { it1 -> it1(content) }
+        }
+    }
+
+    fun enableInput(enable: Boolean) {
+        inputEnabled = enable
+    }
+
+    fun setTextField(content: String) {
+        b.textField.text = content
     }
 
     fun showInputField() {
         b.textField.visibility = View.GONE
         b.inputField.visibility = View.VISIBLE
-        b.inputField.isFocusable = true
-        b.inputField.isFocusableInTouchMode = true
-        b.inputField.requestFocus()
-        Helper.getIMM(context).showSoftInput(b.inputField, 0)
+        b.inputField.setText(b.textField.text)
+        Helper.takeFocus(b.inputField, context)
+    }
+
+    fun saveInput() {
+        b.textField.text = b.inputField.text
+        content = b.inputField.text.toString()
+        b.inputField.visibility = View.GONE
+        b.textField.visibility = View.VISIBLE
+        Helper.getIMM(b.root.context).hideSoftInputFromWindow(b.inputField.windowToken, 0)
     }
 
     private fun updateList() {
@@ -44,7 +73,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         for(w in newWords) {
             if(w.isNotEmpty()) strippedWords.add(Helper.stripWord(w).capitalize())
         }
-        nuws.value = strippedWords
+        wordInput.value = strippedWords
         b.textField.text = b.inputField.text
     }
 
@@ -72,15 +101,17 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     }
 
     private fun setObserver() {
-        nuws.observe(context as LifecycleOwner) {
+        wordInput.observe(context as LifecycleOwner) {
             val nuwList = mutableListOf<Nuw>()
 
             for(string in it) {
-                val nuw = Nuw(
-                        id = getNuwId(),
-                        text = string,
-
-                )
+                if(!CommonWords.commonWords.contains(string.toLowerCase())) {
+                    val nuw = Nuw(
+                            id = getNuwId(),
+                            text = string,
+                            )
+                    nuwList.add(nuw)
+                }
             }
         }
     }
@@ -92,6 +123,21 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         }
         Nuw.idList.add(id)
         return id
+    }
+
+    fun showNuws() {
+        b.inputField.visibility = View.GONE
+        b.textField.visibility = View.GONE
+        b.nuwTable.visibility = View.VISIBLE
+
+        var rowIndex = 0
+        val tableRowList = listOf<TableRow>(b.row1, b.row2, b.row3, b.row4)
+        for(nuw in nuwList) {
+            if(tableRowList[rowIndex].childCount < 5) {
+
+            }
+        }
+
     }
 
 }

@@ -30,7 +30,7 @@ fun popCharacterSelector(from: View, navController: NavController, characterList
 
     fun setBinding() {
         b.goToNewDialogueBtn.setOnClickListener {
-            EditDialogueFragment.dialogue.charList = Character.getIdList(AddStuffBar.selectedCharacters)
+            EditDialogueFragment.dialogue.characterList = Character.getIdList(AddStuffBar.selectedCharacters)
             navController.navigate(R.id.action_startFragment_to_editDialogueFragment)
             popUp.dismiss()
         }

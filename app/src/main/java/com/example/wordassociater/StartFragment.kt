@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
+import com.example.wordassociater.bars.AddWordBar
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentStartBinding
 import com.example.wordassociater.fire_classes.Sphere
@@ -29,6 +30,7 @@ class StartFragment: Fragment() {
         b = FragmentStartBinding.inflate(inflater)
         b.contentBar.navController = findNavController()
         b.addStuffBar.navController = findNavController()
+        AddWordBar.navController = findNavController()
         setRecycler()
         setObserver()
         return b.root
@@ -50,6 +52,7 @@ class StartFragment: Fragment() {
             }
         }
     }
+
 
 
 }

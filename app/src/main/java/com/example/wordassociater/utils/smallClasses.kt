@@ -34,4 +34,4 @@ enum class AdapterType { List, Popup }
 
 enum class Page(number: Int) {Chars(0), Start(1), Words(2)}
 
-data class WordConnection(var word: String = "", var connected: Int = 0)
+

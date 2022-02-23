@@ -1,7 +1,7 @@
 package com.example.wordassociater.utils
-import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wordassociater.dialogue.BubbleHeader
 
 
 class SwipeToDeleteCallback(val adapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
@@ -11,6 +11,7 @@ class SwipeToDeleteCallback(val adapter: ItemTouchHelperAdapter) : ItemTouchHelp
     ): Int {
         val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
         val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+        if(viewHolder is BubbleHeader) return 0
         return makeMovementFlags( dragFlags, swipeFlags )
     }
 
@@ -19,12 +20,10 @@ class SwipeToDeleteCallback(val adapter: ItemTouchHelperAdapter) : ItemTouchHelp
             source: RecyclerView.ViewHolder,
             target: RecyclerView.ViewHolder
     ): Boolean {
-        Log.i("Swipe", "OnMove triggered in SwipeToDeleteCallback")
         return true
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         adapter.onItemDismiss(viewHolder.adapterPosition)
-        Log.i("Swipe", "onSwiped triggered in SwipeToDeleteCallback")
     }
 }

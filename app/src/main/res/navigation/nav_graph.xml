@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_ViewPagerFragment_to_characterFragment2"
             app:destination="@id/characterFragment" />
+        <action
+            android:id="@+id/action_ViewPagerFragment_to_heritageFragment"
+            app:destination="@id/heritageFragment" />
     </fragment>
     <fragment
         android:id="@+id/readFragment"
@@ -195,5 +198,8 @@
         <action
             android:id="@+id/action_heritageFragment_to_wordDetailedFragment"
             app:destination="@id/wordDetailedFragment" />
+        <action
+            android:id="@+id/action_heritageFragment_to_ViewPagerFragment"
+            app:destination="@id/ViewPagerFragment" />
     </fragment>
 </navigation>

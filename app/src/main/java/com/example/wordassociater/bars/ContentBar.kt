@@ -33,7 +33,7 @@ class ContentBar(context: Context, attributeSet: AttributeSet): LinearLayout(con
         }
 
         b.btnDialogue.setOnClickListener {
-
+            findNavController().navigate(R.id.action_startFragment_to_dialogueListFragment)
         }
 
         b.btnSnippets.setOnClickListener {

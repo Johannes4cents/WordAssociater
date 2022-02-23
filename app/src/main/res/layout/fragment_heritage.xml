@@ -13,6 +13,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/btnBack"
             android:layout_marginStart="4dp"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -21,14 +22,65 @@
 
         <ImageView
             android:layout_weight="1"
-            android:layout_marginEnd="44dp"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="100dp"
             android:src="@drawable/icon_heritage"
             />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/btnSave"
+                android:layout_marginEnd="4dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_save"
+                />
+            <ImageView
+                android:layout_weight="1"
+                android:id="@+id/btnSpheres"
+                android:layout_marginEnd="4dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_sphere"
+                />
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/nameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text="Word Text"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/inputName"
+            android:visibility="gone"
+            android:lines="1"
+            android:inputType="text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto_bold"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -38,11 +90,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
-            android:text="Child of:"
+            android:text="Branch of:"
             android:textSize="25sp" />
 
         <TextView
             android:id="@+id/fieldBranchOf"
+            android:layout_marginEnd="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -82,6 +135,33 @@
     </LinearLayout>
 
     <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_plus" />
+
+        <View
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginTop="8dp"
@@ -103,5 +183,32 @@
             android:layout_height="match_parent"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <View
+            android:id="@+id/btnAddSynonyms"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <ImageView
+            android:id="@+id/btnAddRootOf"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_plus" />
+
+        <View
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+    </LinearLayout>
 </LinearLayout>

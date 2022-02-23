@@ -7,13 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
 import com.example.wordassociater.R
+import com.example.wordassociater.StartFragment
 import com.example.wordassociater.databinding.BarAddWordBinding
 import com.example.wordassociater.fire_classes.Character
+import com.example.wordassociater.fire_classes.Sphere
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireChars
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.popups.popSelectSphere
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Helper.getIMM
 import com.example.wordassociater.words.WordLinear
@@ -23,11 +28,17 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
 
     val b = BarAddWordBinding.inflate(LayoutInflater.from(context), this, true)
     var selectedType = Word.Type.Adjective
-    var newWord = ""
+    var newWord = Word()
     var takesWordFunc : ((word:Word) -> Unit)? = null
 
 
+    companion object {
+        val selectedSphereList = MutableLiveData<List<Sphere>?>()
+        lateinit var navController: NavController
+    }
+
     init {
+        handleSphereIconColor()
         setClickListener()
         setUpSpinner()
         setObserver()
@@ -36,6 +47,12 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
 
     fun handleTakesWordFunc(takesWordFunc : (word : Word) -> Unit) {
         this.takesWordFunc = takesWordFunc
+    }
+
+    private fun handleSphereIconColor() {
+        val selectedSpheres = selectedSphereList.value?.filter { s -> s.selected }
+        if(selectedSpheres != null && selectedSpheres.isNotEmpty()) b.btnSpheres.setImageResource(selectedSpheres[0].getColor())
+        else b.btnSpheres.setImageResource(R.drawable.sphere_grey)
     }
 
     private fun setClickListener() {
@@ -60,11 +77,28 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
         }
 
         b.btnSpheres.setOnClickListener {
-
+            popSelectSphere(b.btnSpheres, selectedSphereList, ::sphereSelectedFunc )
         }
 
     }
 
+    private fun sphereSelectedFunc(sphere: Sphere) {
+        sphere.selected = !sphere.selected
+        if(sphere.selected) {
+            val newList = selectedSphereList.value!!.toMutableList()
+            val submitList = Helper.getResubmitList(sphere, newList)
+            newWord.spheres.add(sphere.id)
+            selectedSphereList.value = submitList
+
+        }
+        else {
+            newWord.spheres.remove(sphere.id)
+            val newList = StartFragment.selectedSphereList.value!!.toMutableList()
+            newList.remove(sphere)
+            StartFragment.selectedSphereList.value = newList
+        }
+
+    }
 
     private fun setUpSpinner() {
         val optionList = listOf<Word.Type>(Word.Type.Adjective, Word.Type.Person, Word.Type.CHARACTER, Word.Type.Action, Word.Type.Object, Word.Type.Place)
@@ -89,26 +123,25 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
             getIMM(context).hideSoftInputFromWindow(b.wordInput.windowToken, 0)
             b.wordInput.setText("")
         }
+
+        selectedSphereList.observe(context as LifecycleOwner) {
+            handleSphereIconColor()
+        }
     }
 
     private fun addWord() {
         if(b.wordInput.text.isNotEmpty()) {
-            val newWord = Word(
-                    b.wordInput.text.toString(),
-                    selectedType,
-            id = FireStats.getWordId().toString())
+            newWord.text = b.wordInput.text.toString()
+            newWord.type = selectedType
+            newWord.id = FireStats.getWordId().toString()
             if(takesWordFunc == null) {
-
                 if(!Helper.checkIfWordExists(newWord, context)) {
-                    val newWord = Word(
-                            b.wordInput.text.toString(),
-                            selectedType,
-                            id = FireStats.getWordId().toString())
                     val connectId = FireStats.getCharConnectId()
                     handleCharacter(connectId, newWord)
                     handleWordLinear(newWord)
-                    FireWords.add(newWord)
+                    FireWords.add(newWord, context)
                     AddStuffBar.newWordInputOpen.value = false
+
                 }
             }
             else {
@@ -121,7 +154,10 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
     }
     private fun handleCharacter(connectId: Long, newWord: Word) {
         if(selectedType == Word.Type.CHARACTER) {
-            val character = Character(b.wordInput.text.toString(), connectId = connectId)
+            val character = Character(
+                    id =  FireStats.getCharId(),
+                    name = b.wordInput.text.toString(),
+                     connectId = connectId)
             FireChars.add(character, context)
             newWord.connectId = connectId
         }

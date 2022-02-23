@@ -46,7 +46,8 @@ class StrainEditFragment: Fragment() {
 
     }
 
-    var wordsList = MutableLiveData(WordLinear.selectedWords)
+    var liveWordsList = MutableLiveData(WordLinear.selectedWords)
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,7 +84,7 @@ class StrainEditFragment: Fragment() {
     }
 
     private fun setWordList() {
-        SearchHelper.setWordList(strain.getWords(), wordsList)
+        SearchHelper.setWordList(strain.getWords(), liveWordsList)
     }
 
     private fun updateWordList() {
@@ -91,7 +92,7 @@ class StrainEditFragment: Fragment() {
     }
 
     private fun handleWordIcon() {
-        if(wordsList.value!!.isEmpty()) {
+        if(liveWordsList.value!!.isEmpty()) {
             b.wordIcon.visibility = View.VISIBLE
             b.strainWords.visibility = View.GONE
         }
@@ -144,7 +145,7 @@ class StrainEditFragment: Fragment() {
         }
 
         b.strainWords.setOnClickListener {
-            popSearchWord(it, ::handleWordSelected, wordsList)
+            popSearchWord(it, ::handleWordSelected, liveWordsList)
         }
 
         b.characterBtn.setOnClickListener {
@@ -152,7 +153,7 @@ class StrainEditFragment: Fragment() {
         }
 
         b.wordIcon.setOnClickListener {
-            popSearchWord(it, ::handleWordSelected, wordsList)
+            popSearchWord(it, ::handleWordSelected, liveWordsList)
         }
     }
 
@@ -178,14 +179,14 @@ class StrainEditFragment: Fragment() {
             if(!strain.wordList.contains(word.id)) strain.wordList.add(word.id)
         }
         else strain.wordList.remove(word.id)
-        SearchHelper.setWordList(strain.getWords(), wordsList)
+        SearchHelper.setWordList(strain.getWords(), liveWordsList)
     }
 
     private fun setContent() {
         b.strainInput.setText(strain.content)
         b.headerInput.setText(strain.header)
 
-        b.strainWords.text = Helper.setWordsToString(wordsList.value!!)
+        b.strainWords.text = Helper.setWordsToString(liveWordsList.value!!)
 
         for(character in strain.getCharacters()) {
             character.selected = true
@@ -197,7 +198,7 @@ class StrainEditFragment: Fragment() {
     private fun saveStrain() {
 
         val selectedWords = mutableListOf<Word>()
-        for(w in wordsList.value!!) {
+        for(w in liveWordsList.value!!) {
             if(w.selected && !selectedWords.contains(w)) selectedWords.add(w)
         }
 
@@ -218,9 +219,13 @@ class StrainEditFragment: Fragment() {
 
             strain = Strain(id= FireStats.getStoryPartId())
 
-            if(comingFrom == Frags.START) findNavController().navigate(R.id.action_writeFragment_to_startFragment)
+            if(comingFrom == Frags.START) {
+                ViewPagerFragment.comingFrom = Page.Start
+                findNavController().navigate(R.id.action_writeFragment_to_startFragment)
+            }
             else if(comingFrom == Frags.READ) findNavController().navigate(R.id.action_writeFragment_to_readFragment)
 
+            WordLinear.selectedWords.clear()
             Helper.getIMM(requireContext()).hideSoftInputFromWindow(b.strainInput.windowToken, 0)
         }
         else {
@@ -252,7 +257,7 @@ class StrainEditFragment: Fragment() {
             }
         }
 
-        wordsList.observe(context as LifecycleOwner) {
+        liveWordsList.observe(context as LifecycleOwner) {
             updateWordList()
             handleWordIcon()
         }

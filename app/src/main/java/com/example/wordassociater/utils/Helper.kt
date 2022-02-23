@@ -120,6 +120,16 @@ object Helper {
         return popWindow
     }
 
+    fun takeFocus(view:View, context: Context) {
+        view.visibility = View.VISIBLE
+        view.isFocusable = true
+        view.isFocusableInTouchMode = true
+        view.requestFocus()
+        getIMM(context).showSoftInput(view, 0)
+    }
+
+
+
     fun toast(text: String, context: Context) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }

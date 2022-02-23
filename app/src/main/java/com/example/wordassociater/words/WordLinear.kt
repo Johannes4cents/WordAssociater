@@ -24,6 +24,8 @@ class WordLinear(context: Context, attributeSet: AttributeSet): LinearLayout(con
         val placesList = mutableListOf<Word>()
         val characterList = mutableListOf<Word>()
 
+
+
         fun deselectWords() {
             for(w in selectedWords) {
                 w.selected = false

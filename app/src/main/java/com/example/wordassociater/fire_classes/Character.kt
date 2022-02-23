@@ -1,6 +1,7 @@
 package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.Main
+import com.google.firebase.firestore.Exclude
 
 data class Character(
         val name: String = "", val imgUrl : String = "",
@@ -8,9 +9,14 @@ data class Character(
         val snippetsList: MutableList<Snippet> = mutableListOf(),
         var id: Long = 0,
         var connectId: Long = 0,
-        var importance: Importance = Importance.Side) {
+        var importance: Importance = Importance.Side,
+        var dialogueList: MutableList<Long> = mutableListOf()) {
+        @Exclude
         var selected = false
+        @Exclude
         var isHeader = false
+
+        var isLeft = true
         enum class Importance(val text: String) {Main("Main"), Side("Side"), Minor("Minor"), Mentioned("Mentioned")}
 
 

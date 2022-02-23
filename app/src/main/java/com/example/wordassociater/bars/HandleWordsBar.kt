@@ -23,7 +23,8 @@ class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout
         fun getWord(type: Word.Type): Word? {
             var tries = 0
             var randomWord : Word? = null
-            while(tries < 100 && (randomWord == null || WordLinear.wordList.contains(randomWord) || Helper.checkIfWordInRightSphere(randomWord) )) {
+            while(tries < 200 && (
+                            randomWord == null || WordLinear.wordList.contains(randomWord) || Helper.checkIfWordInRightSphere(randomWord) || !Helper.checkIfWordInRightSphere(randomWord))) {
                 randomWord = when(type) {
                     Word.Type.Adjective -> WordLinear.adjectivesList.random()
                     Word.Type.Person -> WordLinear.personsList.random()
@@ -35,8 +36,6 @@ class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout
                 }
                 tries++
             }
-
-            if(!Helper.checkIfWordInRightSphere(randomWord!!)) randomWord = null
             return randomWord
         }
 

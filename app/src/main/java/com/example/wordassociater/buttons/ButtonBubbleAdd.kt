@@ -50,7 +50,7 @@ class ButtonBubbleAdd(context: Context, attributeSet: AttributeSet?): Constraint
 
     }
 
-    fun setupClickListener(clickFunc: (char: Character, color: Bubble.Color) -> Unit) {
+    private fun setupClickListener(clickFunc: (char: Character, color: Bubble.Color) -> Unit) {
         b.bubbleBG.setOnClickListener {
             clickFunc(character, bubbleColor)
         }

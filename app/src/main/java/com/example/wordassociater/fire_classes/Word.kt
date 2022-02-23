@@ -2,16 +2,16 @@ package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.utils.WordConnection
 import com.google.firebase.firestore.Exclude
 
 data class Word(
-        val text: String = "",
-        val type: Type = Type.NONE,
+        var text: String = "",
+        var type: Type = Type.NONE,
         var id: String = "",
         var used: Int = 0,
         val snippetsList: MutableList<Long> = mutableListOf(),
         var strainsList: MutableList<Long> = mutableListOf(),
+        var dialogueList: MutableList<Long> = mutableListOf(),
         var selected : Boolean = false,
         var lineCount : Int = 1,
         var connectId: Long = 0,
@@ -20,9 +20,9 @@ data class Word(
         var color:Int = R.color.wordBlue,
         var spheres: MutableList<Long> = mutableListOf(1),
         var wordCat: MutableList<Long> = mutableListOf(1),
-        var branchOf: Long = 0,
-        var synonyms: MutableList<Long> = mutableListOf(),
-        var rootOf: MutableList<Long> = mutableListOf(),
+        var branchOf: String = "",
+        var synonyms: MutableList<String> = mutableListOf(),
+        var rootOf: MutableList<String> = mutableListOf(),
         var connections: MutableList<WordConnection> = mutableListOf()
 )
 {
@@ -96,6 +96,12 @@ data class Word(
             val idList = mutableListOf<String>()
             for(w in wordList) idList.add(w.id)
             return idList
+        }
+
+        fun convertIdListToWord(idList: List<String>): MutableList<Word> {
+            val wordList = mutableListOf<Word>()
+            for(w in idList) Main.getWord(w)?.let { wordList.add(it) }
+            return wordList
         }
     }
     enum class Type(val text: String) {

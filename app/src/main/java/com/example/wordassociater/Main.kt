@@ -18,6 +18,7 @@ class Main : AppCompatActivity() {
         var bubbleList = MutableLiveData<List<Bubble>?>()
         var dialogueList = MutableLiveData<List<Dialogue>?>()
         val sphereList = MutableLiveData<List<Sphere>?>()
+        var wordConnectionsList = mutableListOf<WordConnection>()
         var maxLayers = 0
 
         fun getCharacter(id: Long): Character? {
@@ -63,4 +64,4 @@ class Main : AppCompatActivity() {
 
 }
 
-enum class Frags { START, READ, WRITE, SNIPPET, CHARACTERLIST, CHARACTER, CONNECTSNIPPETS, EDITSNIPPETS, WORDLIST}
+enum class Frags { START, READ, WRITE, SNIPPET, CHARACTERLIST, CHARACTER, CONNECTSNIPPETS, EDITSNIPPETS, WORDLIST, WORDDETAILED}
