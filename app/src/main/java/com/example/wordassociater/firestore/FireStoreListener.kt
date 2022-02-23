@@ -1,6 +1,7 @@
 package com.example.wordassociater.firestore
 import android.util.Log
 import com.example.wordassociater.Main
+import com.example.wordassociater.StartFragment
 import com.example.wordassociater.bars.AddStuffBar
 import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.lists.DramaLists
@@ -22,6 +23,7 @@ object FireStoreListener {
         getBubbles()
         getCharactersOneTimeForSelectionList()
         getDramas()
+        getSpheres()
     }
 
     private fun getCharacters() {
@@ -30,8 +32,7 @@ object FireStoreListener {
                 var charList = mutableListOf<Character>()
                 for(doc in docs) {
                     val character = doc.toObject(Character::class.java)
-                    Log.i("fuckshit", "doc.id is ${doc.id}")
-                    if(character.id == 0L) FireChars.delete(doc.id)
+                    character.selected = false
                     charList.add(character)
                 }
                 Main.characterList.value = charList
@@ -53,7 +54,22 @@ object FireStoreListener {
                 }
             }
         }
+    }
 
+    private fun getSpheres() {
+        FireLists.spheresList.addSnapshotListener { docs, error ->
+            val sphereList = mutableListOf<Sphere>()
+            val selectedSpheres = mutableListOf<Sphere>()
+            if(docs != null) {
+                for(doc in docs) {
+                    val sphere = doc.toObject<Sphere>(Sphere::class.java)
+                    sphereList.add(sphere)
+                    if(sphere.selected) selectedSpheres.add(sphere)
+                }
+                Main.sphereList.value = sphereList
+                StartFragment.selectedSphereList.value = selectedSpheres
+            }
+        }
     }
 
     private fun getCharactersOneTimeForSelectionList() {
@@ -62,6 +78,7 @@ object FireStoreListener {
                 var charList = mutableListOf<Character>()
                 for(doc in docs) {
                     val character = doc.toObject(Character::class.java)
+                    character.selected = false
                     charList.add(character)
                 }
                 AddStuffBar.popUpCharacterList.value = charList
@@ -175,19 +192,12 @@ object FireStoreListener {
             val nameList = mutableListOf<String>()
             if(docs != null) {
                 WordLinear.getWordList(type).clear()
-                WordLinear.allWords.clear()
                 for(doc in docs) {
                     val word = doc.toObject(Word::class.java)
-                    if(!nameList.contains(word.text)) {
-                        nameList.add(word.text)
-                        word.selected = false
-                        WordLinear.getWordList(type).add(word)
-                        WordLinear.allWords.add(word)
-                    }
-                    else {
-                        Log.i("duplicateWords", "Word is: ${word.text}")
-                        FireWords.delete(word)
-                    }
+                    nameList.add(word.text)
+                    word.selected = false
+                    WordLinear.getWordList(type).add(word)
+                    if(WordLinear.allWords.find { w -> w.id == word.id } == null) WordLinear.allWords.add(word)
                 }
             }
         }

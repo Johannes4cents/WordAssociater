@@ -15,7 +15,7 @@
         <ImageView
             android:layout_weight="1"
             android:padding="5dp"
-            android:id="@+id/openWordsFragmentButton"
+            android:id="@+id/btnSpheres"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/icon_sphere"/>
@@ -57,7 +57,7 @@
 
         <ImageView
             android:layout_weight="1"
-            android:id="@+id/unfoldSaveBtn"
+            android:id="@+id/save_btn"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/btn_unfold"/>

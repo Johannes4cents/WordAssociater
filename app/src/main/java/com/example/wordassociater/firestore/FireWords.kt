@@ -18,27 +18,7 @@ object FireWords {
         collectionReference.document(word.id).delete()
     }
 
-    fun increaseWordUse(word: Word) {
-        val collectionReference = FireLists.getWordCollectionRef(word.type)
-        collectionReference.document(word.id).set(word)
-    }
-
-    fun update(word: Word,
-               imgUrl: String? = null,
-               text: String? = null,
-               snippetsList : MutableList<Long>? = null,
-               strainsList : MutableList<Long>? = null,
-               cat: Word.Cat? = null
-    ) {
-        val collectionReference = FireLists.getWordCollectionRef(word.type)
-        if(imgUrl != null) collectionReference.document(word.id).update("imgUrl", imgUrl)
-        if(text != null) collectionReference.document(word.id).update("text", text)
-        if(snippetsList != null) collectionReference.document(word.id).update("strainsList", imgUrl)
-        if(strainsList != null) collectionReference.document(word.id).update("snippetsList", imgUrl)
-        if(cat != null) collectionReference.document(word.id).update("cat", cat)
-    }
-
-    fun <T>update(type: Word.Type, id: Long, fieldName: String, value: T) {
+    fun <T>update(type: Word.Type, id: String, fieldName: String, value: T) {
         val collectionReference = FireLists.getWordCollectionRef(type)
         collectionReference.document(id.toString()).update(fieldName, value)
     }

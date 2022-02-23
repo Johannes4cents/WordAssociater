@@ -11,14 +11,12 @@ import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
-import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.PopupCharacterRecyclerBinding
 import com.example.wordassociater.databinding.PopupConfirmDeletionBinding
 import com.example.wordassociater.databinding.PopupWordRecyclerBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.story.Story
 import com.example.wordassociater.strains.StrainListFragment
 import com.example.wordassociater.utils.AdapterType
 import com.example.wordassociater.words.WordAdapter
@@ -99,11 +97,6 @@ class Pop(val context: Context) {
         popWindow.width = 900
         windowSetup(binding.root, view)
         handleAdapterModes()
-
-        binding.isStoryButton.setOnClickListener {
-            Story.storyModeActive = !Story.storyModeActive
-            binding.isStoryButton.setImageResource(if(Story.storyModeActive) R.drawable.icon_storymode_selected else R.drawable.icon_write_story)
-        }
 
         binding.clearAllBtn.setOnClickListener {
             CharacterAdapter.selectedCharacterList.clear()

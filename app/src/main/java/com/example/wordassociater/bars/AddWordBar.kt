@@ -2,13 +2,11 @@ package com.example.wordassociater.bars
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.BarAddWordBinding
 import com.example.wordassociater.fire_classes.Character
@@ -26,21 +24,18 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
     val b = BarAddWordBinding.inflate(LayoutInflater.from(context), this, true)
     var selectedType = Word.Type.Adjective
     var newWord = ""
-    var unfolded = MutableLiveData<Boolean>()
     var takesWordFunc : ((word:Word) -> Unit)? = null
 
 
     init {
         setClickListener()
         setUpSpinner()
-        handleFolding()
-        unfolded.value = false
+        setObserver()
+
     }
 
     fun handleTakesWordFunc(takesWordFunc : (word : Word) -> Unit) {
         this.takesWordFunc = takesWordFunc
-        unfolded.value = true
-        unfolded.value = false
     }
 
     private fun setClickListener() {
@@ -60,25 +55,16 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
             false
         })
 
-        b.unfoldSaveBtn.setOnClickListener {
-            if(unfolded.value!!) {
-                addWord()
-            }
-            else {
-                unfolded.value = true
-            }
+        b.saveBtn.setOnClickListener {
+            addWord()
+        }
+
+        b.btnSpheres.setOnClickListener {
+
         }
 
     }
 
-    private fun handleFolding() {
-        unfolded.observe(context as LifecycleOwner) {unfolded ->
-            b.unfoldSaveBtn.setImageResource(if(unfolded) R.drawable.btn_add_word else R.drawable.btn_unfold)
-            b.foldLineal.visibility = if(unfolded) View.VISIBLE else View.GONE
-            if(takesWordFunc == null )b.openWordsFragmentButton.visibility = if(unfolded) View.GONE else View.VISIBLE
-            else b.openWordsFragmentButton.visibility = View.GONE
-        }
-    }
 
     private fun setUpSpinner() {
         val optionList = listOf<Word.Type>(Word.Type.Adjective, Word.Type.Person, Word.Type.CHARACTER, Word.Type.Action, Word.Type.Object, Word.Type.Place)
@@ -94,6 +80,14 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
+        }
+    }
+
+    private fun setObserver() {
+        AddStuffBar.newWordInputOpen.observe(context as LifecycleOwner) {
+            b.root.visibility = if(it) View.VISIBLE else View.GONE
+            getIMM(context).hideSoftInputFromWindow(b.wordInput.windowToken, 0)
+            b.wordInput.setText("")
         }
     }
 
@@ -114,20 +108,18 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
                     handleCharacter(connectId, newWord)
                     handleWordLinear(newWord)
                     FireWords.add(newWord)
-                    hideVisuals()
+                    AddStuffBar.newWordInputOpen.value = false
                 }
             }
             else {
                 takesWordFunc!!(newWord)
-                hideVisuals()
             }
         }
         else {
-            unfolded.value = false
+            AddStuffBar.newWordInputOpen.value = false
         }
     }
     private fun handleCharacter(connectId: Long, newWord: Word) {
-        Log.i("fuckshit", "AddWordBar handleCharacter")
         if(selectedType == Word.Type.CHARACTER) {
             val character = Character(b.wordInput.text.toString(), connectId = connectId)
             FireChars.add(character, context)
@@ -138,13 +130,6 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
     private fun handleWordLinear(newWord: Word) {
         WordLinear.wordList.add(newWord)
         WordLinear.wordListTriger.postValue(Unit)
-    }
-
-    private fun hideVisuals() {
-        // Visuals
-        getIMM(context).hideSoftInputFromWindow(b.wordInput.windowToken, 0)
-        b.wordInput.setText("")
-        unfolded.value = false
     }
 
 

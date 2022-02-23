@@ -47,42 +47,42 @@ class AddWordButton(context: Context, attributeSet: AttributeSet?): LinearLayout
             0 -> {
                 b.descriptionText.text = "Adjective"
                 b.btnImage.setOnClickListener {
-                    WordLinear.wordList.add(HandleWordsBar.getWord(Word.Type.Adjective))
+                    HandleWordsBar.getWord(Word.Type.Adjective)?.let { it1 -> WordLinear.wordList.add(it1) }
                     WordLinear.wordListTriger.postValue(Unit)
                 }
             }
             1 -> {
                 b.descriptionText.text = "Action"
                 b.btnImage.setOnClickListener {
-                    WordLinear.wordList.add(HandleWordsBar.getWord(Word.Type.Action))
+                    HandleWordsBar.getWord(Word.Type.Action)?.let { it1 -> WordLinear.wordList.add(it1) }
                     WordLinear.wordListTriger.postValue(Unit)
                 }
             }
             2 -> {
                 b.descriptionText.text = "Person"
                 b.btnImage.setOnClickListener {
-                    WordLinear.wordList.add(HandleWordsBar.getWord(Word.Type.Person))
+                    HandleWordsBar.getWord(Word.Type.Person)?.let { it1 -> WordLinear.wordList.add(it1) }
                     WordLinear.wordListTriger.postValue(Unit)
                 }
             }
             3 -> {
                 b.descriptionText.text = "Character"
                 b.btnImage.setOnClickListener {
-                    WordLinear.wordList.add(HandleWordsBar.getWord(Word.Type.CHARACTER))
+                    HandleWordsBar.getWord(Word.Type.CHARACTER)?.let { it1 -> WordLinear.wordList.add(it1) }
                     WordLinear.wordListTriger.postValue(Unit)
                 }
             }
             4 -> {
                 b.descriptionText.text = "Object"
                 b.btnImage.setOnClickListener {
-                    WordLinear.wordList.add(HandleWordsBar.getWord(Word.Type.Object))
+                    HandleWordsBar.getWord(Word.Type.Object)?.let { it1 -> WordLinear.wordList.add(it1) }
                     WordLinear.wordListTriger.postValue(Unit)
                 }
             }
             5 -> {
                 b.descriptionText.text = "Place"
                 b.btnImage.setOnClickListener {
-                    WordLinear.wordList.add(HandleWordsBar.getWord(Word.Type.Place))
+                    HandleWordsBar.getWord(Word.Type.Place)?.let { it1 -> WordLinear.wordList.add(it1) }
                     WordLinear.wordListTriger.postValue(Unit)
                 }
             }

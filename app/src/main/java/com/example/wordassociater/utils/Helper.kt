@@ -10,6 +10,7 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
+import com.example.wordassociater.StartFragment
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.words.WordLinear
@@ -87,7 +88,19 @@ object Helper {
         return submitList
     }
 
+    fun checkIfWordInRightSphere(word: Word): Boolean {
+        var inRightSphere = false
+        if(StartFragment.selectedSphereList.value != null) {
+            for(sphere in word.getSphereList()) {
+                if(StartFragment.selectedSphereList.value!!.contains(sphere)) inRightSphere = true
+            }
+        }
+
+        return inRightSphere
+    }
+
     fun <T>getResubmitList(item: T, itemList: List<T>): MutableList<T>? {
+        val itemFound = itemList.find { i -> i == item }
         val newList = itemList.toMutableList()
         val index = newList.indexOf(item)
         newList.remove(item)
@@ -126,6 +139,15 @@ object Helper {
                 .replace("'", "")
                 .replace("&", "")
                 .replace("%", "")
+    }
+
+    fun contentToWordList(content: String): List<String> {
+        var stringList = content.split("\\s".toRegex())
+        var strippedString = mutableListOf<String>()
+        for(string in stringList) {
+            strippedString.add(stripWord(string))
+        }
+        return strippedString
     }
 
     fun setWordsToMultipleLines(list: MutableList<Word>): String {

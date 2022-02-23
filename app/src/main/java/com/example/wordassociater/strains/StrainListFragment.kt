@@ -1,6 +1,7 @@
 package com.example.wordassociater.strains
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,6 @@ import com.example.wordassociater.R
 import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.databinding.FragmentStrainsListBinding
 import com.example.wordassociater.fire_classes.Strain
-import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Page
 
 class StrainListFragment: Fragment() {
@@ -36,15 +36,23 @@ class StrainListFragment: Fragment() {
         b = FragmentStrainsListBinding.inflate(inflater)
         navController = findNavController()
         openStrain.postValue(null)
-        strainAdapter = StrainAdapter()
+        strainAdapter = StrainAdapter(::handleStrainSelected)
         b.strainsRecycler.adapter = strainAdapter
         setClickListener()
         setObserver()
-        handleOrSearch()
+        handleSearch()
         handleLayerButton()
         Main.inFragment = Frags.READ
         strainAdapter.submitList(Main.strainsList.value)
         return b.root
+    }
+
+
+    private fun handleStrainSelected(strain: Strain) {
+        StrainEditFragment.strain = strain
+        Main.inFragment = Frags.WRITE
+        StrainEditFragment.comingFrom  = Frags.READ
+        navController.navigate(R.id.action_readFragment_to_writeFragment)
     }
 
     private fun handleLayerButton() {
@@ -55,10 +63,11 @@ class StrainListFragment: Fragment() {
         }
     }
 
-    private fun handleOrSearch() {
-        b.searchBar.searchWords.observe(viewLifecycleOwner) {
-            if(it.isNotEmpty()) strainAdapter.submitList(Helper.getOrFilteredStoryPartList(it, Main.strainsList.value!!) as List<Strain>)
-            else strainAdapter.submitList(Main.strainsList.value)
+    private fun handleSearch() {
+        b.searchBar.getStrains {
+            Log.i("strainSearch", "strainSearch called")
+            if(it.isEmpty()) strainAdapter.submitList(Main.strainsList.value)
+            else strainAdapter.submitList(it)
         }
     }
     private fun setClickListener() {

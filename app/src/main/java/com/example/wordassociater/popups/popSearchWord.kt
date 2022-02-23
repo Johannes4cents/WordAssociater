@@ -13,45 +13,33 @@ import com.example.wordassociater.utils.ListHelper
 import com.example.wordassociater.words.WordAdapter
 import com.example.wordassociater.words.WordLinear
 
-fun popSearchWord(from: View, takeWordFunc : (word: Word) -> Unit, selectedWordsList: MutableLiveData<List<Word>>) {
+fun popSearchWord(
+        from: View,
+        takeWordFunc : (word: Word) -> Unit,
+        selectedWordsList: MutableLiveData<MutableList<Word>>) {
     val b = PopupSearchWordBinding.inflate(LayoutInflater.from(from.context), null, false)
 
-    val popUp = Helper.getPopUp(b.root, from, 600, 800)
+    val popUp = Helper.getPopUp(b.root, from, 600, 1000)
 
-    fun popUpTakeWordFunc(word:Word) {
-        takeWordFunc(word)
-    }
-
-    val popUpAdapter = WordAdapter(AdapterType.Popup, ::popUpTakeWordFunc, null)
+    val popUpAdapter = WordAdapter(AdapterType.Popup, takeWordFunc, null)
 
     fun setAdapter() {
         b.wordRecycler.adapter = popUpAdapter
         popUpAdapter.submitList(ListHelper.sortedWordList(WordLinear.allWords))
     }
     fun setObserver() {
-        b.searchBar.searchWords.observe(from.context as LifecycleOwner) {
-            var foundWords = mutableListOf<Word>()
-            for(string in it) {
-                val wordList = WordLinear.allWords.filter { w ->
-                    Helper.stripWord(w.text).startsWith(string) && !foundWords.contains(w) && !selectedWordsList.value!!.contains(w)}
-                foundWords = wordList as MutableList
-            }
-            if(selectedWordsList.value != null) {
-                foundWords = (foundWords + selectedWordsList.value!!) as MutableList
-            }
-            Log.i("wordPopup", "searchBar.searchWords.observe")
-            popUpAdapter.submitList(ListHelper.sortedWordList(foundWords))
+        b.searchBar.getWords { wordsList ->
+            Log.i("wordPopUp", "setObserver in popSearchWord wordsList count is ${wordsList.count()}")
+            popUpAdapter.submitList(wordsList + selectedWordsList.value as List<Word>)
+            b.wordRecycler.scrollToPosition(popUpAdapter.itemCount -1)
+            b.wordRecycler.scrollToPosition(0)
         }
 
-        selectedWordsList.observe(b.root.context as LifecycleOwner) {
-            val newPopupList = WordLinear.allWords.toMutableList()
-            for(word in it) {
-                word.isPicked = true
-                newPopupList.remove(word)
-            }
-
-            val submitList = (it.sortedBy { w -> w.text } + newPopupList.sortedBy { w-> w.text })
-            popUpAdapter.submitList(submitList)
+        selectedWordsList.observe(from.context as LifecycleOwner) {
+            Log.i("wordPopUp", "popSearchWord / setObserver")
+            popUpAdapter.submitList(it)
+            b.wordRecycler.scrollToPosition(popUpAdapter.itemCount -1)
+            b.wordRecycler.scrollToPosition(0)
         }
     }
 

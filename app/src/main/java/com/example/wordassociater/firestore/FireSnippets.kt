@@ -1,7 +1,6 @@
 package com.example.wordassociater.firestore
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import com.example.wordassociater.fire_classes.Snippet
 
@@ -19,12 +18,7 @@ object FireSnippets {
         }
     }
 
-    fun update(snippet: Snippet, context: Context?) {
-        Log.i("snippet", "snippet id: ${snippet.id}")
-        FireLists.snippetsList.document(snippet.id.toString()).set(snippet).addOnSuccessListener {
-            if(context != null) Toast.makeText(context, "Snipped updates", Toast.LENGTH_SHORT).show()
-        }.addOnFailureListener {
-            if(context != null) Toast.makeText(context, "Failed to update Snippet", Toast.LENGTH_SHORT).show()
-        }
+    fun update(id: Long, field: String, value: Any) {
+        FireLists.snippetsList.document(id.toString()).update(field, value)
     }
 }

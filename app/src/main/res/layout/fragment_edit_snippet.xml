@@ -25,7 +25,6 @@
             android:src="@drawable/icon_red_x" />
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/associatedWords"
             android:minHeight="45dp"
             android:gravity="center"
@@ -38,6 +37,7 @@
 
         <ImageView
             android:id="@+id/wordIcon"
+            android:visibility="gone"
             android:src="@drawable/btn_open_words_list"
             android:layout_weight="1"
             android:layout_width="45dp"

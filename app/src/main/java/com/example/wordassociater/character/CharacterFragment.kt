@@ -17,7 +17,7 @@ import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.firestore.FireLists
-import com.example.wordassociater.snippet_fragment.SnippetAdapter
+import com.example.wordassociater.snippets.SnippetAdapter
 import com.example.wordassociater.strains.StrainAdapter
 import com.example.wordassociater.utils.Page
 
@@ -25,10 +25,18 @@ class CharacterFragment: Fragment() {
     lateinit var b: FragmentCharacterBinding
 
     companion object {
-        val characterSnippetsAdapter = SnippetAdapter()
-        val characterStrainAdapter = StrainAdapter()
+        val characterSnippetsAdapter = SnippetAdapter(::snippetClickedFunc)
+        val characterStrainAdapter = StrainAdapter(::handleStrainClickedFunc)
 
         var character = Character("")
+
+        private fun handleStrainClickedFunc(strain: Strain) {
+
+        }
+
+        private fun snippetClickedFunc(snippet: Snippet) {
+
+        }
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -103,6 +111,8 @@ class CharacterFragment: Fragment() {
             }
         }
     }
+
+
 
 
 }

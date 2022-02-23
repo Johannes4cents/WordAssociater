@@ -8,6 +8,8 @@ import android.widget.LinearLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import com.example.wordassociater.R
 import com.example.wordassociater.databinding.BarAddStuffBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.popups.popCharacterSelector
@@ -21,6 +23,7 @@ class AddStuffBar(context: Context, attributeSet: AttributeSet): LinearLayout(co
         val popUpCharacterList = MutableLiveData<List<Character>>()
         val selectedCharacters = mutableListOf<Character>()
         val snippetInputOpen = MutableLiveData(false)
+        var newWordInputOpen = MutableLiveData(false)
     }
 
     init {
@@ -39,11 +42,11 @@ class AddStuffBar(context: Context, attributeSet: AttributeSet): LinearLayout(co
         }
 
         b.btnNewStrain.setOnClickListener {
-
+            findNavController().navigate(R.id.action_startFragment_to_writeFragment)
         }
 
         b.btnNewWord.setOnClickListener {
-
+            newWordInputOpen.value = !newWordInputOpen.value!!
         }
 
     }

@@ -17,6 +17,7 @@ class Main : AppCompatActivity() {
         var notesList = MutableLiveData<List<Note>?>()
         var bubbleList = MutableLiveData<List<Bubble>?>()
         var dialogueList = MutableLiveData<List<Dialogue>?>()
+        val sphereList = MutableLiveData<List<Sphere>?>()
         var maxLayers = 0
 
         fun getCharacter(id: Long): Character? {
@@ -45,6 +46,10 @@ class Main : AppCompatActivity() {
 
         fun getDialogue(id: Long): Dialogue? {
             return dialogueList.value?.find { d -> d.id == id }
+        }
+
+        fun getSphere(id: Long): Sphere? {
+            return sphereList.value?.find { s -> s.id == id }
         }
     }
 

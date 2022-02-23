@@ -1,4 +1,4 @@
-package com.example.wordassociater.snippet_fragment
+package com.example.wordassociater.snippets
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderSnippetBinding
 import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.snippets.SnippetHolder
 
 
-class SnippetAdapter: ListAdapter<Snippet, RecyclerView.ViewHolder>(SnippetDiff()) {
+class SnippetAdapter(
+        private val selectSnippedFunc: (snippet: Snippet) -> Unit
+): ListAdapter<Snippet, RecyclerView.ViewHolder>(SnippetDiff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return SnippetHolder(HolderSnippetBinding.inflate(LayoutInflater.from(parent.context)), this)
+        return SnippetHolder(HolderSnippetBinding.inflate(LayoutInflater.from(parent.context)), this, selectSnippedFunc)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

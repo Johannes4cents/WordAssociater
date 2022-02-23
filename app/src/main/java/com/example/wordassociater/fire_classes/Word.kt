@@ -2,6 +2,7 @@ package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
+import com.example.wordassociater.utils.WordConnection
 import com.google.firebase.firestore.Exclude
 
 data class Word(
@@ -17,8 +18,12 @@ data class Word(
         var imgUrl: String = "",
         var cat: Cat = Cat.General,
         var color:Int = R.color.wordBlue,
-        var spheres: List<Long> = mutableListOf(1),
-        var wordCat: List<Long> = mutableListOf(1)
+        var spheres: MutableList<Long> = mutableListOf(1),
+        var wordCat: MutableList<Long> = mutableListOf(1),
+        var branchOf: Long = 0,
+        var synonyms: MutableList<Long> = mutableListOf(),
+        var rootOf: MutableList<Long> = mutableListOf(),
+        var connections: MutableList<WordConnection> = mutableListOf()
 )
 {
     @Exclude
@@ -45,6 +50,17 @@ data class Word(
             if(strain != null) snippets.add(strain)
         }
         return snippets
+    }
+
+    fun getSphereList(): List<Sphere> {
+        val sphereList = mutableListOf<Sphere>()
+        for(sphere in spheres) {
+            val sphere = Main.getSphere(sphere)
+            if (sphere != null) {
+                sphereList.add(sphere)
+            }
+        }
+        return sphereList
     }
 
     @Exclude

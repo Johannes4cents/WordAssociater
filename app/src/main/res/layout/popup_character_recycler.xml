@@ -20,14 +20,6 @@
                 android:layout_height="30dp"
                 android:src="@drawable/icon_red_x"
                 />
-            <TextView
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_bold"
-                android:textColor="@color/black"
-                android:text="Clear ALL"
-                />
         </LinearLayout>
 
         <View
@@ -35,13 +27,7 @@
             android:layout_width="0dp"
             android:layout_height="30dp"/>
 
-        <ImageView
-            android:id="@+id/isStoryButton"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:src="@drawable/icon_write_story"
-            />
+
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

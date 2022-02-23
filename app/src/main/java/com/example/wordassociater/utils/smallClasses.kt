@@ -1,7 +1,6 @@
 package com.example.wordassociater.utils
 
 import com.example.wordassociater.R
-import com.example.wordassociater.fire_classes.Character
 
 open class StoryPart(
         open var wordList: MutableList<String>,
@@ -32,3 +31,5 @@ enum class WordColor(path: Int)
 enum class AdapterType { List, Popup }
 
 enum class Page(number: Int) {Chars(0), Start(1), Words(2)}
+
+data class WordConnection(var word: String = "", var connected: Int = 0)

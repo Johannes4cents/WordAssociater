@@ -24,14 +24,14 @@ object FireLists {
     private val otherNotes by lazy { db.collection("notes").document("noteCollections").collection("other") }
 
     // DramaLists Conflict, Twist, Plan, Motivation, Goal, Problem, Solution, Hurdle, None
-    private val conflictList by lazy { db.collection("dramas").document("dramaCollections").collection("") }
-    private val twistList by lazy { db.collection("dramas").document("dramaCollections").collection("") }
-    private val planList by lazy { db.collection("dramas").document("dramaCollections").collection("") }
-    private val motivationList by lazy { db.collection("dramas").document("dramaCollections").collection("") }
-    private val goalList by lazy { db.collection("dramas").document("dramaCollections").collection("") }
-    private val problemList by lazy { db.collection("dramas").document("dramaCollections").collection("") }
-    private val solutionList by lazy { db.collection("dramas").document("dramaCollections").collection("") }
-    private val hurdleList by lazy { db.collection("dramas").document("dramaCollections").collection("") }
+    private val conflictList by lazy { db.collection("dramas").document("dramaCollections").collection("conflicts") }
+    private val twistList by lazy { db.collection("dramas").document("dramaCollections").collection("twists") }
+    private val planList by lazy { db.collection("dramas").document("dramaCollections").collection("plans") }
+    private val motivationList by lazy { db.collection("dramas").document("dramaCollections").collection("motivations") }
+    private val goalList by lazy { db.collection("dramas").document("dramaCollections").collection("goals") }
+    private val problemList by lazy { db.collection("dramas").document("dramaCollections").collection("problems") }
+    private val solutionList by lazy { db.collection("dramas").document("dramaCollections").collection("solutions") }
+    private val hurdleList by lazy { db.collection("dramas").document("dramaCollections").collection("hurdles") }
 
     val fireStats by lazy { db.collection("stats").document("stats") }
     val bubbleList by lazy { db.collection("bubbles") }

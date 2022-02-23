@@ -13,7 +13,6 @@ import com.example.wordassociater.R
 import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.databinding.FragmentSnippetsBinding
 import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.snippet_fragment.SnippetAdapter
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Page
 
@@ -38,7 +37,7 @@ class SnippetFragment: Fragment() {
     }
 
     private fun setSnippetRecycler() {
-        snippetAdapter = SnippetAdapter()
+        snippetAdapter = SnippetAdapter(::snippetClickedFunc)
         b.snippetsRecycler.adapter = snippetAdapter
     }
 
@@ -49,7 +48,10 @@ class SnippetFragment: Fragment() {
         }
     }
 
-
+    private fun snippetClickedFunc(snippet: Snippet) {
+        EditSnippetFragment.snippet = snippet
+        findNavController().navigate(R.id.action_snippetFragment_to_editSnippetFragment)
+    }
 
     private fun setClickListener() {
         b.backBtn.setOnClickListener {

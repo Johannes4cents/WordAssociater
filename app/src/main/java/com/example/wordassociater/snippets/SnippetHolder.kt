@@ -9,10 +9,10 @@ import com.example.wordassociater.databinding.HolderSnippetBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.popups.Pop
-import com.example.wordassociater.snippet_fragment.SnippetAdapter
 import com.example.wordassociater.utils.Helper
 
-class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter): RecyclerView.ViewHolder(b.root) {
+class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
+                    val clickSnippetFunc: (snippet:Snippet) -> Unit): RecyclerView.ViewHolder(b.root) {
     lateinit var snippet : Snippet
     fun onBind(snippet: Snippet) {
         this.snippet = snippet
@@ -75,8 +75,7 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter): R
         }
 
         b.root.setOnClickListener {
-            EditSnippetFragment.snippet = snippet
-            SnippetFragment.navController.navigate(R.id.action_snippetFragment_to_editSnippetFragment)
+            clickSnippetFunc(snippet)
         }
     }
 
@@ -84,8 +83,8 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter): R
         if(!snippetOne.connectedSnippets.contains(snippetTwo.id)) {
             snippetOne.connectedSnippets.add(snippetTwo.id)
             snippetTwo.connectedSnippets.add(snippetOne.id)
-            FireSnippets.update(snippetTwo, b.root.context)
-            FireSnippets.update(snippetOne, b.root.context)
+            FireSnippets.update(snippetTwo.id, "connectedSnippets", snippetTwo.connectedSnippets)
+            FireSnippets.update(snippetOne.id, "connectedSnippets", snippetOne.connectedSnippets)
         }
         else {
             Toast.makeText(b.root.context, "Snippets already \n connected", Toast.LENGTH_SHORT).show()

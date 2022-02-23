@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderStrainBinding
 import com.example.wordassociater.fire_classes.Strain
 
-class StrainAdapter: ListAdapter<Strain, RecyclerView.ViewHolder>(StrainDiff()) {
+class StrainAdapter(val strainClickedFunc: (strain: Strain) -> Unit)
+    : ListAdapter<Strain, RecyclerView.ViewHolder>(StrainDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return StrainHolder(HolderStrainBinding.inflate(LayoutInflater.from(parent.context)))
+        return StrainHolder(HolderStrainBinding.inflate(LayoutInflater.from(parent.context)), strainClickedFunc)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

@@ -124,6 +124,12 @@
         <action
             android:id="@+id/action_wordDetailedFragment_to_ViewPagerFragment2"
             app:destination="@id/ViewPagerFragment" />
+        <action
+            android:id="@+id/action_wordDetailedFragment_to_heritageFragment"
+            app:destination="@id/heritageFragment" />
+        <action
+            android:id="@+id/action_wordDetailedFragment_to_wordConnectionsFragment"
+            app:destination="@id/wordConnectionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/notesFragment"
@@ -173,5 +179,21 @@
         <action
             android:id="@+id/action_editNoteFragment_to_notesFragment"
             app:destination="@id/notesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/wordConnectionsFragment"
+        android:name="com.example.wordassociater.words.WordConnectionsFragment"
+        android:label="WordConnectionsFragment" >
+        <action
+            android:id="@+id/action_wordConnectionsFragment_to_wordDetailedFragment"
+            app:destination="@id/wordDetailedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/heritageFragment"
+        android:name="com.example.wordassociater.words.HeritageFragment"
+        android:label="HeritageFragment" >
+        <action
+            android:id="@+id/action_heritageFragment_to_wordDetailedFragment"
+            app:destination="@id/wordDetailedFragment" />
     </fragment>
 </navigation>

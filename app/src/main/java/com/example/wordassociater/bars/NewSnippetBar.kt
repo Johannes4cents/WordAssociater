@@ -113,14 +113,16 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
 
     private fun closeSnippetInput() {
         b.snippetInput.setText("")
+        isDrama.value = Drama.Type.None
         Helper.getIMM(context).hideSoftInputFromWindow(b.snippetInput.windowToken, 0)
     }
 
     private fun saveSnippet() {
-        if(isDrama.value == Drama.Type.None) {
-            saveAsSnippet()
-        }
+        if(isDrama.value != Drama.Type.None) {
+            saveAsDrama()
 
+        }
+        saveAsSnippet()
     }
 
     private fun saveAsSnippet() {

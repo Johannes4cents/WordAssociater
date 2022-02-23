@@ -8,10 +8,15 @@ import android.view.LayoutInflater
 import android.view.View.OnKeyListener
 import android.widget.LinearLayout
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import com.example.wordassociater.R
+import com.example.wordassociater.Main
 import com.example.wordassociater.databinding.BarSearchBinding
+import com.example.wordassociater.fire_classes.Snippet
+import com.example.wordassociater.fire_classes.Strain
+import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.words.WordLinear
 
 @SuppressLint("AppCompatCustomView")
 class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
@@ -22,15 +27,8 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
     init {
         setKeyListener()
         onChangeListener()
-        setClickListener()
     }
 
-    private fun setClickListener() {
-        b.andOrSwitch.setOnClickListener {
-            orMode = !orMode
-            b.andOrSwitch.setImageResource(if(orMode) R.drawable.sign_or else R.drawable.sign_and)
-        }
-    }
 
     private fun setKeyListener() {
         b.searchStrainsInput.setOnKeyListener(OnKeyListener { v, keyCode, event ->
@@ -50,9 +48,7 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
     private fun onChangeListener() {
         b.searchStrainsInput.doOnTextChanged { text, start, before, count ->
             if(text != null) {
-                if(text.isNotEmpty()) {
-                    updateList()
-                }
+                updateList()
             }
         }
     }
@@ -64,6 +60,57 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
             if(w.isNotEmpty()) strippedWords.add(Helper.stripWord(w))
         }
         searchWords.value = strippedWords
+    }
+
+    fun getWords( takeWordsFunc: (wordsList: List<Word>) -> Unit) {
+        val allWords = WordLinear.allWords.toMutableList()
+        searchWords.observe(context as LifecycleOwner) {
+            val foundWords = mutableListOf<Word>()
+            for(word in allWords) {
+                for(string in it) {
+                    if(Helper.stripWord(word.text).startsWith(string)) foundWords.add(word)
+                }
+            }
+            takeWordsFunc(foundWords)
+        }
+    }
+
+    fun getStrains( takeStrainsFunc: (strainsList: List<Strain>) -> Unit ) {
+        val allStrains = Main.strainsList.value!!.toMutableList()
+        searchWords.observe(context as LifecycleOwner) {
+            val foundStrains = mutableListOf<Strain>()
+            for(strain in allStrains) {
+                val strainContentWords = Helper.contentToWordList(strain.content) + Helper.contentToWordList(strain.header)
+                for(string in it) {
+                    // Search Content
+                    for(wordString in strainContentWords) {
+                        if(wordString.startsWith(string) && !foundStrains.contains(strain)) {
+                            foundStrains.add(strain)
+                        }
+                    }
+                }
+            }
+            takeStrainsFunc(foundStrains)
+        }
+    }
+
+    fun getSnippets( takeSnippetsFunc: (snippetList: List<Snippet>) -> Unit ) {
+        val allSnippets = Main.snippetList.value!!.toMutableList()
+        searchWords.observe(context as LifecycleOwner) {
+            val foundSnippets = mutableListOf<Snippet>()
+            for(snippet in allSnippets) {
+                val strainContentWords = Helper.contentToWordList(snippet.content)
+                for(string in it) {
+                    // Search Content
+                    for(wordString in strainContentWords) {
+                        if(wordString.startsWith(string) && !foundSnippets.contains(snippet)) {
+                            foundSnippets.add(snippet)
+                        }
+                    }
+                }
+            }
+            takeSnippetsFunc(foundSnippets)
+        }
     }
 
 }

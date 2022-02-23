@@ -12,7 +12,7 @@ import com.example.wordassociater.utils.AdapterType
 class WordAdapter(
         private val adapterType: AdapterType,
         private val takeWordFunc: (word: Word) -> Unit,
-        private val rightButtonFunc: ((word:Word) -> Unit)?)
+        private val rightButtonFunc: ((word:Word) -> Unit)?, )
     : ListAdapter<Word, RecyclerView.ViewHolder>(WordDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

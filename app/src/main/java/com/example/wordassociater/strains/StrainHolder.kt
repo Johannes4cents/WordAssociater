@@ -4,8 +4,6 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wordassociater.Frags
-import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.HolderStrainBinding
@@ -13,7 +11,10 @@ import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.firestore.FireStrains
 import com.example.wordassociater.utils.Helper
 
-class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) {
+class StrainHolder(
+        val b: HolderStrainBinding,
+        val strainClickedFunc: (strain: Strain) -> Unit
+        ): RecyclerView.ViewHolder(b.root) {
     lateinit var strain: Strain
     private val strainTrigger = MutableLiveData<Unit>()
 
@@ -26,6 +27,18 @@ class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) 
         this.strain = strain
         setStrain()
         setClickListener()
+        setWordIcon()
+    }
+
+    private fun setWordIcon() {
+        if(strain.wordList.isEmpty()) {
+            b.associatedWordsStrain.visibility = View.GONE
+            b.associatedWordsIcon.visibility = View.VISIBLE
+        }
+        else {
+            b.associatedWordsStrain.visibility = View.VISIBLE
+            b.associatedWordsIcon.visibility = View.GONE
+        }
     }
 
     private fun setStrain() {
@@ -57,10 +70,7 @@ class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) 
 
     private fun setClickListener() {
         b.root.setOnClickListener {
-            StrainEditFragment.strain = strain
-            Main.inFragment = Frags.WRITE
-            StrainEditFragment.comingFrom  = Frags.READ
-            StrainListFragment.navController.navigate(R.id.action_readFragment_to_writeFragment)
+            strainClickedFunc(strain)
         }
 
         b.connectBtn.setOnClickListener {
@@ -79,15 +89,6 @@ class StrainHolder(val b: HolderStrainBinding): RecyclerView.ViewHolder(b.root) 
             }
         }
 
-        b.associatedWordsIcon.setOnClickListener {
-            it.visibility = View.GONE
-            b.associatedWordsStrain.visibility = View.VISIBLE
-        }
-
-        b.associatedWordsStrain.setOnClickListener {
-            it.visibility = View.GONE
-            b.associatedWordsIcon.visibility = View.VISIBLE
-        }
     }
 
     private fun connectStrains(strainOne: Strain, strainTwo: Strain) {

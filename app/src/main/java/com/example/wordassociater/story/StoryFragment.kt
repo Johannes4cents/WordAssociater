@@ -11,7 +11,7 @@ import com.example.wordassociater.databinding.FragmentCharacterBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.firestore.FireLists
-import com.example.wordassociater.snippet_fragment.SnippetAdapter
+import com.example.wordassociater.snippets.SnippetAdapter
 import com.example.wordassociater.strains.StrainAdapter
 
 class StoryFragment: Fragment() {
@@ -64,8 +64,8 @@ class StoryFragment: Fragment() {
     }
 
     private fun setRecycler() {
-        strainAdapter = StrainAdapter()
-        snippetAdapter = SnippetAdapter()
+        strainAdapter = StrainAdapter(::handleStrainClickedFunc)
+        snippetAdapter = SnippetAdapter(::snippedClickedFunc)
         b.specificCharacterRecycler.adapter = strainAdapter
 
         FireLists.fireStrainsList.get().addOnSuccessListener { docs ->
@@ -76,5 +76,13 @@ class StoryFragment: Fragment() {
             }
             strainAdapter.submitList(strainList)
         }
+    }
+
+    private fun handleStrainClickedFunc(strain: Strain) {
+
+    }
+
+    private fun snippedClickedFunc(snippet: Snippet) {
+
     }
 }

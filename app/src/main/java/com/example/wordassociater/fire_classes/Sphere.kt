@@ -10,8 +10,10 @@ class Sphere(
 ) {
     enum class Color { Red, Green, Gold }
 
+    var selected = false
+
     @Exclude
-    fun getColor(color: Color): Int {
+    fun getColor(): Int {
         return when(color) {
             Color.Red -> R.drawable.sphere_red
             Color.Green -> R.drawable.sphere_green

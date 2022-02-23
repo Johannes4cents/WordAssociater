@@ -27,7 +27,9 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
     }
 
     private fun setContent() {
-        if( adapter.mode == CharacterAdapter.Mode.SELECT ) character.selected = CharacterAdapter.selectedCharacterList.contains(character)
+        if( adapter.mode == CharacterAdapter.Mode.SELECT ) {
+            character.selected = CharacterAdapter.selectedCharacterList.contains(character)
+        }
         b.characterName.text = character.name
         if(character.imgUrl != "") Glide.with(b.characterPortrait).load(character.imgUrl).into(b.characterPortrait)
 
