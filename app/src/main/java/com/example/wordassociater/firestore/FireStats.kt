@@ -9,6 +9,18 @@ object FireStats {
         return number
     }
 
+    fun getProseId(): Long {
+        val number = FireLists.stats!!.proseNumber + 1
+        FireLists.fireStats.update("proseNumber", number)
+        return number
+    }
+
+    fun getNuwId(): Long {
+        val number = FireLists.stats!!.nuwNumber + 1
+        FireLists.fireStats.update("nuwNumber", number)
+        return number
+    }
+
     fun getDramaId(): Long {
         val number = FireLists.stats!!.dramaNumber + 1
         FireLists.fireStats.update("dramaNumber", number)

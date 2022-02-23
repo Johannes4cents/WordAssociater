@@ -9,7 +9,8 @@ data class Snippet(override var content: String = "", override var id: Long = 0,
                    override var wordList: MutableList<String> = mutableListOf(),
                    val connectedSnippets: MutableList<Long> = mutableListOf(),
                    override var characterList: MutableList<Long> = mutableListOf(),
-                   var isStory: Boolean = false): StoryPart(wordList, content, id, characterList) {
+                   override var nuwList: MutableList<Nuw> = mutableListOf(),
+                   var isStory: Boolean = false): StoryPart(id, content, wordList, characterList, nuwList) {
     @Exclude
     var isHeader = false
     @Exclude

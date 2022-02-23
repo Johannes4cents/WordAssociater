@@ -1,12 +1,14 @@
 package com.example.wordassociater.utils
 
 import com.example.wordassociater.R
+import com.example.wordassociater.fire_classes.Nuw
 
 open class StoryPart(
-        open var wordList: MutableList<String>,
-        open var content: String,
         open var id : Long,
-        open var characterList: MutableList<Long>) {
+        open var content: String,
+        open var wordList: MutableList<String>,
+        open var characterList: MutableList<Long>,
+        open var nuwList: MutableList<Nuw>) {
 
     companion object {
         fun getIdList(wordsList: MutableList<StoryPart>): List<Long> {

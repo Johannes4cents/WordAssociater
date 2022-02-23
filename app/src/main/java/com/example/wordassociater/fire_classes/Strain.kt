@@ -13,8 +13,9 @@ data class Strain(
         var isStory: Boolean = false,
         var connections: Int = 0,
         var connectionLayer: Int = 1,
-        var connectionsList: MutableList<Long> = mutableListOf()
-): StoryPart(wordList, content, id, characterList) {
+        var connectionsList: MutableList<Long> = mutableListOf(),
+        override var nuwList: MutableList<Nuw> = mutableListOf()
+): StoryPart(id, content, wordList, characterList, nuwList) {
 
     companion object {
         fun convertToIdList(strainList: MutableList<Strain>): List<Long> {

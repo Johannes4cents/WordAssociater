@@ -9,8 +9,9 @@ class Drama(
         override var content: String = "",
         override var wordList: MutableList<String> = mutableListOf(),
         override var characterList: MutableList<Long> = mutableListOf(),
+        override var nuwList: MutableList<Nuw> = mutableListOf(),
         var type: Type = Type.Conflict
-): StoryPart(wordList, content, id, characterList) {
+): StoryPart(id, content, wordList, characterList, nuwList) {
     enum class Type {Conflict, Twist, Plan, Motivation, Goal, Problem, Solution, Hurdle, None}
 
     @Exclude

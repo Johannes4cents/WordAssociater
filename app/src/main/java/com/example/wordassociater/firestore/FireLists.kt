@@ -41,6 +41,8 @@ object FireLists {
     val snippetsList by lazy { db.collection("snippets") }
     val spheresList by lazy { db.collection("spheres") }
     val wordCatList by lazy { db.collection("wordCats") }
+    val nuwList by lazy {db.collection("nuws") }
+    val proseList by lazy { db.collection("prose") }
 
     var stats: Stats? = Stats()
 
