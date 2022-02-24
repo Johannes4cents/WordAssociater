@@ -39,6 +39,7 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
         }
         b.typeInitials.text = setTypeInitials(word.type)
         b.typeInitials.setBackgroundColor(b.root.context.resources.getColor(word.getColor(word.type)))
+        b.usedOrConnectionsField.text = word.used.toString()
     }
 
     private fun setClickListener() {

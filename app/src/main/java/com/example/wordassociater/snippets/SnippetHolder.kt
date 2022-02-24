@@ -44,6 +44,7 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
         else {
             b.root.setBackgroundColor(b.root.resources.getColor(R.color.white))
         }
+
     }
 
     private fun deleteSnippet(confirmation: Boolean) {

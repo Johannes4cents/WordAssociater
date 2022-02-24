@@ -22,6 +22,14 @@ object Helper {
         return context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
 
+    fun <T>getNewList(list: MutableList<T> ): List<T> {
+        val newList = mutableListOf<T>()
+        for(item in list) {
+            newList.add(item)
+        }
+        return newList
+    }
+
     fun setWordsToString(wordsList: List<Word>) : String{
         var wordsString = ""
         for(w: Word in wordsList) {

@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wordassociater.databinding.HolderWordPreviewBinding
 import com.example.wordassociater.databinding.HolderWordSimpleBinding
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.AdapterType
@@ -16,12 +17,14 @@ class WordAdapter(
     : ListAdapter<Word, RecyclerView.ViewHolder>(WordDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return  WordHolderSimple(HolderWordSimpleBinding.inflate(LayoutInflater.from(parent.context)))
+        return if(adapterType == AdapterType.Preview) WordHolderPreview(HolderWordPreviewBinding.inflate(LayoutInflater.from(parent.context)))
+        else WordHolderSimple(HolderWordSimpleBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val word = currentList[position]
-        (holder as WordHolderSimple).onBind(word, adapterType, takeWordFunc, rightButtonFunc)
+        if(adapterType == AdapterType.Preview) (holder as WordHolderPreview).onBind(word)
+        else (holder as WordHolderSimple).onBind(word, adapterType, takeWordFunc, rightButtonFunc)
     }
 }
 

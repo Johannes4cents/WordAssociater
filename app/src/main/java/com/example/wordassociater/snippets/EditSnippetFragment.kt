@@ -16,6 +16,7 @@ import com.example.wordassociater.databinding.FragmentEditSnippetBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.fire_classes.WordConnection
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.popups.popCharacterSelector
 import com.example.wordassociater.popups.popSearchWord
@@ -29,6 +30,7 @@ class EditSnippetFragment: Fragment() {
     // Character
     private val characterList = MutableLiveData<MutableList<Character>>()
     companion object {
+        var oldSnippet = Snippet()
         lateinit var snippet: Snippet
     }
     override fun onCreateView(
@@ -100,9 +102,18 @@ class EditSnippetFragment: Fragment() {
         snippet.characterList = charList
         FireSnippets.add(snippet, context)
         characterList.value = mutableListOf()
+        WordConnection.handleWordConnections(snippet)
     }
 
     private fun handleWordConnections() {
+
+    }
+
+    private fun handleWordDeselected() {
+
+    }
+
+    private fun handleCharacterDeselected() {
 
     }
 

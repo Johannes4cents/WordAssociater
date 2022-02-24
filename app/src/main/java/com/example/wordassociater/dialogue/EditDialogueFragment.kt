@@ -12,14 +12,15 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.ViewPagerFragment
+import com.example.wordassociater.bars.AddStuffBar
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentDialogueEditBinding
 import com.example.wordassociater.fire_classes.Bubble
 import com.example.wordassociater.fire_classes.Dialogue
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.fire_classes.WordConnection
 import com.example.wordassociater.firestore.*
 import com.example.wordassociater.popups.popSearchWord
-import com.example.wordassociater.strains.StrainEditFragment
 import com.example.wordassociater.utils.*
 import com.example.wordassociater.words.WordAdapter
 import com.example.wordassociater.words.WordLinear
@@ -28,6 +29,7 @@ class EditDialogueFragment: Fragment() {
     lateinit var b: FragmentDialogueEditBinding
     var index = 0
     companion object {
+        var oldDialogue = Dialogue()
         var dialogue = Dialogue(id = FireStats.getStoryPartId())
         val characterAdapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
         lateinit var bubbleAdapter: BubbleAdapter
@@ -40,6 +42,7 @@ class EditDialogueFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         b = FragmentDialogueEditBinding.inflate(inflater)
+        setContent()
         setDescription()
         setRecycler()
         setClickListener()
@@ -51,8 +54,17 @@ class EditDialogueFragment: Fragment() {
 
     }
 
+    private fun setContent() {
+        b.dialogueDescription.setTextSize(24F)
+        b.dialogueDescription.setCenterGravity()
+        b.dialogueDescription.setSingleLine()
+        bubbleList.value = dialogue.getBubbles()
+        index = dialogue.bubbleList.count()
+
+    }
+
     private fun setDescription() {
-        b.dialogueDescription.setTextField(dialogue.content)
+        b.dialogueDescription.setTextField(if(dialogue.content != "")dialogue.content else "Dialogue")
     }
 
 
@@ -60,9 +72,18 @@ class EditDialogueFragment: Fragment() {
         SearchHelper.setWordList(dialogue.getWords(), liveWordsList)
     }
 
+    private fun handleWordDeselected() {
+
+    }
+
+    private fun handleCharacterDeselected() {
+
+    }
+
     private fun setClickListener() {
         b.backBtn.setOnClickListener {
             dialogue = Dialogue()
+            AddStuffBar.selectedCharacters.clear()
             ViewPagerFragment.comingFrom = Page.Start
             findNavController().navigate(R.id.action_editDialogueFragment_to_startFragment)
         }
@@ -86,7 +107,8 @@ class EditDialogueFragment: Fragment() {
             if(!dialogue.wordList.contains(word.id)) dialogue.wordList.add(word.id)
         }
         else dialogue.wordList.remove(word.id)
-        SearchHelper.setWordList(StrainEditFragment.strain.getWords(), liveWordsList)
+
+        SearchHelper.setWordList(dialogue.getWords(), liveWordsList)
     }
 
 
@@ -113,6 +135,8 @@ class EditDialogueFragment: Fragment() {
                 }
             }
 
+            WordConnection.handleWordConnections(dialogue)
+
             dialogue = Dialogue(id = FireStats.getStoryPartId())
             findNavController().navigate(R.id.action_editDialogueFragment_to_startFragment)
         }
@@ -134,8 +158,8 @@ class EditDialogueFragment: Fragment() {
 
     private fun handleBubble(bubble: Bubble) {
         val newList = bubbleList.value?.toMutableList() ?: mutableListOf()
-        bubble.index = index
-        index++
+        bubble.index = dialogue.currentIndex
+        dialogue.currentIndex = dialogue.currentIndex + 1
         newList.add(bubble)
         bubbleList.value = newList.sortedBy { b -> b.index }
     }
@@ -145,16 +169,19 @@ class EditDialogueFragment: Fragment() {
         b.characterRecycler.adapter = characterAdapter
         b.bubbleRecycler.adapter = bubbleAdapter
 
+        val callback: ItemTouchHelper.Callback = SwipeToDeleteCallback(bubbleAdapter)
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(b.bubbleRecycler)
+
+
         characterAdapter.submitList(dialogue.getCharacter())
 
-        wordAdapter = WordAdapter(AdapterType.List, ::takeWordFunc, null)
+        wordAdapter = WordAdapter(AdapterType.Preview, ::takeWordFunc, null)
         b.wordRecycler.adapter = wordAdapter
         wordAdapter.submitList(dialogue.getWords())
         setWordList()
 
-        val callback: ItemTouchHelper.Callback = SwipeToDeleteCallback(bubbleAdapter)
-        val itemTouchHelper = ItemTouchHelper(callback)
-        itemTouchHelper.attachToRecyclerView(b.bubbleRecycler)
+
     }
 
     private fun takeWordFunc(word: Word) {
@@ -175,7 +202,10 @@ class EditDialogueFragment: Fragment() {
         }
 
         liveWordsList.observe(context as LifecycleOwner) {
-            val selectedWords = it.filter { w -> w.selected }
+            val selectedWords = mutableListOf<Word>()
+            for(w in it) {
+                if(w.selected && !selectedWords.contains(w)) selectedWords.add(w)
+            }
             wordAdapter.submitList(selectedWords)
         }
     }

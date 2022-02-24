@@ -1,6 +1,7 @@
 package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.Main
+import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.utils.StoryPart
 import com.google.firebase.firestore.Exclude
 
@@ -10,6 +11,8 @@ data class Dialogue(
         override var content: String = "",
         override var nuwList: MutableList<Nuw> = mutableListOf(),
         override var wordList: MutableList<String> = mutableListOf(),
+        var currentIndex: Int = 1,
+        var drama: Drama.Type = Drama.Type.None,
         var bubbleList: MutableList<Long> = mutableListOf()
 ): StoryPart(id, content, wordList, characterList, nuwList) {
     @Exclude
@@ -33,12 +36,12 @@ data class Dialogue(
     }
 
     @Exclude
-    fun getWords(): MutableList<Word> {
-        val words = mutableListOf<Word>()
-        for(string in wordList) {
-            val found = Main.getWord(string)
-            if(found != null) words.add(found)
+    fun delete() {
+        for(w in getWords()) {
+            w.used -= 1
+            w.dialogueList.remove(id)
+            FireWords.update(w.type, w.id, "used", w.used)
+            FireWords.update(w.type, w.id, "dialogueList", w.used)
         }
-        return words
     }
 }

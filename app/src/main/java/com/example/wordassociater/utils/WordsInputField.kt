@@ -2,6 +2,8 @@ package com.example.wordassociater.utils
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import android.widget.TableRow
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import com.example.wordassociater.Main
 import com.example.wordassociater.databinding.InputFieldWordsBinding
 import com.example.wordassociater.fire_classes.Nuw
 
@@ -21,12 +24,14 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     private val wordInput = MutableLiveData<List<String>>()
     val nuwList = mutableListOf<Nuw>()
     private var inputEnabled = true
+    var clicked = 0
 
     init {
         setKeyListener()
         onChangeListener()
         setObserver()
         setClickListener()
+        setOnFocusChange()
     }
 
     fun setContentFunc(func: (content: String) -> Unit) {
@@ -39,9 +44,34 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         }
 
         b.inputField.setOnClickListener {
-            saveInput()
-            if(takeContentFunc != null) takeContentFunc?.let { it1 -> it1(content) }
+            if(clicked > 0) {
+                saveInput()
+                if(takeContentFunc != null) takeContentFunc?.let { it1 -> it1(content) }
+                clicked = 0
+            }
+            else {
+                clicked++
+            }
+
         }
+    }
+
+    fun setHint(hint: String) {
+        b.inputField.hint = hint
+    }
+
+    fun setCenterGravity() {
+        b.inputField.gravity = Gravity.CENTER
+        b.textField.gravity = Gravity.CENTER
+    }
+
+    fun setTextSize(size: Float) {
+        b.inputField.textSize = size
+        b.textField.textSize = size
+    }
+
+    fun setSingleLine() {
+        b.inputField.isSingleLine = true
     }
 
     fun enableInput(enable: Boolean) {
@@ -50,20 +80,23 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
 
     fun setTextField(content: String) {
         b.textField.text = content
+        b.inputField.setText(content)
     }
 
-    fun showInputField() {
+    private fun showInputField() {
+        b.inputField.setText(b.inputField.text.toString())
         b.textField.visibility = View.GONE
         b.inputField.visibility = View.VISIBLE
-        b.inputField.setText(b.textField.text)
         Helper.takeFocus(b.inputField, context)
     }
 
-    fun saveInput() {
+    private fun saveInput() {
         b.textField.text = b.inputField.text
+        b.inputField.setText(b.textField.text)
         content = b.inputField.text.toString()
         b.inputField.visibility = View.GONE
         b.textField.visibility = View.VISIBLE
+        takeContentFunc?.let { it(content) }
         Helper.getIMM(b.root.context).hideSoftInputFromWindow(b.inputField.windowToken, 0)
     }
 
@@ -90,6 +123,13 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
             }
             false
         })
+    }
+
+    private fun setOnFocusChange() {
+        Main.outsideEditClicked.observe(context as LifecycleOwner) {
+            saveInput()
+            Log.i("focusTest", "outside Edit Clicked")
+        }
     }
 
     private fun onChangeListener() {

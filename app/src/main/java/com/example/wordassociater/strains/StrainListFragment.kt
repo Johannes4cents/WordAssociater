@@ -50,6 +50,7 @@ class StrainListFragment: Fragment() {
 
     private fun handleStrainSelected(strain: Strain) {
         StrainEditFragment.strain = strain
+        StrainEditFragment.oldStrain = strain
         Main.inFragment = Frags.WRITE
         StrainEditFragment.comingFrom  = Frags.READ
         navController.navigate(R.id.action_readFragment_to_writeFragment)

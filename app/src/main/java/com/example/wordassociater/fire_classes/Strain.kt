@@ -14,6 +14,7 @@ data class Strain(
         var connections: Int = 0,
         var connectionLayer: Int = 1,
         var connectionsList: MutableList<Long> = mutableListOf(),
+        var drama: Drama.Type = Drama.Type.None,
         override var nuwList: MutableList<Nuw> = mutableListOf()
 ): StoryPart(id, content, wordList, characterList, nuwList) {
 
@@ -34,15 +35,7 @@ data class Strain(
         }
     }
 
-    @Exclude
-    fun getWords(): MutableList<Word> {
-        val words = mutableListOf<Word>()
-        for(string in wordList) {
-            val found = Main.getWord(string)
-            if(found != null) words.add(found)
-        }
-        return words
-    }
+
 
     @Exclude
     fun getCharacters(): List<Character> {

@@ -44,13 +44,22 @@
             android:padding="10dp"
             />
         <ImageView
+            android:padding="5dp"
+            android:id="@+id/btnDrama"
+            android:layout_width="60dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_dramaturgy" />
+
+        <ImageView
             android:id="@+id/characterBtn"
+            android:padding="5dp"
             android:layout_width="60dp"
             android:layout_height="45dp"
             android:src="@drawable/icon_edit_character" />
 
         <ImageView
             android:id="@+id/saveBtn"
+            android:padding="2dp"
             android:layout_width="60dp"
             android:layout_height="45dp"
             android:src="@drawable/btn_save_strain" />

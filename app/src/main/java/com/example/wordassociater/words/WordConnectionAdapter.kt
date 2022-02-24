@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderWordConnectionsBinding
+import com.example.wordassociater.fire_classes.WordConnection
 
-import com.example.wordassociater.utils.WordConnection
 
 class WordConnectionAdapter
     : ListAdapter<WordConnection, RecyclerView.ViewHolder>(WordConnectionDiff()) {
@@ -24,7 +24,7 @@ class WordConnectionAdapter
 
 class WordConnectionDiff: DiffUtil.ItemCallback<WordConnection>() {
     override fun areItemsTheSame(oldItem: WordConnection, newItem: WordConnection): Boolean {
-        return oldItem.word == newItem.word
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: WordConnection, newItem: WordConnection): Boolean {

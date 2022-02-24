@@ -7,19 +7,12 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.PopupWindow
-import android.widget.Toast
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.PopupCharacterRecyclerBinding
 import com.example.wordassociater.databinding.PopupConfirmDeletionBinding
-import com.example.wordassociater.databinding.PopupWordRecyclerBinding
 import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.strains.StrainListFragment
-import com.example.wordassociater.utils.AdapterType
-import com.example.wordassociater.words.WordAdapter
 import com.example.wordassociater.words.WordLinear
 
 class Pop(val context: Context) {
@@ -40,33 +33,33 @@ class Pop(val context: Context) {
         popWindow.setBackgroundDrawable(ColorDrawable(Color.WHITE))
     }
 
-    fun wordRecycler(
-            from: View,
-            onClickFunc: (word: Word) -> Unit,
-            btnNewWordFunc: (word:Word) -> Unit,
-            liveList : MutableLiveData<MutableList<Word>>,
-            addNewWordFunc: (word: Word) -> Unit) {
-        val b = PopupWordRecyclerBinding.inflate(LayoutInflater.from(context), null, false)
-        windowSetup(b.root, from)
-        val adapter = WordAdapter(AdapterType.Popup,onClickFunc, btnNewWordFunc)
-        b.wordRecycler.adapter = adapter
-        b.addWordBar.handleTakesWordFunc(addNewWordFunc)
-        liveList.observe(context as LifecycleOwner) {
-            adapter.submitList(it)
-            adapter.notifyDataSetChanged()
-            Toast.makeText(context, "new list observered", Toast.LENGTH_SHORT).show()
-        }
-    }
+//    fun wordRecycler(
+//            from: View,
+//            onClickFunc: (word: Word) -> Unit,
+//            btnNewWordFunc: (word:Word) -> Unit,
+//            liveList : MutableLiveData<MutableList<Word>>,
+//            addNewWordFunc: (word: Word) -> Unit) {
+//        val b = PopupWordRecyclerBinding.inflate(LayoutInflater.from(context), null, false)
+//        windowSetup(b.root, from)
+//        val adapter = WordAdapter(AdapterType.Popup,onClickFunc, btnNewWordFunc)
+//        b.wordRecycler.adapter = adapter
+//        b.addWordBar.handleTakesWordFunc(addNewWordFunc)
+//        liveList.observe(context as LifecycleOwner) {
+//            adapter.submitList(it)
+//            adapter.notifyDataSetChanged()
+//            Toast.makeText(context, "new list observered", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 
-    fun characterRecycler(from: View, func: (char: Character) -> Unit) {
-        val b = PopupCharacterRecyclerBinding.inflate(LayoutInflater.from(context), null, false)
-        val adapter = CharacterAdapter(CharacterAdapter.Mode.MAIN, selectFunc = func)
-        b.characterRecycler.adapter = adapter
-        adapter.submitList(Main.characterList.value)
-        popWindow.height = 1000
-        popWindow.width = 900
-        windowSetup(b.root, from)
-    }
+//    fun characterRecycler(from: View, func: (char: Character) -> Unit) {
+//        val b = PopupCharacterRecyclerBinding.inflate(LayoutInflater.from(context), null, false)
+//        val adapter = CharacterAdapter(CharacterAdapter.Mode.MAIN, selectFunc = func)
+//        b.characterRecycler.adapter = adapter
+//        adapter.submitList(Main.characterList.value)
+//        popWindow.height = 1000
+//        popWindow.width = 900
+//        windowSetup(b.root, from)
+//    }
 
 
     fun confirmationPopUp(from: View, func: (confirmed: Boolean) -> Unit) {

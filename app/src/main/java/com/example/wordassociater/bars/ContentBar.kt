@@ -50,5 +50,14 @@ class ContentBar(context: Context, attributeSet: AttributeSet): LinearLayout(con
                 b.root.visibility = View.VISIBLE
             }
         }
+
+        AddStuffBar.newWordInputOpen.observe(context as LifecycleOwner) {
+            if(it) {
+                b.root.visibility = View.GONE
+            }
+            else {
+                b.root.visibility = View.VISIBLE
+            }
+        }
     }
 }

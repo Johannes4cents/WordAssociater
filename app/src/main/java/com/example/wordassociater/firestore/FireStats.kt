@@ -1,7 +1,6 @@
 package com.example.wordassociater.firestore
 
 import android.content.Context
-import com.example.wordassociater.utils.Helper
 
 object FireStats {
     fun getStoryPartId(): Long {
@@ -67,7 +66,6 @@ object FireStats {
     fun getBubbleId(context: Context?): Long {
         val number = FireLists.stats!!.dialogueNumber + 1
         FireLists.fireStats.update("dialogueNumber", number).addOnSuccessListener {
-            if(context != null) Helper.toast("bubbleNumber increased", context)
         }
         return number
     }

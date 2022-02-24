@@ -40,11 +40,12 @@
         android:id="@+id/bubbleRecycler"
         android:minHeight="100dp"
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        android:layout_height="180dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="6dp"/>
 
 </LinearLayout>

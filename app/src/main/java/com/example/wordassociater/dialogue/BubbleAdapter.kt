@@ -57,7 +57,6 @@ class BubbleAdapter(
 
     override fun onItemDismiss(position: Int) {
         val bubble = currentList[position]
-        bubble.deleted = true
         val newBubblelist = EditDialogueFragment.bubbleList.value!!.toMutableList()
         newBubblelist.remove(bubble)
         FireBubbles.delete(bubble, null)

@@ -1,5 +1,6 @@
 package com.example.wordassociater.popups
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
@@ -8,23 +9,24 @@ import androidx.navigation.NavController
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.bars.AddStuffBar
-import com.example.wordassociater.character.CharacterAdapter
+import com.example.wordassociater.character.CharacterSelectDialogueAdapter
 import com.example.wordassociater.databinding.PopupCharacterSelectorBinding
 import com.example.wordassociater.dialogue.EditDialogueFragment
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.utils.Helper
 
-fun popCharacterSelector(from: View, navController: NavController, characterList: MutableLiveData<List<Character>>, selectCharFunc : (char: Character) -> Unit) {
+
+fun popDialogueCharacterSelector(from: View, navController: NavController, characterList: MutableLiveData<List<Character>>, selectCharFunc : (char: Character) -> Unit) {
     val b = PopupCharacterSelectorBinding.inflate(LayoutInflater.from(from.context), null, false)
-    val adapter = CharacterAdapter(CharacterAdapter.Mode.MAIN, selectFunc = selectCharFunc)
+    val popUpAdapter = CharacterSelectDialogueAdapter(selectCharFunc)
     val popUp = Helper.getPopUp(b.root, from, 1000, 900)
 
     fun setRecycler() {
-        b.characterRecycler.adapter = adapter
-        characterList.observe(from.context as LifecycleOwner) {
-            adapter.submitList(it)
+        for(c in Main.characterList.value!!) {
+            if(c.selected) Log.i("characterListProb", "${c.name} is selected")
         }
-        adapter.submitList(Main.characterList.value)
+        b.characterRecycler.adapter = popUpAdapter
+
     }
 
 
@@ -41,7 +43,10 @@ fun popCharacterSelector(from: View, navController: NavController, characterList
         characterList.observe(from.context as LifecycleOwner) {
             var selectedCharsList = it.filter { c -> c.selected }
             b.selectedCharacterCounter.text = selectedCharsList.count().toString()
+            popUpAdapter.submitList(it)
+            popUpAdapter.notifyDataSetChanged()
         }
+
     }
 
     setBinding()
@@ -50,7 +55,9 @@ fun popCharacterSelector(from: View, navController: NavController, characterList
 
     popUp.setOnDismissListener {
         AddStuffBar.selectedCharacters.clear()
+        AddStuffBar.popUpCharacterList.value = mutableListOf()
     }
+
 
 
 

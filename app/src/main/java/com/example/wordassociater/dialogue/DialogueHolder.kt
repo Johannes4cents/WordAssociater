@@ -41,7 +41,7 @@ class DialogueHolder(
     }
 
     private fun setWordRecycler() {
-        wordAdapter = WordAdapter(AdapterType.List, ::onWordSelected, null)
+        wordAdapter = WordAdapter(AdapterType.Preview, ::onWordSelected, null)
         b.wordRecycler.adapter = wordAdapter
         wordAdapter.submitList(dialogue.getWords())
     }

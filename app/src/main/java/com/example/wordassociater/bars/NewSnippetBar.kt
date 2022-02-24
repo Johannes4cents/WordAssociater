@@ -14,9 +14,8 @@ import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.BarNewSnippetBinding
 import com.example.wordassociater.fire_classes.Drama
 import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.firestore.FireDrama
-import com.example.wordassociater.firestore.FireSnippets
-import com.example.wordassociater.firestore.FireStats
+import com.example.wordassociater.fire_classes.WordConnection
+import com.example.wordassociater.firestore.*
 import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.popups.popDramaTypeSelection
 import com.example.wordassociater.story.Story
@@ -130,11 +129,20 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
             val newSnippet = Snippet(
                     content = b.snippetInput.text.toString(),
                     id = FireStats.getStoryPartId(),
-                    isStory = isStory.value!!
+                    isStory = isStory.value!!,
+                    drama = isDrama.value!!
             )
             for(word in WordLinear.selectedWords) {
                 newSnippet.wordList.add(word.id)
+                word.snippetsList.add(newSnippet.id)
+                FireWords.update(word.type, word.id, "snippetsList", word.snippetsList)
+
+                word.used = word.used + 1
+                FireWords.update(word.type, word.id, "used" , word.used)
             }
+
+
+            WordConnection.handleWordConnections(newSnippet)
             handleCharacters(newSnippet)
             if(Story.storyModeActive) newSnippet.isStory = true
             FireSnippets.add(newSnippet, context)

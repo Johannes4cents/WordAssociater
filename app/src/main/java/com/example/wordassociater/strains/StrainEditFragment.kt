@@ -17,13 +17,16 @@ import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentEditStrainBinding
 import com.example.wordassociater.fire_classes.Character
+import com.example.wordassociater.fire_classes.Drama
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.fire_classes.WordConnection.Companion.handleWordConnections
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireStrains
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.popups.popCharacterSelector
+import com.example.wordassociater.popups.popDramaTypeSelection
 import com.example.wordassociater.popups.popSearchWord
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Page
@@ -35,6 +38,7 @@ class StrainEditFragment: Fragment() {
 
     companion object {
         lateinit var adapter: CharacterAdapter
+        var oldStrain = Strain()
 
         var strain = Strain(
                 id = FireStats.getStoryPartId()
@@ -42,7 +46,7 @@ class StrainEditFragment: Fragment() {
 
         var comingFrom = Frags.START
 
-        val popUpCharacterList = MutableLiveData<List<Character>>(listOf())
+        val popUpCharacterList = MutableLiveData<MutableList<Character>>(mutableListOf())
 
     }
 
@@ -66,6 +70,14 @@ class StrainEditFragment: Fragment() {
         handleWordIcon()
         Main.inFragment = Frags.WRITE
         return b.root
+    }
+
+    private fun handleWordDeselected() {
+
+    }
+
+    private fun handleCharacterDeselected() {
+
     }
 
     private fun setWordIcon() {
@@ -92,7 +104,7 @@ class StrainEditFragment: Fragment() {
     }
 
     private fun handleWordIcon() {
-        if(liveWordsList.value!!.isEmpty()) {
+        if(strain.wordList.isEmpty()) {
             b.wordIcon.visibility = View.VISIBLE
             b.strainWords.visibility = View.GONE
         }
@@ -149,12 +161,23 @@ class StrainEditFragment: Fragment() {
         }
 
         b.characterBtn.setOnClickListener {
-            popCharacterSelector(b.characterBtn, findNavController(), popUpCharacterList, ::handleSelectedCharacter)
+            popCharacterSelector(b.characterBtn, popUpCharacterList, ::handleSelectedCharacter)
         }
 
         b.wordIcon.setOnClickListener {
             popSearchWord(it, ::handleWordSelected, liveWordsList)
         }
+
+        b.btnDrama.setOnClickListener {
+            popDramaTypeSelection(b.btnDrama, ::onDramaSelected)
+        }
+
+
+    }
+
+    private fun onDramaSelected(drama: Drama.Type) {
+        b.btnDrama.setImageResource(Drama.getImage(drama))
+        strain.drama = drama
     }
 
     private fun clearStrain() {
@@ -209,8 +232,12 @@ class StrainEditFragment: Fragment() {
             FireStrains.add(strain, requireContext())
 
             for(w in selectedWords) {
-                FireWords.update(w.type, w.id, "used", w.used + 1)
+                if(!w.strainsList.contains(strain.id)) w.strainsList.add(strain.id)
+                FireWords.update(w.type, w.id, "strainsList", w.strainsList)
+                if(!oldStrain.wordList.contains(w.id)) FireWords.update(w.type, w.id, "used", w.used + 1)
             }
+
+            handleWordConnections(strain)
 
             WordLinear.wordList.clear()
             WordLinear.selectedWords.clear()
@@ -232,6 +259,8 @@ class StrainEditFragment: Fragment() {
             Toast.makeText(requireContext(), "Want to put some words \n in there buddy?", Toast.LENGTH_SHORT).show()
         }
     }
+
+
 
 
 

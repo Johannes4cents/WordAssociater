@@ -1,7 +1,6 @@
 package com.example.wordassociater.firestore
 
 import android.content.Context
-import android.util.Log
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.words.WordLinear
@@ -17,7 +16,6 @@ object FireWords {
     }
 
     fun delete(word: Word) {
-        Log.i("WordId", "deletedWord is ${word.id} | word type is ${word.type} ")
         val collectionReference = FireLists.getWordCollectionRef(word.type)
         collectionReference.document(word.id).delete()
     }

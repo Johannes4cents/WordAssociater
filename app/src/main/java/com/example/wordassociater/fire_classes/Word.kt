@@ -23,7 +23,7 @@ data class Word(
         var branchOf: String = "",
         var synonyms: MutableList<String> = mutableListOf(),
         var rootOf: MutableList<String> = mutableListOf(),
-        var connections: MutableList<WordConnection> = mutableListOf()
+        var connections: MutableList<Long> = mutableListOf()
 )
 {
     @Exclude
@@ -50,6 +50,16 @@ data class Word(
             if(strain != null) snippets.add(strain)
         }
         return snippets
+    }
+
+    @Exclude
+    fun getWordConnections(): List<WordConnection> {
+        val wcs = mutableListOf<WordConnection>()
+        for(id in connections) {
+            val wc = Main.getWordConnection(id)
+            if(wc != null) wcs.add(wc)
+        }
+        return wcs
     }
 
     fun getSphereList(): List<Sphere> {

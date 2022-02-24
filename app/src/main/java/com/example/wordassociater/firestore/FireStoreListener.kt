@@ -2,7 +2,6 @@ package com.example.wordassociater.firestore
 import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.StartFragment
-import com.example.wordassociater.bars.AddStuffBar
 import com.example.wordassociater.bars.AddWordBar
 import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.lists.DramaLists
@@ -34,6 +33,7 @@ object FireStoreListener {
             if(docs != null) {
                 var charList = mutableListOf<Character>()
                 for(doc in docs) {
+                    Log.i("characterProb", "$doc")
                     val character = doc.toObject(Character::class.java)
                     character.selected = false
                     charList.add(character)
@@ -44,6 +44,7 @@ object FireStoreListener {
             }
         }
     }
+
 
     private fun getWordConnections() {
         FireLists.wordConnectionList.addSnapshotListener { docs, error ->
@@ -114,8 +115,6 @@ object FireStoreListener {
                     if(character.id != 16L) charList.add(character)
                     else randomPerson = character
                 }
-                val submitList = listOf(randomPerson) + charList
-                AddStuffBar.popUpCharacterList.value = submitList
                 StrainEditFragment.popUpCharacterList.value = charList
             }
             else {
@@ -163,7 +162,6 @@ object FireStoreListener {
             if(docs != null) {
                 val newStrainList = mutableListOf<Strain>()
                 for(doc in docs) {
-                    Log.i("wordId", "$doc")
                     val strain = doc.toObject(Strain::class.java)
                     newStrainList.add(strain)
                     if(strain.connectionLayer > Main.maxLayers) Main.maxLayers = strain.connectionLayer

@@ -49,6 +49,7 @@ class SnippetFragment: Fragment() {
     }
 
     private fun snippetClickedFunc(snippet: Snippet) {
+        EditSnippetFragment.oldSnippet = snippet
         EditSnippetFragment.snippet = snippet
         findNavController().navigate(R.id.action_snippetFragment_to_editSnippetFragment)
     }

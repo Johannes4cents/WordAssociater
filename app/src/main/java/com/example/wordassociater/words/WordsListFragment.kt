@@ -34,12 +34,20 @@ class WordsListFragment: Fragment() {
         setObserver()
         setRecycler()
         setClickListener()
+        handleSearchBar()
         return b.root
     }
 
     private fun setClickListener() {
         b.backBtn.setOnClickListener {
             ViewPagerFragment.goTopage(Page.Start)
+        }
+    }
+
+    private fun handleSearchBar() {
+        b.searchBar.getWords {
+            if(it.isNotEmpty()) adapter.submitList(it)
+            else adapter.submitList(currentList.value)
         }
     }
 
@@ -60,7 +68,8 @@ class WordsListFragment: Fragment() {
 
     private fun setObserver() {
         currentList.observe(b.root.context as LifecycleOwner) {
-            adapter.submitList(it.sortedBy { w -> w.text })
+            adapter.submitList(it.sortedBy { w -> w.text }.reversed().sortedBy { w -> w.used }.reversed())
+            b.wordRecycler.scrollToPosition(0)
         }
     }
 

@@ -33,7 +33,7 @@ class WordConnectionsFragment: Fragment() {
     private fun setRecycler() {
         adapter = WordConnectionAdapter()
         b.connectionsRecycler.adapter = adapter
-        adapter.submitList(word.connections)
+        adapter.submitList(word.getWordConnections())
     }
 
 }

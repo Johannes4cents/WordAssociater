@@ -29,4 +29,20 @@ class Drama(
         }
     }
 
+    companion object {
+        fun getImage(type: Drama.Type): Int {
+            return when(type) {
+                Type.Conflict -> R.drawable.icon_conflict
+                Type.Twist -> R.drawable.icon_twist
+                Type.Plan -> R.drawable.icon_plan
+                Type.Motivation -> R.drawable.icon_motivation
+                Type.Goal -> R.drawable.icon_goal
+                Type.Problem -> R.drawable.icon_problem
+                Type.Solution -> R.drawable.icon_solution
+                Type.Hurdle -> R.drawable.icon_hurdle
+                Type.None -> R.drawable.icon_dramaturgy
+            }
+        }
+    }
+
 }

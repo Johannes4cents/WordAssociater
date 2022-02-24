@@ -16,6 +16,11 @@
             android:layout_height="40dp"
             android:src="@drawable/back_icon"
             />
+
+        <com.example.wordassociater.bars.SearchBar
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
     </LinearLayout>
 
     <LinearLayout
