@@ -33,33 +33,6 @@ class Pop(val context: Context) {
         popWindow.setBackgroundDrawable(ColorDrawable(Color.WHITE))
     }
 
-//    fun wordRecycler(
-//            from: View,
-//            onClickFunc: (word: Word) -> Unit,
-//            btnNewWordFunc: (word:Word) -> Unit,
-//            liveList : MutableLiveData<MutableList<Word>>,
-//            addNewWordFunc: (word: Word) -> Unit) {
-//        val b = PopupWordRecyclerBinding.inflate(LayoutInflater.from(context), null, false)
-//        windowSetup(b.root, from)
-//        val adapter = WordAdapter(AdapterType.Popup,onClickFunc, btnNewWordFunc)
-//        b.wordRecycler.adapter = adapter
-//        b.addWordBar.handleTakesWordFunc(addNewWordFunc)
-//        liveList.observe(context as LifecycleOwner) {
-//            adapter.submitList(it)
-//            adapter.notifyDataSetChanged()
-//            Toast.makeText(context, "new list observered", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-
-//    fun characterRecycler(from: View, func: (char: Character) -> Unit) {
-//        val b = PopupCharacterRecyclerBinding.inflate(LayoutInflater.from(context), null, false)
-//        val adapter = CharacterAdapter(CharacterAdapter.Mode.MAIN, selectFunc = func)
-//        b.characterRecycler.adapter = adapter
-//        adapter.submitList(Main.characterList.value)
-//        popWindow.height = 1000
-//        popWindow.width = 900
-//        windowSetup(b.root, from)
-//    }
 
 
     fun confirmationPopUp(from: View, func: (confirmed: Boolean) -> Unit) {

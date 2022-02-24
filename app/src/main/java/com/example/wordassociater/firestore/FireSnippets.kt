@@ -5,8 +5,8 @@ import android.widget.Toast
 import com.example.wordassociater.fire_classes.Snippet
 
 object FireSnippets {
-    fun delete(snippet: Snippet) {
-        FireLists.snippetsList.document(snippet.id.toString()).delete()
+    fun delete(id: Long) {
+        FireLists.snippetsList.document(id.toString()).delete()
     }
 
     fun add(newSnippet: Snippet, context: Context?) {

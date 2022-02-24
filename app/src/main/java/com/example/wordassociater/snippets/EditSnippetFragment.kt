@@ -17,7 +17,9 @@ import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordConnection
+import com.example.wordassociater.firestore.FireChars
 import com.example.wordassociater.firestore.FireSnippets
+import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.popCharacterSelector
 import com.example.wordassociater.popups.popSearchWord
 import com.example.wordassociater.utils.Helper
@@ -84,6 +86,29 @@ class EditSnippetFragment: Fragment() {
         }
     }
 
+    private fun handleWordDeselected() {
+        for(wordId in oldSnippet.wordList) {
+            if(!snippet.wordList.contains(wordId)) {
+                val word = Main.getWord(wordId)!!
+                word.snippetsList.remove(snippet.id)
+                FireWords.update(word.type, word.id, "snippetsList", word.snippetsList)
+            }
+        }
+
+    }
+
+    private fun handleCharacterDeselected() {
+        for(charId in oldSnippet.characterList) {
+            if(!snippet.characterList.contains(charId)) {
+                val character = Main.getCharacter(charId)
+                if(character != null) {
+                    character.snippetsList.remove(snippet.id)
+                    FireChars.update(character.id, "snippetsList", character.snippetsList)
+                }
+            }
+        }
+    }
+
     private fun handleWordClick(word: Word) {
         word.selected = !word.selected
         if(word.selected) {
@@ -103,18 +128,8 @@ class EditSnippetFragment: Fragment() {
         FireSnippets.add(snippet, context)
         characterList.value = mutableListOf()
         WordConnection.handleWordConnections(snippet)
-    }
-
-    private fun handleWordConnections() {
-
-    }
-
-    private fun handleWordDeselected() {
-
-    }
-
-    private fun handleCharacterDeselected() {
-
+        handleWordDeselected()
+        handleCharacterDeselected()
     }
 
 

@@ -12,5 +12,9 @@ object FireWordConnections {
         }
     }
 
+    fun delete(id: Long) {
+        FireLists.wordConnectionList.document(id.toString()).delete()
+    }
+
 
 }

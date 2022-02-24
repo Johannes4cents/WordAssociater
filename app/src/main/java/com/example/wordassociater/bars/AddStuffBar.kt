@@ -59,6 +59,7 @@ class AddStuffBar(context: Context, attributeSet: AttributeSet): LinearLayout(co
         }
 
         b.btnNewStrain.setOnClickListener {
+            StrainEditFragment.clearStrain()
             StrainEditFragment.comingFrom = Frags.START
             findNavController().navigate(R.id.action_startFragment_to_writeFragment)
         }

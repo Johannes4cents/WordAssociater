@@ -37,7 +37,7 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
             }
 
         }
-        b.typeInitials.text = setTypeInitials(word.type)
+        b.typeInitials.text = word.getTypeInitials()
         b.typeInitials.setBackgroundColor(b.root.context.resources.getColor(word.getColor(word.type)))
         b.usedOrConnectionsField.text = word.used.toString()
     }
@@ -53,17 +53,7 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
         }
     }
 
-    private fun setTypeInitials(type: Word.Type): String {
-        return when(type) {
-            Word.Type.Adjective -> "Adj"
-            Word.Type.Person -> "Per"
-            Word.Type.Place -> "Pla"
-            Word.Type.Action -> "Act"
-            Word.Type.Object -> "Obj"
-            Word.Type.CHARACTER -> "Cha"
-            Word.Type.NONE -> "Non"
-        }
-    }
+
 
 
 }

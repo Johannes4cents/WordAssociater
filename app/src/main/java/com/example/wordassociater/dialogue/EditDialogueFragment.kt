@@ -73,11 +73,26 @@ class EditDialogueFragment: Fragment() {
     }
 
     private fun handleWordDeselected() {
+        for(wordId in oldDialogue.wordList) {
+            if(!dialogue.wordList.contains(wordId)) {
+                val word = Main.getWord(wordId)!!
+                word.dialogueList.remove(dialogue.id)
+                FireWords.update(word.type, word.id, "dialogueList", word.dialogueList)
+            }
+        }
 
     }
 
     private fun handleCharacterDeselected() {
-
+        for(charId in oldDialogue.characterList) {
+            if(!dialogue.characterList.contains(charId)) {
+                val character = Main.getCharacter(charId)
+                if(character != null) {
+                    character.dialogueList.remove(dialogue.id)
+                    FireChars.update(character.id, "dialogueList", character.dialogueList)
+                }
+            }
+        }
     }
 
     private fun setClickListener() {
@@ -134,6 +149,9 @@ class EditDialogueFragment: Fragment() {
                     FireWords.update(word.type, word.id, "dialogueList", word.dialogueList)
                 }
             }
+
+            handleWordDeselected()
+            handleCharacterDeselected()
 
             WordConnection.handleWordConnections(dialogue)
 

@@ -59,7 +59,7 @@ class BubbleAdapter(
         val bubble = currentList[position]
         val newBubblelist = EditDialogueFragment.bubbleList.value!!.toMutableList()
         newBubblelist.remove(bubble)
-        FireBubbles.delete(bubble, null)
+        FireBubbles.delete(bubble.id, null)
         EditDialogueFragment.dialogue.bubbleList.remove(bubble.id)
         EditDialogueFragment.bubbleList.value = newBubblelist
     }

@@ -1,6 +1,10 @@
 package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.Main
+import com.example.wordassociater.firestore.FireChars
+import com.example.wordassociater.firestore.FireSnippets
+import com.example.wordassociater.firestore.FireStrains
+import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.utils.StoryPart
 import com.google.firebase.firestore.Exclude
 
@@ -35,7 +39,20 @@ data class Strain(
         }
     }
 
+    @Exclude fun getConnections(): List<Strain> {
+        val strainsies = mutableListOf<Strain>()
+        val toRemoveList = mutableListOf<Long>()
+        for(id in connectionsList) {
+            val strain = Main.getStrain(id)
+            if(strain != null)  strainsies.add(strain)
+            else toRemoveList.add(id)
+        }
+        for(id in toRemoveList) {
+            connectionsList.remove(id)
+        }
+        return strainsies
 
+    }
 
     @Exclude
     fun getCharacters(): List<Character> {
@@ -45,5 +62,27 @@ data class Strain(
             if(char != null) chars.add(char)
         }
         return chars
+    }
+
+    @Exclude
+    fun delete() {
+        for(w in getWords()) {
+            w.used -= 1
+            w.strainsList.remove(id)
+            FireWords.update(w.type, w.id, "used", w.used)
+            FireWords.update(w.type, w.id, "strainsList", w.used)
+        }
+
+        for(c in getCharacters()) {
+            c.strainsList.remove(id)
+            FireChars.update(c.id, "strainsList", c.strainsList)
+        }
+
+        for(strain in getConnections()) {
+            strain.connectionsList.remove(id)
+            FireSnippets.update(strain.id, "connectionsList", strain.connectionsList)
+        }
+
+        FireStrains.delete(id)
     }
 }

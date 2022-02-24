@@ -15,9 +15,9 @@ object FireWords {
         list.add(newWord)
     }
 
-    fun delete(word: Word) {
-        val collectionReference = FireLists.getWordCollectionRef(word.type)
-        collectionReference.document(word.id).delete()
+    fun delete(type: Word.Type, id: String) {
+        val collectionReference = FireLists.getWordCollectionRef(type)
+        collectionReference.document(id).delete()
     }
 
     fun update(type: Word.Type, id: String, fieldName: String, value: Any) {

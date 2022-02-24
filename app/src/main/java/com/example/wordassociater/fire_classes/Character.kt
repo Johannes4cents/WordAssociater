@@ -5,8 +5,8 @@ import com.google.firebase.firestore.Exclude
 
 data class Character(
         val name: String = "", val imgUrl : String = "",
-        val strainsList: MutableList<Strain> = mutableListOf(),
-        val snippetsList: MutableList<Snippet> = mutableListOf(),
+        val strainsList: MutableList<Long> = mutableListOf(),
+        val snippetsList: MutableList<Long> = mutableListOf(),
         var id: Long = 0,
         var connectId: Long = 0,
         var importance: Importance = Importance.Side,

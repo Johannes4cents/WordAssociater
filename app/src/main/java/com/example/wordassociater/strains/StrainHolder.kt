@@ -97,15 +97,15 @@ class StrainHolder(
     }
 
     private fun deleteStrainFunc(confirmation: Boolean) {
-        if(confirmation) FireStrains.delete(strain)
+        if(confirmation) strain.delete()
     }
 
     private fun connectStrains(strainOne: Strain, strainTwo: Strain) {
         if(!strainOne.connectionsList.contains(strainTwo.id)) {
             strainOne.connectionsList.add(strainTwo.id)
             strainTwo.connectionsList.add(strainOne.id)
-            FireStrains.update(strainTwo, b.root.context)
-            FireStrains.update(strainOne, b.root.context)
+            FireStrains.update(strainTwo.id, "connectionsList", strainTwo.connectionsList)
+            FireStrains.update(strainOne.id, "connectionsList", strainOne.connectionsList)
         }
         ConnectStrainsFragment.strainList.add(strainOne)
         ConnectStrainsFragment.strainList.add(strainTwo)

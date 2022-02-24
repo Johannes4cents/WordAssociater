@@ -13,8 +13,8 @@ object FireBubbles {
         }
     }
 
-    fun delete(bubble: Bubble, context: Context?) {
-        FireLists.bubbleList.document(bubble.id.toString()).delete().addOnSuccessListener {
+    fun delete(bubbleId: Long, context: Context?) {
+        FireLists.bubbleList.document(bubbleId.toString()).delete().addOnSuccessListener {
             if(context != null) Toast.makeText(context, "Bubble deleted", Toast.LENGTH_SHORT).show()
         }.addOnFailureListener {
             if(context != null) Toast.makeText(context, "Failed to \n delete bubble", Toast.LENGTH_SHORT).show()

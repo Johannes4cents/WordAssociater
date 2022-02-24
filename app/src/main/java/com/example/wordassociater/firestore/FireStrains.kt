@@ -16,12 +16,11 @@ object FireStrains {
         }
     }
 
-    fun update(strain: Strain, context: Context?) {
-        Log.i("connectStrains", "$strain")
-        FireLists.fireStrainsList.document(strain.id.toString()).set(strain)
+    fun update(id: Long, fieldName: String, value: Any) {
+        FireLists.fireStrainsList.document(id.toString()).update(fieldName, value)
     }
 
-    fun delete(strain: Strain) {
-        FireLists.fireStrainsList.document(strain.id.toString()).delete()
+    fun delete(id: Long) {
+        FireLists.fireStrainsList.document(id.toString()).delete()
     }
 }

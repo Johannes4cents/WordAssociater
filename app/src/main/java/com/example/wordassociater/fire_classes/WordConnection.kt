@@ -34,7 +34,7 @@ data class WordConnection(
                 for(w in storyPart.getWords()) {
                     if(w != word) {
                         var alreadyConnected = false
-                        for(wc in word.connections) {
+                        for(wc in word.wordConnectionsList) {
                             val connection = Main.getWordConnection(wc)
                             if(connection != null) {
                                 if(connection.storyPart == storyPart.id) {
@@ -46,9 +46,9 @@ data class WordConnection(
                         if(!alreadyConnected) {
                             val wc = WordConnection(id = getId(), word = w.id, storyPart = storyPart.id)
                             FireWordConnections.add(wc, null)
-                            word.connections.add(wc.id)
+                            word.wordConnectionsList.add(wc.id)
                             Log.i("wordConProbs", "word is ${word.text} connection word is ${w.text}")
-                            FireWords.update(word.type, word.id, "connections", word.connections)
+                            FireWords.update(word.type, word.id, "connections", word.wordConnectionsList)
                         }
                     }
                 }

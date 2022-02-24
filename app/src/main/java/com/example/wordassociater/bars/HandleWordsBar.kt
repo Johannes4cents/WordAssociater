@@ -24,7 +24,7 @@ class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout
             var tries = 0
             var randomWord : Word? = null
             while(tries < 200 && (
-                            randomWord == null || WordLinear.wordList.contains(randomWord) || Helper.checkIfWordInRightSphere(randomWord) || !Helper.checkIfWordInRightSphere(randomWord))) {
+                            randomWord == null || WordLinear.wordList.contains(randomWord) || !Helper.checkIfWordInRightSphere(randomWord))) {
                 randomWord = when(type) {
                     Word.Type.Adjective -> WordLinear.adjectivesList.random()
                     Word.Type.Person -> WordLinear.personsList.random()
@@ -36,6 +36,8 @@ class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout
                 }
                 tries++
             }
+            if(randomWord != null && !Helper.checkIfWordInRightSphere(randomWord)) randomWord = null
+            if(WordLinear.wordList.contains(randomWord)) randomWord = null
             return randomWord
         }
 
@@ -65,7 +67,10 @@ class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout
             if(WordLinear.placesList.isNotEmpty()) {
                 WordLinear.wordList = WordLinear.selectedWords.toMutableList()
                 handleCharacterRemoval()
-                val randomCats = listOf<Word.Type>(Word.Type.CHARACTER, Word.Type.Action, Word.Type.Object, Word.Type.Person, Word.Type.Adjective, Word.Type.Place, Word.Type.Object, Word.Type.Action)
+                val randomCats = listOf(
+                        Word.Type.CHARACTER, Word.Type.Action,
+                        Word.Type.Object, Word.Type.Person, Word.Type.Adjective,
+                        Word.Type.Place, Word.Type.Object, Word.Type.Action)
                 for(i in 1..wordAmount) {
                     getWord(randomCats.random())?.let { it1 -> WordLinear.wordList.add(it1) }
                 }

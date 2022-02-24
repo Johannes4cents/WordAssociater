@@ -12,6 +12,7 @@ import com.example.wordassociater.bars.AddWordBar
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentStartBinding
 import com.example.wordassociater.fire_classes.Sphere
+import com.example.wordassociater.words.WordLinear
 
 class StartFragment: Fragment() {
     lateinit var b : FragmentStartBinding
@@ -39,6 +40,7 @@ class StartFragment: Fragment() {
     private fun setRecycler() {
         adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
         b.charPreviewRecycler.adapter = adapter
+        b.connectedWordRecycler.setLiveWords(WordLinear.selectedWordsLive)
     }
 
     private fun setObserver() {

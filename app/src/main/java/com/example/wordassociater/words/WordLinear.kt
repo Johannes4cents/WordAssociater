@@ -17,6 +17,7 @@ class WordLinear(context: Context, attributeSet: AttributeSet): LinearLayout(con
         var wordList = mutableListOf<Word>()
         val wordListTriger = MutableLiveData<Unit>()
         val selectedWords = mutableListOf<Word>()
+        val selectedWordsLive = MutableLiveData<List<Word>>()
         val adjectivesList = mutableListOf<Word>()
         val actionsList = mutableListOf<Word>()
         val objectsList = mutableListOf<Word>()
@@ -69,6 +70,7 @@ class WordLinear(context: Context, attributeSet: AttributeSet): LinearLayout(con
                     b.rightLinear.addView(wordHolder)
                 }
             }
+            selectedWordsLive.value = selectedWords
         }
     }
 

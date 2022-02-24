@@ -49,7 +49,7 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
 
     private fun deleteSnippet(confirmation: Boolean) {
         if(confirmation) {
-            FireSnippets.delete(snippet)
+            snippet.delete()
         }
     }
 

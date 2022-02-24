@@ -45,6 +45,24 @@ enum class WordColor(path: Int)
 
 enum class AdapterType { List, Popup, Preview }
 
-enum class Page(number: Int) {Chars(0), Start(1), Words(2)}
+enum class Page {Chars, Start, Words }
 
+data class ConnectedWord(val word: Word, var amount: Int) {
+
+    companion object {
+        fun addWord(word: Word, list: MutableList<ConnectedWord>): MutableList<ConnectedWord> {
+            val newList = mutableListOf<ConnectedWord>()
+            for(connectedWord in list) {
+                if(connectedWord.word.id == word.id) {
+                    connectedWord.amount += 1
+                    newList.add(connectedWord)
+                }
+                else {
+                    newList.add(ConnectedWord(word, 1))
+                }
+            }
+            return newList
+        }
+    }
+}
 

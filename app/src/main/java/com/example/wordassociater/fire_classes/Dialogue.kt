@@ -1,6 +1,9 @@
 package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.Main
+import com.example.wordassociater.firestore.FireBubbles
+import com.example.wordassociater.firestore.FireChars
+import com.example.wordassociater.firestore.FireDialogue
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.utils.StoryPart
 import com.google.firebase.firestore.Exclude
@@ -43,5 +46,16 @@ data class Dialogue(
             FireWords.update(w.type, w.id, "used", w.used)
             FireWords.update(w.type, w.id, "dialogueList", w.used)
         }
+
+        for(c in getCharacter()) {
+            c.dialogueList.remove(id)
+            FireChars.update(c.id, "dialogueList", c.dialogueList)
+        }
+
+        for(b in getBubbles()) {
+            FireBubbles.delete(b.id, null)
+        }
+
+        FireDialogue.delete(id)
     }
 }

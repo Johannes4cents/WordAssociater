@@ -21,6 +21,7 @@ import com.example.wordassociater.fire_classes.Drama
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordConnection.Companion.handleWordConnections
+import com.example.wordassociater.firestore.FireChars
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireStrains
 import com.example.wordassociater.firestore.FireWords
@@ -48,6 +49,13 @@ class StrainEditFragment: Fragment() {
 
         val popUpCharacterList = MutableLiveData<MutableList<Character>>(mutableListOf())
 
+        fun clearStrain() {
+            strain.wordList = mutableListOf()
+            strain.characterList = mutableListOf()
+            strain.header = "Strain"
+            strain.content = ""
+        }
+
     }
 
     var liveWordsList = MutableLiveData(WordLinear.selectedWords)
@@ -73,11 +81,26 @@ class StrainEditFragment: Fragment() {
     }
 
     private fun handleWordDeselected() {
+        for(wordId in oldStrain.wordList) {
+            if(!strain.wordList.contains(wordId)) {
+                val word = Main.getWord(wordId)!!
+                word.strainsList.remove(strain.id)
+                FireWords.update(word.type, word.id, "strainsList", word.strainsList)
+            }
+        }
 
     }
 
     private fun handleCharacterDeselected() {
-
+        for(charId in oldStrain.characterList) {
+            if(!strain.characterList.contains(charId)) {
+                val character = Main.getCharacter(charId)
+                if(character != null) {
+                    character.strainsList.remove(strain.id)
+                    FireChars.update(character.id, "strainsList", character.strainsList)
+                }
+            }
+        }
     }
 
     private fun setWordIcon() {
@@ -130,7 +153,7 @@ class StrainEditFragment: Fragment() {
 
     private fun deleteStrain(confirmed: Boolean) {
         if(confirmed) {
-            FireStrains.delete(StrainListFragment.openStrain.value!!)
+            strain.delete()
             StrainListFragment.openStrain.value = null
             findNavController().navigate(R.id.action_writeFragment_to_readFragment)
         }
@@ -138,7 +161,6 @@ class StrainEditFragment: Fragment() {
 
     private fun setClickListener() {
         b.backBtn.setOnClickListener {
-            clearStrain()
             if(comingFrom == Frags.START) {
                 ViewPagerFragment.comingFrom = Page.Start
                 findNavController().navigate(R.id.action_writeFragment_to_startFragment)
@@ -180,14 +202,9 @@ class StrainEditFragment: Fragment() {
         strain.drama = drama
     }
 
-    private fun clearStrain() {
-        strain.wordList = mutableListOf()
-        strain.characterList = mutableListOf()
-        strain.header = "Strain"
-        strain.content = ""
-    }
-
     private fun handleSelectedCharacter(character: Character) {
+        character.selected = !character.selected
+
         if(character.selected && !strain.getCharacters().contains(character)) {
            strain.characterList.add(character.id)
         }
@@ -197,7 +214,6 @@ class StrainEditFragment: Fragment() {
     }
 
     private fun handleWordSelected(word: Word) {
-        word.selected = !word.selected
         if(word.selected) {
             if(!strain.wordList.contains(word.id)) strain.wordList.add(word.id)
         }
@@ -238,6 +254,8 @@ class StrainEditFragment: Fragment() {
             }
 
             handleWordConnections(strain)
+            handleWordDeselected()
+            handleCharacterDeselected()
 
             WordLinear.wordList.clear()
             WordLinear.selectedWords.clear()
@@ -261,9 +279,6 @@ class StrainEditFragment: Fragment() {
     }
 
 
-
-
-
     private fun handleRecycler() {
         adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
         b.characterRecycler.adapter = adapter
@@ -281,7 +296,7 @@ class StrainEditFragment: Fragment() {
             val selectedList = it.filter { c -> c.selected }
             adapter.submitList(selectedList)
 
-            if(adapter.currentList.isNotEmpty() && adapter.currentList[0].imgUrl != "") {
+            if(selectedList.isNotEmpty() && selectedList[0].imgUrl != "") {
                 Glide.with(b.characterBtn.context).load(adapter.currentList[0].imgUrl).into(b.characterBtn)
             }
         }
