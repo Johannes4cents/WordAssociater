@@ -29,7 +29,7 @@ class DialogueListFragment: Fragment() {
     }
 
     private fun onDialogueSelected(dialogue: Dialogue) {
-        EditDialogueFragment.oldDialogue = dialogue
+        EditDialogueFragment.oldDialogue = dialogue.copyMe()
         EditDialogueFragment.dialogue = dialogue
         findNavController().navigate(R.id.action_dialogueListFragment_to_editDialogueFragment)
     }

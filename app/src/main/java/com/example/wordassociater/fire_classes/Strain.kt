@@ -67,10 +67,9 @@ data class Strain(
     @Exclude
     fun delete() {
         for(w in getWords()) {
-            w.used -= 1
+            w.decreaseWordUsed()
             w.strainsList.remove(id)
-            FireWords.update(w.type, w.id, "used", w.used)
-            FireWords.update(w.type, w.id, "strainsList", w.used)
+            FireWords.update(w.type, w.id, "strainsList", w.strainsList)
         }
 
         for(c in getCharacters()) {
@@ -84,5 +83,23 @@ data class Strain(
         }
 
         FireStrains.delete(id)
+    }
+
+    @Exclude
+    fun copyMe(): Strain {
+        val clone = Strain()
+        clone.id = 9998999999
+        clone.connectionLayer = connectionLayer
+        clone.connections = connections
+        clone.drama = drama
+        clone.content = content
+        clone.wordList = wordList.toMutableList()
+        clone.characterList = characterList.toMutableList()
+        clone.nuwList = nuwList.toMutableList()
+        clone.header = header
+        clone.isStory = isStory
+        clone.connectionsList = connectionsList.toMutableList()
+
+        return clone
     }
 }

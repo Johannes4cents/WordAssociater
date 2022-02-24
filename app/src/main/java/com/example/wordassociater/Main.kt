@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.firestore.FireStoreListener
-import com.example.wordassociater.words.WordLinear
 
 
 class Main : AppCompatActivity() {
@@ -24,6 +23,10 @@ class Main : AppCompatActivity() {
         var bubbleList = MutableLiveData<List<Bubble>?>()
         var dialogueList = MutableLiveData<List<Dialogue>?>()
         val sphereList = MutableLiveData<List<Sphere>?>()
+        val wordsList = MutableLiveData<List<Word>?>()
+        val wordCatsList = MutableLiveData<List<WordCat>?>()
+        val activeWordCats = MutableLiveData<List<WordCat>?>()
+
         var wordConnectionsList = mutableListOf<WordConnection>()
         var maxLayers = 0
 
@@ -31,6 +34,10 @@ class Main : AppCompatActivity() {
 
         fun getWordConnection(id: Long): WordConnection? {
             return wordConnectionsList.find { wc -> wc.id == id }
+        }
+        
+        fun getWordCat(id:Long): WordCat? {
+            return wordCatsList.value?.find { wordCat -> wordCat.id == id }
         }
 
         fun getCharacter(id: Long): Character? {
@@ -49,8 +56,8 @@ class Main : AppCompatActivity() {
             return notesList.value?.find { note -> note.id == id }
         }
 
-        fun getWord(id: String): Word? {
-            return WordLinear.allWords.find { w -> w.id == id }
+        fun getWord(id: Long): Word? {
+            return wordsList.value?.find { w -> w.id == id }
         }
 
         fun getBubble(id: Long): Bubble? {

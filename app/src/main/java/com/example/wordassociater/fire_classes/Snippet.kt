@@ -7,9 +7,10 @@ import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.utils.StoryPart
 import com.google.firebase.firestore.Exclude
 
-data class Snippet(override var content: String = "", override var id: Long = 0,
-                   override var wordList: MutableList<String> = mutableListOf(),
-                   val connectedSnippets: MutableList<Long> = mutableListOf(),
+data class Snippet(override var content: String = "",
+                   override var id: Long = 0,
+                   override var wordList: MutableList<Long> = mutableListOf(),
+                   var connectedSnippets: MutableList<Long> = mutableListOf(),
                    override var characterList: MutableList<Long> = mutableListOf(),
                    override var nuwList: MutableList<Nuw> = mutableListOf(),
                    var drama: Drama.Type = Drama.Type.None,
@@ -42,8 +43,8 @@ data class Snippet(override var content: String = "", override var id: Long = 0,
         for(w in getWords()) {
             w.used -= 1
             w.snippetsList.remove(id)
-            FireWords.update(w.type, w.id, "used", w.used)
-            FireWords.update(w.type, w.id, "snippetsList", w.used)
+            FireWords.update(w.id, "used", w.used)
+            FireWords.update(w.id, "snippetsList", w.used)
         }
 
         for(c in getCharacters()) {
@@ -57,6 +58,22 @@ data class Snippet(override var content: String = "", override var id: Long = 0,
         }
 
         FireSnippets.delete(id)
+    }
+
+    @Exclude
+    fun copyMe(): Snippet {
+        val newSnippet = Snippet()
+        newSnippet.connectedSnippets = connectedSnippets.toMutableList()
+        newSnippet.drama = drama
+        newSnippet.characterList = characterList.toMutableList()
+        newSnippet.isHeader = isHeader
+        newSnippet.id = 999999999999
+        newSnippet.content = content
+        newSnippet.nuwList = nuwList.toMutableList()
+        newSnippet.wordList = wordList.toMutableList()
+        newSnippet.isStory = isStory
+
+        return newSnippet
     }
 
 }

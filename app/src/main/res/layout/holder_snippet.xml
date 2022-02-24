@@ -47,6 +47,17 @@
             />
 
         <TextView
+            android:gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="18sp"
+            android:id="@+id/textFieldId"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="2"/>
+
+        <TextView
             android:minHeight="45dp"
             android:maxHeight="140dp"
             android:layout_weight="2"

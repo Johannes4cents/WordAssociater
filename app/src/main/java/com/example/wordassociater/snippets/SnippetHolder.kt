@@ -24,6 +24,7 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
     }
 
     private fun setContent() {
+        b.textFieldId.text = snippet.id.toString()
         b.snippetContent.text = snippet.content
         b.associatedWordsSnippet.text = Helper.setWordsToMultipleLines(snippet.getWords().toMutableList())
         checkWordList()

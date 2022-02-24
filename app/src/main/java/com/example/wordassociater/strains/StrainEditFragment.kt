@@ -1,6 +1,7 @@
 package com.example.wordassociater.strains
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,15 +17,8 @@ import com.example.wordassociater.R
 import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentEditStrainBinding
-import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.fire_classes.Drama
-import com.example.wordassociater.fire_classes.Strain
-import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.fire_classes.WordConnection.Companion.handleWordConnections
-import com.example.wordassociater.firestore.FireChars
-import com.example.wordassociater.firestore.FireStats
-import com.example.wordassociater.firestore.FireStrains
-import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.fire_classes.*
+import com.example.wordassociater.firestore.*
 import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.popups.popCharacterSelector
 import com.example.wordassociater.popups.popDramaTypeSelection
@@ -36,9 +30,11 @@ import com.example.wordassociater.words.WordLinear
 
 class StrainEditFragment: Fragment() {
     lateinit var b : FragmentEditStrainBinding
+    lateinit var previewAdapter: CharacterAdapter
+    var selectedCharacterList = mutableListOf<Character>()
 
     companion object {
-        lateinit var adapter: CharacterAdapter
+
         var oldStrain = Strain()
 
         var strain = Strain(
@@ -46,7 +42,6 @@ class StrainEditFragment: Fragment() {
         )
 
         var comingFrom = Frags.START
-
         val popUpCharacterList = MutableLiveData<MutableList<Character>>(mutableListOf())
 
         fun clearStrain() {
@@ -67,6 +62,7 @@ class StrainEditFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         b = FragmentEditStrainBinding.inflate(layoutInflater)
+        setSelectedCharacterList()
         getWordsComingFromStart()
         setWordList()
         setWordIcon()
@@ -80,16 +76,46 @@ class StrainEditFragment: Fragment() {
         return b.root
     }
 
+    private fun setSelectedCharacterList() {
+        selectedCharacterList = strain.getCharacters().toMutableList()
+    }
+
     private fun handleWordDeselected() {
         for(wordId in oldStrain.wordList) {
             if(!strain.wordList.contains(wordId)) {
                 val word = Main.getWord(wordId)!!
+                handleWordConnectionsOnDeselectWord(word)
                 word.strainsList.remove(strain.id)
+                word.decreaseWordUsed()
                 FireWords.update(word.type, word.id, "strainsList", word.strainsList)
             }
         }
-
     }
+
+    private fun handleWordConnectionsOnDeselectWord(word:Word) {
+        val affectedConnections = mutableListOf<WordConnection>()
+        Log.i("deselectTest", "word connectionCounter : ${word.wordConnectionsList.count()} | word is : ${word.text} | word.id is ${word.id} ")
+        for (wc in word.getWordConnections()) {
+            Log.i("deselectTest", "word connection : ${wc.word} ")
+            if(wc.storyPart == strain.id) {
+                affectedConnections.add(wc)
+            }
+        }
+        for(wc in affectedConnections) {
+            val connectedWord = Main.getWord(wc.word)
+            if(connectedWord != null) {
+                connectedWord.wordConnectionsList.remove(wc.id)
+                FireWords.update(connectedWord.type, connectedWord.id, "wordConnectionsList", connectedWord.wordConnectionsList)
+            }
+        }
+        for(wc in affectedConnections) {
+            word.wordConnectionsList.remove(wc.id)
+            FireWords.update(word.type, word.id, "wordConnectionsList", word.wordConnectionsList)
+            FireWordConnections.delete(wc.id)
+        }
+
+        FireWords.update(word.type, word.id, "wordConnectionsList", word.wordConnectionsList)
+     }
 
     private fun handleCharacterDeselected() {
         for(charId in oldStrain.characterList) {
@@ -165,7 +191,10 @@ class StrainEditFragment: Fragment() {
                 ViewPagerFragment.comingFrom = Page.Start
                 findNavController().navigate(R.id.action_writeFragment_to_startFragment)
             }
-            else if(comingFrom == Frags.READ) findNavController().navigate(R.id.action_writeFragment_to_readFragment)
+            else if(comingFrom == Frags.READ) {
+                cleanUp()
+                findNavController().navigate(R.id.action_writeFragment_to_readFragment)
+            }
         }
 
         b.saveBtn.setOnClickListener {
@@ -205,15 +234,16 @@ class StrainEditFragment: Fragment() {
     private fun handleSelectedCharacter(character: Character) {
         character.selected = !character.selected
 
-        if(character.selected && !strain.getCharacters().contains(character)) {
-           strain.characterList.add(character.id)
+        if(character.selected && !selectedCharacterList.contains(character)) {
+           selectedCharacterList.add(character)
         }
-        else strain.characterList.remove(character.id)
+        else selectedCharacterList.remove(character)
 
         popUpCharacterList.value = Helper.getResubmitList(character, popUpCharacterList.value!!)
     }
 
     private fun handleWordSelected(word: Word) {
+        word.selected = !word.selected
         if(word.selected) {
             if(!strain.wordList.contains(word.id)) strain.wordList.add(word.id)
         }
@@ -245,24 +275,30 @@ class StrainEditFragment: Fragment() {
             strain.content = b.strainInput.text.toString()
             strain.header = b.headerInput.text.toString()
             strain.wordList = Word.convertToIdList(selectedWords)
+            strain.characterList = Character.getIdList(selectedCharacterList)
+
+
             FireStrains.add(strain, requireContext())
 
             for(w in selectedWords) {
                 if(!w.strainsList.contains(strain.id)) w.strainsList.add(strain.id)
                 FireWords.update(w.type, w.id, "strainsList", w.strainsList)
-                if(!oldStrain.wordList.contains(w.id)) FireWords.update(w.type, w.id, "used", w.used + 1)
+                if(!oldStrain.wordList.contains(w.id)) w.increaseWordUsed()
             }
 
-            handleWordConnections(strain)
+            for(c in strain.getCharacters()) {
+                if(!c.strainsList.contains(strain.id)) {
+                    c.strainsList.add(strain.id)
+                    FireChars.update(c.id, "strainsList", c.strainsList)
+                }
+            }
+
+            WordConnection.handleWordConnections(strain)
             handleWordDeselected()
             handleCharacterDeselected()
 
-            WordLinear.wordList.clear()
-            WordLinear.selectedWords.clear()
-            CharacterAdapter.selectedCharacterList.clear()
-            CharacterAdapter.selectedNameChars.clear()
-
-            strain = Strain(id= FireStats.getStoryPartId())
+            Log.i("characterProb", "strain.characterlist :  ${strain.characterList}")
+            cleanUp()
 
             if(comingFrom == Frags.START) {
                 ViewPagerFragment.comingFrom = Page.Start
@@ -270,34 +306,54 @@ class StrainEditFragment: Fragment() {
             }
             else if(comingFrom == Frags.READ) findNavController().navigate(R.id.action_writeFragment_to_readFragment)
 
-            WordLinear.selectedWords.clear()
-            Helper.getIMM(requireContext()).hideSoftInputFromWindow(b.strainInput.windowToken, 0)
+
         }
         else {
             Toast.makeText(requireContext(), "Want to put some words \n in there buddy?", Toast.LENGTH_SHORT).show()
         }
     }
 
+    private fun cleanUp() {
 
-    private fun handleRecycler() {
-        adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
-        b.characterRecycler.adapter = adapter
-
-        if(adapter.currentList.isNotEmpty() && adapter.currentList[0].imgUrl != "") {
-            Glide.with(b.characterBtn.context).load(adapter.currentList[0].imgUrl).into(b.characterBtn)
+        val newCharList = mutableListOf<Character>()
+        val charList = Main.characterList.value!!.toMutableList()
+        for(c in charList) {
+            c.selected = false
+            newCharList.add(c)
         }
 
-        adapter.submitList(strain.getCharacters())
+        popUpCharacterList.value = charList
+        WordLinear.wordList.clear()
+        WordLinear.selectedWords.clear()
+        CharacterAdapter.selectedCharacterList.clear()
+        CharacterAdapter.selectedNameChars.clear()
+        strain = Strain(id= FireStats.getStoryPartId())
+    }
+
+
+    private fun handleRecycler() {
+        previewAdapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
+        b.characterRecycler.adapter = previewAdapter
+
+        if(previewAdapter.currentList.isNotEmpty() && previewAdapter.currentList[0].imgUrl != "") {
+            Glide.with(b.characterBtn.context).load(previewAdapter.currentList[0].imgUrl).into(b.characterBtn)
+        }
+
+        previewAdapter.submitList(strain.getCharacters())
 
     }
 
     private fun setObserver() {
         popUpCharacterList.observe(context as LifecycleOwner) {
             val selectedList = it.filter { c -> c.selected }
-            adapter.submitList(selectedList)
+
+            previewAdapter.submitList(selectedList)
 
             if(selectedList.isNotEmpty() && selectedList[0].imgUrl != "") {
-                Glide.with(b.characterBtn.context).load(adapter.currentList[0].imgUrl).into(b.characterBtn)
+                Glide.with(b.characterBtn.context).load(selectedList[0].imgUrl).into(b.characterBtn)
+            }
+            if(selectedList.isEmpty()) {
+                b.characterBtn.setImageResource(R.drawable.icon_edit_character)
             }
         }
 

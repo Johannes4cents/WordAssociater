@@ -43,6 +43,7 @@ class StrainHolder(
     }
 
     private fun setStrain() {
+        b.textFieldId.text = strain.id.toString()
         b.contentPreview.text = strain.content
         b.strainLayerButton.currentLayer.value = strain.connectionLayer
         setAssociatedWords()

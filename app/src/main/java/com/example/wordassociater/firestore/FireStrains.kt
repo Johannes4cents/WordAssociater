@@ -7,12 +7,15 @@ import com.example.wordassociater.fire_classes.Strain
 
 object FireStrains {
     fun add(strain: Strain, context: Context?) {
-        Log.i("strainProb", "Strain in Add Strain")
+        Log.i("characterProb", "in FireStrains/add - characterList is ${strain.characterList}")
         FireLists.fireStrainsList.document(strain.id.toString()).set(strain).addOnSuccessListener {
-            Log.i("strainProb", "Strain saved to Firestore")
+            Log.i("characterProb", "Strain saved to Firestore")
             if(context != null) Toast.makeText(context, "Strain saved to Firestore", Toast.LENGTH_SHORT).show()
         }.addOnFailureListener {
+            Log.i("characterProb", "strain failed to upload")
             if(context != null) Toast.makeText(context, "unable to upload strain to Firestore", Toast.LENGTH_SHORT).show()
+        }.addOnCanceledListener {
+            Log.i("characterProb", "upload canceled")
         }
     }
 

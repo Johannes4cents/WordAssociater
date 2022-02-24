@@ -1,5 +1,4 @@
 package com.example.wordassociater.firestore
-import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.StartFragment
 import com.example.wordassociater.bars.AddWordBar
@@ -8,7 +7,6 @@ import com.example.wordassociater.lists.DramaLists
 import com.example.wordassociater.lists.NoteLists
 import com.example.wordassociater.notes.NotesFragment
 import com.example.wordassociater.strains.StrainEditFragment
-import com.example.wordassociater.words.WordLinear
 
 object FireStoreListener {
 
@@ -26,6 +24,7 @@ object FireStoreListener {
         getSpheres()
         getSpheresOneTime()
         getWordConnections()
+        getWordCats()
     }
 
     private fun getCharacters() {
@@ -33,7 +32,6 @@ object FireStoreListener {
             if(docs != null) {
                 var charList = mutableListOf<Character>()
                 for(doc in docs) {
-                    Log.i("characterProb", "$doc")
                     val character = doc.toObject(Character::class.java)
                     character.selected = false
                     charList.add(character)
@@ -207,32 +205,34 @@ object FireStoreListener {
         }
     }
 
-
     private fun getWords() {
-        val typeList = mutableListOf(Word.Type.Object, Word.Type.Person, Word.Type.Place, Word.Type.CHARACTER,
-                Word.Type.Action, Word.Type.Adjective)
-        for(type in typeList) {
-            getWords(type)
-        }
-    }
-
-
-
-    private fun getWords(type: Word.Type) {
-        val collectionReference = FireLists.getWordCollectionRef(type)
-        collectionReference.addSnapshotListener { docs, error ->
-            val nameList = mutableListOf<String>()
+        FireLists.wordsList.addSnapshotListener { docs, _ ->
             if(docs != null) {
-                WordLinear.getWordList(type).clear()
+                val wordsList = mutableListOf<Word>()
                 for(doc in docs) {
                     val word = doc.toObject(Word::class.java)
-                    nameList.add(word.text)
-                    word.selected = false
-                    WordLinear.getWordList(type).add(word)
-                    if(WordLinear.allWords.find { w -> w.id == word.id } == null) WordLinear.allWords.add(word)
+                    wordsList.add(word)
                 }
+                Main.wordsList.value = wordsList
             }
         }
     }
+
+    private fun getWordCats() {
+        FireLists.wordCatList.addSnapshotListener { docs, error ->
+            if(docs != null) {
+                val wordCatList = mutableListOf<WordCat>()
+                val activeWordCats = mutableListOf<WordCat>()
+                for(doc in docs) {
+                    val wordCat = doc.toObject(WordCat::class.java)
+                    wordCatList.add(wordCat)
+                    if(wordCat.active) activeWordCats.add(wordCat)
+                }
+                Main.wordCatsList.value = wordCatList
+                Main.activeWordCats.value = activeWordCats
+            }
+        }
+    }
+
 
 }

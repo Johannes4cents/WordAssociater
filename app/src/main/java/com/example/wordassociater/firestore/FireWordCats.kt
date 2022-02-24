@@ -1,7 +1,6 @@
 package com.example.wordassociater.firestore
 
 import android.content.Context
-import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.utils.Helper
 
 object FireWordCats {

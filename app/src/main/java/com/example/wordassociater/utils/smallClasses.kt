@@ -9,7 +9,7 @@ import com.google.firebase.firestore.Exclude
 open class StoryPart(
         open var id : Long,
         open var content: String,
-        open var wordList: MutableList<String>,
+        open var wordList: MutableList<Long>,
         open var characterList: MutableList<Long>,
         open var nuwList: MutableList<Nuw>) {
 

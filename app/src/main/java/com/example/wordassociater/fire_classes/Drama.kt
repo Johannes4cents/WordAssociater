@@ -7,7 +7,7 @@ import com.google.firebase.firestore.Exclude
 class Drama(
         override var id: Long = 0,
         override var content: String = "",
-        override var wordList: MutableList<String> = mutableListOf(),
+        override var wordList: MutableList<Long> = mutableListOf(),
         override var characterList: MutableList<Long> = mutableListOf(),
         override var nuwList: MutableList<Nuw> = mutableListOf(),
         var type: Type = Type.Conflict

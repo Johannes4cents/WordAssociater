@@ -22,4 +22,7 @@
     <color name="wordGrey">#afafaf</color>
     <color name="wordPurple">#8d7fff</color>
     <color name="wordBrown">#a6815c</color>
+    <color name="wordRed">#f41f51</color>
+    <color name="wordTeal">#a4e6ff</color>
+    <color name="wordOrange">#ffb78e</color>
 </resources>

@@ -34,10 +34,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <include layout="@layout/bar_add_button"
-                android:layout_marginTop="16dp"
+            <com.example.wordassociater.wordcat.WordCatRecycler
+                android:id="@+id/wordCatRecycler"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="50dp"/>
 
             <com.example.wordassociater.bars.HandleWordsBar
                 android:layout_width="match_parent"

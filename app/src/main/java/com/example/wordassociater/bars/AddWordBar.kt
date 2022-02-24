@@ -9,12 +9,14 @@ import android.widget.*
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
+import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.StartFragment
 import com.example.wordassociater.databinding.BarAddWordBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Sphere
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.firestore.FireChars
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireWords
@@ -22,12 +24,10 @@ import com.example.wordassociater.popups.popSelectSphere
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Helper.getIMM
 import com.example.wordassociater.words.WordLinear
-import com.google.android.gms.common.util.CollectionUtils.listOf
 
 class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
-
+    var selectedWordCat = WordCat(1,"Adjective", WordCat.Color.Pink)
     val b = BarAddWordBinding.inflate(LayoutInflater.from(context), this, true)
-    var selectedType = Word.Type.Adjective
     var newWord = Word()
     var takesWordFunc : ((word:Word) -> Unit)? = null
 
@@ -101,14 +101,14 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
     }
 
     private fun setUpSpinner() {
-        val optionList = listOf<Word.Type>(Word.Type.Adjective, Word.Type.Person, Word.Type.CHARACTER, Word.Type.Action, Word.Type.Object, Word.Type.Place)
+        val optionList = Main.wordCatsList.value!!
         val adapter = ArrayAdapter(context, R.layout.support_simple_spinner_dropdown_item, optionList)
         b.selectTypeSpinner.adapter = adapter
 
         b.selectTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                selectedType = optionList[position]
+                selectedWordCat = optionList[position]
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -132,8 +132,8 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
     private fun addWord() {
         if(b.wordInput.text.isNotEmpty()) {
             newWord.text = b.wordInput.text.toString()
-            newWord.type = selectedType
-            newWord.id = FireStats.getWordId().toString()
+            newWord.cats.add(selectedWordCat.id)
+            newWord.id = FireStats.getWordId()
             if(takesWordFunc == null) {
                 if(!Helper.checkIfWordExists(newWord, context)) {
                     val connectId = FireStats.getCharConnectId()
@@ -153,7 +153,7 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
         }
     }
     private fun handleCharacter(connectId: Long, newWord: Word) {
-        if(selectedType == Word.Type.CHARACTER) {
+        if(selectedWordCat.name == "Character") {
             val character = Character(
                     id =  FireStats.getCharId(),
                     name = b.wordInput.text.toString(),
@@ -165,7 +165,7 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
 
     private fun handleWordLinear(newWord: Word) {
         WordLinear.wordList.add(newWord)
-        WordLinear.wordListTriger.postValue(Unit)
+        WordLinear.wordListTrigger.postValue(Unit)
     }
 
 

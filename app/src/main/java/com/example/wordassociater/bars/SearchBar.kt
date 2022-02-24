@@ -16,7 +16,6 @@ import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.words.WordLinear
 
 @SuppressLint("AppCompatCustomView")
 class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
@@ -63,7 +62,7 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
     }
 
     fun getWords( takeWordsFunc: (wordsList: List<Word>) -> Unit) {
-        val allWords = WordLinear.allWords.toMutableList()
+        val allWords = Main.wordsList.value!!.toMutableList()
         searchWords.observe(context as LifecycleOwner) {
             val foundWords = mutableListOf<Word>()
             for(word in allWords) {

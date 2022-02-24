@@ -1,6 +1,7 @@
 package com.example.wordassociater.snippets
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +50,8 @@ class SnippetFragment: Fragment() {
     }
 
     private fun snippetClickedFunc(snippet: Snippet) {
-        EditSnippetFragment.oldSnippet = snippet
+        Log.i("characterProb", "oldSnippet set")
+        EditSnippetFragment.oldSnippet = snippet.copyMe()
         EditSnippetFragment.snippet = snippet
         findNavController().navigate(R.id.action_snippetFragment_to_editSnippetFragment)
     }

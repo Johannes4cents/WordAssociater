@@ -77,6 +77,7 @@ class EditDialogueFragment: Fragment() {
             if(!dialogue.wordList.contains(wordId)) {
                 val word = Main.getWord(wordId)!!
                 word.dialogueList.remove(dialogue.id)
+                word.decreaseWordUsed()
                 FireWords.update(word.type, word.id, "dialogueList", word.dialogueList)
             }
         }
@@ -137,24 +138,26 @@ class EditDialogueFragment: Fragment() {
                 if(!Main.bubbleList.value!!.contains(bubble)) FireBubbles.add(bubble, requireContext())
             }
             for(c in dialogue.characterList) {
-                val char = Main.getCharacter(c)
-                char?.dialogueList?.add(dialogue.id)
-                FireChars.update(c,"dialogueList", char?.dialogueList!!)
+                val char = Main.getCharacter(c)!!
+                if(!char.dialogueList.contains(dialogue.id)) {
+                    char.dialogueList.add(dialogue.id)
+                    FireChars.update(c,"dialogueList", char.dialogueList)
+                }
             }
-
             for(w in dialogue.wordList) {
                 val word = Main.getWord(w)
                 if(word != null) {
-                    word.dialogueList.add(dialogue.id)
-                    FireWords.update(word.type, word.id, "dialogueList", word.dialogueList)
+                    if(!word.dialogueList.contains(dialogue.id)) {
+                        word.dialogueList.add(dialogue.id)
+                        FireWords.update(word.type, word.id, "dialogueList", word.dialogueList)
+                        word.increaseWordUsed()
+                    }
                 }
             }
 
             handleWordDeselected()
             handleCharacterDeselected()
-
             WordConnection.handleWordConnections(dialogue)
-
             dialogue = Dialogue(id = FireStats.getStoryPartId())
             findNavController().navigate(R.id.action_editDialogueFragment_to_startFragment)
         }

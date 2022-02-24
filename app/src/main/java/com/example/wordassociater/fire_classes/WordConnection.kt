@@ -9,7 +9,7 @@ import com.google.firebase.firestore.Exclude
 
 data class WordConnection(
         var id: Long = 0,
-        var word: String = "",
+        var word: Long = 0,
         var storyPart: Long = 0) {
 
     @Exclude
@@ -48,7 +48,7 @@ data class WordConnection(
                             FireWordConnections.add(wc, null)
                             word.wordConnectionsList.add(wc.id)
                             Log.i("wordConProbs", "word is ${word.text} connection word is ${w.text}")
-                            FireWords.update(word.type, word.id, "connections", word.wordConnectionsList)
+                            FireWords.update(word.id, "connections", word.wordConnectionsList)
                         }
                     }
                 }

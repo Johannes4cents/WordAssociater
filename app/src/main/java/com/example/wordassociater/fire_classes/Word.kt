@@ -1,29 +1,24 @@
 package com.example.wordassociater.fire_classes
 
+import android.util.Log
 import com.example.wordassociater.Main
-import com.example.wordassociater.R
 import com.example.wordassociater.firestore.*
 import com.google.firebase.firestore.Exclude
 
 data class Word(
         var text: String = "",
-        var type: Type = Type.NONE,
-        var id: String = "",
+        var cats: MutableList<Long> = mutableListOf(),
+        var id: Long = 0,
         var used: Int = 0,
-        val snippetsList: MutableList<Long> = mutableListOf(),
+        var snippetsList: MutableList<Long> = mutableListOf(),
         var strainsList: MutableList<Long> = mutableListOf(),
         var dialogueList: MutableList<Long> = mutableListOf(),
-        var selected : Boolean = false,
-        var lineCount : Int = 1,
         var connectId: Long = 0,
         var imgUrl: String = "",
-        var cat: Cat = Cat.General,
-        var color:Int = R.color.wordBlue,
         var spheres: MutableList<Long> = mutableListOf(1),
-        var wordCatsList: MutableList<Long> = mutableListOf(1),
         var branchOf: String = "",
         var synonyms: MutableList<String> = mutableListOf(),
-        var rootOf: MutableList<String> = mutableListOf(),
+        var rootOf: MutableList<Long> = mutableListOf(),
         var wordConnectionsList: MutableList<Long> = mutableListOf()
 )
 {
@@ -32,6 +27,20 @@ data class Word(
 
     @Exclude
     var isPicked = false
+
+    @Exclude
+    var selected : Boolean = false
+
+    @Exclude
+    fun getCatsList(): List<WordCat> {
+        val catsList = mutableListOf<WordCat>()
+        for(id in cats) {
+            val cat = Main.getWordCat(id)
+            if(cat != null) catsList.add(cat)
+        }
+
+        return catsList
+    }
 
     @Exclude
     fun getStrains(): List<Strain> {
@@ -44,7 +53,7 @@ data class Word(
         }
         for(id in toRemoveIds) {
             strainsList.remove(id)
-            FireWords.update(type, this.id, "strainsList", strainsList)
+            FireWords.update(this.id, "strainsList", strainsList)
         }
         return strains
     }
@@ -60,7 +69,7 @@ data class Word(
         }
         for(id in toRemoveIds) {
             snippetsList.remove(id)
-            FireWords.update(type, this.id, "snippetsList", snippetsList)
+            FireWords.update(this.id, "snippetsList", snippetsList)
         }
         return snippets
     }
@@ -77,27 +86,27 @@ data class Word(
 
         for(id in toRemoveIds) {
             dialogueList.remove(id)
-            FireWords.update(type, this.id, "dialogueList", dialogueList)
+            FireWords.update(this.id, "dialogueList", dialogueList)
         }
         return dials
     }
 
 
     @Exclude
-    fun getWordConnections(): List<WordConnection> {
+    fun getWordTwoConnections(): List<WordConnection> {
         val wcs = mutableListOf<WordConnection>()
         val toRemoveIds = mutableListOf<Long>()
         for(id in wordConnectionsList) {
             val wc = Main.getWordConnection(id)
+            Log.i("deselectTest", "word.getWordTwoConnections | wc found is: $wc")
             if(wc != null) wcs.add(wc)
             else toRemoveIds.add(id)
         }
 
         for(id in toRemoveIds) {
             wordConnectionsList.remove(id)
-            FireWords.update(type, this.id, "connections", wordConnectionsList)
+            FireWords.update(this.id, "connections", wordConnectionsList)
         }
-
         return wcs
     }
 
@@ -114,43 +123,17 @@ data class Word(
     }
 
     @Exclude
-    fun getTypeInitials(): String {
-        return when(type) {
-            Word.Type.Adjective -> "Adj"
-            Word.Type.Person -> "Per"
-            Word.Type.Place -> "Pla"
-            Word.Type.Action -> "Act"
-            Word.Type.Object -> "Obj"
-            Word.Type.CHARACTER -> "Cha"
-            Word.Type.NONE -> "Non"
-        }
+    fun increaseWordUsed() {
+        used += 1
+        FireWords.update(id, "used" , used)
     }
 
     @Exclude
-    fun getColor(type: Type): Int {
-        return when(type) {
-            Type.Adjective -> R.color.wordPink
-            Type.Person -> R.color.wordBlue
-            Type.Place -> R.color.wordBrown
-            Type.Action -> R.color.green
-            Type.Object -> R.color.wordPurple
-            Type.CHARACTER -> R.color.wordGrey
-            Type.NONE -> R.color.wordGrey
-        }
+    fun decreaseWordUsed() {
+        used -= 1
+        FireWords.update(id, "used", used)
     }
 
-    @Exclude
-    fun selectColor(type: Type): Int {
-        return when(type) {
-            Type.Adjective -> R.color.wordPink
-            Type.Person -> R.color.wordBlue
-            Type.Place -> R.color.wordBrown
-            Type.Action -> R.color.green
-            Type.Object -> R.color.wordPurple
-            Type.CHARACTER -> R.color.wordGrey
-            Type.NONE -> R.color.wordGrey
-        }
-    }
 
     @Exclude
     fun delete() {
@@ -169,60 +152,53 @@ data class Word(
             FireDialogue.update(dialogue.id, "wordList", dialogue.wordList)
         }
 
-        val rootWord = Main.getWord(branchOf)
+        val rootWord = Main.getWord(branchOf.toLong())
         if(rootWord != null) {
             rootWord.rootOf.remove(id)
-            FireWords.update(rootWord.type, rootWord.id, "roofOf", rootWord.rootOf)
+            FireWords.update(rootWord.id, "roofOf", rootWord.rootOf)
         }
 
-        for(w in convertIdListToWord(synonyms)) {
-            w.synonyms.remove(id)
-            FireWords.update(w.type,w.id, "synonyms", w.synonyms)
-        }
 
         for(w in convertIdListToWord(rootOf)) {
             w.branchOf = ""
-            FireWords.update(w.type, w.id, "branchOf", w.branchOf)
+            FireWords.update(w.id.toLong(), "branchOf", w.branchOf)
         }
 
-        for(wc in getWordConnections()) {
-            val word = Main.getWord(wc.word)
+        for(wc in getWordTwoConnections()) {
+            val word = Main.getWord(wc.word.toLong())
             if(word != null) {
                 word.wordConnectionsList.remove(wc.id)
-                FireWords.update(word.type,word.id, "wordConnectionsList", word.wordConnectionsList)
+                FireWords.update(word.id, "wordConnectionsList", word.wordConnectionsList)
             }
             FireWordConnections.delete(wc.id)
         }
-
-        FireWords.delete(type, id)
+        FireWords.delete(id)
 
     }
 
 
 
     companion object {
-        fun convertToIdList(wordList: List<Word>): MutableList<String> {
-            val idList = mutableListOf<String>()
+        fun convertToIdList(wordList: List<Word>): MutableList<Long> {
+            val idList = mutableListOf<Long>()
             for(w in wordList) idList.add(w.id)
             return idList
         }
 
-        fun convertIdListToWord(idList: List<String>): MutableList<Word> {
+        fun convertIdListToWord(idList: List<Long>): MutableList<Word> {
             val wordList = mutableListOf<Word>()
             for(w in idList) Main.getWord(w)?.let { wordList.add(it) }
             return wordList
         }
-    }
-    enum class Type(val text: String) {
-        Adjective("Adjective"),
-        Person("Person"),
-        Place("Place"),
-        Action("Action"),
-        Object("Object"),
-        CHARACTER("Character"),
-        NONE("None") }
 
-    enum class Cat {
-        General, Story, Global
+        fun fireGet(id: Long, onWordReceived: (word: Word) -> Unit) {
+            FireLists.wordsList.document(id.toString()).get().addOnSuccessListener {
+                val word = it.toObject(Word::class.java)
+                if(word != null) onWordReceived(word)
+
+            }
+        }
+
     }
+
 }

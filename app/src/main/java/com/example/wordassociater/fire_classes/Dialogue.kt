@@ -58,4 +58,18 @@ data class Dialogue(
 
         FireDialogue.delete(id)
     }
+
+    @Exclude
+    fun copyMe(): Dialogue  {
+        val clone = Dialogue()
+        clone.id = 98799999
+        clone.characterList = characterList.toMutableList()
+        clone.content = content
+        clone.nuwList = nuwList.toMutableList()
+        clone.wordList = wordList.toMutableList()
+        clone.currentIndex = currentIndex
+        clone.drama = drama
+        clone.bubbleList = bubbleList.toMutableList()
+        return clone
+    }
 }

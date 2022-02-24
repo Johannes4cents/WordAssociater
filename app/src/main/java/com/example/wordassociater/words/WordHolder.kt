@@ -47,7 +47,7 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
             val index = WordLinear.wordList.indexOf(word)
             WordLinear.wordList.remove(word)
             WordLinear.wordList.add(index, word)
-            WordLinear.wordListTriger.postValue(Unit)
+            WordLinear.wordListTrigger.postValue(Unit)
         }
     }
 
@@ -83,7 +83,7 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
         val index = WordLinear.wordList.indexOf(word)
         WordLinear.wordList.remove(word)
         HandleWordsBar.getWord(word?.type!!)?.let { WordLinear.wordList.add(index, it) }
-        WordLinear.wordListTriger.postValue(Unit)
+        WordLinear.wordListTrigger.postValue(Unit)
     }
 
     private fun setWord() {

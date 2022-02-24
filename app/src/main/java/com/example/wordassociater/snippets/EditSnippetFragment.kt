@@ -41,8 +41,8 @@ class EditSnippetFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         b = FragmentEditSnippetBinding.inflate(inflater)
-        setWordList()
-        setCharacterList()
+
+        setLiveList()
         setClickListener()
         setContent()
         setRecycler()
@@ -50,17 +50,17 @@ class EditSnippetFragment: Fragment() {
         return b.root
     }
 
-    private fun setWordList() {
-        SearchHelper.setWordList(snippet.getWords(), liveWordList)
+    private fun setLiveList() {
+        val notSelectedList = mutableListOf<Character>()
+        for(c in Main.characterList.value!!) {
+            c.selected = snippet.characterList.contains(c.id)
+            notSelectedList.add(c)
+        }
+        characterList.value = notSelectedList
     }
 
-    private fun setCharacterList() {
-        characterList.value = Main.characterList.value?.toMutableList()
-        val newList = characterList.value!!.toMutableList()
-        for(char in newList) {
-            if(snippet.getCharacters().contains(char)) char.selected = true
-        }
-        characterList.value = newList
+    private fun setWordList() {
+        SearchHelper.setWordList(snippet.getWords(), liveWordList)
     }
 
     private fun setClickListener() {
@@ -90,11 +90,19 @@ class EditSnippetFragment: Fragment() {
         for(wordId in oldSnippet.wordList) {
             if(!snippet.wordList.contains(wordId)) {
                 val word = Main.getWord(wordId)!!
+                Log.i("deselectTest", "word.strainsList before = ${word.strainsList}")
                 word.snippetsList.remove(snippet.id)
+                word.decreaseWordUsed()
                 FireWords.update(word.type, word.id, "snippetsList", word.snippetsList)
+                Log.i("deselectTest", "word.strainsList after = ${word.strainsList}")
             }
         }
+    }
 
+    private fun handleCharacterSelected(char: Character) {
+        char.selected = !char.selected
+        val newList = Helper.getResubmitList(char, characterList.value!!)
+        characterList.value = newList
     }
 
     private fun handleCharacterDeselected() {
@@ -120,11 +128,28 @@ class EditSnippetFragment: Fragment() {
 
     private fun saveSnippet() {
         snippet.content = b.snippetInput.text.toString()
-        val charList = mutableListOf<Long>()
         for(c in characterList.value!!) {
-            if(c.selected) charList.add(c.id)
+            if(c.selected) {
+                if(!snippet.characterList.contains(c.id)) snippet.characterList.add(c.id)
+                if(!c.snippetsList.contains(snippet.id)) {
+                    c.snippetsList.add(snippet.id)
+                    FireChars.update(c.id, "snippetsList", c.snippetsList)
+                }
+            }
+            else {
+                if(snippet.characterList.contains(c.id)) {
+                    snippet.characterList.remove(c.id)
+                }
+            }
         }
-        snippet.characterList = charList
+        for(w in snippet.getWords()) {
+            Log.i("deselectTest", "word is ${w.text} | id: ${w.id} | !w.snippetsList.contains(snippet.id) = ${!w.snippetsList.contains(snippet.id)}")
+            if(!w.snippetsList.contains(snippet.id)) {
+                w.snippetsList.add(snippet.id)
+                w.increaseWordUsed()
+                FireWords.update(w.type,w.id, "snippetsList", w.snippetsList)
+            }
+        }
         FireSnippets.add(snippet, context)
         characterList.value = mutableListOf()
         WordConnection.handleWordConnections(snippet)
@@ -135,7 +160,6 @@ class EditSnippetFragment: Fragment() {
 
     private fun setContent() {
         b.snippetInput.setText(snippet.content)
-        Log.i("wordPopUp", "editSnippet/setContent, snippet.getwords are : ${snippet.getWords()}")
        b.associatedWords.text =  Helper.setWordsToMultipleLines(snippet.getWords())
     }
 
@@ -151,7 +175,7 @@ class EditSnippetFragment: Fragment() {
         characterList.observe(context as LifecycleOwner) {
             val selectedChars = mutableListOf<Character>()
             for(c in it) {
-                if(c.selected) selectedChars.add(c)
+                if(c.selected && !selectedChars.contains(c)) selectedChars.add(c)
             }
             charAdapter.submitList(selectedChars)
         }
@@ -164,9 +188,5 @@ class EditSnippetFragment: Fragment() {
 
     }
 
-    private fun handleCharacterSelected(char: Character) {
-        char.selected = !char.selected
-        val newList = Helper.getResubmitList(char, characterList.value!!)
-        characterList.value = newList
-    }
+
 }

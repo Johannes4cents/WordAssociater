@@ -135,12 +135,9 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
             for(word in WordLinear.selectedWords) {
                 newSnippet.wordList.add(word.id)
                 word.snippetsList.add(newSnippet.id)
-                FireWords.update(word.type, word.id, "snippetsList", word.snippetsList)
-
-                word.used = word.used + 1
-                FireWords.update(word.type, word.id, "used" , word.used)
+                FireWords.update(word.id, "snippetsList", word.snippetsList)
+                word.increaseWordUsed()
             }
-
 
             WordConnection.handleWordConnections(newSnippet)
             handleCharacters(newSnippet)
@@ -176,6 +173,8 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
     private fun handleCharacters(storyPart: StoryPart) {
         for(char in CharacterAdapter.selectedCharacterList) {
             storyPart.characterList.add(char.id)
+            char.snippetsList.add(storyPart.id)
+            FireChars.update(char.id, "snippetsList", char.snippetsList)
         }
         CharacterAdapter.selectedCharacterList.clear()
         CharacterAdapter.selectedNameChars.clear()

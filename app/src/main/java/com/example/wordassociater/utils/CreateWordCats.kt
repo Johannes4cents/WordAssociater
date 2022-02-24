@@ -1,7 +1,5 @@
 package com.example.wordassociater.utils
 
-import com.example.wordassociater.fire_classes.WordCat
-
 object CreateWordCats {
 
     var id: Long = 1
