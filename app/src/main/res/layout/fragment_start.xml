@@ -52,6 +52,7 @@
 
             <com.example.wordassociater.words.ConnectedWordsRecycler
                 android:id="@+id/connectedWordRecycler"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 

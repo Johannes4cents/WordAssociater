@@ -14,22 +14,10 @@ class WordHolderPreview(val b : HolderWordPreviewBinding): RecyclerView.ViewHold
     }
 
     private fun setContent() {
+        val firstCat = word.getCatsList()[0]
         b.content.text = word.text
-        b.typeInitials.text = setTypeInitials(word.type)
-        b.typeInitials.setBackgroundColor(b.root.context.resources.getColor(word.getColor(word.type)))
-    }
-
-
-    private fun setTypeInitials(type: Word.Type): String {
-        return when(type) {
-            Word.Type.Adjective -> "Adj"
-            Word.Type.Person -> "Per"
-            Word.Type.Place -> "Pla"
-            Word.Type.Action -> "Act"
-            Word.Type.Object -> "Obj"
-            Word.Type.CHARACTER -> "Cha"
-            Word.Type.NONE -> "Non"
-        }
+        b.typeInitials.text = firstCat.name.take(3)
+        b.typeInitials.setBackgroundColor(b.root.context.resources.getColor(firstCat.getColor()))
     }
 
 

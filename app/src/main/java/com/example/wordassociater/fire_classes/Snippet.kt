@@ -10,7 +10,7 @@ import com.google.firebase.firestore.Exclude
 data class Snippet(override var content: String = "",
                    override var id: Long = 0,
                    override var wordList: MutableList<Long> = mutableListOf(),
-                   var connectedSnippets: MutableList<Long> = mutableListOf(),
+                   var connectedSnippetsList: MutableList<Long> = mutableListOf(),
                    override var characterList: MutableList<Long> = mutableListOf(),
                    override var nuwList: MutableList<Nuw> = mutableListOf(),
                    var drama: Drama.Type = Drama.Type.None,
@@ -21,19 +21,50 @@ data class Snippet(override var content: String = "",
     @Exclude
     fun getCharacters(): List<Character> {
         val chars = mutableListOf<Character>()
+        val notFoundList = mutableListOf<Long>()
         for(id in characterList) {
             val char = Main.characterList.value?.find { c -> c.id == id }
             if(char != null) chars.add(char)
+            else notFoundList.add(id)
+        }
+
+        for(id in notFoundList) {
+            characterList.remove(id)
+            FireSnippets.update(id, "characterList", characterList)
         }
         return chars
     }
 
     @Exclude
-    fun connectedSnippetsList(): List<Snippet> {
+    fun getWords(): MutableList<Word> {
+        val words = mutableListOf<Word>()
+        val notFound = mutableListOf<Long>()
+        for(id in wordList) {
+            val found = Main.getWord(id)
+            if(found != null) words.add(found)
+            else notFound.add(id)
+        }
+
+        for(id in notFound) {
+            wordList.remove(id)
+            FireSnippets.update(id, "wordList", wordList)
+        }
+        return words
+    }
+
+    @Exclude
+    fun getConnectedSnippets(): List<Snippet> {
         val snipList = mutableListOf<Snippet>()
-        for(id in connectedSnippets) {
+        val notFound = mutableListOf<Long>()
+        for(id in connectedSnippetsList) {
             val snip = Main.getSnippet(id)
             if(snip != null) snipList.add(snip)
+            else notFound.add(id)
+        }
+
+        for(id in notFound) {
+            connectedSnippetsList.remove(id)
+            FireSnippets.update(id, "connectedSnippetsList", connectedSnippetsList)
         }
         return snipList
     }
@@ -52,9 +83,9 @@ data class Snippet(override var content: String = "",
             FireChars.update(c.id, "snippetsList", c.snippetsList)
         }
 
-        for(snippet in connectedSnippetsList()) {
-            snippet.connectedSnippets.remove(id)
-            FireSnippets.update(snippet.id, "connectedSnippets", snippet.connectedSnippets)
+        for(snippet in getConnectedSnippets()) {
+            snippet.connectedSnippetsList.remove(id)
+            FireSnippets.update(snippet.id, "connectedSnippets", snippet.connectedSnippetsList)
         }
 
         FireSnippets.delete(id)
@@ -63,7 +94,7 @@ data class Snippet(override var content: String = "",
     @Exclude
     fun copyMe(): Snippet {
         val newSnippet = Snippet()
-        newSnippet.connectedSnippets = connectedSnippets.toMutableList()
+        newSnippet.connectedSnippetsList = connectedSnippetsList.toMutableList()
         newSnippet.drama = drama
         newSnippet.characterList = characterList.toMutableList()
         newSnippet.isHeader = isHeader

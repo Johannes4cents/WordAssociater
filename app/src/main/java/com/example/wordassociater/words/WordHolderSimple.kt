@@ -37,8 +37,10 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
             }
 
         }
-        b.typeInitials.text = word.
-        b.typeInitials.setBackgroundColor(b.root.context.resources.getColor(word.getColor(word.type)))
+
+        val firstCat = word.getCatsList()[0]
+        b.typeInitials.text = firstCat.name.take(3)
+        b.typeInitials.setBackgroundColor(b.root.context.resources.getColor(firstCat.getColor()))
         b.usedOrConnectionsField.text = word.used.toString()
     }
 

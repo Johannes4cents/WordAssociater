@@ -78,10 +78,12 @@ class EditSnippetFragment: Fragment() {
         }
 
         b.wordIcon.setOnClickListener {
+            setWordList()
             popSearchWord(b.wordIcon, ::handleWordClick , liveWordList)
         }
 
         b.associatedWords.setOnClickListener {
+            setWordList()
             popSearchWord(b.wordIcon, ::handleWordClick , liveWordList)
         }
     }
@@ -90,14 +92,17 @@ class EditSnippetFragment: Fragment() {
         for(wordId in oldSnippet.wordList) {
             if(!snippet.wordList.contains(wordId)) {
                 val word = Main.getWord(wordId)!!
+                WordConnection.disconnect(word, snippet.id)
                 Log.i("deselectTest", "word.strainsList before = ${word.strainsList}")
                 word.snippetsList.remove(snippet.id)
                 word.decreaseWordUsed()
-                FireWords.update(word.type, word.id, "snippetsList", word.snippetsList)
+                FireWords.update(word.id, "snippetsList", word.snippetsList)
                 Log.i("deselectTest", "word.strainsList after = ${word.strainsList}")
             }
         }
     }
+
+
 
     private fun handleCharacterSelected(char: Character) {
         char.selected = !char.selected
@@ -147,12 +152,12 @@ class EditSnippetFragment: Fragment() {
             if(!w.snippetsList.contains(snippet.id)) {
                 w.snippetsList.add(snippet.id)
                 w.increaseWordUsed()
-                FireWords.update(w.type,w.id, "snippetsList", w.snippetsList)
+                FireWords.update(w.id, "snippetsList", w.snippetsList)
             }
         }
         FireSnippets.add(snippet, context)
         characterList.value = mutableListOf()
-        WordConnection.handleWordConnections(snippet)
+        WordConnection.connect(snippet)
         handleWordDeselected()
         handleCharacterDeselected()
     }

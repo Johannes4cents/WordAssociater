@@ -43,7 +43,6 @@ class StrainListFragment: Fragment() {
         handleSearch()
         handleLayerButton()
         Main.inFragment = Frags.READ
-        strainAdapter.submitList(Main.strainsList.value)
         return b.root
     }
 
@@ -59,7 +58,7 @@ class StrainListFragment: Fragment() {
     private fun handleLayerButton() {
         b.strainLayerButton.setClickListener()
         b.strainLayerButton.currentLayer.observe(context as LifecycleOwner) {
-            var filteredList = Main.strainsList.value?.filter { strain -> strain.connectionLayer >= it }
+            var filteredList = Main.strainsList.value?.filter { strain -> strain.connectionLayer >= it }?.sortedBy { s -> s.id }?.reversed()
             strainAdapter.submitList(filteredList)
         }
     }
@@ -79,10 +78,10 @@ class StrainListFragment: Fragment() {
     }
 
     private fun setObserver() {
-
         Main.strainsList.observe(context as LifecycleOwner) {
             if(it != null) {
-                strainAdapter.submitList(it)
+                strainAdapter.submitList(it.sortedBy { s -> s.id }.reversed())
+                b.strainsRecycler.smoothScrollToPosition(0)
             }
         }
     }

@@ -15,7 +15,7 @@
             android:id="@+id/wordBgImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/word_bg_person"
+            android:src="@drawable/wordcat_bg_blue"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

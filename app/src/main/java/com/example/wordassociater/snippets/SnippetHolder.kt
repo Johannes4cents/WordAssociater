@@ -82,11 +82,11 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
     }
 
     private fun connectSnippets(snippetOne: Snippet, snippetTwo: Snippet) {
-        if(!snippetOne.connectedSnippets.contains(snippetTwo.id)) {
-            snippetOne.connectedSnippets.add(snippetTwo.id)
-            snippetTwo.connectedSnippets.add(snippetOne.id)
-            FireSnippets.update(snippetTwo.id, "connectedSnippets", snippetTwo.connectedSnippets)
-            FireSnippets.update(snippetOne.id, "connectedSnippets", snippetOne.connectedSnippets)
+        if(!snippetOne.connectedSnippetsList.contains(snippetTwo.id)) {
+            snippetOne.connectedSnippetsList.add(snippetTwo.id)
+            snippetTwo.connectedSnippetsList.add(snippetOne.id)
+            FireSnippets.update(snippetTwo.id, "connectedSnippets", snippetTwo.connectedSnippetsList)
+            FireSnippets.update(snippetOne.id, "connectedSnippets", snippetOne.connectedSnippetsList)
         }
         else {
             Toast.makeText(b.root.context, "Snippets already \n connected", Toast.LENGTH_SHORT).show()

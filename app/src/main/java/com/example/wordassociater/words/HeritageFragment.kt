@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Frags
-import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentHeritageBinding
 import com.example.wordassociater.fire_classes.Word
@@ -35,13 +34,14 @@ class HeritageFragment: Fragment() {
         setContent()
         setClickListener()
         setKeyListener()
+        setRecycler()
 
         return b.root
     }
 
     private fun setContent() {
         b.nameText.text = word.text
-        b.fieldBranchOf.text = Main.getWord(word.branchOf)?.text ?: "None"
+        b.fieldBranchOf.text = "None"
 
     }
 
@@ -82,10 +82,10 @@ class HeritageFragment: Fragment() {
     }
 
     private fun wordSelectedFunc(w: Word) {
-        word.branchOf = w.id
+        word.branchOf = w.text
         b.fieldBranchOf.text = w.text
         word.rootOf.add(word.id)
-        FireWords.update(word.type, word.id, "rootOf", word.rootOf)
+        FireWords.update(word.id, "rootOf", word.rootOf)
     }
 
     private fun setKeyListener() {

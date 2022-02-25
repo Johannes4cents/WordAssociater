@@ -21,7 +21,6 @@ import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.popSelectSphere
 import com.example.wordassociater.snippets.SnippetAdapter
 import com.example.wordassociater.strains.StrainAdapter
-import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Page
 
 class WordDetailedFragment: Fragment() {
@@ -44,7 +43,7 @@ class WordDetailedFragment: Fragment() {
 
     private fun setContent() {
         b.wordText.text = word.text
-        b.wordBgImage.setBackgroundResource(Helper.getWordBg(word.type))
+        b.wordBgImage.setBackgroundResource(word.getCatsList()[0].getBg())
         b.btnNewWord.visibility = View.GONE
         getSpheresList()
         selectSpheresInList()
@@ -112,7 +111,7 @@ class WordDetailedFragment: Fragment() {
         for(s in spheresList) {
             if(s.selected) selectedSpheres.add(s.id)
         }
-        FireWords.update(word.type,word.id, "spheres", selectedSpheres)
+        FireWords.update(word.id, "spheres", selectedSpheres)
     }
 
     private fun getFilteredStrainsList() {
@@ -136,7 +135,7 @@ class WordDetailedFragment: Fragment() {
                 var contains = false
                 Log.i("wordProb", "snippet is: ${snippet.content} | id is ${snippet.id}")
                 for(w in snippet.getWords()) {
-                    Log.i("wordProb", "word is: ${w.text} | type is ${w.type}")
+                    Log.i("wordProb", "word is: ${w.text} | type is ${w.getCatsList()[0]}")
                     if(word.id == w.id) contains = true ; break
                 }
                 if(contains) snippetsList.add(snippet)

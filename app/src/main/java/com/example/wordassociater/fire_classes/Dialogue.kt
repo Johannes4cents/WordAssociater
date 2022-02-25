@@ -13,7 +13,7 @@ data class Dialogue(
         override var characterList: MutableList<Long> = mutableListOf(),
         override var content: String = "",
         override var nuwList: MutableList<Nuw> = mutableListOf(),
-        override var wordList: MutableList<String> = mutableListOf(),
+        override var wordList: MutableList<Long> = mutableListOf(),
         var currentIndex: Int = 1,
         var drama: Drama.Type = Drama.Type.None,
         var bubbleList: MutableList<Long> = mutableListOf()
@@ -21,9 +21,15 @@ data class Dialogue(
     @Exclude
     fun getCharacter(): List<Character> {
         val charList = mutableListOf<Character>()
+        val notFound = mutableListOf<Long>()
         for(c in characterList) {
             var char = Main.getCharacter(c)
             if(char != null) charList.add(char)
+        }
+
+        for(id in notFound) {
+            characterList.remove(id)
+            FireDialogue.update(id, "characterList", characterList)
         }
         return charList
     }
@@ -31,11 +37,35 @@ data class Dialogue(
     @Exclude
     fun getBubbles(): List<Bubble> {
         val bubbles = mutableListOf<Bubble>()
+        val notFound = mutableListOf<Long>()
         for(id in bubbleList) {
-            var bubble = Main.getBubble(id)
+            val bubble = Main.getBubble(id)
             if(bubble != null) bubbles .add(bubble)
+            else notFound.add(id)
+        }
+
+        for(id in notFound) {
+            bubbleList.remove(id)
+            FireDialogue.update(id, "bubbleList", bubbleList)
         }
         return bubbles
+    }
+
+    @Exclude
+    fun getWords(): MutableList<Word> {
+        val words = mutableListOf<Word>()
+        val notFound = mutableListOf<Long>()
+        for(id in wordList) {
+            val found = Main.getWord(id)
+            if(found != null) words.add(found)
+            else notFound.add(id)
+        }
+
+        for(id in notFound) {
+            wordList.remove(id)
+            FireDialogue.update(id, "wordList", wordList)
+        }
+        return words
     }
 
     @Exclude
@@ -43,8 +73,8 @@ data class Dialogue(
         for(w in getWords()) {
             w.used -= 1
             w.dialogueList.remove(id)
-            FireWords.update(w.type, w.id, "used", w.used)
-            FireWords.update(w.type, w.id, "dialogueList", w.used)
+            FireWords.update(w.id, "used", w.used)
+            FireWords.update(w.id, "dialogueList", w.used)
         }
 
         for(c in getCharacter()) {

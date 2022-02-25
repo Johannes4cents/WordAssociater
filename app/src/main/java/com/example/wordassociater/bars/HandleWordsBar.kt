@@ -11,27 +11,12 @@ import com.example.wordassociater.StartFragment
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.BarWordsButtonsBinding
 import com.example.wordassociater.fire_classes.Sphere
-import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.popups.popSelectSphere
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.words.WordLinear
+import com.example.wordassociater.words.WordLinear.Companion.getWord
 
 class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
-    companion object {
-        fun getWord(wordCat: WordCat): Word? {
-            var tries = 0
-            var randomWord : Word? = null
-            while(tries < 200 && (
-                            randomWord == null || WordLinear.wordList.contains(randomWord) || !Helper.checkIfWordInRightSphere(randomWord))) {
-                randomWord = Main.wordsList.value?.filter { w -> w.cats.contains(wordCat.id) }?.random()
-                tries++
-            }
-            if(randomWord != null && !Helper.checkIfWordInRightSphere(randomWord)) randomWord = null
-            if(WordLinear.wordList.contains(randomWord)) randomWord = null
-            return randomWord
-        }
-    }
 
     var wordAmount = 6
     val b = BarWordsButtonsBinding.inflate(LayoutInflater.from(context), this, true)
@@ -58,7 +43,7 @@ class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout
                 WordLinear.wordList = WordLinear.selectedWords.toMutableList()
                 handleCharacterRemoval()
                 for(i in 1..wordAmount) {
-                    getWord(Main.activeWordCats.random())?.let { it1 -> WordLinear.wordList.add(it1) }
+                    getWord(Main.activeWordCats.value!!.random())?.let { it1 -> WordLinear.wordList.add(it1) }
                 }
                 WordLinear.wordListTrigger.postValue(Unit)
             }

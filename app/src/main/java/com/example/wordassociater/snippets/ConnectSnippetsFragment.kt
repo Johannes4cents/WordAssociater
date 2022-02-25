@@ -60,7 +60,7 @@ class ConnectSnippetsFragment: Fragment() {
     }
 
     private fun makeWordsList() {
-        val wordsList = mutableListOf<String>()
+        val wordsList = mutableListOf<Long>()
         for(w in snippetOne.wordList) {
             if(!wordsList.contains(w)) {
                 wordsList.add(w)

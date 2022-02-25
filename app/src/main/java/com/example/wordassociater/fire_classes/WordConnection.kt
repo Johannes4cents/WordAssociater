@@ -28,7 +28,7 @@ data class WordConnection(
             return id
         }
 
-        fun handleWordConnections(storyPart: StoryPart) {
+        fun connect(storyPart: StoryPart) {
             Log.i("wordConProbs", "${storyPart.wordList.count()}")
             for(word in storyPart.getWords()) {
                 for(w in storyPart.getWords()) {
@@ -47,12 +47,35 @@ data class WordConnection(
                             val wc = WordConnection(id = getId(), word = w.id, storyPart = storyPart.id)
                             FireWordConnections.add(wc, null)
                             word.wordConnectionsList.add(wc.id)
-                            Log.i("wordConProbs", "word is ${word.text} connection word is ${w.text}")
                             FireWords.update(word.id, "connections", word.wordConnectionsList)
                         }
                     }
                 }
             }
+        }
+
+        fun disconnect(word:Word, storyPartId: Long) {
+            val affectedConnections = mutableListOf<WordConnection>()
+            Log.i("deselectTest", "word connectionCounter : ${word.wordConnectionsList.count()} | word is : ${word.text} | word.id is ${word.id} ")
+            for (wc in word.getWordConnections()) {
+                Log.i("deselectTest", "word connection : ${wc.word} ")
+                if(wc.storyPart == storyPartId) {
+                    affectedConnections.add(wc)
+                }
+            }
+            for(wc in affectedConnections) {
+                val connectedWord = Main.getWord(wc.word)
+                if(connectedWord != null) {
+                    connectedWord.wordConnectionsList.remove(wc.id)
+                    FireWords.update(connectedWord.id, "wordConnectionsList", connectedWord.wordConnectionsList)
+                }
+            }
+            for(wc in affectedConnections) {
+                word.wordConnectionsList.remove(wc.id)
+                FireWords.update(word.id, "wordConnectionsList", word.wordConnectionsList)
+                FireWordConnections.delete(wc.id)
+            }
+            FireWords.update(word.id, "wordConnectionsList", word.wordConnectionsList)
         }
     }
 }

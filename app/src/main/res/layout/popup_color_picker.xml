@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="300dp"
+    android:layout_height="150dp">
+    <TableRow android:id="@+id/row1"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        >
+        <ImageView
+            android:id="@+id/blue"
+            android:src="@drawable/wordcat_bg_blue"
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
+        <ImageView
+            android:id="@+id/brown"
+            android:src="@drawable/wordcat_bg_brown"
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
+        <ImageView
+            android:id="@+id/green"
+            android:src="@drawable/wordcat_bg_green"
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/row2">
+        <ImageView
+            android:id="@+id/grey"
+            android:src="@drawable/wordcat_bg_grey"
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
+        <ImageView
+            android:id="@+id/orange"
+            android:src="@drawable/wordcat_bg_orange"
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
+        <ImageView
+            android:id="@+id/pink"
+            android:src="@drawable/wordcat_bg_pink"
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
+    </TableRow>
+
+    <TableRow android:id="@+id/row3">
+        <ImageView
+            android:id="@+id/red"
+            android:src="@drawable/wordcat_bg_red"
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
+        <ImageView
+            android:id="@+id/purple"
+            android:src="@drawable/wordcat_bg_purple"
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
+        <ImageView
+            android:id="@+id/teal"
+            android:src="@drawable/wordcat_bg_teal"
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
+    </TableRow>
+
+</TableLayout>

@@ -13,6 +13,7 @@ import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentStartBinding
 import com.example.wordassociater.fire_classes.Sphere
 import com.example.wordassociater.fire_classes.WordCat
+import com.example.wordassociater.wordcat.WordCatAdapter
 import com.example.wordassociater.words.WordLinear
 
 class StartFragment: Fragment() {
@@ -42,11 +43,14 @@ class StartFragment: Fragment() {
         adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
         b.charPreviewRecycler.adapter = adapter
         b.connectedWordRecycler.setLiveWords(WordLinear.selectedWordsLive)
-        b.wordCatRecycler.setupRecycler(::onWordCatClicked, Main.activeWordCats)
+        b.wordCatRecycler.setupRecycler(WordCatAdapter.Type.BTN, ::onWordCatClicked, Main.activeWordCats)
+
     }
 
     private fun onWordCatClicked(wordCat: WordCat) {
-
+        val word = WordLinear.getWord(wordCat)
+        if(word != null) WordLinear.wordList.add(word)
+        WordLinear.wordListTrigger.value = Unit
     }
 
     private fun setObserver() {

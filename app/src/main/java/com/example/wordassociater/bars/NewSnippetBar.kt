@@ -139,7 +139,7 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
                 word.increaseWordUsed()
             }
 
-            WordConnection.handleWordConnections(newSnippet)
+            WordConnection.connect(newSnippet)
             handleCharacters(newSnippet)
             if(Story.storyModeActive) newSnippet.isStory = true
             FireSnippets.add(newSnippet, context)

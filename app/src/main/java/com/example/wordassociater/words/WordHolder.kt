@@ -9,38 +9,45 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.bars.HandleWordsBar
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.HolderWordBinding
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.utils.Helper
 
 class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null ): ConstraintLayout(context, attrs) {
     val b = HolderWordBinding.inflate(LayoutInflater.from(context), this, true)
+    var char = false
+
 
     init {
+        setConnectIcon()
+        checkIfCharacter()
         setClickListener()
         setWord()
         setPortrait()
     }
 
-    private fun setClickListener() {
-        b.btnNewWord.setOnClickListener {
-            getNewWord()
+    private fun checkIfCharacter() {
+        for(cat in word!!.cats) {
+            if(Main.getWordCat(cat)?.name == "Character") {
+                char = true
+                break
+            }
         }
+    }
 
+    private fun setConnectIcon() {
+        b.connectIcon.visibility = if(word!!.wordConnectionsList.count() > 0) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun setClickListener() {
         b.root.setOnClickListener {
             word?.selected = !word?.selected!!
             if(word.selected) {
                 WordLinear.selectedWords.add(word)
                 selectCharacter()
-                HandleWordsBar.shuffleBackupWords.remove(word.type)
 
             }
             else {
-                if(WordLinear.selectedWords.contains(word)) {
-                    HandleWordsBar.shuffleBackupWords.add(word.type)
-                }
                 deselectCharacter()
                 WordLinear.selectedWords.remove(word)
             }
@@ -52,9 +59,9 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
     }
 
     private fun selectCharacter() {
-        if(word?.type == Word.Type.CHARACTER) {
-            var character = Main.characterList.value?.find { char ->
-                char.connectId == word.connectId
+        if(char) {
+            val character = Main.characterList.value?.find { c ->
+                c.connectId == word!!.connectId
             }
             if(character != null) {
                 CharacterAdapter.selectedCharacterList.add(character)
@@ -65,9 +72,9 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
     }
 
     private fun deselectCharacter() {
-        if(word?.type == Word.Type.CHARACTER) {
-            var character = Main.characterList.value?.find { char ->
-                char.connectId == word.connectId
+        if(char) {
+            val character = Main.characterList.value?.find { c ->
+                c.connectId == word!!.connectId
             }
             if(character != null) {
                 CharacterAdapter.selectedCharacterList.remove(character)
@@ -79,30 +86,23 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
     }
 
 
-    private fun getNewWord() {
-        val index = WordLinear.wordList.indexOf(word)
-        WordLinear.wordList.remove(word)
-        HandleWordsBar.getWord(word?.type!!)?.let { WordLinear.wordList.add(index, it) }
-        WordLinear.wordListTrigger.postValue(Unit)
-    }
-
     private fun setWord() {
-        b.wordText.text = getShortenedWord(word?.text!!, b.wordText)
+        val firstCat = word!!.getCatsList()[0]
+
+        b.wordText.text = getShortenedWord(word.text, b.wordText)
         if(word.selected) {
             b.root.setBackgroundResource(R.drawable.word_bg_selected)
         }
         else {
-            b.root.setBackgroundResource(Helper.getWordBg(word.type))
+            b.root.setBackgroundResource(firstCat.getBg())
         }
 
-        getLineCount(word)
-        if(word.lineCount > 1) b.wordText.textSize = 12f
     }
 
     private fun setPortrait() {
-        if(word!!.type == Word.Type.CHARACTER) {
+        if(char) {
             val character = Main.characterList.value?.find { char ->
-                char.name.equals(word.text, ignoreCase = true)
+                char.name.equals(word!!.text, ignoreCase = true)
             }
             if(character != null) {
                 b.characterPortrait.visibility = View.VISIBLE
@@ -112,12 +112,6 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
     }
 
 
-}
-
-
-
-fun getLineCount(word: Word) {
-    if((14..100).contains(word.text.length)) word.lineCount = 2
 }
 
 fun getShortenedWord(word: String, textView: TextView): String {

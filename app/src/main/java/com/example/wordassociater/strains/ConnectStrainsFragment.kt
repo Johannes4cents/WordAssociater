@@ -56,7 +56,7 @@ class ConnectStrainsFragment:Fragment() {
     }
 
     private fun setWords() {
-        val wordList = mutableListOf<String>()
+        val wordList = mutableListOf<Long>()
         for(strain in strainList) {
             for(w in strain.wordList) {
                 if(!wordList.contains(w)) wordList.add(w)

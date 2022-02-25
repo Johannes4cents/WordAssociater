@@ -18,10 +18,11 @@ class ConnectedWordHolder(
     }
 
     private fun setContent() {
+        val firstCat = connectedWord.word.getCatsList()[0]
         b.wordName.text = connectedWord.word.text
         b.fieldAmountConnected.text = connectedWord.amount.toString()
-        b.typeInitials.setBackgroundColor(b.root.context.resources.getColor(connectedWord.word.getColor(connectedWord.word.type)))
-        b.typeInitials.text = connectedWord.word.getTypeInitials()
+        b.typeInitials.setBackgroundColor(b.root.context.resources.getColor(firstCat.getColor()))
+        b.typeInitials.text = firstCat.name.take(3)
     }
 
     private fun setClickListener() {

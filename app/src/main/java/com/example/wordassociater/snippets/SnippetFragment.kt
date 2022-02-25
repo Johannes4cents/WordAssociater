@@ -14,7 +14,6 @@ import com.example.wordassociater.R
 import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.databinding.FragmentSnippetsBinding
 import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Page
 
 class SnippetFragment: Fragment() {
@@ -43,9 +42,9 @@ class SnippetFragment: Fragment() {
     }
 
     private fun setSearchBar() {
-        b.searchSnippetsInput.searchWords.observe(viewLifecycleOwner) {
-            if(it.isNotEmpty()) snippetAdapter.submitList(Helper.getOrFilteredStoryPartList(it, Main.snippetList.value!!) as List<Snippet>)
-            else snippetAdapter.submitList(Main.snippetList.value)
+        b.searchSnippetsInput.getSnippets {
+            if(it.isEmpty()) snippetAdapter.submitList(Main.snippetList.value?.sortedBy { s -> s.id }?.reversed())
+            else snippetAdapter.submitList(it.sortedBy { s -> s.id }.reversed())
         }
     }
 
@@ -64,9 +63,10 @@ class SnippetFragment: Fragment() {
     }
 
     private fun setObserver() {
-        snippetAdapter.submitList(Main.snippetList.value)
         Main.snippetList.observe(viewLifecycleOwner) {
-            snippetAdapter.submitList(it)
+            if(it != null) {
+            snippetAdapter.submitList(it.sortedBy { s -> s.id }.reversed()) }
+            b.snippetsRecycler.smoothScrollToPosition(0)
         }
 
 

@@ -6,7 +6,7 @@ import com.google.firebase.firestore.Exclude
 data class WordCat(
         val id: Long = 0,
         val name: String = "",
-        val color: Color = Color.Blue
+        var color: Color = Color.Blue
 ) {
     var active: Boolean = true
 

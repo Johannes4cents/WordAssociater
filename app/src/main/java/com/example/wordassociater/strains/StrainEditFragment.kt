@@ -18,7 +18,10 @@ import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentEditStrainBinding
 import com.example.wordassociater.fire_classes.*
-import com.example.wordassociater.firestore.*
+import com.example.wordassociater.firestore.FireChars
+import com.example.wordassociater.firestore.FireStats
+import com.example.wordassociater.firestore.FireStrains
+import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.popups.popCharacterSelector
 import com.example.wordassociater.popups.popDramaTypeSelection
@@ -84,38 +87,15 @@ class StrainEditFragment: Fragment() {
         for(wordId in oldStrain.wordList) {
             if(!strain.wordList.contains(wordId)) {
                 val word = Main.getWord(wordId)!!
-                handleWordConnectionsOnDeselectWord(word)
+                WordConnection.disconnect(word, strain.id)
                 word.strainsList.remove(strain.id)
                 word.decreaseWordUsed()
-                FireWords.update(word.type, word.id, "strainsList", word.strainsList)
+                FireWords.update(word.id, "strainsList", word.strainsList)
             }
         }
     }
 
-    private fun handleWordConnectionsOnDeselectWord(word:Word) {
-        val affectedConnections = mutableListOf<WordConnection>()
-        Log.i("deselectTest", "word connectionCounter : ${word.wordConnectionsList.count()} | word is : ${word.text} | word.id is ${word.id} ")
-        for (wc in word.getWordConnections()) {
-            Log.i("deselectTest", "word connection : ${wc.word} ")
-            if(wc.storyPart == strain.id) {
-                affectedConnections.add(wc)
-            }
-        }
-        for(wc in affectedConnections) {
-            val connectedWord = Main.getWord(wc.word)
-            if(connectedWord != null) {
-                connectedWord.wordConnectionsList.remove(wc.id)
-                FireWords.update(connectedWord.type, connectedWord.id, "wordConnectionsList", connectedWord.wordConnectionsList)
-            }
-        }
-        for(wc in affectedConnections) {
-            word.wordConnectionsList.remove(wc.id)
-            FireWords.update(word.type, word.id, "wordConnectionsList", word.wordConnectionsList)
-            FireWordConnections.delete(wc.id)
-        }
 
-        FireWords.update(word.type, word.id, "wordConnectionsList", word.wordConnectionsList)
-     }
 
     private fun handleCharacterDeselected() {
         for(charId in oldStrain.characterList) {
@@ -282,7 +262,7 @@ class StrainEditFragment: Fragment() {
 
             for(w in selectedWords) {
                 if(!w.strainsList.contains(strain.id)) w.strainsList.add(strain.id)
-                FireWords.update(w.type, w.id, "strainsList", w.strainsList)
+                FireWords.update(w.id, "strainsList", w.strainsList)
                 if(!oldStrain.wordList.contains(w.id)) w.increaseWordUsed()
             }
 
@@ -293,7 +273,7 @@ class StrainEditFragment: Fragment() {
                 }
             }
 
-            WordConnection.handleWordConnections(strain)
+            WordConnection.connect(strain)
             handleWordDeselected()
             handleCharacterDeselected()
 

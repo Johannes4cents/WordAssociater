@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.wordassociater.character.CharacterListFragment
@@ -41,6 +42,8 @@ class ViewPagerFragment: Fragment() {
 
         val adapter = ViewPagerAdapter(fragmentList, requireActivity().supportFragmentManager, lifecycle)
         viewPager = b.viewPager
+        viewPager.isNestedScrollingEnabled = true
+        ViewCompat.setNestedScrollingEnabled(viewPager, true)
         b.viewPager.adapter = adapter
         goTopage(comingFrom)
         return b.root

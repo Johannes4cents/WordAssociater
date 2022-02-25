@@ -9,7 +9,6 @@ import android.widget.*
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.StartFragment
 import com.example.wordassociater.databinding.BarAddWordBinding
@@ -26,8 +25,8 @@ import com.example.wordassociater.utils.Helper.getIMM
 import com.example.wordassociater.words.WordLinear
 
 class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
-    var selectedWordCat = WordCat(1,"Adjective", WordCat.Color.Pink)
     val b = BarAddWordBinding.inflate(LayoutInflater.from(context), this, true)
+    var selectedWordCat = WordCat(1,"Adjective", WordCat.Color.Pink)
     var newWord = Word()
     var takesWordFunc : ((word:Word) -> Unit)? = null
 
@@ -40,7 +39,6 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
     init {
         handleSphereIconColor()
         setClickListener()
-        setUpSpinner()
         setObserver()
 
     }
@@ -101,20 +99,7 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
     }
 
     private fun setUpSpinner() {
-        val optionList = Main.wordCatsList.value!!
-        val adapter = ArrayAdapter(context, R.layout.support_simple_spinner_dropdown_item, optionList)
-        b.selectTypeSpinner.adapter = adapter
 
-        b.selectTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                selectedWordCat = optionList[position]
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-        }
     }
 
     private fun setObserver() {

@@ -10,7 +10,7 @@ import com.google.firebase.firestore.Exclude
 
 data class Strain(
         override var content: String = "",
-        override var wordList: MutableList<String> = mutableListOf(),
+        override var wordList: MutableList<Long> = mutableListOf(),
         var header: String = "Strain",
         override var id: Long = 0,
         override var characterList : MutableList<Long> = mutableListOf(),
@@ -49,17 +49,42 @@ data class Strain(
         }
         for(id in toRemoveList) {
             connectionsList.remove(id)
+            FireStrains.update(id, "connectionsList", connectionsList)
         }
         return strainsies
 
     }
 
     @Exclude
+    fun getWords(): MutableList<Word> {
+        val words = mutableListOf<Word>()
+        val notFound = mutableListOf<Long>()
+        for(id in wordList) {
+            val found = Main.getWord(id)
+            if(found != null) words.add(found)
+            else notFound.add(id)
+        }
+
+        for(id in notFound) {
+            wordList.remove(id)
+            FireStrains.update(id, "wordList", wordList)
+        }
+        return words
+    }
+
+    @Exclude
     fun getCharacters(): List<Character> {
         val chars = mutableListOf<Character>()
+        val notFound = mutableListOf<Long>()
         for(id in characterList) {
             val char = Main.characterList.value?.find { c -> c.id == id }
             if(char != null) chars.add(char)
+            else notFound.add(id)
+        }
+
+        for(id in notFound) {
+            characterList.remove(id)
+            FireStrains.update(id, "characterList", characterList)
         }
         return chars
     }
@@ -69,7 +94,7 @@ data class Strain(
         for(w in getWords()) {
             w.decreaseWordUsed()
             w.strainsList.remove(id)
-            FireWords.update(w.type, w.id, "strainsList", w.strainsList)
+            FireWords.update(w.id, "strainsList", w.strainsList)
         }
 
         for(c in getCharacters()) {

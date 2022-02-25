@@ -3,17 +3,14 @@ package com.example.wordassociater.utils
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
 import android.widget.Toast
 import com.example.wordassociater.Main
-import com.example.wordassociater.R
 import com.example.wordassociater.StartFragment
 import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.words.WordLinear
 import java.util.*
 
 object Helper {
@@ -41,7 +38,7 @@ object Helper {
 
 
     fun checkIfWordExists(word: Word, context: Context): Boolean {
-        val wordList = WordLinear.getWordList(word.type)
+        val wordList = Main.wordsList.value!!
         var exists = false
         for(w in wordList) {
             if (w.text.toLowerCase(Locale.ROOT).replace("\\s".toRegex(), "") == word.text.toLowerCase(Locale.ROOT).replace("\\s".toRegex(), "")) {
@@ -57,10 +54,10 @@ object Helper {
         return word.text.split("\\s".toRegex())
     }
 
-    fun getWords(wordList: List<String>): MutableList<Word> {
+    fun getWords(wordList: List<Long>): MutableList<Word> {
         val words = mutableListOf<Word>()
-        for(string in wordList) {
-            words.add(Main.getWord(string)!!)
+        for(id in wordList) {
+            words.add(Main.getWord(id)!!)
         }
         return words
     }
@@ -123,7 +120,7 @@ object Helper {
         popWindow.isOutsideTouchable = true
         popWindow.isFocusable = true
         popWindow.contentView = layout
-        popWindow.showAtLocation(fromWhere, Gravity.CENTER, 0 , 0)
+        popWindow.showAsDropDown(fromWhere)
         popWindow.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         return popWindow
     }
@@ -190,15 +187,4 @@ object Helper {
         return "${word[0]} \n ${word[1]}"
     }
 
-    fun getWordBg(type: Word.Type): Int {
-        return when(type) {
-            Word.Type.Adjective -> R.drawable.word_bg_adjective
-            Word.Type.Person -> R.drawable.word_bg_person
-            Word.Type.Place -> R.drawable.word_bg_place
-            Word.Type.Action -> R.drawable.word_bg_action
-            Word.Type.Object -> R.drawable.word_bg_objects
-            Word.Type.CHARACTER -> R.drawable.word_bg_hero
-            Word.Type.NONE -> R.drawable.word_bg_objects
-        }
-    }
 }

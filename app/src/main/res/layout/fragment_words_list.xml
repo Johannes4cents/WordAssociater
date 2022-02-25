@@ -25,33 +25,27 @@
 
     <LinearLayout
         android:orientation="horizontal"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <com.example.wordassociater.buttons.SelectWordTypeButton
-            app:selectCat="hero"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <com.example.wordassociater.buttons.SelectWordTypeButton
-            app:selectCat="person"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <com.example.wordassociater.buttons.SelectWordTypeButton
-            app:selectCat="adjective"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <com.example.wordassociater.buttons.SelectWordTypeButton
-            app:selectCat="action"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <com.example.wordassociater.buttons.SelectWordTypeButton
-            app:selectCat="object"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <com.example.wordassociater.buttons.SelectWordTypeButton
-            app:selectCat="place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <com.example.wordassociater.wordcat.WordCatRecycler
+            android:layout_weight="1"
+            android:id="@+id/wordCatRecycler"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="50dp"/>
+
+        <ImageView
+            android:src="@drawable/wordcat_bg_blue"
+            android:id="@+id/btnColorPicker"
+            android:padding="15dp"
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
+
     </LinearLayout>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/wordRecycler"

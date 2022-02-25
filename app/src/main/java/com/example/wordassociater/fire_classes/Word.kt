@@ -93,7 +93,7 @@ data class Word(
 
 
     @Exclude
-    fun getWordTwoConnections(): List<WordConnection> {
+    fun getWordConnections(): List<WordConnection> {
         val wcs = mutableListOf<WordConnection>()
         val toRemoveIds = mutableListOf<Long>()
         for(id in wordConnectionsList) {
@@ -158,13 +158,12 @@ data class Word(
             FireWords.update(rootWord.id, "roofOf", rootWord.rootOf)
         }
 
-
         for(w in convertIdListToWord(rootOf)) {
-            w.branchOf = ""
-            FireWords.update(w.id.toLong(), "branchOf", w.branchOf)
+            w.branchOf = rootOf.toString()
+            FireWords.update(w.id, "branchOf", w.branchOf)
         }
 
-        for(wc in getWordTwoConnections()) {
+        for(wc in getWordConnections()) {
             val word = Main.getWord(wc.word.toLong())
             if(word != null) {
                 word.wordConnectionsList.remove(wc.id)

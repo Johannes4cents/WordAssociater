@@ -2,12 +2,11 @@ package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.utils.StoryPart
 
-data class Prose(
+class TimeLineEvent(
         override var id: Long = 0,
         override var content: String = "",
-        var header: String = "",
-        override var wordList: MutableList<Long> = mutableListOf(),
         override var characterList: MutableList<Long> = mutableListOf(),
+        override var wordList: MutableList<Long> = mutableListOf(),
         override var nuwList: MutableList<Nuw> = mutableListOf()
-        ): StoryPart(id, content, wordList, characterList, nuwList) {
+): StoryPart(id, content, characterList, wordList, nuwList) {
 }

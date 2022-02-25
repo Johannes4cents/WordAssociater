@@ -65,7 +65,7 @@
         <LinearLayout
             android:id="@+id/wordBgImage"
             android:orientation="horizontal"
-            android:background="@drawable/word_bg_person"
+            android:background="@drawable/wordcat_bg_blue"
             android:gravity="center"
             android:layout_width="180dp"
             android:layout_height="60dp">
