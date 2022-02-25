@@ -29,7 +29,7 @@ class ConnectedWordsRecycler(context : Context, attributeSet: AttributeSet): Rec
         liveWordsList.observe(context as LifecycleOwner) {
             for(word in it) {
                 for(wc in word.getWordConnections()) {
-                    val w = Main.getWord(wc.word)
+                    val w = Main.getWord(wc.wordsList)
                     if(w != null) {
                         connectedWordsList = ConnectedWord.addWord(w, connectedWordsList)
                     }

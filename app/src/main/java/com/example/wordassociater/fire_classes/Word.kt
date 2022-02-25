@@ -164,7 +164,7 @@ data class Word(
         }
 
         for(wc in getWordConnections()) {
-            val word = Main.getWord(wc.word.toLong())
+            val word = Main.getWord(wc.wordsList.toLong())
             if(word != null) {
                 word.wordConnectionsList.remove(wc.id)
                 FireWords.update(word.id, "wordConnectionsList", word.wordConnectionsList)

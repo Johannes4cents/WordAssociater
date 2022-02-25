@@ -14,7 +14,7 @@ class WordConnectionHolder(val b : HolderWordConnectionsBinding): RecyclerView.V
     }
 
     private fun setContent() {
-        b.content.text = Main.getWord(wordConnection.word)?.text
+        b.content.text = Main.getWord(wordConnection.wordsList)?.text
     }
 
 }

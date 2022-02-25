@@ -12,6 +12,10 @@ object FireWordConnections {
         }
     }
 
+    fun update(id: Long, fieldName: String, value: Any) {
+        FireLists.wordConnectionList.document(id.toString()).update(fieldName, value)
+    }
+
     fun delete(id: Long) {
         FireLists.wordConnectionList.document(id.toString()).delete()
     }

@@ -47,6 +47,7 @@ class EditSnippetFragment: Fragment() {
         setContent()
         setRecycler()
         setObserver()
+        setWordIcon()
         return b.root
     }
 
@@ -70,6 +71,8 @@ class EditSnippetFragment: Fragment() {
         }
 
         b.backBtn.setOnClickListener {
+            snippet.wordList = oldSnippet.wordList
+            snippet.characterList = oldSnippet.characterList
             findNavController().navigate(R.id.action_editSnippetFragment_to_snippetFragment)
         }
 
@@ -162,6 +165,17 @@ class EditSnippetFragment: Fragment() {
         handleCharacterDeselected()
     }
 
+    private fun setWordIcon() {
+        if(snippet.wordList.isEmpty()) {
+            b.wordIcon.visibility = View.VISIBLE
+            b.associatedWords.visibility = View.GONE
+        }
+        else {
+            b.wordIcon.visibility = View.GONE
+            b.associatedWords.visibility = View.VISIBLE
+        }
+    }
+
 
     private fun setContent() {
         b.snippetInput.setText(snippet.content)
@@ -175,6 +189,7 @@ class EditSnippetFragment: Fragment() {
                 if(w.selected && !selectedWords.contains(w)) selectedWords.add(w)
             }
             b.associatedWords.text = Helper.setWordsToString(selectedWords)
+            setWordIcon()
         }
 
         characterList.observe(context as LifecycleOwner) {

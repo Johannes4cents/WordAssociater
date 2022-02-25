@@ -16,6 +16,7 @@
 
         <ImageView
             android:id="@+id/characterPortrait"
+            android:padding="5dp"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/btn_open_words_list"
@@ -32,6 +33,18 @@
 
         <TextView
             android:id="@+id/usedOrConnectionsField"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text=""
+            android:layout_marginEnd="4dp"
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/black"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            />
+        <TextView
+            android:id="@+id/idField"
             android:layout_weight="1"
             android:gravity="center"
             android:text=""

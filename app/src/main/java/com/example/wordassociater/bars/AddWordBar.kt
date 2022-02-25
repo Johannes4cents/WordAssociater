@@ -78,6 +78,9 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
             popSelectSphere(b.btnSpheres, selectedSphereList, ::sphereSelectedFunc )
         }
 
+        b.wordCatSelector.setCat() { cat ->
+            selectedWordCat = cat
+        }
     }
 
     private fun sphereSelectedFunc(sphere: Sphere) {
@@ -98,10 +101,6 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
 
     }
 
-    private fun setUpSpinner() {
-
-    }
-
     private fun setObserver() {
         AddStuffBar.newWordInputOpen.observe(context as LifecycleOwner) {
             b.root.visibility = if(it) View.VISIBLE else View.GONE
@@ -112,13 +111,15 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
         selectedSphereList.observe(context as LifecycleOwner) {
             handleSphereIconColor()
         }
+
     }
 
     private fun addWord() {
         if(b.wordInput.text.isNotEmpty()) {
             newWord.text = b.wordInput.text.toString()
-            newWord.cats.add(selectedWordCat.id)
+            if(!newWord.cats.contains(selectedWordCat.id)) newWord.cats.add(selectedWordCat.id)
             newWord.id = FireStats.getWordId()
+
             if(takesWordFunc == null) {
                 if(!Helper.checkIfWordExists(newWord, context)) {
                     val connectId = FireStats.getCharConnectId()

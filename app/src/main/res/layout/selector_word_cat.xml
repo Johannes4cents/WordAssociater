@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:background="@color/light_blue"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <View
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:background="@color/wordGrey"
+        />
+
+    <TextView
+        android:id="@+id/catName"
+        android:gravity="center"
+        android:fontFamily="@font/roboto_bold"
+        android:background="@color/light_blue"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_width="76dp"
+        android:layout_height="45dp"
+        android:text="Adjective"
+        />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_marginEnd="4dp"
+        android:layout_height="match_parent"
+        android:background="@color/light_blue"
+        android:src="@drawable/wordcat_plus_blue" />
+
+</LinearLayout>

@@ -115,8 +115,8 @@ class StrainEditFragment: Fragment() {
             b.strainWords.visibility = View.GONE
         }
         else {
-            b.wordIcon.visibility = View.VISIBLE
-            b.strainWords.visibility = View.GONE
+            b.wordIcon.visibility = View.GONE
+            b.strainWords.visibility = View.VISIBLE
         }
     }
 
@@ -167,6 +167,8 @@ class StrainEditFragment: Fragment() {
 
     private fun setClickListener() {
         b.backBtn.setOnClickListener {
+            strain.wordList = oldStrain.wordList
+            strain.characterList = oldStrain.characterList
             if(comingFrom == Frags.START) {
                 ViewPagerFragment.comingFrom = Page.Start
                 findNavController().navigate(R.id.action_writeFragment_to_startFragment)

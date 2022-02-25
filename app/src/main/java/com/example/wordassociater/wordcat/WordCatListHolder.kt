@@ -1,12 +1,17 @@
 package com.example.wordassociater.wordcat
 
 import android.util.Log
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.HolderWordCatListBinding
 import com.example.wordassociater.fire_classes.WordCat
 
-class WordCatListHolder(val b : HolderWordCatListBinding, val onCatClicked: (wordCat: WordCat) -> Unit): RecyclerView.ViewHolder(b.root) {
+class WordCatListHolder(
+        val type: WordCatAdapter.Type,
+        val b : HolderWordCatListBinding,
+        val onCatClicked: (wordCat: WordCat) -> Unit)
+    : RecyclerView.ViewHolder(b.root) {
     lateinit var wordCat: WordCat
 
     fun onBind(wordCat: WordCat) {
@@ -25,6 +30,8 @@ class WordCatListHolder(val b : HolderWordCatListBinding, val onCatClicked: (wor
             b.plusSign.setImageResource(R.drawable.wordcat_plus_header)
             b.catName.text = ""
         }
+
+        if(type == WordCatAdapter.Type.SINGLEPICK) b.checkBox.visibility = View.GONE
 
     }
 

@@ -35,8 +35,9 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
                 b.checkbox.setImageResource(R.drawable.arrow_right)
                 firstSet = false
             }
-
         }
+
+        b.idField.text = word.id.toString()
 
         val firstCat = word.getCatsList()[0]
         b.typeInitials.text = firstCat.name.take(3)

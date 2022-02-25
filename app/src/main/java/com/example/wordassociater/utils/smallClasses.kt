@@ -1,8 +1,10 @@
 package com.example.wordassociater.utils
 
+import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.fire_classes.Nuw
 import com.example.wordassociater.fire_classes.Word
+import com.google.firebase.firestore.Exclude
 
 open class StoryPart(
         open var id : Long,
@@ -10,6 +12,18 @@ open class StoryPart(
         open var wordList: MutableList<Long>,
         open var characterList: MutableList<Long>,
         open var nuwList: MutableList<Nuw>) {
+
+    @Exclude
+    fun getWordsAsStory(): MutableList<Word> {
+        val words = mutableListOf<Word>()
+        val notFound = mutableListOf<Long>()
+        for(id in wordList) {
+            val found = Main.getWord(id)
+            if(found != null) words.add(found)
+            else notFound.add(id)
+        }
+        return words
+    }
 
 
     companion object {
