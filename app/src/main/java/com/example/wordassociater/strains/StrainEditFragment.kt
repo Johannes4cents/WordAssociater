@@ -65,6 +65,7 @@ class StrainEditFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         b = FragmentEditStrainBinding.inflate(layoutInflater)
+        setWordsInputField()
         setSelectedCharacterList()
         getWordsComingFromStart()
         setWordList()
@@ -77,6 +78,11 @@ class StrainEditFragment: Fragment() {
         handleWordIcon()
         Main.inFragment = Frags.WRITE
         return b.root
+    }
+
+    private fun setWordsInputField() {
+        b.headerInput.setCenterGravity()
+        b.headerInput.setTextSize(18F)
     }
 
     private fun setSelectedCharacterList() {
@@ -94,8 +100,6 @@ class StrainEditFragment: Fragment() {
             }
         }
     }
-
-
 
     private fun handleCharacterDeselected() {
         for(charId in oldStrain.characterList) {
@@ -165,6 +169,8 @@ class StrainEditFragment: Fragment() {
         }
     }
 
+
+
     private fun setClickListener() {
         b.backBtn.setOnClickListener {
             strain.wordList = oldStrain.wordList
@@ -177,6 +183,10 @@ class StrainEditFragment: Fragment() {
                 cleanUp()
                 findNavController().navigate(R.id.action_writeFragment_to_readFragment)
             }
+        }
+
+        b.btnNuws.setOnClickListener {
+            b.strainInput.nuwTableOpen.value = !b.strainInput.nuwTableOpen.value!!
         }
 
         b.saveBtn.setOnClickListener {
@@ -234,8 +244,8 @@ class StrainEditFragment: Fragment() {
     }
 
     private fun setContent() {
-        b.strainInput.setText(strain.content)
-        b.headerInput.setText(strain.header)
+        b.strainInput.setTextField(strain.content)
+        b.headerInput.setTextField(strain.header)
 
         b.strainWords.text = Helper.setWordsToString(liveWordsList.value!!)
 
@@ -253,9 +263,9 @@ class StrainEditFragment: Fragment() {
             if(w.selected && !selectedWords.contains(w)) selectedWords.add(w)
         }
 
-        if(b.strainInput.text.isNotEmpty()) {
-            strain.content = b.strainInput.text.toString()
-            strain.header = b.headerInput.text.toString()
+        if(b.strainInput.content.isNotEmpty()) {
+            strain.content = b.strainInput.content
+            strain.header = b.headerInput.content
             strain.wordList = Word.convertToIdList(selectedWords)
             strain.characterList = Character.getIdList(selectedCharacterList)
 

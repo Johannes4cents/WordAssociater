@@ -1,13 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="wrap_content"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
+    android:gravity="center"
+    android:layout_marginTop="4dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/icon_nuw" />
+
+    <ImageView
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:padding="2dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/icon_red_x" />
+
     <TextView
-        android:id="@+id/nuwText"
-        android:text="test"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Word"
+        />
+
+    <View
+        android:background="@color/wordGrey"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:gravity="center"
         android:textColor="@color/black"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:fontFamily="@font/roboto_bold"
+        android:layout_width="20dp"
+        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:text="12"
+        />
+
+    <View
+        android:background="@color/wordGrey"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"/>
+
+    <ImageView
+        android:padding="2dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/icon_upgrade" />
 
 </LinearLayout>

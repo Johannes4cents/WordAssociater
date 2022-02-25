@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="8dp"
     >
-    <EditText
+    <com.example.wordassociater.utils.WordsInputField
         android:id="@+id/snippetInput"
         android:gravity="top"
         android:minHeight="50dp"
@@ -20,6 +20,7 @@
         android:layout_height="40dp">
 
         <ImageView
+            android:padding="5dp"
             android:id="@+id/btnBack"
             android:layout_weight="1"
             android:layout_width="40dp"
@@ -28,6 +29,7 @@
             />
 
         <ImageView
+            android:padding="5dp"
             android:id="@+id/btnStory"
             android:layout_weight="1"
             android:layout_width="40dp"
@@ -37,6 +39,7 @@
 
         <ImageView
             android:layout_weight="1"
+            android:padding="5dp"
             android:id="@+id/btnAddCharacter"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -45,6 +48,7 @@
 
         <ImageView
             android:layout_weight="1"
+            android:padding="5dp"
             android:id="@+id/btnDrama"
             android:layout_width="40dp"
             android:layout_height="40dp"

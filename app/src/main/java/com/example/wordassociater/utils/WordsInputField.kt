@@ -19,17 +19,20 @@ import com.example.wordassociater.fire_classes.Nuw
 
 class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = InputFieldWordsBinding.inflate(LayoutInflater.from(context), this, true)
+    val nuwTableOpen = MutableLiveData<Boolean>()
+    private val tableRowList = listOf<TableRow>(b.row1, b.row2, b.row3, b.row4)
     var content = ""
-    var takeContentFunc : ((content: String) -> Unit)? = null
+    private var takeContentFunc : ((content: String) -> Unit)? = null
+    private var onEnterFunc: ((content: String) -> Unit)? = null
     private val wordInput = MutableLiveData<List<String>>()
-    val nuwList = mutableListOf<Nuw>()
+    private var nuwList = mutableListOf<Nuw>()
     private var inputEnabled = true
+    private var nuwsOpen = false
     var clicked = 0
 
     init {
         setKeyListener()
         onChangeListener()
-        setObserver()
         setClickListener()
         setOnFocusChange()
     }
@@ -52,12 +55,16 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
             else {
                 clicked++
             }
-
         }
+
     }
 
     fun setHint(hint: String) {
         b.inputField.hint = hint
+    }
+
+    fun setOnEnterFunc(onEnter: (content: String) -> Unit) {
+        onEnterFunc = onEnter
     }
 
     fun setCenterGravity() {
@@ -83,7 +90,17 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         b.inputField.setText(content)
     }
 
-    private fun showInputField() {
+    fun resetField() {
+        b.inputField.setText("")
+        b.textField.text = ""
+        content = ""
+        Helper.getIMM(b.root.context).hideSoftInputFromWindow(b.inputField.windowToken, 0)
+        b.inputField.visibility = View.GONE
+        b.textField.visibility = View.VISIBLE
+        nuwList.clear()
+    }
+
+    fun showInputField() {
         b.inputField.setText(b.inputField.text.toString())
         b.textField.visibility = View.GONE
         b.inputField.visibility = View.VISIBLE
@@ -101,19 +118,29 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     }
 
     private fun updateList() {
-        var newWords = b.inputField.text.split("\\s".toRegex()).toMutableList()
-        var strippedWords = mutableListOf<String>()
+        wordInput.value = getContentToList(b.inputField.text.toString())
+        b.textField.text = b.inputField.text
+        content = b.inputField.text.toString()
+        createNuws()
+    }
+
+    private fun getContentToList(content: String): List<String> {
+        val newWords = content.split("\\s".toRegex()).toMutableList()
+        val strippedWords = mutableListOf<String>()
         for(w in newWords) {
             if(w.isNotEmpty()) strippedWords.add(Helper.stripWord(w).capitalize())
         }
-        wordInput.value = strippedWords
-        b.textField.text = b.inputField.text
+        return strippedWords
     }
 
     private fun setKeyListener() {
         b.inputField.setOnKeyListener(OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 updateList()
+                if(onEnterFunc != null) {
+                    saveInput()
+                    onEnterFunc!!(content)
+                }
                 return@OnKeyListener true
             }
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
@@ -138,46 +165,69 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
                 updateList()
             }
         }
-    }
-
-    private fun setObserver() {
-        wordInput.observe(context as LifecycleOwner) {
-            val nuwList = mutableListOf<Nuw>()
-
-            for(string in it) {
-                if(!CommonWords.commonWords.contains(string.toLowerCase())) {
-                    val nuw = Nuw(
-                            id = getNuwId(),
-                            text = string,
-                            )
-                    nuwList.add(nuw)
-                }
+        nuwTableOpen.observe(context as LifecycleOwner) {
+            if(it) {
+                saveInput()
+                showNuws()
+            }
+            else {
+                hideNuws()
             }
         }
     }
 
     private fun getNuwId(): Long {
         var id: Long = 1
-        while(Nuw.idList.contains(id)) {
-            id = (1..100000000).random().toLong()
+        while(Nuw.idList.contains(id) || id == 1L) {
+            id = (1..999999999).random().toLong()
         }
         Nuw.idList.add(id)
         return id
     }
 
-    fun showNuws() {
+    private fun createNuws() {
+        val newNuws = mutableListOf<Nuw>()
+        for(string in getContentToList(content)) {
+            if(!CommonWords.commonWords.contains(string.toLowerCase())) {
+                val nuw = Nuw(
+                        id = getNuwId(),
+                        text = string,
+                )
+                nuwList.add(nuw)
+            }
+        }
+        nuwList = newNuws
+    }
+
+    private fun showNuws() {
         b.inputField.visibility = View.GONE
         b.textField.visibility = View.GONE
         b.nuwTable.visibility = View.VISIBLE
 
+        Log.i("nuws", "$nuwList")
+
         var rowIndex = 0
-        val tableRowList = listOf<TableRow>(b.row1, b.row2, b.row3, b.row4)
+
         for(nuw in nuwList) {
             if(tableRowList[rowIndex].childCount < 5) {
-
+                val nuwText = NuwText(context, null, nuw)
+                tableRowList[rowIndex].addView(nuwText)
+            }
+            else {
+                rowIndex++
+                val nuwText = NuwText(context, null, nuw)
+                tableRowList[rowIndex].addView(nuwText)
             }
         }
+    }
 
+    private fun hideNuws() {
+        for(row in tableRowList) {
+            row.removeAllViews()
+        }
+        b.inputField.visibility = View.VISIBLE
+        b.textField.visibility = View.VISIBLE
+        b.nuwTable.visibility = View.VISIBLE
     }
 
 }

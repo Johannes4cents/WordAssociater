@@ -25,7 +25,9 @@ class Main : AppCompatActivity() {
         val sphereList = MutableLiveData<List<Sphere>?>()
         val wordsList = MutableLiveData<List<Word>?>()
         val wordCatsList = MutableLiveData<List<WordCat>?>()
+        val nuwsList = MutableLiveData<List<Nuw>>()
         val activeWordCats = MutableLiveData<List<WordCat>?>()
+
 
         var wordConnectionsList = mutableListOf<WordConnection>()
         var maxLayers = 0
@@ -42,6 +44,10 @@ class Main : AppCompatActivity() {
 
         fun getCharacter(id: Long): Character? {
             return characterList.value?.find { c -> c.id == id }
+        }
+
+        fun getNuw(name: String): Nuw? {
+            return nuwsList.value?.find { n -> n.text == name }
         }
 
         fun getSnippet(id: Long): Snippet? {

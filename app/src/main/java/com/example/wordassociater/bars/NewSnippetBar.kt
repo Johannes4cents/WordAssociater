@@ -2,7 +2,6 @@ package com.example.wordassociater.bars
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -35,6 +34,8 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
         setObserver()
     }
 
+
+
     private fun setClickListener() {
         b.btnAddCharacter.setOnClickListener {
             Pop(context).characterRecycler(it, CharacterAdapter.Mode.SELECT)
@@ -53,15 +54,11 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
             isStory.value = !isStory.value!!
         }
 
-        b.snippetInput.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                saveSnippet()
-                AddStuffBar.snippetInputOpen.value = false
-                Helper.getIMM(context).hideSoftInputFromWindow(b.snippetInput.windowToken, 0)
-                return@OnKeyListener true
-            }
-            false
-        })
+        b.snippetInput.setOnEnterFunc {
+            saveSnippet()
+            AddStuffBar.snippetInputOpen.value = false
+            Helper.getIMM(context).hideSoftInputFromWindow(b.snippetInput.windowToken, 0)
+        }
     }
 
     private fun handleSelectedDramaType(dramaType: Drama.Type) {
@@ -81,10 +78,7 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
         AddStuffBar.snippetInputOpen.observe(context as LifecycleOwner) {
             if(it == true) {
                 b.snippetInput.visibility = View.VISIBLE
-                b.snippetInput.isFocusable = true
-                b.snippetInput.isFocusableInTouchMode = true
-                b.snippetInput.requestFocus()
-                Helper.getIMM(context).showSoftInput(b.snippetInput, 1)
+                b.snippetInput.showInputField()
             }
             else {
                 closeSnippetInput()
@@ -111,7 +105,7 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
     }
 
     private fun closeSnippetInput() {
-        b.snippetInput.setText("")
+        b.snippetInput.resetField()
         isDrama.value = Drama.Type.None
         Helper.getIMM(context).hideSoftInputFromWindow(b.snippetInput.windowToken, 0)
     }
@@ -119,15 +113,14 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
     private fun saveSnippet() {
         if(isDrama.value != Drama.Type.None) {
             saveAsDrama()
-
         }
         saveAsSnippet()
     }
 
     private fun saveAsSnippet() {
-        if(b.snippetInput.text.isNotEmpty()) {
+        if(b.snippetInput.content.isNotEmpty()) {
             val newSnippet = Snippet(
-                    content = b.snippetInput.text.toString(),
+                    content = b.snippetInput.content,
                     id = FireStats.getStoryPartId(),
                     isStory = isStory.value!!,
                     drama = isDrama.value!!
@@ -152,9 +145,9 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
     }
 
     private fun saveAsDrama() {
-        if(b.snippetInput.text.isNotEmpty()) {
+        if(b.snippetInput.content.isNotEmpty()) {
             val newDrama = Drama(
-                    content = b.snippetInput.text.toString(),
+                    content = b.snippetInput.content.toString(),
                     id = FireStats.getDramaId(),
             )
             for(word in WordLinear.selectedWords) {

@@ -51,6 +51,11 @@ class EditSnippetFragment: Fragment() {
         return b.root
     }
 
+    private fun setContent() {
+        b.snippetInput.setTextField(snippet.content)
+        b.associatedWords.text =  Helper.setWordsToMultipleLines(snippet.getWords())
+    }
+
     private fun setLiveList() {
         val notSelectedList = mutableListOf<Character>()
         for(c in Main.characterList.value!!) {
@@ -88,6 +93,10 @@ class EditSnippetFragment: Fragment() {
         b.associatedWords.setOnClickListener {
             setWordList()
             popSearchWord(b.wordIcon, ::handleWordClick , liveWordList)
+        }
+
+        b.btnNuws.setOnClickListener {
+            b.snippetInput.nuwTableOpen.value = !b.snippetInput.nuwTableOpen.value!!
         }
     }
 
@@ -135,7 +144,7 @@ class EditSnippetFragment: Fragment() {
     }
 
     private fun saveSnippet() {
-        snippet.content = b.snippetInput.text.toString()
+        snippet.content = b.snippetInput.content
         for(c in characterList.value!!) {
             if(c.selected) {
                 if(!snippet.characterList.contains(c.id)) snippet.characterList.add(c.id)
@@ -176,11 +185,6 @@ class EditSnippetFragment: Fragment() {
         }
     }
 
-
-    private fun setContent() {
-        b.snippetInput.setText(snippet.content)
-       b.associatedWords.text =  Helper.setWordsToMultipleLines(snippet.getWords())
-    }
 
     private fun setObserver() {
         liveWordList.observe(context as LifecycleOwner) {
