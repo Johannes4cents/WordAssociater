@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import com.example.wordassociater.Main
 import com.example.wordassociater.databinding.PopupSearchWordBinding
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.AdapterType
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.utils.ListHelper
 import com.example.wordassociater.words.WordAdapter
 
 fun popSearchWord(
@@ -25,20 +23,17 @@ fun popSearchWord(
 
     fun setAdapter() {
         b.wordRecycler.adapter = popUpAdapter
-        popUpAdapter.submitList(ListHelper.sortedWordList(Main.wordsList.value!!))
     }
     fun setObserver() {
         b.searchBar.getWords { wordsList ->
             Log.i("wordPopUp", "setObserver in popSearchWord wordsList count is ${wordsList.count()}")
             popUpAdapter.submitList(wordsList + selectedWordsList.value as List<Word>)
-            b.wordRecycler.scrollToPosition(popUpAdapter.itemCount -1)
             b.wordRecycler.scrollToPosition(0)
         }
 
         selectedWordsList.observe(from.context as LifecycleOwner) {
             Log.i("wordPopUp", "popSearchWord / setObserver")
             popUpAdapter.submitList(it)
-            b.wordRecycler.scrollToPosition(popUpAdapter.itemCount -1)
             b.wordRecycler.scrollToPosition(0)
         }
     }

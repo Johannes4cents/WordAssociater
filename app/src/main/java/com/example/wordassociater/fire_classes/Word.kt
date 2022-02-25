@@ -103,10 +103,6 @@ data class Word(
             else toRemoveIds.add(id)
         }
 
-        for(id in toRemoveIds) {
-            wordConnectionsList.remove(id)
-            FireWords.update(this.id, "connections", wordConnectionsList)
-        }
         return wcs
     }
 
@@ -164,12 +160,13 @@ data class Word(
         }
 
         for(wc in getWordConnections()) {
-            val word = Main.getWord(wc.wordsList.toLong())
-            if(word != null) {
-                word.wordConnectionsList.remove(wc.id)
-                FireWords.update(word.id, "wordConnectionsList", word.wordConnectionsList)
+            val words = Word.convertIdListToWord(wc.wordsList)
+            for(w in words){
+                w.wordConnectionsList.remove(wc.id)
+                FireWords.update(w.id, "wordConnectionsList", w.wordConnectionsList)
+                FireWordConnections.delete(wc.id)
             }
-            FireWordConnections.delete(wc.id)
+
         }
         FireWords.delete(id)
 

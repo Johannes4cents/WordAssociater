@@ -1,6 +1,5 @@
 package com.example.wordassociater.fire_classes
 
-import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.FireWordConnections
 import com.example.wordassociater.firestore.FireWords
@@ -31,63 +30,78 @@ data class WordConnection(
     companion object {
         val idList = mutableListOf<Long>()
 
-        fun getId(): Long {
+        private fun getId(): Long {
             var id: Long = 1
             while(idList.contains(id) || id < 2) {
-                id = (0..100000000).random().toLong()
+                id = (0..999999999).random().toLong()
             }
             return id
         }
 
         fun connect(storyPart: StoryPart) {
             val allWords = storyPart.getWordsAsStory()
+            var connectionsList = mutableListOf<WordConnection>()
+
+            // check to include already established connections when updating a storyPart
+            for(word in allWords) {
+                val wcs = word.getWordConnections()
+                for(wc in wcs) {
+                    if(wc.storyPart == storyPart.id && !connectionsList.contains(wc)) {
+                        connectionsList.add(wc)
+                    }
+                }
+            }
+            // add connections that aren't already in connectionsList
             for(word in allWords) {
                 for(w in allWords) {
-                    // checks if connection already exists
-                    val wConnectionList = w.getWordConnections()
-                    var alreadyConnected = false
-                    for(connection in wConnectionList) {
-                        if(connection.storyPart == storyPart.id && connection.wordsList.contains(word.id)) {
-                            alreadyConnected = true
-                            break
+                    if(word != w) {
+                        val newConnection = WordConnection(getId(), storyPart = storyPart.id)
+                        newConnection.wordsList.add(word.id)
+                        newConnection.wordsList.add(w.id)
+                        var alreadyConnected = false
+                        for(wc in connectionsList) {
+                            if(wc.wordsList.contains(word.id) && wc.wordsList.contains(w.id)) {
+                                alreadyConnected = true
+                                break
+                            }
                         }
-                        else {
-                            val newConnection = WordConnection(id = getId(), storyPart = storyPart.id)
-                            newConnection.wordsList.add(w.id)
-                            newConnection.wordsList.add(word.id)
-                            w.wordConnectionsList.add(newConnection.id)
-                            word.wordConnectionsList.add(newConnection.id)
-                            FireWordConnections.add(newConnection, null)
-                            FireWords.update(w.id, "wordConnectionsList", w.wordConnectionsList)
-                            FireWords.update(word.id, "wordConnectionsList", w.wordConnectionsList)
-                        }
+                        if(!alreadyConnected) connectionsList.add(newConnection)
                     }
+                }
+            }
+            // update the words and save the connections in Firestore
+            for (word in allWords) {
+                for(connection in connectionsList) {
+                    if(!word.wordConnectionsList.contains(connection.id) && connection.wordsList.contains(word.id)) {
+                        word.wordConnectionsList.add(connection.id)
+                        FireWords.update(word.id, "wordConnectionsList", word.wordConnectionsList)
+                    }
+                    FireWordConnections.add(connection, null)
                 }
             }
         }
 
         fun disconnect(word:Word, storyPartId: Long) {
             val affectedConnections = mutableListOf<WordConnection>()
-            Log.i("deselectTest", "word connectionCounter : ${word.wordConnectionsList.count()} | word is : ${word.text} | word.id is ${word.id} ")
+            // select all WordConnections from that storyPart
             for (wc in word.getWordConnections()) {
-                Log.i("deselectTest", "word connection : ${wc.wordsList} ")
                 if(wc.storyPart == storyPartId) {
                     affectedConnections.add(wc)
                 }
             }
+            // remove the word connection in both words of the connection
             for(wc in affectedConnections) {
-                val connectedWord = Main.getWord(wc.wordsList)
-                if(connectedWord != null) {
-                    connectedWord.wordConnectionsList.remove(wc.id)
-                    FireWords.update(connectedWord.id, "wordConnectionsList", connectedWord.wordConnectionsList)
+                val connectedWords = Word.convertIdListToWord(wc.wordsList)
+                for(w in connectedWords) {
+                    w.wordConnectionsList.remove(wc.id)
+                    FireWords.update(w.id, "wordConnectionsList", w.wordConnectionsList)
                 }
             }
+
+            // remove the wordConnection from the DB
             for(wc in affectedConnections) {
-                word.wordConnectionsList.remove(wc.id)
-                FireWords.update(word.id, "wordConnectionsList", word.wordConnectionsList)
                 FireWordConnections.delete(wc.id)
             }
-            FireWords.update(word.id, "wordConnectionsList", word.wordConnectionsList)
         }
     }
 }
