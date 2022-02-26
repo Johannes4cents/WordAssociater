@@ -3,16 +3,14 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.StartFragment
 import com.example.wordassociater.bars.AddWordBar
 import com.example.wordassociater.fire_classes.*
-import com.example.wordassociater.lists.DramaLists
 import com.example.wordassociater.lists.NoteLists
 import com.example.wordassociater.notes.NotesFragment
-import com.example.wordassociater.strains.StrainEditFragment
+import com.example.wordassociater.utils.CommonWord
 
 object FireStoreListener {
 
     fun getTheStuff() {
         getCharacters()
-        getStrains()
         getNotes()
         getStats()
         getSnippets()
@@ -20,17 +18,18 @@ object FireStoreListener {
         getDialogues()
         getBubbles()
         getCharactersOneTimeForSelectionList()
-        getDramas()
         getSpheres()
         getSpheresOneTime()
         getWordConnections()
         getWordCats()
+        getNuws()
+        getCommonWords()
     }
 
     private fun getCharacters() {
-        FireLists.characterList.addSnapshotListener { docs, error ->
+        FireLists.characterList.addSnapshotListener { docs, _ ->
             if(docs != null) {
-                var charList = mutableListOf<Character>()
+                val charList = mutableListOf<Character>()
                 for(doc in docs) {
                     val character = doc.toObject(Character::class.java)
                     character.selected = false
@@ -38,14 +37,13 @@ object FireStoreListener {
                 }
                 Main.characterList.value = charList
             }
-            else {
-            }
+
         }
     }
 
 
     private fun getWordConnections() {
-        FireLists.wordConnectionList.addSnapshotListener { docs, error ->
+        FireLists.wordConnectionList.addSnapshotListener { docs, _ ->
             if(docs != null) {
                 val connectionsList = mutableListOf<WordConnection>()
                 for(doc in docs) {
@@ -58,15 +56,16 @@ object FireStoreListener {
         }
     }
 
-    private fun getDramas() {
-        for(dramaType in FireDrama.typeList) {
-            FireLists.getDramaCollectionRef(dramaType).addSnapshotListener { docs, error ->
+    private fun getCommonWords() {
+        for(language in FireCommonWords.languageList) {
+            FireLists.getCommonWordsCollectionRef(language).addSnapshotListener { docs, _ ->
                 if(docs != null) {
-                    DramaLists.getList(dramaType).clear()
+                    val commonWordsList = mutableListOf<CommonWord>()
                     for(doc in docs) {
-                        val drama = doc.toObject(Drama::class.java)
-                        DramaLists.getList(dramaType).add(drama)
+                        val cw = doc.toObject(CommonWord::class.java)
+                        commonWordsList.add(cw)
                     }
+                    Main.getCommonWordsListReference(language).value = commonWordsList
                 }
             }
         }
@@ -77,7 +76,7 @@ object FireStoreListener {
             val sphereList = mutableListOf<Sphere>()
             if(docs != null) {
                 for(doc in docs) {
-                    val sphere = doc.toObject<Sphere>(Sphere::class.java)
+                    val sphere = doc.toObject(Sphere::class.java)
                     sphereList.add(sphere)
                 }
                 AddWordBar.selectedSphereList.value = sphereList
@@ -101,6 +100,20 @@ object FireStoreListener {
         }
     }
 
+    private fun getNuws() {
+        FireLists.nuwList.addSnapshotListener { docs, error ->
+            val nuwsList = mutableListOf<Nuw>()
+            if(docs != null) {
+                for(doc in docs) {
+                    val nuw = doc.toObject(Nuw::class.java)
+                    nuwsList.add(nuw)
+                    if(!Nuw.idList.contains(nuw.id)) Nuw.idList.add(nuw.id)
+                }
+                Main.nuwsList.value = nuwsList
+            }
+        }
+    }
+
     private fun getCharactersOneTimeForSelectionList() {
         FireLists.characterList.get().addOnSuccessListener{ docs->
 
@@ -113,7 +126,6 @@ object FireStoreListener {
                     if(character.id != 16L) charList.add(character)
                     else randomPerson = character
                 }
-                StrainEditFragment.popUpCharacterList.value = charList
             }
             else {
             }
@@ -152,21 +164,6 @@ object FireStoreListener {
                 }
                 NotesFragment.noteTrigger.value = Unit
             }
-        }
-    }
-
-    private fun getStrains() {
-        FireLists.fireStrainsList.addSnapshotListener { docs, error ->
-            if(docs != null) {
-                val newStrainList = mutableListOf<Strain>()
-                for(doc in docs) {
-                    val strain = doc.toObject(Strain::class.java)
-                    newStrainList.add(strain)
-                    if(strain.connectionLayer > Main.maxLayers) Main.maxLayers = strain.connectionLayer
-                }
-                Main.strainsList.value = newStrainList.toMutableList()
-            }
-
         }
     }
 

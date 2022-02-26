@@ -13,7 +13,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.databinding.BarSearchBinding
 import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.Helper
 
@@ -71,25 +70,6 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
                 }
             }
             takeWordsFunc(foundWords)
-        }
-    }
-
-    fun getStrains( takeStrainsFunc: (strainsList: List<Strain>) -> Unit ) {
-        val allStrains = Main.strainsList.value!!.toMutableList()
-        searchWords.observe(context as LifecycleOwner) {
-            val foundStrains = mutableListOf<Strain>()
-            for(strain in allStrains) {
-                val strainContentWords = Helper.contentToWordList(strain.content) + Helper.contentToWordList(strain.header)
-                for(string in it) {
-                    // Search Content
-                    for(wordString in strainContentWords) {
-                        if(wordString.startsWith(string) && !foundStrains.contains(strain)) {
-                            foundStrains.add(strain)
-                        }
-                    }
-                }
-            }
-            takeStrainsFunc(foundStrains)
         }
     }
 

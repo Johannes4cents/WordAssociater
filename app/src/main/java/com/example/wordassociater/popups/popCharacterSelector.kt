@@ -11,7 +11,7 @@ import com.example.wordassociater.utils.Helper
 
 fun popCharacterSelector(
         from: View,
-        characterList: MutableLiveData<MutableList<Character>>,
+        characterList: MutableLiveData<List<Character>>,
         characterClickedFunc: (character : Character) -> Unit) {
 
     val b = PopupCharacterRecyclerBinding.inflate(LayoutInflater.from(from.context), null, false)

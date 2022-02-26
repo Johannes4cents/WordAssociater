@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.firestore.FireStoreListener
+import com.example.wordassociater.utils.CommonWord
+import com.example.wordassociater.utils.Language
 
 
 class Main : AppCompatActivity() {
@@ -18,15 +20,18 @@ class Main : AppCompatActivity() {
         var inFragment = Frags.START
         var characterList = MutableLiveData<List<Character>?>()
         var snippetList = MutableLiveData<List<Snippet>?>()
-        var strainsList = MutableLiveData<List<Strain>?>()
         var notesList = MutableLiveData<List<Note>?>()
         var bubbleList = MutableLiveData<List<Bubble>?>()
         var dialogueList = MutableLiveData<List<Dialogue>?>()
         val sphereList = MutableLiveData<List<Sphere>?>()
         val wordsList = MutableLiveData<List<Word>?>()
         val wordCatsList = MutableLiveData<List<WordCat>?>()
-        val nuwsList = MutableLiveData<List<Nuw>>()
+        val nuwsList = MutableLiveData<List<Nuw>?>()
         val activeWordCats = MutableLiveData<List<WordCat>?>()
+
+        //commonWOrds
+        val commonWordsGerman = MutableLiveData<List<CommonWord>?>()
+        val commonWordsEnglish = MutableLiveData<List<CommonWord>?>()
 
 
         var wordConnectionsList = mutableListOf<WordConnection>()
@@ -36,6 +41,10 @@ class Main : AppCompatActivity() {
 
         fun getWordConnection(id: Long): WordConnection? {
             return wordConnectionsList.find { wc -> wc.id == id }
+        }
+
+        fun getCommonWord(language: Language, text: String): CommonWord? {
+            return getCommonWordsListReference(language).value?.find { cm -> cm.text == text }
         }
         
         fun getWordCat(id:Long): WordCat? {
@@ -50,12 +59,12 @@ class Main : AppCompatActivity() {
             return nuwsList.value?.find { n -> n.text == name }
         }
 
-        fun getSnippet(id: Long): Snippet? {
-            return snippetList.value?.find { s -> s.id == id }
+        fun getNuwById(id: Long): Nuw? {
+            return nuwsList.value?.find { n -> n.id == id }
         }
 
-        fun getStrain(id: Long): Strain? {
-            return strainsList.value?.find { s -> s.id == id }
+        fun getSnippet(id: Long): Snippet? {
+            return snippetList.value?.find { s -> s.id == id }
         }
 
         fun getNote(id: Long): Note? {
@@ -64,6 +73,10 @@ class Main : AppCompatActivity() {
 
         fun getWord(id: Long): Word? {
             return wordsList.value?.find { w -> w.id == id }
+        }
+
+        fun getWordByText(text: String): Word? {
+            return wordsList.value?.find { w -> w.text == text }
         }
 
         fun getBubble(id: Long): Bubble? {
@@ -76,6 +89,13 @@ class Main : AppCompatActivity() {
 
         fun getSphere(id: Long): Sphere? {
             return sphereList.value?.find { s -> s.id == id }
+        }
+
+        fun getCommonWordsListReference(language: Language): MutableLiveData<List<CommonWord>?> {
+            return when(language) {
+                Language.German -> commonWordsGerman
+                Language.English -> commonWordsEnglish
+            }
         }
     }
 
@@ -102,6 +122,8 @@ class Main : AppCompatActivity() {
         }
         return super.dispatchTouchEvent( event );
     }
+
+
 }
 
 

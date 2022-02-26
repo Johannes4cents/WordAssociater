@@ -14,13 +14,10 @@ import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.databinding.FragmentWordDetailedBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Sphere
-import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.firestore.FireLists
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.popSelectSphere
 import com.example.wordassociater.snippets.SnippetAdapter
-import com.example.wordassociater.strains.StrainAdapter
 import com.example.wordassociater.utils.Page
 
 class WordDetailedFragment: Fragment() {
@@ -29,7 +26,6 @@ class WordDetailedFragment: Fragment() {
 
     companion object {
         lateinit var word: Word
-        lateinit var strainAdapter: StrainAdapter
         lateinit var snippetAdapter: SnippetAdapter
     }
 
@@ -74,8 +70,7 @@ class WordDetailedFragment: Fragment() {
         }
 
         b.buttonStrains.setOnClickListener {
-            b.wordDetailedRecycler.adapter = strainAdapter
-            getFilteredStrainsList()
+
         }
 
         b.buttonSnippets.setOnClickListener {
@@ -114,21 +109,6 @@ class WordDetailedFragment: Fragment() {
         FireWords.update(word.id, "spheres", selectedSpheres)
     }
 
-    private fun getFilteredStrainsList() {
-        FireLists.fireStrainsList.get().addOnSuccessListener { docs ->
-            val strainsList = mutableListOf<Strain>()
-            for(doc in docs) {
-                val strain = doc.toObject(Strain::class.java)
-                var contains = false
-                for(w in strain.getWords()) {
-                    if(word.id == w.id) contains = true ; break
-                }
-                if(contains) strainsList.add(strain)
-            }
-            strainAdapter.submitList(strainsList)
-        }
-    }
-
     private fun getFilteredSnippetList() {
             val snippetsList = mutableListOf<Snippet>()
             for(snippet in Main.snippetList.value!!) {
@@ -144,15 +124,11 @@ class WordDetailedFragment: Fragment() {
         }
 
     private fun setRecycler() {
-        strainAdapter = StrainAdapter(::handleStrainClickedFunc)
         snippetAdapter = SnippetAdapter(::snippetClickedFunc)
-        b.wordDetailedRecycler.adapter = strainAdapter
+        b.wordDetailedRecycler.adapter = snippetAdapter
 
     }
 
-    private fun handleStrainClickedFunc(strain: Strain) {
-
-    }
 
     private fun snippetClickedFunc(snippet: Snippet) {
 

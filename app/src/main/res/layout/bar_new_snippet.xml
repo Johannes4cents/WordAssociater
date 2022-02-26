@@ -29,7 +29,7 @@
             />
 
         <ImageView
-            android:padding="5dp"
+            android:padding="10dp"
             android:id="@+id/btnStory"
             android:layout_weight="1"
             android:layout_width="40dp"

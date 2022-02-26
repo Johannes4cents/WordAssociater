@@ -4,58 +4,77 @@
     android:layout_marginStart="4dp"
     android:layout_marginEnd="4dp"
     android:gravity="center"
+    android:orientation="vertical"
     android:layout_marginTop="4dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/icon_nuw" />
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_nuw" />
 
-    <ImageView
+        <ImageView
+            android:id="@+id/btnRedX"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:padding="2dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_red_x" />
+
+        <TextView
+            android:id="@+id/textNuw"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Word"
+            />
+
+        <View
+            android:background="@color/wordGrey"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/usedAmount"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_width="20dp"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:text="12"
+            />
+
+        <View
+            android:background="@color/wordGrey"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/btnUpgrade"
+            android:padding="2dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_upgrade" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
-        android:padding="2dp"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/icon_red_x" />
+        android:background="@android:color/darker_gray"/>
 
-    <TextView
-        android:layout_weight="1"
-        android:gravity="center"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Word"
-        />
-
-    <View
-        android:background="@color/wordGrey"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:layout_width="2dp"
-        android:layout_height="match_parent"/>
-
-    <TextView
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:fontFamily="@font/roboto_bold"
-        android:layout_width="20dp"
-        android:textSize="16sp"
-        android:layout_height="wrap_content"
-        android:text="12"
-        />
-
-    <View
-        android:background="@color/wordGrey"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:layout_width="2dp"
-        android:layout_height="match_parent"/>
-
-    <ImageView
-        android:padding="2dp"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/icon_upgrade" />
 
 </LinearLayout>

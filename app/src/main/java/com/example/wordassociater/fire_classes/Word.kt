@@ -15,7 +15,7 @@ data class Word(
         var dialogueList: MutableList<Long> = mutableListOf(),
         var connectId: Long = 0,
         var imgUrl: String = "",
-        var spheres: MutableList<Long> = mutableListOf(1),
+        var spheres: MutableList<Long> = mutableListOf(2),
         var branchOf: String = "",
         var synonyms: MutableList<String> = mutableListOf(),
         var rootOf: MutableList<Long> = mutableListOf(),
@@ -42,21 +42,6 @@ data class Word(
         return catsList
     }
 
-    @Exclude
-    fun getStrains(): List<Strain> {
-        val strains = mutableListOf<Strain>()
-        val toRemoveIds = mutableListOf<Long>()
-        for(l in strainsList) {
-            var strain = Main.getStrain(l)
-            if(strain != null) strains.add(strain)
-            else toRemoveIds.add(l)
-        }
-        for(id in toRemoveIds) {
-            strainsList.remove(id)
-            FireWords.update(this.id, "strainsList", strainsList)
-        }
-        return strains
-    }
 
     @Exclude
     fun getSnippets(): List<Snippet> {
@@ -138,11 +123,6 @@ data class Word(
             FireSnippets.update(snippet.id, "wordList", snippet.wordList)
         }
 
-        for(strain in getStrains()) {
-            strain.wordList.remove(id)
-            FireStrains.update(strain.id, "wordList", strain.wordList)
-        }
-
         for(dialogue in getDialogues()) {
             dialogue.wordList.remove(id)
             FireDialogue.update(dialogue.id, "wordList", dialogue.wordList)
@@ -194,7 +174,6 @@ data class Word(
 
             }
         }
-
     }
 
 }

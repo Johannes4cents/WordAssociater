@@ -1,8 +1,7 @@
 package com.example.wordassociater.utils
 
 import com.example.wordassociater.Main
-import com.example.wordassociater.R
-import com.example.wordassociater.fire_classes.Nuw
+import com.example.wordassociater.fire_classes.StoryLine
 import com.example.wordassociater.fire_classes.Word
 import com.google.firebase.firestore.Exclude
 
@@ -11,7 +10,10 @@ open class StoryPart(
         open var content: String,
         open var wordList: MutableList<Long>,
         open var characterList: MutableList<Long>,
-        open var nuwList: MutableList<Nuw>) {
+        open var nuwList: MutableList<Long>,
+        open var storyLineList: MutableList<StoryLine>,
+        ) {
+
 
     @Exclude
     fun getWordsAsStory(): MutableList<Word> {
@@ -25,7 +27,6 @@ open class StoryPart(
         return words
     }
 
-
     companion object {
         fun getIdList(wordsList: MutableList<StoryPart>): List<Long> {
             var idList = mutableListOf<Long>()
@@ -37,18 +38,15 @@ open class StoryPart(
     }
 }
 
-enum class WordColor(path: Int)
-{
-    Blue(R.color.wordBlue),
-    Pink(R.color.wordPink),
-    Brown(R.color.wordBrown),
-    Green(R.color.wordGreen),
-    Grey(R.color.wordGrey),
-    Purple(R.color.wordPurple)}
+class CommonWord(val text: String = "",val language: Language = Language.German)
+
+enum class Language {German, English}
+
+enum class Drama {Conflict, Twist, Plan, Motivation, Goal, Problem, Solution, Hurdle, None, Comedy}
 
 enum class AdapterType { List, Popup, Preview }
 
-enum class Page {Chars, Start, Words }
+enum class Page {Notes, Chars, Start, Words }
 
 data class ConnectedWord(val word: Word, var amount: Int) {
 

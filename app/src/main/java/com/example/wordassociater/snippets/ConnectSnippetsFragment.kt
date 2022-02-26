@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -15,14 +14,14 @@ import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentConnectSnippetsBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.fire_classes.Strain
-import com.example.wordassociater.firestore.FireLists
+import com.example.wordassociater.firestore.FireSnippets
+import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.utils.Helper
 
 class ConnectSnippetsFragment: Fragment() {
     lateinit var b: FragmentConnectSnippetsBinding
-    val newStrain = Strain()
+    val newSnippet = Snippet(id = FireStats.getStoryPartId())
     companion object {
         lateinit var snippetOne : Snippet
         lateinit var snippetTwo : Snippet
@@ -44,16 +43,16 @@ class ConnectSnippetsFragment: Fragment() {
         }
 
         b.saveBtn.setOnClickListener {
-            saveStrain()
+            saveSnippet()
         }
 
         b.characterBtn.setOnClickListener {
-            Pop(b.characterBtn.context).characterRecyclerConnectSnippets(b.characterBtn, newStrain.getCharacters())
+            Pop(b.characterBtn.context).characterRecyclerConnectSnippets(b.characterBtn, newSnippet.getCharacters())
         }
     }
 
     private fun setStrain() {
-        newStrain.content = snippetOne.content + " " + snippetTwo.content
+        newSnippet.content = snippetOne.content + " " + snippetTwo.content
         makeWordsList()
         makeCharacterList()
         handleRecycler()
@@ -71,7 +70,7 @@ class ConnectSnippetsFragment: Fragment() {
                 wordsList.add(w)
             }
         }
-        newStrain.wordList = wordsList
+        newSnippet.wordList = wordsList
     }
 
     private fun makeCharacterList() {
@@ -87,38 +86,33 @@ class ConnectSnippetsFragment: Fragment() {
             }
         }
 
-        newStrain.characterList = characterList
+        newSnippet.characterList = characterList
     }
 
     private fun setContent() {
-        b.associatedWords.text = Helper.setWordsToString(newStrain.getWords())
-        b.strainInput.setText(newStrain.content)
+        b.associatedWords.text = Helper.setWordsToString(newSnippet.getWords())
+        b.strainInput.setText(newSnippet.content)
         handleCharacter()
     }
 
     private fun handleCharacter() {
-        if(newStrain.characterList.isNotEmpty() && Main.getCharacter(newStrain.characterList[0])?.imgUrl != "") {
-            Glide.with(b.characterBtn.context).load(Main.getCharacter(newStrain.characterList[0])?.imgUrl).into(b.characterBtn)
+        if(newSnippet.characterList.isNotEmpty() && Main.getCharacter(newSnippet.characterList[0])?.imgUrl != "") {
+            Glide.with(b.characterBtn.context).load(Main.getCharacter(newSnippet.characterList[0])?.imgUrl).into(b.characterBtn)
         }
     }
 
     private fun handleRecycler() {
         adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
         b.characterRecycler.adapter = adapter
-        if(newStrain.characterList.isNotEmpty()) {
-            adapter.submitList(Character.getCharactersById(newStrain.characterList))
+        if(newSnippet.characterList.isNotEmpty()) {
+            adapter.submitList(Character.getCharactersById(newSnippet.characterList))
         }
     }
 
-    private fun saveStrain() {
-        newStrain.content = b.strainInput.text.toString()
-        newStrain.header = b.headerInput.text.toString()
+    private fun saveSnippet() {
+        newSnippet.content = b.strainInput.text.toString()
+        newSnippet.header = b.headerInput.text.toString()
 
-        FireLists.fireStrainsList.add(newStrain).addOnSuccessListener {
-            Toast.makeText(context, "New Strain Created", Toast.LENGTH_SHORT).show()
-        }.addOnFailureListener {
-            Toast.makeText(context, "Failed to make new Strain", Toast.LENGTH_SHORT).show()
-        }
-        findNavController().navigate(R.id.action_connectSnippetsFragment_to_startFragment)
+        FireSnippets.add(newSnippet, context)
     }
 }

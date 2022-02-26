@@ -12,7 +12,6 @@ import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.PopupCharacterRecyclerBinding
 import com.example.wordassociater.databinding.PopupConfirmDeletionBinding
 import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.strains.StrainListFragment
 import com.example.wordassociater.words.WordLinear
 
 class Pop(val context: Context) {
@@ -75,13 +74,6 @@ class Pop(val context: Context) {
     private fun handleAdapterModes() {
         when(charMode) {
             CharacterAdapter.Mode.UPDATE -> {
-                for(char in StrainListFragment.openStrain.value?.characterList!!) {
-                    var charakter = characterListUpdate!!.find { c -> c.id == Main.getCharacter(char)?.id }
-                    if(charakter != null) {
-                        var index = characterListUpdate?.indexOf(charakter)
-                        characterListUpdate!![index!!].selected = true
-                    }
-                }
                 characterAdapter.submitList(characterListUpdate)
             }
             CharacterAdapter.Mode.SELECT -> {

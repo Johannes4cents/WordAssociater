@@ -8,14 +8,10 @@ import android.widget.LinearLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
-import com.example.wordassociater.R
 import com.example.wordassociater.databinding.BarAddStuffBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.popups.popDialogueCharacterSelector
-import com.example.wordassociater.strains.StrainEditFragment
 import com.example.wordassociater.utils.Helper
 
 class AddStuffBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
@@ -56,12 +52,6 @@ class AddStuffBar(context: Context, attributeSet: AttributeSet): LinearLayout(co
 
         b.btnNewSnippet.setOnClickListener {
             snippetInputOpen.value = !snippetInputOpen.value!!
-        }
-
-        b.btnNewStrain.setOnClickListener {
-            StrainEditFragment.clearStrain()
-            StrainEditFragment.comingFrom = Frags.START
-            findNavController().navigate(R.id.action_startFragment_to_writeFragment)
         }
 
         b.btnNewWord.setOnClickListener {

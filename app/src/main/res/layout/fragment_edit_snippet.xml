@@ -6,67 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/btnAndWordsLinear"
+    <com.example.wordassociater.bars.TopBar
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/backBtn"
-            android:layout_width="35dp"
-            android:layout_height="45dp"
-            android:src="@drawable/back_icon" />
-
-        <ImageView
-            android:visibility="gone"
-            android:id="@+id/deleteBtn"
-            android:layout_width="35dp"
-            android:layout_height="45dp"
-            android:src="@drawable/icon_red_x" />
-
-        <ImageView
-            android:id="@+id/btnNuws"
-            android:padding="5dp"
-            android:src="@drawable/icon_nuw"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            />
-
-        <TextView
-            android:id="@+id/associatedWords"
-            android:minHeight="45dp"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Bus Bahn, Social Media Influencer" />
-
-        <ImageView
-            android:id="@+id/wordIcon"
-            android:visibility="gone"
-            android:src="@drawable/btn_open_words_list"
-            android:layout_weight="1"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:padding="10dp"
-            />
-
-        <ImageView
-            android:id="@+id/characterBtn"
-            android:padding="3dp"
-            android:layout_width="60dp"
-            android:layout_height="45dp"
-            android:src="@drawable/icon_edit_character" />
-
-        <ImageView
-            android:id="@+id/saveBtn"
-            android:layout_width="60dp"
-            android:layout_height="45dp"
-            android:src="@drawable/btn_save_strain" />
-
-    </LinearLayout>
+        android:layout_height="wrap_content"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/characterRecycler"
@@ -74,6 +17,11 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
         android:layout_height="40dp"/>
+
+    <com.example.wordassociater.words.WordPreviewRecycler
+        android:id="@+id/wordPreviewRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
 
     <com.example.wordassociater.utils.WordsInputField
         android:id="@+id/snippetInput"

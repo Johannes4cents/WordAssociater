@@ -8,6 +8,7 @@ data class Prose(
         var header: String = "",
         override var wordList: MutableList<Long> = mutableListOf(),
         override var characterList: MutableList<Long> = mutableListOf(),
-        override var nuwList: MutableList<Nuw> = mutableListOf()
-        ): StoryPart(id, content, wordList, characterList, nuwList) {
+        override var nuwList: MutableList<Long> = mutableListOf(),
+        override var storyLineList: MutableList<StoryLine> = mutableListOf(),
+        ): StoryPart(id, content, wordList, characterList, nuwList, storyLineList) {
 }

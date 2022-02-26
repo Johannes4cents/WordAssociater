@@ -50,8 +50,7 @@ class NotesFragment: Fragment() {
 
     private fun setClickListener() {
         b.backBtn.setOnClickListener {
-            ViewPagerFragment.comingFrom = Page.Start
-            findNavController().navigate(R.id.action_notesFragment_to_startFragment)
+            ViewPagerFragment.goTopage(Page.Start)
         }
 
         b.saveBtn.setOnClickListener {

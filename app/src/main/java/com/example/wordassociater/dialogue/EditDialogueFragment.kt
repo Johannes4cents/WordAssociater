@@ -36,7 +36,7 @@ class EditDialogueFragment: Fragment() {
         var bubbleList = MutableLiveData<List<Bubble>?>()
     }
 
-    var liveWordsList = MutableLiveData(WordLinear.selectedWords)
+    var liveWordsList: MutableLiveData<List<Word>> = MutableLiveData(WordLinear.selectedWords)
 
     lateinit var wordAdapter: WordAdapter
 
@@ -69,7 +69,7 @@ class EditDialogueFragment: Fragment() {
 
 
     private fun setWordList() {
-        SearchHelper.setWordList(dialogue.getWords(), liveWordsList)
+        ListHelper.setWordList(dialogue.getWords(), liveWordsList)
     }
 
     private fun handleWordDeselected() {
@@ -124,7 +124,7 @@ class EditDialogueFragment: Fragment() {
         }
         else dialogue.wordList.remove(word.id)
 
-        SearchHelper.setWordList(dialogue.getWords(), liveWordsList)
+        ListHelper.setWordList(dialogue.getWords(), liveWordsList)
     }
 
 

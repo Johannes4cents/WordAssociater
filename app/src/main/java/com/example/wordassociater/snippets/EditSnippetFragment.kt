@@ -13,24 +13,22 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.FragmentEditSnippetBinding
-import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.fire_classes.WordConnection
+import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.firestore.FireChars
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.popCharacterSelector
+import com.example.wordassociater.popups.popNuwsEdit
 import com.example.wordassociater.popups.popSearchWord
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.utils.SearchHelper
+import com.example.wordassociater.utils.ListHelper
 
 class EditSnippetFragment: Fragment() {
     lateinit var b : FragmentEditSnippetBinding
     lateinit var charAdapter: CharacterAdapter
-    private val liveWordList = MutableLiveData<MutableList<Word>>()
+    private val liveWordList = MutableLiveData<List<Word>>()
     // Character
-    private val characterList = MutableLiveData<MutableList<Character>>()
+    private val characterList = MutableLiveData<List<Character>>()
     companion object {
         var oldSnippet = Snippet()
         lateinit var snippet: Snippet
@@ -41,62 +39,61 @@ class EditSnippetFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         b = FragmentEditSnippetBinding.inflate(inflater)
-
-        setLiveList()
+        ListHelper.handleSelectAndSetFullCharacterList(snippet, characterList)
+        setWordList()
         setClickListener()
-        setContent()
+        setWordsInput()
         setRecycler()
         setObserver()
-        setWordIcon()
+        b.wordPreviewRecycler.initRecycler(liveWordList)
         return b.root
     }
 
-    private fun setContent() {
+    private fun setWordsInput() {
+        b.snippetInput.setStoryPart(snippet)
         b.snippetInput.setTextField(snippet.content)
-        b.associatedWords.text =  Helper.setWordsToMultipleLines(snippet.getWords())
     }
 
-    private fun setLiveList() {
-        val notSelectedList = mutableListOf<Character>()
-        for(c in Main.characterList.value!!) {
-            c.selected = snippet.characterList.contains(c.id)
-            notSelectedList.add(c)
-        }
-        characterList.value = notSelectedList
-    }
 
     private fun setWordList() {
-        SearchHelper.setWordList(snippet.getWords(), liveWordList)
+        ListHelper.setWordList(snippet.getWords(), liveWordList)
     }
 
     private fun setClickListener() {
-        b.saveBtn.setOnClickListener {
+        b.topBar.setSaveButton {
             saveSnippet()
             findNavController().navigate(R.id.action_editSnippetFragment_to_snippetFragment)
         }
 
-        b.backBtn.setOnClickListener {
+        b.topBar.setBackButton {
             snippet.wordList = oldSnippet.wordList
             snippet.characterList = oldSnippet.characterList
             findNavController().navigate(R.id.action_editSnippetFragment_to_snippetFragment)
         }
 
-        b.characterBtn.setOnClickListener {
-            popCharacterSelector(b.characterBtn, characterList, ::handleCharacterSelected)
+        b.topBar.setCharacterButton {
+            popCharacterSelector(b.topBar.characterImage, characterList, ::handleCharacterSelected)
         }
 
-        b.wordIcon.setOnClickListener {
+        b.topBar.setWordButton {
             setWordList()
-            popSearchWord(b.wordIcon, ::handleWordClick , liveWordList)
+            popSearchWord(b.topBar.wordsImage, ::handleWordClick , liveWordList)
         }
 
-        b.associatedWords.setOnClickListener {
-            setWordList()
-            popSearchWord(b.wordIcon, ::handleWordClick , liveWordList)
+        b.topBar.setNuwButton {
+            b.snippetInput.getNuwsForPopup { liveList, onUpgradeClicked, onRedXClicked ->
+                popNuwsEdit(b.topBar.nuwImage, liveList, onUpgradeClicked, onRedXClicked, ::addNuwWordToSnippet )
+            }
         }
+    }
 
-        b.btnNuws.setOnClickListener {
-            b.snippetInput.nuwTableOpen.value = !b.snippetInput.nuwTableOpen.value!!
+    private fun addNuwWordToSnippet(nuw: Nuw) {
+        val word = Main.getWordByText(nuw.text)
+        if(word != null) {
+            handleWordClick(word)
+        }
+        else {
+            Helper.toast("Word ${nuw.text} not found. this should not happen", b.root.context)
         }
     }
 
@@ -113,8 +110,6 @@ class EditSnippetFragment: Fragment() {
             }
         }
     }
-
-
 
     private fun handleCharacterSelected(char: Character) {
         char.selected = !char.selected
@@ -145,6 +140,7 @@ class EditSnippetFragment: Fragment() {
 
     private fun saveSnippet() {
         snippet.content = b.snippetInput.content
+        b.snippetInput.saveNuws()
         for(c in characterList.value!!) {
             if(c.selected) {
                 if(!snippet.characterList.contains(c.id)) snippet.characterList.add(c.id)
@@ -174,17 +170,6 @@ class EditSnippetFragment: Fragment() {
         handleCharacterDeselected()
     }
 
-    private fun setWordIcon() {
-        if(snippet.wordList.isEmpty()) {
-            b.wordIcon.visibility = View.VISIBLE
-            b.associatedWords.visibility = View.GONE
-        }
-        else {
-            b.wordIcon.visibility = View.GONE
-            b.associatedWords.visibility = View.VISIBLE
-        }
-    }
-
 
     private fun setObserver() {
         liveWordList.observe(context as LifecycleOwner) {
@@ -192,8 +177,6 @@ class EditSnippetFragment: Fragment() {
             for(w  in it) {
                 if(w.selected && !selectedWords.contains(w)) selectedWords.add(w)
             }
-            b.associatedWords.text = Helper.setWordsToString(selectedWords)
-            setWordIcon()
         }
 
         characterList.observe(context as LifecycleOwner) {

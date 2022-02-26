@@ -16,24 +16,17 @@ import com.example.wordassociater.dialogue.DialogueAdapter
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Dialogue
 import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.snippets.SnippetAdapter
-import com.example.wordassociater.strains.StrainAdapter
 import com.example.wordassociater.utils.Page
 
 class CharacterFragment: Fragment() {
     lateinit var b: FragmentCharacterBinding
 
     private val characterSnippetsAdapter = SnippetAdapter(::snippetClickedFunc)
-    private val characterStrainAdapter = StrainAdapter(::handleStrainClickedFunc)
     private val dialogueAdapter = DialogueAdapter(::onDialogueSelected)
 
     companion object {
         var character = Character("")
-    }
-
-    private fun handleStrainClickedFunc(strain: Strain) {
-
     }
 
     private fun snippetClickedFunc(snippet: Snippet) {
@@ -55,12 +48,11 @@ class CharacterFragment: Fragment() {
         handleRecycler()
         setContent()
         setClickListener()
-        getAndSubmitStrains()
         return b.root
     }
 
     private fun handleRecycler() {
-        b.specificCharacterRecycler.adapter = characterStrainAdapter
+        b.specificCharacterRecycler.adapter = characterSnippetsAdapter
     }
 
     private fun setContent() {
@@ -91,7 +83,6 @@ class CharacterFragment: Fragment() {
         b.buttonStrains.setOnClickListener {
             b.specificCharacterRecycler.visibility = View.VISIBLE
             b.characterDescriptionLinear.visibility = View.GONE
-            getAndSubmitStrains()
         }
 
         b.buttonDialogues.setOnClickListener {
@@ -112,16 +103,6 @@ class CharacterFragment: Fragment() {
         characterSnippetsAdapter.submitList(snippetList)
     }
 
-    private fun getAndSubmitStrains() {
-        b.specificCharacterRecycler.adapter = characterStrainAdapter
-        for (strain in Main.strainsList.value!!) {
-            val characterStrainList = mutableListOf<Strain>()
-            if (strain.characterList.contains(character.id)) {
-                characterStrainList.add(strain)
-            }
-            characterStrainAdapter.submitList(characterStrainList)
-        }
-    }
 
     private fun getAndSubmitDialogues() {
         b.specificCharacterRecycler.adapter = dialogueAdapter

@@ -22,9 +22,6 @@
             android:id="@+id/action_startFragment_to_storyFragment"
             app:destination="@id/storyFragment" />
         <action
-            android:id="@+id/action_startFragment_to_notesFragment"
-            app:destination="@id/notesFragment" />
-        <action
             android:id="@+id/action_startFragment_to_dialogueListFragment"
             app:destination="@id/dialogueListFragment" />
         <action
@@ -138,9 +135,6 @@
         android:id="@+id/notesFragment"
         android:name="com.example.wordassociater.notes.NotesFragment"
         android:label="NotesFragment" >
-        <action
-            android:id="@+id/action_notesFragment_to_startFragment"
-            app:destination="@id/ViewPagerFragment" />
         <action
             android:id="@+id/action_notesFragment_to_editNoteFragment"
             app:destination="@id/editNoteFragment" />

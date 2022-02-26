@@ -1,24 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:orientation="vertical"
+    android:layout_marginTop="4dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/associatedWordsSnippet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
         android:gravity="center"
-        android:text="TextView"
-        android:textColor="@color/dark_gray"
-        android:fontFamily="@font/roboto_bold"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/connectBtn"
+            android:layout_marginStart="4dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/connect" />
+
+        <ImageView
+            android:id="@+id/btnDelete"
+            android:layout_marginStart="4dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_red_x" />
+
+        <TextView
+            android:gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="18sp"
+            android:id="@+id/textFieldId"
+            android:layout_marginStart="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="2"/>
+
+
+        <com.example.wordassociater.words.WordPreviewRecycler
+            android:layout_weight="1"
+            android:id="@+id/wordsRecycler"
+            android:layout_width="0dp"
+            android:layout_height="25dp"/>
+
+
+        <com.example.wordassociater.buttons.StrainLayerButton
+            android:layout_marginEnd="4dp"
+            android:id="@+id/strainLayerButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+    </LinearLayout>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:visibility="gone"
@@ -28,55 +62,32 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"/>
 
+    <TextView
+        android:id="@+id/headerText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Strain"
+        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
 
-    <LinearLayout
-        android:id="@+id/cancelContentLinear"
-        android:orientation="horizontal"
+    <TextView
+        android:minHeight="45dp"
+        android:maxHeight="140dp"
+        android:textColor="@color/black"
+        android:text="This is a test Text I dont know what"
+        android:id="@+id/contentPreview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/deleteSnippetIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/icon_red_x"
-            />
-
-        <TextView
-            android:gravity="center"
-            android:fontFamily="@font/roboto_bold"
-            android:textSize="18sp"
-            android:id="@+id/textFieldId"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="4dp"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:text="2"/>
-
-        <TextView
-            android:minHeight="45dp"
-            android:maxHeight="140dp"
-            android:layout_weight="2"
-            android:textColor="@color/black"
-            android:text="This is a test Text I dont know what"
-            android:id="@+id/snippetContent"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
-
-        <ImageView
-            android:id="@+id/connectSnippetsBtn"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:padding="10dp"
-            android:src="@drawable/connect"
-            />
-
-
-    </LinearLayout>
+        android:layout_height="wrap_content"/>
 
     <View
         android:layout_width="match_parent"

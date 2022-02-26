@@ -1,4 +1,4 @@
-package com.example.wordassociater.dramaturgy
+package com.example.wordassociater.drama
 
 
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderDramaTypeBinding
-import com.example.wordassociater.fire_classes.Drama
+import com.example.wordassociater.utils.Drama
 
 class DramaTypeAdapter(
-        val takeDramaTypeFunc: (dramaType: Drama.Type) -> Unit
-): ListAdapter<Drama.Type, RecyclerView.ViewHolder>(DramaTypeDiff()) {
+        val takeDramaTypeFunc: (dramaType: Drama) -> Unit
+): ListAdapter<Drama, RecyclerView.ViewHolder>(DramaTypeDiff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return DramaTypeHolder(HolderDramaTypeBinding.inflate(LayoutInflater.from(parent.context)), takeDramaTypeFunc)
     }
@@ -22,12 +22,12 @@ class DramaTypeAdapter(
     }
 }
 
-class DramaTypeDiff: DiffUtil.ItemCallback<Drama.Type>() {
-    override fun areItemsTheSame(oldItem: Drama.Type, newItem: Drama.Type): Boolean {
+class DramaTypeDiff: DiffUtil.ItemCallback<Drama>() {
+    override fun areItemsTheSame(oldItem: Drama, newItem: Drama): Boolean {
         return oldItem.name == newItem.name
     }
 
-    override fun areContentsTheSame(oldItem: Drama.Type, newItem: Drama.Type): Boolean {
+    override fun areContentsTheSame(oldItem: Drama, newItem: Drama): Boolean {
         return oldItem == newItem
     }
 

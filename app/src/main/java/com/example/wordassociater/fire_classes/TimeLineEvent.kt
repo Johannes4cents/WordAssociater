@@ -7,6 +7,7 @@ class TimeLineEvent(
         override var content: String = "",
         override var characterList: MutableList<Long> = mutableListOf(),
         override var wordList: MutableList<Long> = mutableListOf(),
-        override var nuwList: MutableList<Nuw> = mutableListOf()
-): StoryPart(id, content, characterList, wordList, nuwList) {
+        override var nuwList: MutableList<Long> = mutableListOf(),
+        override var storyLineList: MutableList<StoryLine> = mutableListOf(),
+): StoryPart(id, content, characterList, wordList, nuwList, storyLineList) {
 }

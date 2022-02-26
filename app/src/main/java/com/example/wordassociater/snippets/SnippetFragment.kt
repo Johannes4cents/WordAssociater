@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Frags
@@ -34,6 +35,14 @@ class SnippetFragment: Fragment() {
         setObserver()
         setSearchBar()
         return b.root
+    }
+
+    private fun handleLayerButton() {
+        b.strainLayerButton.setClickListener()
+        b.strainLayerButton.currentLayer.observe(context as LifecycleOwner) {
+            var filteredList = Main.snippetList.value?.filter { snippet -> snippet.layer >= it }?.sortedBy { s -> s.id }?.reversed()
+            snippetAdapter.submitList(filteredList)
+        }
     }
 
     private fun setSnippetRecycler() {

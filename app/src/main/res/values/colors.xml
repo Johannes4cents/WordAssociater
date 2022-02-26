@@ -25,4 +25,5 @@
     <color name="wordRed">#f41f51</color>
     <color name="wordTeal">#a4e6ff</color>
     <color name="wordOrange">#ffb78e</color>
+    <color name="lightYellow">#FFFDBC</color>
 </resources>

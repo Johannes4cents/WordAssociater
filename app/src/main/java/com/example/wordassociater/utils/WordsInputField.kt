@@ -15,17 +15,22 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.databinding.InputFieldWordsBinding
+import com.example.wordassociater.fire_classes.Dialogue
 import com.example.wordassociater.fire_classes.Nuw
+import com.example.wordassociater.fire_classes.Snippet
+import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.firestore.*
+import java.util.*
 
 class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = InputFieldWordsBinding.inflate(LayoutInflater.from(context), this, true)
-    val nuwTableOpen = MutableLiveData<Boolean>()
+    private var storyPart: StoryPart? = null
     private val tableRowList = listOf<TableRow>(b.row1, b.row2, b.row3, b.row4)
     var content = ""
     private var takeContentFunc : ((content: String) -> Unit)? = null
     private var onEnterFunc: ((content: String) -> Unit)? = null
     private val wordInput = MutableLiveData<List<String>>()
-    private var nuwList = mutableListOf<Nuw>()
+    private var nuwList = MutableLiveData<List<Nuw>?>()
     private var inputEnabled = true
     private var nuwsOpen = false
     var clicked = 0
@@ -39,6 +44,10 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
 
     fun setContentFunc(func: (content: String) -> Unit) {
         takeContentFunc = func
+    }
+
+    fun setStoryPart(storyPart: StoryPart) {
+        this.storyPart = storyPart
     }
 
     private fun setClickListener() {
@@ -90,6 +99,18 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         b.inputField.setText(content)
     }
 
+    fun getNuwsForPopup(takeNuwsFunc: (
+            nuwsList: MutableLiveData<List<Nuw>?>,
+            onUpgradeClicked: (nuw: Nuw) -> Unit,
+            onRedXClicked: (nuw: Nuw) -> Unit
+    ) -> Unit) {
+        takeNuwsFunc(nuwList, ::onNuwUpgradeClicked, ::onNuwRedXClicked)
+    }
+
+    fun getNuws(takeNuwsFunc: (nuwsList: List<Nuw>?) -> Unit) {
+        takeNuwsFunc(nuwList.value)
+    }
+
     fun resetField() {
         b.inputField.setText("")
         b.textField.text = ""
@@ -97,7 +118,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         Helper.getIMM(b.root.context).hideSoftInputFromWindow(b.inputField.windowToken, 0)
         b.inputField.visibility = View.GONE
         b.textField.visibility = View.VISIBLE
-        nuwList.clear()
+        nuwList.value = mutableListOf()
     }
 
     fun showInputField() {
@@ -128,7 +149,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         val newWords = content.split("\\s".toRegex()).toMutableList()
         val strippedWords = mutableListOf<String>()
         for(w in newWords) {
-            if(w.isNotEmpty()) strippedWords.add(Helper.stripWord(w).capitalize())
+            if(w.isNotEmpty()) strippedWords.add(Helper.stripWord(w).capitalize(Locale.ROOT))
         }
         return strippedWords
     }
@@ -165,69 +186,82 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
                 updateList()
             }
         }
-        nuwTableOpen.observe(context as LifecycleOwner) {
-            if(it) {
-                saveInput()
-                showNuws()
-            }
-            else {
-                hideNuws()
-            }
-        }
-    }
-
-    private fun getNuwId(): Long {
-        var id: Long = 1
-        while(Nuw.idList.contains(id) || id == 1L) {
-            id = (1..999999999).random().toLong()
-        }
-        Nuw.idList.add(id)
-        return id
     }
 
     private fun createNuws() {
         val newNuws = mutableListOf<Nuw>()
         for(string in getContentToList(content)) {
-            if(!CommonWords.commonWords.contains(string.toLowerCase())) {
-                val nuw = Nuw(
-                        id = getNuwId(),
-                        text = string,
-                )
-                nuwList.add(nuw)
+            if(Main.getCommonWord(Language.German, string) == null) {
+                val nuw = Nuw.getNuw(string)
+                val word = nuw.checkIfWordExists()
+                if(word != null) {
+                    nuw.isWord = true
+                    nuw.usedAmount = word.used
+                }
+
+                if(storyPart != null) {
+                    for(w in storyPart!!.getWordsAsStory()) {
+                        if(Helper.stripWord(w.text).capitalize(Locale.ROOT) == nuw.text || w.synonyms.contains(nuw.text)) {
+                            nuw.isUsed = true
+                        }
+                    }
+                }
+                newNuws.add(nuw)
             }
         }
-        nuwList = newNuws
+        nuwList.value = newNuws
     }
 
-    private fun showNuws() {
-        b.inputField.visibility = View.GONE
-        b.textField.visibility = View.GONE
-        b.nuwTable.visibility = View.VISIBLE
-
-        Log.i("nuws", "$nuwList")
-
-        var rowIndex = 0
-
-        for(nuw in nuwList) {
-            if(tableRowList[rowIndex].childCount < 5) {
-                val nuwText = NuwText(context, null, nuw)
-                tableRowList[rowIndex].addView(nuwText)
-            }
-            else {
-                rowIndex++
-                val nuwText = NuwText(context, null, nuw)
-                tableRowList[rowIndex].addView(nuwText)
+    fun saveNuws() {
+        if(nuwList.value != null) {
+            for(nuw in nuwList.value!!) {
+                val existingNuw = Main.getNuw(nuw.text)
+                if(existingNuw != null) {
+                    if(!storyPart!!.nuwList.contains(nuw.id) && !nuw.isWord) {
+                        updateAlreadyExistingNuw(nuw)
+                    }
+                }
+                else {
+                    nuw.usedIn.add(storyPart!!.id)
+                    FireNuws.add(nuw)
+                }
             }
         }
     }
 
-    private fun hideNuws() {
-        for(row in tableRowList) {
-            row.removeAllViews()
+    private fun updateAlreadyExistingNuw(nuw: Nuw) {
+        if(!nuw.isWord) {
+            nuw.usedIn.add(storyPart!!.id)
+            nuw.usedAmount += 1
+            storyPart!!.nuwList.add(nuw.id)
+            when(storyPart) {
+                is Snippet -> FireSnippets.update(storyPart!!.id, "nuwList", storyPart!!.nuwList)
+                is Dialogue -> FireDialogue.update(storyPart!!.id, "nuwList", storyPart!!.nuwList)
+            }
+            FireNuws.update(nuw.id, "usedIn", nuw.usedIn)
+            FireNuws.update(nuw.id, "usedAmount", nuw.usedAmount)
         }
-        b.inputField.visibility = View.VISIBLE
-        b.textField.visibility = View.VISIBLE
-        b.nuwTable.visibility = View.VISIBLE
     }
+
+    private fun onNuwRedXClicked(nuw:Nuw) {
+        val commonWord = CommonWord(nuw.text, Language.German)
+        FireCommonWords.add(commonWord)
+        val newNuwList = nuwList.value!!.toMutableList()
+        newNuwList.remove(nuw)
+        nuwList.value = newNuwList
+
+    }
+
+    private fun onNuwUpgradeClicked(nuw: Nuw) {
+        if(nuw.checkIfWordExists() == null) {
+            val word = Word()
+            word.id = FireStats.getWordId()
+            word.text = nuw.text
+            FireWords.add(word, context)
+            nuw.isWord = true
+            nuwList.value = Helper.getResubmitList(nuw, nuwList.value!!)
+        }
+    }
+
 
 }

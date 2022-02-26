@@ -11,7 +11,7 @@ object FireSnippets {
 
     fun add(newSnippet: Snippet, context: Context?) {
         FireLists.snippetsList.document(newSnippet.id.toString()).set(newSnippet).addOnSuccessListener {
-            Toast.makeText(context, "Snippet saved", Toast.LENGTH_SHORT).show()
+            if(context != null ) Toast.makeText(context, "Snippet saved", Toast.LENGTH_SHORT).show()
 
         }.addOnFailureListener {
             Toast.makeText(context, "Failed to \n upload", Toast.LENGTH_SHORT).show()

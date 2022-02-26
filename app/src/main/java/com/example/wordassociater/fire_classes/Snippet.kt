@@ -4,19 +4,23 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.FireChars
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.utils.Drama
 import com.example.wordassociater.utils.StoryPart
 import com.google.firebase.firestore.Exclude
 
 data class Snippet(override var content: String = "",
                    override var id: Long = 0,
                    override var wordList: MutableList<Long> = mutableListOf(),
+                   var header: String = "",
                    var connectedSnippetsList: MutableList<Long> = mutableListOf(),
+                   var layer: Int = 1,
                    override var characterList: MutableList<Long> = mutableListOf(),
-                   override var nuwList: MutableList<Nuw> = mutableListOf(),
-                   var drama: Drama.Type = Drama.Type.None,
-                   var isStory: Boolean = false): StoryPart(id, content, wordList, characterList, nuwList) {
+                   override var nuwList: MutableList<Long> = mutableListOf(),
+                   override var storyLineList: MutableList<StoryLine> = mutableListOf(),
+                   var drama: Drama = Drama.None,
+): StoryPart(id, content, wordList, characterList, nuwList, storyLineList) {
     @Exclude
-    var isHeader = false
+    var recyclerHeader = false
 
     @Exclude
     fun getCharacters(): List<Character> {
@@ -33,6 +37,23 @@ data class Snippet(override var content: String = "",
             FireSnippets.update(id, "characterList", characterList)
         }
         return chars
+    }
+
+    @Exclude
+    fun getNuws(): List<Nuw> {
+        val nuws = mutableListOf<Nuw>()
+        val notFoundList = mutableListOf<Long>()
+        for(id in nuwList) {
+            val nuw = Main.getNuwById(id)
+            if(nuw != null) nuws.add(nuw)
+            else notFoundList.add(id)
+        }
+
+        for(id in notFoundList) {
+            nuwList.remove(id)
+            FireSnippets.update(this.id, "nuwList", nuwList)
+        }
+        return nuws
     }
 
     @Exclude
@@ -75,7 +96,7 @@ data class Snippet(override var content: String = "",
             w.used -= 1
             w.snippetsList.remove(id)
             FireWords.update(w.id, "used", w.used)
-            FireWords.update(w.id, "snippetsList", w.used)
+            FireWords.update(w.id, "snippetsList", w.snippetsList)
         }
 
         for(c in getCharacters()) {
@@ -97,12 +118,11 @@ data class Snippet(override var content: String = "",
         newSnippet.connectedSnippetsList = connectedSnippetsList.toMutableList()
         newSnippet.drama = drama
         newSnippet.characterList = characterList.toMutableList()
-        newSnippet.isHeader = isHeader
+        newSnippet.recyclerHeader = recyclerHeader
         newSnippet.id = 999999999999
         newSnippet.content = content
         newSnippet.nuwList = nuwList.toMutableList()
         newSnippet.wordList = wordList.toMutableList()
-        newSnippet.isStory = isStory
 
         return newSnippet
     }

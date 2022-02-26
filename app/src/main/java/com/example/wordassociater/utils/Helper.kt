@@ -8,8 +8,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
 import android.widget.Toast
 import com.example.wordassociater.Main
+import com.example.wordassociater.R
 import com.example.wordassociater.StartFragment
-import com.example.wordassociater.fire_classes.Strain
 import com.example.wordassociater.fire_classes.Word
 import java.util.*
 
@@ -62,36 +62,6 @@ object Helper {
         return words
     }
 
-    fun getOrFilteredStoryPartList(filterWords: List<String>, searchList: List<StoryPart>): MutableList<StoryPart> {
-        val submitList = mutableListOf<StoryPart>()
-        for(storyPart in searchList) {
-            var match = false
-            val wordContentList = storyPart.content.split("\\s".toRegex())
-            for(string in wordContentList) {
-                val copiedFilterWords = filterWords.toList()
-                val strippedW = stripWord(string)
-                for(i in 0 until copiedFilterWords.count()) {
-                    if(strippedW.startsWith(filterWords[i])) match = true ; break
-                }
-            }
-            if(!match) {
-                for(w in getWords(storyPart.wordList)) {
-                    var destructedWord = wordToList(w)
-                    for(str in destructedWord) {
-                        if(filterWords.contains(stripWord(str))) match = true ; break
-                    }
-                }
-            }
-            if(!match && storyPart is Strain) {
-                var stringList = (storyPart as Strain).header.split("\\s".toRegex())
-                for(string in stringList) {
-
-                }
-            }
-            if(match) submitList.add(storyPart)
-        }
-        return submitList
-    }
 
     fun checkIfWordInRightSphere(word: Word): Boolean {
         var inRightSphere = false
@@ -111,6 +81,21 @@ object Helper {
         newList.remove(item)
         newList.add(index, item)
         return newList
+    }
+
+    fun getDramaImage(type: Drama): Int {
+        return when(type) {
+            Drama.Conflict -> R.drawable.icon_conflict
+            Drama.Twist -> R.drawable.icon_twist
+            Drama.Plan -> R.drawable.icon_plan
+            Drama.Motivation -> R.drawable.icon_motivation
+            Drama.Goal -> R.drawable.icon_goal
+            Drama.Problem -> R.drawable.icon_problem
+            Drama.Solution -> R.drawable.icon_solution
+            Drama.Hurdle -> R.drawable.icon_hurdle
+            Drama.None -> R.drawable.icon_dramaturgy
+            Drama.Comedy -> R.drawable.icon_comedy
+        }
     }
 
     fun getPopUp(layout: View, fromWhere: View, width: Int, height: Int): PopupWindow {

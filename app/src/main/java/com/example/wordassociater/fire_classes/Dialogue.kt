@@ -5,6 +5,7 @@ import com.example.wordassociater.firestore.FireBubbles
 import com.example.wordassociater.firestore.FireChars
 import com.example.wordassociater.firestore.FireDialogue
 import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.utils.Drama
 import com.example.wordassociater.utils.StoryPart
 import com.google.firebase.firestore.Exclude
 
@@ -12,12 +13,13 @@ data class Dialogue(
         override var id: Long = 0,
         override var characterList: MutableList<Long> = mutableListOf(),
         override var content: String = "",
-        override var nuwList: MutableList<Nuw> = mutableListOf(),
+        override var nuwList: MutableList<Long> = mutableListOf(),
         override var wordList: MutableList<Long> = mutableListOf(),
+        override var storyLineList: MutableList<StoryLine> = mutableListOf(),
         var currentIndex: Int = 1,
-        var drama: Drama.Type = Drama.Type.None,
+        var drama: Drama = Drama.None,
         var bubbleList: MutableList<Long> = mutableListOf()
-): StoryPart(id, content, wordList, characterList, nuwList) {
+): StoryPart(id, content, wordList, characterList, nuwList, storyLineList) {
     @Exclude
     fun getCharacter(): List<Character> {
         val charList = mutableListOf<Character>()

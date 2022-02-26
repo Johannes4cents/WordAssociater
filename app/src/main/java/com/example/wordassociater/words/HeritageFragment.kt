@@ -52,7 +52,7 @@ class HeritageFragment: Fragment() {
         }
 
         b.fieldBranchOf.setOnClickListener {
-            popSearchWord(b.fieldBranchOf, ::wordSelectedFunc, MutableLiveData<MutableList<Word>>())
+            popSearchWord(b.fieldBranchOf, ::wordSelectedFunc, MutableLiveData<List<Word>>())
         }
 
         b.btnAddRootOf.setOnClickListener {

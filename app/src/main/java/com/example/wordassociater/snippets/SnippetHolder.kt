@@ -2,6 +2,7 @@ package com.example.wordassociater.snippets
 
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
@@ -9,7 +10,6 @@ import com.example.wordassociater.databinding.HolderSnippetBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.popups.Pop
-import com.example.wordassociater.utils.Helper
 
 class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
                     val clickSnippetFunc: (snippet:Snippet) -> Unit): RecyclerView.ViewHolder(b.root) {
@@ -25,8 +25,9 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
 
     private fun setContent() {
         b.textFieldId.text = snippet.id.toString()
-        b.snippetContent.text = snippet.content
-        b.associatedWordsSnippet.text = Helper.setWordsToMultipleLines(snippet.getWords().toMutableList())
+        b.contentPreview.text = snippet.content
+        b.wordsRecycler.initRecycler(MutableLiveData())
+        b.wordsRecycler.submitList(snippet.getWords())
         checkWordList()
 
     }
@@ -55,10 +56,10 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
     }
 
     private fun setClickListener() {
-        b.deleteSnippetIcon.setOnClickListener {
-            Pop(b.deleteSnippetIcon.context).confirmationPopUp(b.deleteSnippetIcon, ::deleteSnippet)
+        b.btnDelete.setOnClickListener {
+            Pop(b.btnDelete.context).confirmationPopUp(b.btnDelete, ::deleteSnippet)
         }
-        b.connectSnippetsBtn.setOnClickListener {
+        b.connectBtn.setOnClickListener {
             when (SnippetFragment.selectedSnippet) {
                 null -> {
                     SnippetFragment.selectedSnippet = snippet
