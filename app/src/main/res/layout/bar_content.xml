@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/btnStory"
+        android:id="@+id/btn_story_lines"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:padding="10dp"

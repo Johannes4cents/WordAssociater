@@ -43,7 +43,7 @@ class StartFragment: Fragment() {
     private fun setRecycler() {
         adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
         b.charPreviewRecycler.adapter = adapter
-        b.connectedWordRecycler.setLiveWords(WordLinear.selectedWordsLive)
+        b.connectedWordRecycler.initRecycler(WordLinear.selectedWordsLive)
         b.wordCatRecycler.setupRecycler(WordCatAdapter.Type.BTN, ::onWordCatClicked, Main.activeWordCats)
 
     }

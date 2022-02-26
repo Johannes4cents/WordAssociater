@@ -28,6 +28,7 @@ class Main : AppCompatActivity() {
         val wordCatsList = MutableLiveData<List<WordCat>?>()
         val nuwsList = MutableLiveData<List<Nuw>?>()
         val activeWordCats = MutableLiveData<List<WordCat>?>()
+        val storyLineList = MutableLiveData<List<StoryLine>?>()
 
         //commonWOrds
         val commonWordsGerman = MutableLiveData<List<CommonWord>?>()

@@ -34,7 +34,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"/>
             <TextView
-                android:id="@+id/btnStory"
+                android:id="@+id/btn_story_lines"
                 android:layout_weight="1"
                 android:text="Story"
                 android:textAlignment="center"

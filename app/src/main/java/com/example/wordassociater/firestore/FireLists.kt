@@ -30,6 +30,7 @@ object FireLists {
     val proseList by lazy { db.collection("prose") }
     val wordConnectionList by lazy { db.collection("wordConnections") }
     val wordsList by lazy { db.collection("words") }
+    val storyLineList by lazy { db.collection("storyLines") }
 
     var stats: Stats? = Stats()
 

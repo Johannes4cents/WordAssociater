@@ -1,7 +1,6 @@
 package com.example.wordassociater.utils
 
 import com.example.wordassociater.Main
-import com.example.wordassociater.fire_classes.StoryLine
 import com.example.wordassociater.fire_classes.Word
 import com.google.firebase.firestore.Exclude
 
@@ -11,7 +10,8 @@ open class StoryPart(
         open var wordList: MutableList<Long>,
         open var characterList: MutableList<Long>,
         open var nuwList: MutableList<Long>,
-        open var storyLineList: MutableList<StoryLine>,
+        open var storyLineList: MutableList<Long>,
+        open var date: Date
         ) {
 
 
@@ -53,14 +53,19 @@ data class ConnectedWord(val word: Word, var amount: Int) {
     companion object {
         fun addWord(word: Word, list: MutableList<ConnectedWord>): MutableList<ConnectedWord> {
             val newList = mutableListOf<ConnectedWord>()
-            for(connectedWord in list) {
-                if(connectedWord.word.id == word.id) {
-                    connectedWord.amount += 1
-                    newList.add(connectedWord)
+            if(list.isNotEmpty()) {
+                for(connectedWord in list) {
+                    if(connectedWord.word.id == word.id) {
+                        connectedWord.amount += 1
+                        newList.add(connectedWord)
+                    }
+                    else {
+                        newList.add(ConnectedWord(word, 1))
+                    }
                 }
-                else {
-                    newList.add(ConnectedWord(word, 1))
-                }
+            }
+            else {
+                newList.add(ConnectedWord(word, 1))
             }
             return newList
         }

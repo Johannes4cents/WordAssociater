@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+    <com.example.wordassociater.utils.WordsInputField
+        android:background="#D6D6D6"
+        android:id="@+id/nameInput"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+    <TableLayout
+        android:orientation="vertical"
+        android:background="#D6D6D6"
+        android:layout_width="300dp"
+        android:layout_height="200dp">
+        <TableRow android:id="@+id/row1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            >
+            <ImageView
+                android:id="@+id/bones"
+                android:src="@drawable/storyline_bones"
+                android:padding="5dp"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:id="@+id/computer"
+                android:padding="5dp"
+                android:src="@drawable/storyline_computer"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:id="@+id/eye"
+                android:padding="10dp"
+                android:src="@drawable/storyline_eye"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/row2">
+            <ImageView
+                android:id="@+id/fire"
+                android:src="@drawable/storyline_fire"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:id="@+id/friend"
+                android:padding="5dp"
+                android:src="@drawable/storyline_friends"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:id="@+id/hospital"
+                android:padding="5dp"
+                android:src="@drawable/storyline_hospital"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/row3">
+            <ImageView
+                android:id="@+id/knife"
+                android:padding="5dp"
+                android:src="@drawable/storyline_knife"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:id="@+id/letter"
+                android:padding="5dp"
+                android:src="@drawable/storyline_letter"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:id="@+id/money"
+                android:padding="5dp"
+                android:src="@drawable/storyline_money"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+        </TableRow>
+        <TableRow android:id="@+id/row4">
+            <ImageView
+                android:padding="5dp"
+                android:id="@+id/heart"
+                android:src="@drawable/storyline_heart"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:padding="5dp"
+                android:id="@+id/planet"
+                android:src="@drawable/storyline_planet"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:padding="5dp"
+                android:id="@+id/science"
+                android:src="@drawable/storyline_science"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:background="#EDEDED"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:padding="5dp"
+            android:layout_weight="1"
+            android:id="@+id/btnBack"
+            android:src="@drawable/back_icon"
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
+        <ImageView
+            android:padding="5dp"
+            android:layout_weight="1"
+            android:id="@+id/btnSave"
+            android:src="@drawable/btn_save_strain"
+            android:layout_width="100dp"
+            android:layout_height="50dp"/>
+    </LinearLayout>
+</LinearLayout>

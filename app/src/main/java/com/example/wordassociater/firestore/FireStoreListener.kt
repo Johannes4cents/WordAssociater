@@ -41,6 +41,20 @@ object FireStoreListener {
         }
     }
 
+    private fun getStoryLines() {
+        FireLists.storyLineList.addSnapshotListener { docs, error ->
+            if(docs != null) {
+                val storyLines = mutableListOf<StoryLine>()
+                for(doc in docs) {
+                    val storyLine = doc.toObject(StoryLine::class.java)
+                    storyLines.add(storyLine)
+                }
+
+                Main.storyLineList.value = storyLines
+            }
+        }
+    }
+
 
     private fun getWordConnections() {
         FireLists.wordConnectionList.addSnapshotListener { docs, _ ->

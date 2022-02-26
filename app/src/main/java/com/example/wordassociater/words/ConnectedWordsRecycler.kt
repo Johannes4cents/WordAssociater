@@ -2,6 +2,7 @@ package com.example.wordassociater.words
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +14,7 @@ class ConnectedWordsRecycler(context : Context, attributeSet: AttributeSet): Rec
     private val wordAdapter = ConnectedWordsAdapter(::onWordSelected)
 
 
-    fun setLiveWords(liveList: MutableLiveData<List<Word>>) {
+    fun initRecycler(liveList: MutableLiveData<List<Word>>) {
         liveWordsList = liveList
         adapter = wordAdapter
         setObserver()
@@ -24,16 +25,19 @@ class ConnectedWordsRecycler(context : Context, attributeSet: AttributeSet): Rec
     }
 
     private fun setObserver() {
-        var connectedWordsList = mutableListOf<ConnectedWord>()
         liveWordsList.observe(context as LifecycleOwner) {
+            var connectedWordsList = mutableListOf<ConnectedWord>()
+            Log.i("connectWords", "list is $it")
             for(word in it) {
                 for(wc in word.getWordConnections()) {
                     val words = Word.convertIdListToWord(wc.wordsList)
-                    connectedWordsList = ConnectedWord.addWord(words.find { w -> w != word }!!, connectedWordsList)
+                    val theOtherWord = words.find { w -> w != word }!!
+                    connectedWordsList = ConnectedWord.addWord(theOtherWord, connectedWordsList.toMutableList())
                 }
             }
+            wordAdapter.submitList(connectedWordsList)
         }
-        wordAdapter.submitList(connectedWordsList)
+
 
     }
 

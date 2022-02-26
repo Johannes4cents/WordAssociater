@@ -64,19 +64,6 @@
             android:text="Word Text"
             android:textColor="@color/black"
             android:textSize="18sp" />
-        <TextView
-            android:id="@+id/inputName"
-            android:visibility="gone"
-            android:lines="1"
-            android:inputType="text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/roboto_bold"
-            android:gravity="center"
-            android:text=""
-            android:textColor="@color/black"
-            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -127,38 +114,10 @@
             android:text="Synonyms:"
             android:textSize="20sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/synonymsRecycler"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        <com.example.wordassociater.synonyms.SynonymRecycler
+            android:id="@+id/synonymRecycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <View
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
-
-        <ImageView
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:src="@drawable/icon_plus" />
-
-        <View
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
-
     </LinearLayout>
 
     <LinearLayout
@@ -176,39 +135,7 @@
             android:text="Root of:"
             android:textSize="20sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rootOfRecycler"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <View
-            android:id="@+id/btnAddSynonyms"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
-
-        <ImageView
-            android:id="@+id/btnAddRootOf"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:src="@drawable/icon_plus" />
-
-        <View
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
 
     </LinearLayout>
+
 </LinearLayout>

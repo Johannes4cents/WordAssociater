@@ -21,12 +21,6 @@ object FireStats {
         return number
     }
 
-    fun getDramaId(): Long {
-        val number = FireLists.stats!!.dramaNumber + 1
-        FireLists.fireStats.update("dramaNumber", number)
-        return number
-    }
-
     fun getSphereId(): Long {
         val number = FireLists.stats!!.sphereNumber + 1
         FireLists.fireStats.update("sphereNumber", number)
@@ -57,16 +51,17 @@ object FireStats {
         return number
     }
 
-    fun getDialogueId(): Long {
-        val number = FireLists.stats!!.dialogueNumber + 1
-        FireLists.fireStats.update("dialogueNumber", number)
+
+    fun getBubbleId(context: Context?): Long {
+        val number = FireLists.stats!!.bubbleNumber + 1
+        FireLists.fireStats.update("dialogueNumber", number).addOnSuccessListener {
+        }
         return number
     }
 
-    fun getBubbleId(context: Context?): Long {
-        val number = FireLists.stats!!.dialogueNumber + 1
-        FireLists.fireStats.update("dialogueNumber", number).addOnSuccessListener {
-        }
+    fun getStoryLineId() : Long {
+        val number = FireLists.stats!!.storyLineNumber + 1
+        FireLists.fireStats.update("storyLineNumber", number)
         return number
     }
 

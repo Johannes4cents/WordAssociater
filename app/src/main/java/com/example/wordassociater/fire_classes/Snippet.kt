@@ -16,7 +16,7 @@ data class Snippet(override var content: String = "",
                    var layer: Int = 1,
                    override var characterList: MutableList<Long> = mutableListOf(),
                    override var nuwList: MutableList<Long> = mutableListOf(),
-                   override var storyLineList: MutableList<StoryLine> = mutableListOf(),
+                   override var storyLineList: MutableList<Long> = mutableListOf(),
                    var drama: Drama = Drama.None,
 ): StoryPart(id, content, wordList, characterList, nuwList, storyLineList) {
     @Exclude

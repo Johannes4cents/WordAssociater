@@ -15,6 +15,7 @@ import com.example.wordassociater.databinding.FragmentWordDetailedBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Sphere
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.popSelectSphere
 import com.example.wordassociater.snippets.SnippetAdapter
@@ -27,6 +28,7 @@ class WordDetailedFragment: Fragment() {
     companion object {
         lateinit var word: Word
         lateinit var snippetAdapter: SnippetAdapter
+        var comingFromList : WordCat? = null
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -66,6 +68,7 @@ class WordDetailedFragment: Fragment() {
     private fun setClickListener() {
         b.backButton.setOnClickListener {
             findNavController().navigate(R.id.action_wordDetailedFragment_to_ViewPagerFragment)
+            if(comingFromList != null) WordsListFragment.selectedWordCat.value = comingFromList
             ViewPagerFragment.comingFrom = Page.Words
         }
 
@@ -85,6 +88,7 @@ class WordDetailedFragment: Fragment() {
 
         b.btnHeritage.setOnClickListener {
             HeritageFragment.word = word
+            HeritageFragment.comingFromList = comingFromList
             findNavController().navigate(R.id.action_wordDetailedFragment_to_heritageFragment)
         }
 

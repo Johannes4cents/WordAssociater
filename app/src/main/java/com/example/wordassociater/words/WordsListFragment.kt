@@ -23,10 +23,11 @@ import com.example.wordassociater.wordcat.WordCatAdapter
 
 class WordsListFragment: Fragment() {
     lateinit var b : FragmentWordsListBinding
-    private var selectedWordCat = MutableLiveData<WordCat>()
+
 
     companion object {
         lateinit var adapter: WordAdapter
+        var selectedWordCat = MutableLiveData<WordCat>()
         val currentList = MutableLiveData<List<Word>>()
     }
     override fun onCreateView(
@@ -62,7 +63,7 @@ class WordsListFragment: Fragment() {
     }
 
     private fun setFirstList() {
-        selectedWordCat.value = Main.wordCatsList.value!![0]
+        if(selectedWordCat.value == null) selectedWordCat.value = Main.wordCatsList.value!![1]
         handleColorBtnImage()
     }
 
@@ -96,6 +97,7 @@ class WordsListFragment: Fragment() {
 
     private fun handleWordSelected(word:Word) {
         WordDetailedFragment.word = word
+        WordDetailedFragment.comingFromList = selectedWordCat.value
         findNavController().navigate(R.id.action_ViewPagerFragment_to_wordDetailedFragment)
     }
 

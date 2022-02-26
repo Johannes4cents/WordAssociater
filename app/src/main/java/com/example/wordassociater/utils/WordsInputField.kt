@@ -34,6 +34,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     private var nuwList = MutableLiveData<List<Nuw>?>()
     private var inputEnabled = true
     private var nuwsOpen = false
+    private var hideOnEnter = false
     var clicked = 0
 
     init {
@@ -101,6 +102,11 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         oldNuws = createNuws()
     }
 
+    fun hideOnEnter() {
+        hideOnEnter = true
+        b.inputField.isSingleLine = true
+    }
+
     fun getNuwsForPopup(takeNuwsFunc: (
             nuwsList: MutableLiveData<List<Nuw>?>,
             onUpgradeClicked: (nuw: Nuw) -> Unit,
@@ -164,6 +170,9 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
                     saveInput()
                     onEnterFunc!!(content)
                 }
+
+                if(hideOnEnter) saveInput()
+
                 return@OnKeyListener true
             }
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {

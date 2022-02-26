@@ -21,6 +21,7 @@
             />
 
         <TextView
+            android:layout_marginStart="8dp"
             android:fontFamily="@font/roboto_bold"
             android:layout_weight="4"
             android:id="@+id/content"

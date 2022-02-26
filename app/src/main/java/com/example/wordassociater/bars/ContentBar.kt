@@ -23,8 +23,8 @@ class ContentBar(context: Context, attributeSet: AttributeSet): LinearLayout(con
         b.btnSubPlots.setOnClickListener {
         }
 
-        b.btnStory.setOnClickListener {
-            findNavController().navigate(R.id.action_startFragment_to_storyFragment)
+        b.btnStoryLines.setOnClickListener {
+
         }
 
         b.btnDialogue.setOnClickListener {
