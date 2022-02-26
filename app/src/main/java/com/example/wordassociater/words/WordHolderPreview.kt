@@ -14,6 +14,7 @@ class WordHolderPreview(val b : HolderWordPreviewBinding): RecyclerView.ViewHold
     }
 
     private fun setContent() {
+
         val firstCat = word.getCatsList()[0]
         b.content.text = word.text
         b.typeInitials.text = firstCat.name.take(3)

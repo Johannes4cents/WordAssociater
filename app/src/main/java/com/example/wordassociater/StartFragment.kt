@@ -36,6 +36,7 @@ class StartFragment: Fragment() {
         AddWordBar.navController = findNavController()
         setRecycler()
         setObserver()
+
         return b.root
     }
 

@@ -7,7 +7,7 @@ import com.google.firebase.firestore.Exclude
 
 data class Word(
         var text: String = "",
-        var cats: MutableList<Long> = mutableListOf(),
+        var cats: MutableList<Long> = mutableListOf(0),
         var id: Long = 0,
         var used: Int = 0,
         var snippetsList: MutableList<Long> = mutableListOf(),

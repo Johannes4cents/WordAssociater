@@ -17,7 +17,7 @@ fun popSearchWord(
         selectedWordsList: MutableLiveData<List<Word>>) {
     val b = PopupSearchWordBinding.inflate(LayoutInflater.from(from.context), null, false)
 
-    val popUp = Helper.getPopUp(b.root, from, 600, 1000)
+    val popUp = Helper.getPopUp(b.root, from, 700, 1000)
 
     val popUpAdapter = WordAdapter(AdapterType.Popup, takeWordFunc, null)
 

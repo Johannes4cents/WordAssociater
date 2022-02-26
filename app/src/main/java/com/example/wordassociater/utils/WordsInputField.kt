@@ -24,6 +24,7 @@ import java.util.*
 
 class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = InputFieldWordsBinding.inflate(LayoutInflater.from(context), this, true)
+    private lateinit var oldNuws: List<Nuw>
     private var storyPart: StoryPart? = null
     private val tableRowList = listOf<TableRow>(b.row1, b.row2, b.row3, b.row4)
     var content = ""
@@ -97,6 +98,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     fun setTextField(content: String) {
         b.textField.text = content
         b.inputField.setText(content)
+        oldNuws = createNuws()
     }
 
     fun getNuwsForPopup(takeNuwsFunc: (
@@ -142,7 +144,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         wordInput.value = getContentToList(b.inputField.text.toString())
         b.textField.text = b.inputField.text
         content = b.inputField.text.toString()
-        createNuws()
+        nuwList.value = createNuws()
     }
 
     private fun getContentToList(content: String): List<String> {
@@ -188,7 +190,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         }
     }
 
-    private fun createNuws() {
+    private fun createNuws(): List<Nuw> {
         val newNuws = mutableListOf<Nuw>()
         for(string in getContentToList(content)) {
             if(Main.getCommonWord(Language.German, string) == null) {
@@ -206,10 +208,19 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
                         }
                     }
                 }
-                newNuws.add(nuw)
+                var alreadyThere = false
+
+                for(n in newNuws) {
+                    if(n.text == nuw.text) {
+                        alreadyThere = true
+                        break
+                    }
+                }
+                if(!alreadyThere) newNuws.add(nuw)
             }
         }
-        nuwList.value = newNuws
+
+        return newNuws
     }
 
     fun saveNuws() {
@@ -217,16 +228,21 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
             for(nuw in nuwList.value!!) {
                 val existingNuw = Main.getNuw(nuw.text)
                 if(existingNuw != null) {
-                    if(!storyPart!!.nuwList.contains(nuw.id) && !nuw.isWord) {
+                    if(!storyPart!!.nuwList.contains(nuw.id)) {
                         updateAlreadyExistingNuw(nuw)
                     }
                 }
                 else {
-                    nuw.usedIn.add(storyPart!!.id)
-                    FireNuws.add(nuw)
+                    saveNewNuwToDb(nuw)
                 }
             }
         }
+    }
+
+    private fun saveNewNuwToDb(nuw: Nuw) {
+        nuw.usedIn.add(storyPart!!.id)
+        if(!storyPart!!.nuwList.contains(nuw.id))storyPart!!.nuwList.add(nuw.id)
+        FireNuws.add(nuw)
     }
 
     private fun updateAlreadyExistingNuw(nuw: Nuw) {
@@ -253,15 +269,16 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     }
 
     private fun onNuwUpgradeClicked(nuw: Nuw) {
-        if(nuw.checkIfWordExists() == null) {
-            val word = Word()
-            word.id = FireStats.getWordId()
-            word.text = nuw.text
-            FireWords.add(word, context)
-            nuw.isWord = true
-            nuwList.value = Helper.getResubmitList(nuw, nuwList.value!!)
-        }
+        nuw.upgradeToWord()
+        nuwList.value = Helper.getResubmitList(nuw, nuwList.value!!)
     }
 
+    private fun handleWordDeselectedDuringEdit(word: Word) {
+        if(nuwList.value != null) {
+            for(nuw in nuwList.value!!) {
+
+            }
+        }
+    }
 
 }

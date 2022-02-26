@@ -1,6 +1,8 @@
 package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.Main
+import com.example.wordassociater.firestore.FireStats
+import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.utils.Helper
 import com.google.firebase.firestore.Exclude
 import java.util.*
@@ -17,11 +19,22 @@ data class Nuw(
         var isUsed = false
 
         @Exclude
+        fun upgradeToWord() {
+                if(checkIfWordExists() == null) {
+                        val word = Word()
+                        word.id = FireStats.getWordId()
+                        word.text = text
+                        FireWords.add(word, null)
+                        isWord = true
+                }
+        }
+
+        @Exclude
         fun checkIfExists(): Nuw {
                 val nuw = Main.getNuw(text)
                 if(nuw != null) {
                         id = nuw.id
-                        usedAmount = nuw.usedAmount + 1
+                        usedAmount = nuw.usedAmount
                         usedIn = nuw.usedIn
                         isWord = nuw.isWord
                 }

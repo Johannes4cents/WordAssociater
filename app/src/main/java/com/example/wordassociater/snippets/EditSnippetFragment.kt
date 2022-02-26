@@ -88,13 +88,21 @@ class EditSnippetFragment: Fragment() {
     }
 
     private fun addNuwWordToSnippet(nuw: Nuw) {
-        val word = Main.getWordByText(nuw.text)
-        if(word != null) {
-            handleWordClick(word)
+        if(nuw.isWord) {
+            val word = Main.getWordByText(nuw.text)
+            if(word != null) {
+                handleWordClick(word)
+                b.wordPreviewRecycler.adapter?.notifyDataSetChanged()
+            }
+            else {
+                Helper.toast("Word ${nuw.text} not found. this should not happen", b.root.context)
+            }
         }
+
         else {
-            Helper.toast("Word ${nuw.text} not found. this should not happen", b.root.context)
+            nuw.upgradeToWord()
         }
+
     }
 
     private fun handleWordDeselected() {
@@ -163,6 +171,7 @@ class EditSnippetFragment: Fragment() {
                 FireWords.update(w.id, "snippetsList", w.snippetsList)
             }
         }
+        Log.i("nuws", "snippet nuwlsit is: ${snippet.nuwList}")
         FireSnippets.add(snippet, context)
         characterList.value = mutableListOf()
         WordConnection.connect(snippet)

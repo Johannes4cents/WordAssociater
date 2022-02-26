@@ -24,7 +24,7 @@ class NuwRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(co
 
     private fun setObserver() {
         nuwLiveList.observe(context as LifecycleOwner) { list ->
-            val orderedList = list?.sortedBy { it.usedAmount }
+            val orderedList = list?.sortedBy { it.usedAmount }?.sortedBy { it.isWord }?.sortedBy { it.isUsed }?.reversed()
             nuwAdapter.submitList(orderedList)
         }
     }

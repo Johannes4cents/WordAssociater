@@ -9,7 +9,6 @@ data class WordCat(
         var color: Color = Color.Blue
 ) {
     var active: Boolean = true
-
     @Exclude
     var isHeader = false
 
