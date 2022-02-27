@@ -1,7 +1,9 @@
 package com.example.wordassociater.fire_classes
 
+import com.example.wordassociater.R
 import com.example.wordassociater.utils.Date
 import com.example.wordassociater.utils.StoryPart
+import com.google.firebase.firestore.Exclude
 
 class TimeLineEvent(
         override var id: Long = 0,
@@ -10,6 +12,22 @@ class TimeLineEvent(
         override var wordList: MutableList<Long> = mutableListOf(),
         override var nuwList: MutableList<Long> = mutableListOf(),
         override var storyLineList: MutableList<Long> = mutableListOf(),
-        override var date: Date = Date(0,0,1900)
+        override var date: Date = Date(0,0,1900),
+        var image: Image = Image.Airplane
 ): StoryPart(id, content, characterList, wordList, nuwList, storyLineList, date) {
+    enum class Image { Airplane, Crown, Explosion, Food, Handshake, Party, Pistol, Shield }
+
+    @Exclude
+    fun getImage(): Int {
+        return when(image) {
+            Image.Airplane -> R.drawable.event_airplane
+            Image.Crown -> R.drawable.event_crown
+            Image.Explosion -> R.drawable.event_explosion
+            Image.Food -> R.drawable.event_food
+            Image.Handshake -> R.drawable.event_handshake
+            Image.Party -> R.drawable.event_party
+            Image.Pistol -> R.drawable.event_pistol
+            Image.Shield -> R.drawable.event_shield
+        }
+    }
 }

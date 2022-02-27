@@ -3,6 +3,7 @@ package com.example.wordassociater.firestore
 import com.example.wordassociater.fire_classes.Note
 import com.example.wordassociater.fire_classes.Stats
 import com.example.wordassociater.utils.Language
+import com.example.wordassociater.utils.SynonymCheck
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -31,8 +32,14 @@ object FireLists {
     val wordConnectionList by lazy { db.collection("wordConnections") }
     val wordsList by lazy { db.collection("words") }
     val storyLineList by lazy { db.collection("storyLines") }
+    val locationsList by lazy { db.collection("places") }
+    val eventsList by lazy { db.collection("events") }
 
     var stats: Stats? = Stats()
+
+    fun addNewSynonymsToInspect(sc: SynonymCheck) {
+        db.collection("synonymCheck").document("check").set(sc)
+    }
 
 
     fun getNoteCollectionRef(type: Note.Type): CollectionReference {

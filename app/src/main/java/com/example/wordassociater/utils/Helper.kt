@@ -99,16 +99,16 @@ object Helper {
         }
     }
 
-    fun getPopUp(layout: View, fromWhere: View, width: Int?, height: Int?, fromMiddle: Boolean = false): PopupWindow {
+    fun getPopUp(layout: View, fromWhere: View, width: Int? = null, height: Int? = null, offsetX: Int? = null, offsetY : Int? = null, fromMiddle: Boolean = false): PopupWindow {
         val popWindow = PopupWindow(fromWhere.context)
         if(height != null) popWindow.height = height
         if(width != null )popWindow.width = width
         popWindow.isOutsideTouchable = true
         popWindow.isFocusable = true
         popWindow.contentView = layout
-        if(!fromMiddle) popWindow.showAsDropDown(fromWhere)
+        if(!fromMiddle) popWindow.showAsDropDown(fromWhere, offsetX ?: 0, offsetY ?: 0)
         else {
-            popWindow.showAtLocation(fromWhere, Gravity.TOP,0, 0)
+            popWindow.showAtLocation(fromWhere, Gravity.TOP,0, -150)
         }
         popWindow.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         return popWindow

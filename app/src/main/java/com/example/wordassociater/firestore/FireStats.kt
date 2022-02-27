@@ -71,4 +71,12 @@ object FireStats {
         return number
     }
 
+    fun getLocationId(): Long {
+        val number = FireLists.stats!!.locationNumber + 1
+        FireLists.fireStats.update("locationNumber", number)
+        return number
+    }
+
+
+
 }

@@ -92,10 +92,9 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
     }
 
 
-
-
     private fun setWord() {
-        b.wordText.text = getShortenedWord(word!!.text, b.wordText)
+        val synonymList = word!!.synonyms + word.text
+        b.wordText.text = getShortenedWord(synonymList.random(), b.wordText)
         b.catIcon.setImageResource(Main.getWordCat(word.cats[0])!!.getBg())
         
     }

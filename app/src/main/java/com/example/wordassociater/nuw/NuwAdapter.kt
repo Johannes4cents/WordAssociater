@@ -10,12 +10,13 @@ import com.example.wordassociater.fire_classes.Nuw
 
 class NuwAdapter(
         private val onUpgradeClicked: (nuw: Nuw) -> Unit,
-        private val onRedXClicked: (nuw: Nuw) -> Unit,
+        private val onDirtClicked: (nuw: Nuw) -> Unit,
+        private val onPotatoClicked: (nuw: Nuw) -> Unit,
         private val onRootClicked: (nuw: Nuw) -> Unit
 )
     : ListAdapter<Nuw, RecyclerView.ViewHolder>(NuwDiff()){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val holder = NuwHolder(HolderNuwBinding.inflate(LayoutInflater.from(parent.context)), onUpgradeClicked, onRedXClicked, onRootClicked)
+        val holder = NuwHolder(HolderNuwBinding.inflate(LayoutInflater.from(parent.context)), onUpgradeClicked,onDirtClicked, onPotatoClicked, onRootClicked)
         return holder
     }
 

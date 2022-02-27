@@ -1,9 +1,11 @@
 package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.Main
+import com.example.wordassociater.firestore.FireLists
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.utils.SynonymCheck
 import com.google.firebase.firestore.Exclude
 import java.util.*
 
@@ -49,8 +51,13 @@ data class Nuw(
                                 break
                         }
 
+                        // check stems
                         for(stem in w.stems) {
-                                if(text.startsWith(stem)) {
+                                if(text.contains(stem)) {
+                                        w.synonyms.add(text)
+                                        FireWords.update(w.id, "synonyms", w.synonyms)
+                                        val sc = SynonymCheck(stem, w.text)
+                                        FireLists.addNewSynonymsToInspect(sc)
                                         foundWord = w
                                         break
                                 }

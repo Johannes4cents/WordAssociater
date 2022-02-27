@@ -13,19 +13,22 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/icon_nuw" />
 
         <ImageView
-            android:id="@+id/btnRedX"
+            android:id="@+id/btnDirt"
             android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:padding="2dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/icon_red_x" />
+            android:src="@drawable/common_type_very" />
+
+        <ImageView
+            android:id="@+id/btnPotato"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="4dp"
+            android:padding="4dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/common_type_somewhat" />
 
         <TextView
             android:id="@+id/textNuw"

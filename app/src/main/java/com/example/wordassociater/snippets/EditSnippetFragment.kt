@@ -81,8 +81,8 @@ class EditSnippetFragment: Fragment() {
         }
 
         b.topBar.setNuwButton {
-            b.snippetInput.getNuwsForPopup { liveList, onUpgradeClicked, onRedXClicked ->
-                popNuwsEdit(b.topBar.nuwImage, liveList, onUpgradeClicked, onRedXClicked, ::addNuwWordToSnippet )
+            b.snippetInput.getNuwsForPopup { liveList, onUpgradeClicked, onDirtClicked, onPotatoClicked ->
+                popNuwsEdit(b.topBar.nuwImage, liveList, onUpgradeClicked, onDirtClicked, onPotatoClicked, ::addNuwWordToSnippet )
             }
         }
     }
@@ -92,7 +92,8 @@ class EditSnippetFragment: Fragment() {
             val word = Main.getWordByText(nuw.text)
             if(word != null) {
                 handleWordClick(word)
-                b.wordPreviewRecycler.adapter?.notifyDataSetChanged()
+                b.snippetInput.updateNuwsList()
+
             }
             else {
                 Helper.toast("Word ${nuw.text} not found. this should not happen", b.root.context)

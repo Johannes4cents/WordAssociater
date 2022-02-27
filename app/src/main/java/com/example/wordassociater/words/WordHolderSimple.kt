@@ -1,6 +1,5 @@
 package com.example.wordassociater.words
 
-import android.util.Log
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -27,7 +26,6 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
     }
 
     private fun setContent() {
-        if(word.id == 330L)  Log.i("wordCats", "$word")
         b.content.text = word.text
         if(word.imgUrl != "") Glide.with(b.root).load(word.imgUrl).into(b.characterPortrait)
         if(adapterType == AdapterType.Popup) b.checkbox.setImageResource(if(word.selected) R.drawable.checked_box else R.drawable.unchecked_box)
@@ -42,6 +40,7 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
             b.checkbox.requestLayout()
         }
 
+        b.synonymsCount.text = word.stems.count().toString()
         b.idField.text = word.id.toString()
         b.usedOrConnectionsField.text = word.used.toString()
     }

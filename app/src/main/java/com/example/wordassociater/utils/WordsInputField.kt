@@ -1,6 +1,7 @@
 package com.example.wordassociater.utils
 
 import android.content.Context
+import android.graphics.Typeface
 import android.text.InputFilter
 import android.text.InputType
 import android.util.AttributeSet
@@ -12,10 +13,12 @@ import android.view.View
 import android.view.View.OnKeyListener
 import android.widget.LinearLayout
 import android.widget.TableRow
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
+import com.example.wordassociater.R
 import com.example.wordassociater.databinding.InputFieldWordsBinding
 import com.example.wordassociater.fire_classes.Dialogue
 import com.example.wordassociater.fire_classes.Nuw
@@ -38,6 +41,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     private var nuwsOpen = false
     private var hideOnEnter = false
     private var nuwInput = true
+    private var checkOutsideEditClick = true
 
     private var twiceClickSafety = false
     private var firstClick = true
@@ -62,6 +66,11 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         b.inputField.inputType = InputType.TYPE_CLASS_NUMBER
     }
 
+    fun setToRobotoBold() {
+        val typeFace: Typeface? = ResourcesCompat.getFont(b.root.context, R.font.roboto_bold)
+        b.inputField.typeface = typeFace
+    }
+
     fun setMaxInput(maxInput: Int) {
         val inputFilter = InputFilter.LengthFilter(maxInput)
         b.inputField.filters = arrayOf(inputFilter)
@@ -69,6 +78,10 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
 
     fun disableNuwInput() {
         nuwInput = false
+    }
+
+    fun enableOutSideEditClickCheck(boolean: Boolean) {
+        checkOutsideEditClick = boolean
     }
 
     private fun setClickListener() {
@@ -139,9 +152,14 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     fun getNuwsForPopup(takeNuwsFunc: (
             nuwsList: MutableLiveData<List<Nuw>?>,
             onUpgradeClicked: (nuw: Nuw) -> Unit,
-            onRedXClicked: (nuw: Nuw) -> Unit
+            onDirtClicked: (nuw: Nuw) -> Unit,
+            onPotatClicked: (nuw: Nuw) -> Unit
     ) -> Unit) {
-        takeNuwsFunc(nuwList, ::onNuwUpgradeClicked, ::onNuwRedXClicked)
+        takeNuwsFunc(nuwList, ::onNuwUpgradeClicked,::onDirtClicked, ::onPotatoClicked)
+    }
+
+    fun updateNuwsList() {
+        nuwList.value = createNuws()
     }
 
     fun getNuws(takeNuwsFunc: (nuwsList: List<Nuw>?) -> Unit) {
@@ -187,10 +205,39 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     private fun getContentToList(content: String): List<String> {
         val newWords = content.split("\\s".toRegex()).toMutableList()
         val strippedWords = mutableListOf<String>()
+
         for(w in newWords) {
             if(w.isNotEmpty()) strippedWords.add(Helper.stripWord(w).capitalize(Locale.ROOT))
         }
-        return strippedWords
+
+        //generate ComboNuws
+        val comboList = generateComboNuws(newWords)
+
+        return strippedWords + comboList
+    }
+
+    private fun generateComboNuws(newWords: MutableList<String>): List<String> {
+        val comboNuws = mutableListOf<String>()
+        if(Main.commonWordsGerman.value != null) {
+            for(string in newWords) {
+                val previousString = if(newWords.indexOf(string) != 0) newWords[newWords.indexOf(string) - 1] else ""
+                val cleanStringCurrent = Helper.stripWord(string).capitalize(Locale.ROOT)
+                val cleanStringPrevious = Helper.stripWord(previousString).capitalize(Locale.ROOT)
+
+                val previousWordCWCheck = Main.getCommonWordType(Language.German, cleanStringPrevious)
+                val currentWordCWCheck = Main.getCommonWordType(Language.German, cleanStringCurrent)
+
+                if(
+                        previousWordCWCheck != CommonWord.Type.Very && currentWordCWCheck != CommonWord.Type.Very &&
+                        !previousString.contains(".") && !string.contains(".") &&
+                        !previousString.contains(",") && !string.contains(",")
+                ) {
+                    val comboWord = "$cleanStringPrevious $cleanStringCurrent"
+                    comboNuws.add(comboWord)
+                    }
+                }
+            }
+        return comboNuws
     }
 
     private fun setKeyListener() {
@@ -217,8 +264,10 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
 
     private fun setOnFocusChange() {
         Main.outsideEditClicked.observe(context as LifecycleOwner) {
-            saveInput()
-            Log.i("focusTest", "outside Edit Clicked")
+            if(checkOutsideEditClick) {
+                saveInput()
+                Log.i("focusTest", "outside Edit Clicked")
+            }
         }
     }
 
@@ -231,11 +280,11 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     }
 
     private fun createNuws(): List<Nuw> {
-
         val newNuws = mutableListOf<Nuw>()
         for(string in getContentToList(content)) {
             if(Main.getCommonWord(Language.German, string) == null) {
                 val nuw = Nuw.getNuw(string)
+                Log.i("comboNuws", "nuw text is ${nuw.text}")
                 val word = nuw.checkIfWordExists()
                 if(word != null) {
                     nuw.isWord = true
@@ -300,8 +349,16 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         }
     }
 
-    private fun onNuwRedXClicked(nuw:Nuw) {
-        val commonWord = CommonWord(nuw.text, Language.German)
+    private fun onPotatoClicked(nuw:Nuw) {
+        val commonWord = CommonWord(nuw.text, Language.German, CommonWord.Type.Somewhat)
+        FireCommonWords.add(commonWord)
+        val newNuwList = nuwList.value!!.toMutableList()
+        newNuwList.remove(nuw)
+        nuwList.value = newNuwList
+    }
+
+    private fun onDirtClicked(nuw:Nuw) {
+        val commonWord = CommonWord(nuw.text, Language.German, CommonWord.Type.Very)
         FireCommonWords.add(commonWord)
         val newNuwList = nuwList.value!!.toMutableList()
         newNuwList.remove(nuw)

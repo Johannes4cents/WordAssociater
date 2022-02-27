@@ -8,7 +8,8 @@ import com.example.wordassociater.fire_classes.Nuw
 class NuwHolder(
         val b: HolderNuwBinding,
         val onUpgradeClicked: (nuw: Nuw) -> Unit,
-        val onRedXClicked: (nuw: Nuw) -> Unit,
+        val onDirtClicked: (nuw: Nuw) -> Unit,
+        val onPotatoClicked: (nuw: Nuw) -> Unit,
         val rootClicked: (nuw: Nuw) -> Unit
 ): RecyclerView.ViewHolder(b.root) {
     lateinit var nuw: Nuw
@@ -19,12 +20,16 @@ class NuwHolder(
     }
 
     private fun setClickListener() {
-        b.btnRedX.setOnClickListener {
-            onRedXClicked(nuw)
+        b.btnPotato.setOnClickListener {
+            onPotatoClicked(nuw)
         }
 
         b.btnUpgrade.setOnClickListener {
             onUpgradeClicked(nuw)
+        }
+
+        b.btnDirt.setOnClickListener {
+            onDirtClicked(nuw)
         }
 
         b.root.setOnClickListener {

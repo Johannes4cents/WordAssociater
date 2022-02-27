@@ -38,7 +38,11 @@ open class StoryPart(
     }
 }
 
-class CommonWord(val text: String = "",val language: Language = Language.German)
+class CommonWord(val text: String = "",val language: Language = Language.German, val type: Type = Type.Very ) {
+    enum class Type { Very, Somewhat, Uncommon}
+}
+
+class SynonymCheck(val oldWord: String = "", val newWord: String = "")
 
 enum class Language {German, English}
 

@@ -12,5 +12,6 @@ data class Stats(
         var nuwNumber: Long = 0,
         var proseNumber: Long = 0,
         var connectId: Long = 0,
-        var storyLineNumber: Long = 0
+        var storyLineNumber: Long = 0,
+        var locationNumber: Long = 0
 )

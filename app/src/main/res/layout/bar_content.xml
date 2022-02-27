@@ -31,7 +31,7 @@
         android:padding="10dp"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:src="@drawable/icon_snippets"
+        android:src="@drawable/btn_snippets"
         />
 
     <ImageView

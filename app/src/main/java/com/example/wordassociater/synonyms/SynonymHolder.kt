@@ -38,6 +38,7 @@ class SynonymHolder(
                 b.synonymText.showInputField()
                 b.holderLinear.visibility = View.VISIBLE
                 b.headerLinear.visibility = View.GONE
+                b.synonymText.enableOutSideEditClickCheck(false)
             }
             else -> {
                 b.holderLinear.visibility = View.VISIBLE
@@ -47,12 +48,14 @@ class SynonymHolder(
     }
 
     private fun setForPopUp() {
-        b.synonymText.setTextField(synonym)
-        b.synonymText.enableInput(false)
-
-        b.root.setOnClickListener {
+        b.holderLinear.visibility = View.GONE
+        b.pickerLinear.visibility = View.VISIBLE
+        b.root.isClickable = true
+        b.synonymTextPicker.text = synonym
+        b.synonymTextPicker.setOnClickListener {
             onSynonymAdded(synonym)
         }
+
 
     }
 }

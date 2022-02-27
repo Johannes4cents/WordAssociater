@@ -14,9 +14,10 @@ class NuwRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(co
     fun initRecycler(
             liveList: MutableLiveData<List<Nuw>?>,
             onUpgradeClicked: (nuw: Nuw) -> Unit,
-            onRedXClicked: (nuw: Nuw) -> Unit,
+            onDirtyClicked: (nuw: Nuw) -> Unit,
+            onPotatoClicked: (nuw: Nuw) -> Unit,
             onRootClicked: (nuw: Nuw) -> Unit) {
-        nuwAdapter = NuwAdapter(onUpgradeClicked, onRedXClicked, onRootClicked)
+        nuwAdapter = NuwAdapter(onUpgradeClicked,onDirtyClicked, onPotatoClicked, onRootClicked)
         adapter = nuwAdapter
         nuwLiveList = liveList
         setObserver()
@@ -26,6 +27,7 @@ class NuwRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(co
         nuwLiveList.observe(context as LifecycleOwner) { list ->
             val orderedList = list?.sortedBy { it.usedAmount }?.sortedBy { it.isWord }?.sortedBy { it.isUsed }?.reversed()
             nuwAdapter.submitList(orderedList)
+            nuwAdapter.notifyDataSetChanged()
         }
     }
 }

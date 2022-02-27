@@ -10,13 +10,15 @@ import com.example.wordassociater.utils.Helper
 fun popNuwsEdit(
         from: View,
         liveList: MutableLiveData<List<Nuw>?>,
-        onUpgradeClicked: (nuw: Nuw) -> Unit
-        , onRedXClicked: (nuw: Nuw) -> Unit,
+        onUpgradeClicked: (nuw: Nuw) -> Unit,
+        onDirtClicked: (nuw: Nuw) -> Unit,
+        onPotatoClicked: (nuw: Nuw) -> Unit,
         onRootclicked: (nuw: Nuw) -> Unit
 ) {
     val b = PopNuwsBinding.inflate(LayoutInflater.from(from.context), null, false)
-    val pop = Helper.getPopUp(b.root, from, 700, 800)
+    val pop = Helper.getPopUp(b.root, from, 800, 800)
 
-    b.nuwRecycler.initRecycler(liveList, onUpgradeClicked, onRedXClicked, onRootclicked)
+    b.nuwRecycler.initRecycler(liveList, onUpgradeClicked, onDirtClicked, onPotatoClicked, onRootclicked)
     b.clearAllBtn.setOnClickListener { pop.dismiss() }
+
 }

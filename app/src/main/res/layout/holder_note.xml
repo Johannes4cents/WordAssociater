@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"/>
         <ImageView
             android:id="@+id/deleteNoteBtn"
+            android:padding="12dp"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/icon_red_x"

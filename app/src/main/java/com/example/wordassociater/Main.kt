@@ -47,6 +47,16 @@ class Main : AppCompatActivity() {
         fun getCommonWord(language: Language, text: String): CommonWord? {
             return getCommonWordsListReference(language).value?.find { cm -> cm.text == text }
         }
+
+        fun getCommonWordType(language: Language, text: String): CommonWord.Type {
+            val commonWord= getCommonWordsListReference(language).value?.find { cm -> cm.text == text }
+            return when(commonWord?.type) {
+                null -> CommonWord.Type.Uncommon
+                CommonWord.Type.Very -> CommonWord.Type.Very
+                CommonWord.Type.Somewhat -> CommonWord.Type.Somewhat
+                CommonWord.Type.Uncommon -> CommonWord.Type.Uncommon
+            }
+        }
         
         fun getWordCat(id:Long): WordCat? {
             return wordCatsList.value?.find { wordCat -> wordCat.id == id }

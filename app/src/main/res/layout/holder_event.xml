@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_marginTop="4dp"
+    android:background="@color/snippets"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
+        android:background="@color/snippets"
+        android:id="@+id/characterRecycler"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/btnDelete"
+            android:padding="5dp"
+            android:layout_marginStart="4dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_red_x" />
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/headerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Event"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btnDate"
+            android:src="@drawable/icon_timeline"
+            android:layout_width="60dp"
+            android:layout_height="25dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <ImageView
+            android:id="@+id/eventIconLeft"
+            android:padding="4dp"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/event_explosion"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:minHeight="45dp"
+            android:maxHeight="140dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="This is a test Text I dont know what \n neue leine \n noch enie"
+            android:id="@+id/contentPreview"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/eventIconRight"
+            android:layout_width="50dp"
+            android:padding="4dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/event_explosion"
+            />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@android:color/darker_gray"/>
+
+</LinearLayout>

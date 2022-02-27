@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+    <com.example.wordassociater.utils.WordsInputField
+        android:background="@color/snippets"
+        android:id="@+id/eventInput"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+    <TableLayout
+        android:orientation="vertical"
+        android:background="@color/snippets"
+        android:layout_width="300dp"
+        android:layout_height="150dp">
+        <TableRow android:id="@+id/row1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            >
+            <ImageView
+                android:id="@+id/explosion"
+                android:src="@drawable/event_explosion"
+                android:padding="5dp"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:id="@+id/airplane"
+                android:padding="15dp"
+                android:src="@drawable/event_airplane"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:id="@+id/crown"
+                android:padding="10dp"
+                android:src="@drawable/event_crown"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/row2">
+            <ImageView
+                android:id="@+id/food"
+                android:padding="5dp"
+                android:src="@drawable/event_food"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:id="@+id/handshake"
+                android:padding="8dp"
+                android:src="@drawable/event_handshake"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:id="@+id/party"
+                android:padding="5dp"
+                android:src="@drawable/event_party"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+        </TableRow>
+
+        <TableRow android:id="@+id/row3">
+            <ImageView
+                android:id="@+id/shield"
+                android:padding="5dp"
+                android:src="@drawable/event_shield"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:id="@+id/spy"
+                android:padding="5dp"
+                android:src="@drawable/event_spy"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+            <ImageView
+                android:id="@+id/pistol"
+                android:padding="10dp"
+                android:src="@drawable/event_pistol"
+                android:layout_width="100dp"
+                android:layout_height="50dp"/>
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:background="#5A5A5A"
+        android:id="@+id/bottonBtns"
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+        <ImageView
+
+            android:layout_weight="1"
+            android:id="@+id/btnBack"
+            android:src="@drawable/back_icon"
+            android:layout_width="100dp"
+            android:layout_height="30dp"/>
+        <ImageView
+            android:layout_weight="1"
+            android:id="@+id/btnSave"
+            android:src="@drawable/btn_save_strain"
+            android:layout_width="100dp"
+            android:layout_height="30dp"/>
+    </LinearLayout>
+</LinearLayout>

@@ -36,9 +36,9 @@ class StartFragment: Fragment() {
         AddWordBar.navController = findNavController()
         setRecycler()
         setObserver()
-
         return b.root
     }
+
 
     private fun setRecycler() {
         adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)

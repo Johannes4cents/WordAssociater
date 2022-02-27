@@ -31,7 +31,7 @@ class HeritageFragment: Fragment() {
         lateinit var comingFrom: Frags
         var comingFromList : WordCat? = null
     }
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         b = FragmentHeritageBinding.inflate(inflater)
 
         setContent()
@@ -49,7 +49,7 @@ class HeritageFragment: Fragment() {
     private fun setClickListener() {
         b.nameText.setOnClickListener {
             if(word.synonyms.isNotEmpty()) {
-                popSynonymPicker(b.nameText, word, ::onSynonymPickedForNewName, ::ignoreThisFunc, word.synonyms)
+                popSynonymPicker(b.nameText, word, ::onSynonymPickedForNewName, word.synonyms)
             }
             else {
                 Helper.toast("First, create synonyms to choose from", requireContext())
@@ -80,15 +80,13 @@ class HeritageFragment: Fragment() {
         }
     }
 
-    private fun ignoreThisFunc() {
-
-    }
 
     private fun onSynonymPickedForNewName(synonym: String) {
         b.nameText.text = synonym
         word.synonyms.add(word.text)
         word.text = synonym
         word.synonyms.remove(synonym)
+        synonymLiveList.value = word.synonyms
     }
 
     private fun onDeletionConfirmed(confirmation: Boolean) {
@@ -118,7 +116,7 @@ class HeritageFragment: Fragment() {
 
     private fun onSynonymEntered(text: String) {
         val strippedWord = Helper.stripWord(text).capitalize(Locale.ROOT)
-        if(strippedWord != "" || text != "" || !word.synonyms.contains(strippedWord) || text != "synonymHeader" || text != "SynonymHeader") {
+        if(strippedWord != "" && text != "" && !word.synonyms.contains(strippedWord) && text != "synonymHeader" && text != "SynonymHeader") {
             word.synonyms.add(strippedWord)
             synonymLiveList.value = word.synonyms
             b.synonymRecycler.adapter?.notifyDataSetChanged()
@@ -136,7 +134,7 @@ class HeritageFragment: Fragment() {
 
     private fun onStemEntered(text: String) {
         val strippedWord = Helper.stripWord(text).capitalize(Locale.ROOT)
-        if(strippedWord != " " || text != "" || !word.stems.contains(strippedWord) || text != "stemHeader" || text != "StemHeader") {
+        if(strippedWord != " " && text != "" && !word.stems.contains(strippedWord) && text != "stemHeader" && text != "StemHeader") {
             word.stems.add(strippedWord)
             stemsLiveList.value = word.stems
             b.stemsRecycler.adapter?.notifyDataSetChanged()

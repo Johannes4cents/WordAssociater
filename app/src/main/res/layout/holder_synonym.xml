@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content">
 
         <View
+            android:id="@+id/leftBumper"
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:layout_weight="1"
@@ -23,15 +25,12 @@
         <com.example.wordassociater.utils.WordsInputField
             android:id="@+id/synonymText"
             android:gravity="center"
-            tools:text="Auferstehen"
-            android:fontFamily="@font/roboto_bold"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_width="100dp"
-            android:layout_height="45dp"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
             android:src="@drawable/icon_plus" />
 
         <View
+            android:id="@+id/rightBumper"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -67,5 +66,42 @@
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"/>
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pickerLinear"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/leftBumperPicker"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:layout_width="20dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
+            android:id="@+id/synonymTextPicker"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_plus" />
+
+        <View
+            android:id="@+id/rightBumperPicker"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:layout_width="20dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+    </LinearLayout>
+
 
 </LinearLayout>
