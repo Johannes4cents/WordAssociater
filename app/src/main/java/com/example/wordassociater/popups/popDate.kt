@@ -26,10 +26,6 @@ fun popDate(from: View, onDateEntered: (date: Date) -> Unit, oldDate: Date?) {
         if(it != "" && it != " ") date.day = it.toInt()
     }
 
-    b.monthInput.setContentFunc {
-        if(it != "" && it != " ") date.month = it.toInt()
-    }
-
     b.yearInput.setContentFunc {
         if(it != "" && it != " ") date.year = it.toInt()
     }

@@ -1,4 +1,5 @@
 package com.example.wordassociater.firestore
+import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.StartFragment
 import com.example.wordassociater.bars.AddWordBar
@@ -152,6 +153,7 @@ object FireStoreListener {
             val newSnippetList = mutableListOf<Snippet>()
             if(docs != null) {
                 for(doc in docs) {
+                    Log.i("snippet", "$doc" )
                     val snippet = doc.toObject(Snippet::class.java)
                     newSnippetList.add(snippet)
                 }

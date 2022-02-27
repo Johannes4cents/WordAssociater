@@ -12,7 +12,7 @@ class TimeLineEvent(
         override var wordList: MutableList<Long> = mutableListOf(),
         override var nuwList: MutableList<Long> = mutableListOf(),
         override var storyLineList: MutableList<Long> = mutableListOf(),
-        override var date: Date = Date(0,0,1900),
+        override var date: Date = Date(0,"May",1100),
         var image: Image = Image.Airplane
 ): StoryPart(id, content, characterList, wordList, nuwList, storyLineList, date) {
     enum class Image { Airplane, Crown, Explosion, Food, Handshake, Party, Pistol, Shield }

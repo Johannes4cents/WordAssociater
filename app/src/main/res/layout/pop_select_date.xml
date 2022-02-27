@@ -4,80 +4,113 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/snippets"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TableRow android:orientation="horizontal">
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day1"
                 app:dayNumber="1"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day2"
                 app:dayNumber="2"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day3"
                 app:dayNumber="3"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day4"
                 app:dayNumber="4"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day5"
                 app:dayNumber="5"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day6"
                 app:dayNumber="6"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day7"
                 app:dayNumber="7"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day8"
                 app:dayNumber="8"/>
         </TableRow>
         <TableRow android:orientation="horizontal">
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day9"
                 app:dayNumber="9"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day10"
                 app:dayNumber="10"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day11"
                 app:dayNumber="11"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day12"
                 app:dayNumber="12"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day13"
                 app:dayNumber="13"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day14"
                 app:dayNumber="14"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day15"
                 app:dayNumber="15"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day16"
                 app:dayNumber="16"/>
         </TableRow>
         <TableRow android:orientation="horizontal">
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day17"
                 app:dayNumber="17"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day18"
                 app:dayNumber="18"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day19"
                 app:dayNumber="19"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day20"
                 app:dayNumber="20"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day21"
                 app:dayNumber="21"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day22"
                 app:dayNumber="22"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day23"
                 app:dayNumber="23"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day24"
                 app:dayNumber="24"/>
         </TableRow>
-        <TableRow android:orientation="horizontal">
+        <TableRow android:orientation="horizontal"
+            android:gravity="center">
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day25"
                 app:dayNumber="25"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day26"
                 app:dayNumber="26"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day27"
                 app:dayNumber="27"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day28"
                 app:dayNumber="28"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day29"
                 app:dayNumber="29"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day30"
                 app:dayNumber="30"/>
             <com.example.wordassociater.date.DayBtn
+                android:id="@+id/day31"
                 app:dayNumber="31"/>
         </TableRow>
     </TableLayout>
@@ -93,30 +126,42 @@
         android:layout_height="wrap_content">
         <TableRow>
             <com.example.wordassociater.date.MonthBtn
+                android:id="@+id/month1"
                 app:monthName="Jan"/>
             <com.example.wordassociater.date.MonthBtn
+                android:id="@+id/month2"
                 app:monthName="Feb"/>
             <com.example.wordassociater.date.MonthBtn
+                android:id="@+id/month3"
                 app:monthName="Mar"/>
             <com.example.wordassociater.date.MonthBtn
+                android:id="@+id/month4"
                 app:monthName="Apr"/>
             <com.example.wordassociater.date.MonthBtn
+                android:id="@+id/month5"
                 app:monthName="May"/>
             <com.example.wordassociater.date.MonthBtn
+                android:id="@+id/month6"
                 app:monthName="Jun"/>
         </TableRow>
         <TableRow>
             <com.example.wordassociater.date.MonthBtn
+                android:id="@+id/month7"
                 app:monthName="Jul"/>
             <com.example.wordassociater.date.MonthBtn
+                android:id="@+id/month8"
                 app:monthName="Aug"/>
             <com.example.wordassociater.date.MonthBtn
+                android:id="@+id/month9"
                 app:monthName="Sep"/>
             <com.example.wordassociater.date.MonthBtn
+                android:id="@+id/month10"
                 app:monthName="Okt"/>
             <com.example.wordassociater.date.MonthBtn
+                android:id="@+id/month11"
                 app:monthName="Nov"/>
             <com.example.wordassociater.date.MonthBtn
+                android:id="@+id/month12"
                 app:monthName="Dec"/>
         </TableRow>
     </TableLayout>
@@ -125,5 +170,32 @@
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="4dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+
+        <ImageView
+            android:src="@drawable/back_icon"
+            android:layout_width="50dp"
+            android:layout_height="35dp"
+            android:id="@+id/btnBack"
+            />
+        <com.example.wordassociater.date.YearRecycler
+            android:id="@+id/yearRecycler"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:src="@drawable/btn_save_strain"
+            android:layout_width="50dp"
+            android:layout_height="35dp"
+            android:id="@+id/btnSave"
+            />
+
+
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -83,11 +83,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/btnDate"
-            android:src="@drawable/icon_timeline"
-            android:layout_width="60dp"
-            android:layout_height="25dp"/>
+        <com.example.wordassociater.date.DateHolder
+            android:layout_marginEnd="2dp"
+            android:id="@+id/dateHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
 
     </LinearLayout>
 

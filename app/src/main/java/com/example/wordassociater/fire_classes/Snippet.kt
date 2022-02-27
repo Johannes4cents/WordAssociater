@@ -18,7 +18,7 @@ data class Snippet(override var content: String = "",
                    override var characterList: MutableList<Long> = mutableListOf(),
                    override var nuwList: MutableList<Long> = mutableListOf(),
                    override var storyLineList: MutableList<Long> = mutableListOf(),
-                   override var date: Date = Date(0,0,1900),
+                   override var date: Date = Date(0,"May",1000),
                    var drama: Drama = Drama.None,
 ): StoryPart(id, content, wordList, characterList, nuwList, storyLineList, date) {
     @Exclude

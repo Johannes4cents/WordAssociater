@@ -17,7 +17,7 @@ data class Dialogue(
         override var nuwList: MutableList<Long> = mutableListOf(),
         override var wordList: MutableList<Long> = mutableListOf(),
         override var storyLineList: MutableList<Long> = mutableListOf(),
-        override var date: Date = Date(0,0,1900),
+        override var date: Date = Date(0,"May",1000),
         var currentIndex: Int = 1,
         var drama: Drama = Drama.None,
         var bubbleList: MutableList<Long> = mutableListOf()

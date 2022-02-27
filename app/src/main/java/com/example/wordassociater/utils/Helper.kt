@@ -108,7 +108,7 @@ object Helper {
         popWindow.contentView = layout
         if(!fromMiddle) popWindow.showAsDropDown(fromWhere, offsetX ?: 0, offsetY ?: 0)
         else {
-            popWindow.showAtLocation(fromWhere, Gravity.TOP,0, -150)
+            popWindow.showAtLocation(fromWhere, Gravity.CENTER,0, -200)
         }
         popWindow.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         return popWindow

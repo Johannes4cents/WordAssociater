@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.example.wordassociater.bars.TopBar
+        android:background="@color/snippets"
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
