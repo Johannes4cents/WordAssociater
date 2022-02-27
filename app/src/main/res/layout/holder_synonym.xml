@@ -55,6 +55,7 @@
             android:background="@android:color/darker_gray"/>
 
         <ImageView
+            android:padding="5dp"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/icon_plus" />

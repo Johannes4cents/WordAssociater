@@ -48,6 +48,13 @@ data class Nuw(
                                 foundWord = w
                                 break
                         }
+
+                        for(stem in w.stems) {
+                                if(text.startsWith(stem)) {
+                                        foundWord = w
+                                        break
+                                }
+                        }
                 }
                 return foundWord
          }

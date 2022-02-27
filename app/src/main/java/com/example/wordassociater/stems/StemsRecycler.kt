@@ -26,9 +26,10 @@ class StemsRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(
 
     fun setObserver() {
         stemList.observe(context as LifecycleOwner) {
-            it.toMutableList().remove("stemHeader")
-            if(it != null) stemAdapter.submitList(it.sorted().reversed() + listOf("stemHeader"))
-            else stemAdapter.submitList(listOf("stemHeader"))
+            val newList = it.toMutableSet()
+            newList.remove("stemHeader")
+            newList.remove("StemHeader")
+            stemAdapter.submitList(newList.sorted().reversed() + listOf("stemHeader"))
             smoothScrollToPosition(stemAdapter.currentList.count() - 1)
         }
     }

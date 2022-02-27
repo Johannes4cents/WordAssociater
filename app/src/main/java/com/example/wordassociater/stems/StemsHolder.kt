@@ -12,6 +12,8 @@ class StemsHolder(
         ): RecyclerView.ViewHolder(b.root) {
     fun onBind(stem: String) {
         Log.i("stemHeader", "stem is $stem")
+        b.stemText.disableNuwInput()
+        b.stemText.enableTwiceClickSafety()
         b.stemText.setTextField(stem)
         b.stemText.hideOnEnter()
         b.stemText.setCenterGravity()

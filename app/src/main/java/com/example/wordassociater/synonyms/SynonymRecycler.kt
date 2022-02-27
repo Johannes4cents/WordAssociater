@@ -11,12 +11,13 @@ import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.SwipeToDeleteCallback
 
 class SynonymRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(context, attributeSet) {
+    enum class Type { List, Popup }
     lateinit var synonymAdapter: SynonymAdapter
     lateinit var synonymList: MutableLiveData<List<String>>
 
 
-    fun initRecycler(word: Word, synonymList: MutableLiveData<List<String>>, onHeaderClicked: () -> Unit, takeContentFunc: (text: String) -> Unit) {
-        synonymAdapter = SynonymAdapter(synonymList, word, onHeaderClicked, takeContentFunc)
+    fun initRecycler(type: Type, word: Word, synonymList: MutableLiveData<List<String>>, onHeaderClicked: () -> Unit, takeContentFunc: (text: String) -> Unit) {
+        synonymAdapter = SynonymAdapter(type, synonymList, word, onHeaderClicked, takeContentFunc)
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         this.synonymList = synonymList
         adapter = synonymAdapter
@@ -27,9 +28,10 @@ class SynonymRecycler(context: Context, attributeSet: AttributeSet): RecyclerVie
 
     fun setObserver() {
         synonymList.observe(context as LifecycleOwner) {
-            it.toMutableList().remove("synonymHeader")
-            if(it != null) synonymAdapter.submitList(it.sorted().reversed() + listOf("synonymHeader"))
-            else synonymAdapter.submitList(listOf("synonymHeader"))
+            val newList = it.toMutableSet()
+            newList.remove("synonymHeader")
+            newList.remove("SynonymHeader")
+            synonymAdapter.submitList(newList.sorted().reversed() + listOf("synonymHeader"))
             smoothScrollToPosition(synonymAdapter.currentList.count() - 1)
         }
     }

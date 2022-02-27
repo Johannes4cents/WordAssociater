@@ -6,13 +6,13 @@
     android:layout_height="wrap_content"
     android:layout_width="wrap_content">
     <com.example.wordassociater.utils.WordsInputField
-        android:background="#D6D6D6"
+        android:background="@color/snippets"
         android:id="@+id/nameInput"
         android:layout_width="match_parent"
         android:layout_height="40dp"/>
     <TableLayout
         android:orientation="vertical"
-        android:background="#D6D6D6"
+        android:background="@color/snippets"
         android:layout_width="300dp"
         android:layout_height="200dp">
         <TableRow android:id="@+id/row1"
@@ -102,23 +102,22 @@
     </TableLayout>
 
     <LinearLayout
-        android:background="#EDEDED"
+        android:background="#5A5A5A"
         android:id="@+id/bottonBtns"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="30dp">
         <ImageView
-            android:padding="5dp"
+
             android:layout_weight="1"
             android:id="@+id/btnBack"
             android:src="@drawable/back_icon"
             android:layout_width="100dp"
-            android:layout_height="50dp"/>
+            android:layout_height="30dp"/>
         <ImageView
-            android:padding="5dp"
             android:layout_weight="1"
             android:id="@+id/btnSave"
             android:src="@drawable/btn_save_strain"
             android:layout_width="100dp"
-            android:layout_height="50dp"/>
+            android:layout_height="30dp"/>
     </LinearLayout>
 </LinearLayout>

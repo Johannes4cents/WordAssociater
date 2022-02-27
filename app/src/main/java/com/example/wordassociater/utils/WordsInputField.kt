@@ -37,6 +37,10 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     private var inputEnabled = true
     private var nuwsOpen = false
     private var hideOnEnter = false
+    private var nuwInput = true
+
+    private var twiceClickSafety = false
+    private var firstClick = true
     var clicked = 0
 
     init {
@@ -63,6 +67,10 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         b.inputField.filters = arrayOf(inputFilter)
     }
 
+    fun disableNuwInput() {
+        nuwInput = false
+    }
+
     private fun setClickListener() {
         b.textField.setOnClickListener {
             if(inputEnabled) showInputField()
@@ -70,9 +78,15 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
 
         b.inputField.setOnClickListener {
             if(clicked > 0) {
-                saveInput()
-                if(takeContentFunc != null) takeContentFunc?.let { it1 -> it1(content) }
-                clicked = 0
+                if(twiceClickSafety && firstClick) {
+                    firstClick = false
+                }
+                else {
+                    saveInput()
+                    if(takeContentFunc != null) takeContentFunc?.let { it1 -> it1(content) }
+                    clicked = 0
+                    firstClick = true
+                }
             }
             else {
                 clicked++
@@ -105,6 +119,10 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
 
     fun enableInput(enable: Boolean) {
         inputEnabled = enable
+    }
+
+    fun enableTwiceClickSafety() {
+        twiceClickSafety = true
     }
 
     fun setTextField(content: String) {
@@ -161,7 +179,9 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         wordInput.value = getContentToList(b.inputField.text.toString())
         b.textField.text = b.inputField.text
         content = b.inputField.text.toString()
-        nuwList.value = createNuws()
+        if(nuwInput) {
+            nuwList.value = createNuws()
+        }
     }
 
     private fun getContentToList(content: String): List<String> {
@@ -211,6 +231,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     }
 
     private fun createNuws(): List<Nuw> {
+
         val newNuws = mutableListOf<Nuw>()
         for(string in getContentToList(content)) {
             if(Main.getCommonWord(Language.German, string) == null) {

@@ -11,6 +11,7 @@ import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.ItemTouchHelperAdapter
 
 class SynonymAdapter(
+        private val type: SynonymRecycler.Type,
         private val synonymLiveList: MutableLiveData<List<String>>,
         private val word: Word,
         private val onHeaderClicked: () -> Unit,
@@ -21,7 +22,7 @@ class SynonymAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as SynonymHolder).onBind(getItem(position))
+        (holder as SynonymHolder).onBind(type, getItem(position))
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {

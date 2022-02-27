@@ -12,13 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <View
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:layout_width="4dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"/>
-
         <com.example.wordassociater.utils.WordsInputField
             android:id="@+id/stemText"
             android:gravity="center"
@@ -26,14 +19,15 @@
             android:fontFamily="@font/roboto_bold"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="45dp"
             android:src="@drawable/icon_plus" />
 
         <View
             android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:layout_width="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_width="2dp"
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray"/>
     </LinearLayout>
@@ -46,25 +40,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <View
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:layout_width="4dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"/>
-
         <ImageView
-            android:padding="3dp"
+            android:padding="5dp"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/icon_plus" />
 
-        <View
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:layout_width="4dp"
-            android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"/>
     </LinearLayout>
 
 </LinearLayout>

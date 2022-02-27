@@ -1,6 +1,5 @@
 package com.example.wordassociater.synonyms
 
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderSynonymBinding
@@ -8,10 +7,20 @@ import com.example.wordassociater.databinding.HolderSynonymBinding
 class SynonymHolder(
         val b: HolderSynonymBinding,
         val onHeaderClicked: () -> Unit,
-        val onSynonymAdded: (synonym: String) -> Unit
+        private val onSynonymAdded: (synonym: String) -> Unit
         ): RecyclerView.ViewHolder(b.root) {
-    fun onBind(synonym: String) {
-        Log.i("synonymHeader", "synonym is $synonym")
+    lateinit var synonym : String
+    fun onBind(type: SynonymRecycler.Type, synonym: String) {
+        this.synonym = synonym
+        when(type) {
+            SynonymRecycler.Type.List -> setForList()
+            SynonymRecycler.Type.Popup -> setForPopUp()
+        }
+    }
+
+    private fun setForList() {
+        b.synonymText.disableNuwInput()
+        b.synonymText.enableTwiceClickSafety()
         b.synonymText.setTextField(synonym)
         b.synonymText.hideOnEnter()
         b.synonymText.setCenterGravity()
@@ -37,4 +46,13 @@ class SynonymHolder(
         }
     }
 
+    private fun setForPopUp() {
+        b.synonymText.setTextField(synonym)
+        b.synonymText.enableInput(false)
+
+        b.root.setOnClickListener {
+            onSynonymAdded(synonym)
+        }
+
+    }
 }

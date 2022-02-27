@@ -72,7 +72,7 @@ class WordsListFragment: Fragment() {
         b.wordCatRecycler.setHeader(false)
         adapter = WordAdapter(AdapterType.List, ::handleWordSelected, null)
         b.wordRecycler.adapter = adapter
-        if(selectedWordCat.value != null) adapter.submitList(getCatFilteredList(selectedWordCat.value!!))
+        if(selectedWordCat.value != null)  adapter.submitList(getCatFilteredList(selectedWordCat.value!!)!!.sortedBy { w -> w.text }.reversed().sortedBy { w -> w.used }.reversed())
     }
 
     private fun handleDelete(word: Word) {
