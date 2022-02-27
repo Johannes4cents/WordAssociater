@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_marginTop="4dp"
     android:layout_width="match_parent"
@@ -12,6 +13,19 @@
         android:padding="2dp"
         android:layout_width="60dp"
         android:layout_height="45dp"
+        android:layout_marginStart="2dp"
+        android:src="@drawable/back_icon" />
+
+    <TextView
+        android:visibility="gone"
+        android:gravity="center"
+        android:id="@+id/leftText"
+        android:textSize="12sp"
+        android:fontFamily="@font/roboto_bold"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        tools:text="Dnair bekämpft Crombie A.I"
         android:layout_marginStart="2dp"
         android:src="@drawable/back_icon" />
 
@@ -26,11 +40,11 @@
 
     <ImageView
         android:id="@+id/btnWord"
-        android:src="@drawable/btn_open_words_list"
+        android:src="@drawable/icon_word"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:padding="10dp"
+        android:padding="15dp"
         />
     <ImageView
         android:padding="10dp"

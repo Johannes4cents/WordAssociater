@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:gravity="center"
-    android:background="@color/light_blue"
+    android:background="@color/snippets"
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -15,7 +15,7 @@
         android:id="@+id/catName"
         android:gravity="center"
         android:fontFamily="@font/roboto_bold"
-        android:background="@color/light_blue"
+        android:background="@color/snippets"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:layout_width="76dp"
@@ -24,10 +24,12 @@
         />
 
     <ImageView
+        android:id="@+id/catIcon"
+        android:padding="3dp"
         android:layout_width="20dp"
         android:layout_marginEnd="4dp"
         android:layout_height="match_parent"
-        android:background="@color/light_blue"
-        android:src="@drawable/wordcat_plus_blue" />
+        android:background="@color/snippets"
+        android:src="@drawable/wordcat_bg_blue" />
 
 </LinearLayout>

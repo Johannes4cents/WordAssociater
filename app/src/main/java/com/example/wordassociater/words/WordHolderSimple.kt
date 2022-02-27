@@ -1,7 +1,10 @@
 package com.example.wordassociater.words
 
+import android.util.Log
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.HolderWordSimpleBinding
 import com.example.wordassociater.fire_classes.Word
@@ -24,24 +27,22 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
     }
 
     private fun setContent() {
+        if(word.id == 330L)  Log.i("wordCats", "$word")
         b.content.text = word.text
         if(word.imgUrl != "") Glide.with(b.root).load(word.imgUrl).into(b.characterPortrait)
         if(adapterType == AdapterType.Popup) b.checkbox.setImageResource(if(word.selected) R.drawable.checked_box else R.drawable.unchecked_box)
         else {
-            if(firstSet) {
-                b.checkbox.layoutParams.width = b.checkbox.layoutParams.width * 2
-                b.checkbox.layoutParams.height = b.checkbox.layoutParams.height * 2
-                b.checkbox.requestLayout()
-                b.checkbox.setImageResource(R.drawable.arrow_right)
-                firstSet = false
+            if(word.cats.isNotEmpty()) {
+                b.checkbox.setImageResource(Main.getWordCat(word.cats[0])!!.getBg())
             }
+            else {
+                b.checkbox.setImageResource(R.drawable.wordcat_bg_none)
+            }
+            b.checkbox.updatePadding(10 , 10 ,10 ,10)
+            b.checkbox.requestLayout()
         }
 
         b.idField.text = word.id.toString()
-
-        val firstCat = word.getCatsList()[0]
-        b.typeInitials.text = firstCat.name.take(3)
-        b.typeInitials.setBackgroundColor(b.root.context.resources.getColor(firstCat.getColor()))
         b.usedOrConnectionsField.text = word.used.toString()
     }
 

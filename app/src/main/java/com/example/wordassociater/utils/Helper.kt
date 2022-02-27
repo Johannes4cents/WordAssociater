@@ -3,6 +3,7 @@ package com.example.wordassociater.utils
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
@@ -98,14 +99,17 @@ object Helper {
         }
     }
 
-    fun getPopUp(layout: View, fromWhere: View, width: Int, height: Int): PopupWindow {
+    fun getPopUp(layout: View, fromWhere: View, width: Int?, height: Int?, fromMiddle: Boolean = false): PopupWindow {
         val popWindow = PopupWindow(fromWhere.context)
-        popWindow.height = height
-        popWindow.width = width
+        if(height != null) popWindow.height = height
+        if(width != null )popWindow.width = width
         popWindow.isOutsideTouchable = true
         popWindow.isFocusable = true
         popWindow.contentView = layout
-        popWindow.showAsDropDown(fromWhere)
+        if(!fromMiddle) popWindow.showAsDropDown(fromWhere)
+        else {
+            popWindow.showAtLocation(fromWhere, Gravity.TOP,0, 0)
+        }
         popWindow.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         return popWindow
     }

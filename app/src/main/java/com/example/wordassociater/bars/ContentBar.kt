@@ -24,7 +24,7 @@ class ContentBar(context: Context, attributeSet: AttributeSet): LinearLayout(con
         }
 
         b.btnStoryLines.setOnClickListener {
-
+            findNavController().navigate(R.id.action_ViewPagerFragment_to_storyLinesListFragment)
         }
 
         b.btnDialogue.setOnClickListener {

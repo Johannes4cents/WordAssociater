@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
+import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.StartFragment
 import com.example.wordassociater.databinding.BarAddWordBinding
@@ -111,7 +112,11 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
         selectedSphereList.observe(context as LifecycleOwner) {
             handleSphereIconColor()
         }
+    }
 
+    private fun setCatIcon() {
+        val wordCats = Main.wordCatsList.value
+        if(wordCats != null && wordCats.count() > 0) selectedWordCat = wordCats[0]
     }
 
     private fun addWord() {

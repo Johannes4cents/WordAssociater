@@ -30,14 +30,7 @@
             android:layout_height="70dp"
             android:src="@drawable/icon_character" />
 
-        <ImageView
-            android:layout_weight="1"
-            android:padding="20dp"
-            android:id="@+id/buttonStrains"
-            android:layout_width="100dp"
-            android:layout_height="70dp"
-            android:src="@drawable/icon_strains"
-            />
+
 
         <ImageView
             android:layout_weight="1"

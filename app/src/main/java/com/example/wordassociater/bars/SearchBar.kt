@@ -15,6 +15,7 @@ import com.example.wordassociater.databinding.BarSearchBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.Helper
+import java.util.*
 
 @SuppressLint("AppCompatCustomView")
 class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
@@ -69,7 +70,15 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
                     if(Helper.stripWord(word.text).startsWith(string)) foundWords.add(word)
                 }
             }
-            takeWordsFunc(foundWords)
+
+            if(it.count() == 1 && it[0].length > 2 && foundWords.isEmpty()) {
+                val header = Word(id = 0)
+                header.isHeader = true
+                header.text = it[0].capitalize(Locale.ROOT)
+                takeWordsFunc(listOf(header) + foundWords)
+
+            }
+            else takeWordsFunc(foundWords)
         }
     }
 

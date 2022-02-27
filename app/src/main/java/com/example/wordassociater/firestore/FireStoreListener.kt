@@ -24,6 +24,7 @@ object FireStoreListener {
         getWordCats()
         getNuws()
         getCommonWords()
+        getStoryLines()
     }
 
     private fun getCharacters() {

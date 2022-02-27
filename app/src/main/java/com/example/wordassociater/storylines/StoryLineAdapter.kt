@@ -5,16 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wordassociater.databinding.HolderStorylineBinding
 import com.example.wordassociater.databinding.HolderStorylineHeaderBinding
-import com.example.wordassociater.databinding.HolderStorylinePopupBinding
 import com.example.wordassociater.fire_classes.StoryLine
 
 class StoryLineAdapter(
         private val onStorySelected: (storyLine: StoryLine) -> Unit,
-        private val onHeaderSelected: () -> Unit)
+        private val onHeaderSelected: (() -> Unit)?)
     : ListAdapter<StoryLine, RecyclerView.ViewHolder>(StoryLineDiff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val holder = StoryLineHolder(HolderStorylinePopupBinding.inflate(LayoutInflater.from(parent.context)), onStorySelected)
+        val holder = StoryLineHolder(HolderStorylineBinding.inflate(LayoutInflater.from(parent.context)), onStorySelected)
         val header = StoryLineHeader(HolderStorylineHeaderBinding.inflate(LayoutInflater.from(parent.context)), onHeaderSelected)
         return when(viewType) {
             1 -> holder

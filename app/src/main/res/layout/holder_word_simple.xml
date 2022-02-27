@@ -9,17 +9,16 @@
     >
     <LinearLayout
         android:gravity="center"
-
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/characterPortrait"
-            android:padding="5dp"
+            android:padding="12dp"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/btn_open_words_list"
+            android:src="@drawable/icon_word"
             />
 
         <TextView
@@ -61,6 +60,7 @@
             android:gravity="center"
             android:background="@color/green"
             android:text="A"
+            android:visibility="gone"
             android:fontFamily="@font/roboto_bold"
             android:textColor="@color/black"
             android:layout_width="20dp"

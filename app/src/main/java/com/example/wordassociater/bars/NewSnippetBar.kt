@@ -8,10 +8,12 @@ import android.widget.LinearLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
+import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.BarNewSnippetBinding
 import com.example.wordassociater.fire_classes.Snippet
+import com.example.wordassociater.fire_classes.StoryLine
 import com.example.wordassociater.fire_classes.WordConnection
 import com.example.wordassociater.firestore.FireChars
 import com.example.wordassociater.firestore.FireSnippets
@@ -19,6 +21,7 @@ import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.popups.popDramaTypeSelection
+import com.example.wordassociater.popups.popSelectStoryLine
 import com.example.wordassociater.utils.Drama
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.StoryPart
@@ -26,17 +29,21 @@ import com.example.wordassociater.words.WordLinear
 
 class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = BarNewSnippetBinding.inflate(LayoutInflater.from(context), this, true)
-    val isStory = MutableLiveData(false)
     var isDrama = MutableLiveData<Drama>(Drama.None)
+
+    var selectedStoryLines = MutableLiveData<List<StoryLine>?>()
 
     lateinit var navController: NavController
 
     init {
+
         setClickListener()
         setObserver()
     }
 
-
+    private fun setSelectedStoryLines() {
+        selectedStoryLines.value = Main.storyLineList.value!!.toMutableList()
+    }
 
     private fun setClickListener() {
         b.btnAddCharacter.setOnClickListener {
@@ -52,8 +59,9 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
             AddStuffBar.snippetInputOpen.value = false
         }
 
-        b.btnStory.setOnClickListener {
-
+        b.btnStoryLines.setOnClickListener {
+            setSelectedStoryLines()
+            popSelectStoryLine(b.btnStoryLines, ::onStoryLineSelected, selectedStoryLines)
         }
 
         b.snippetInput.setOnEnterFunc {
@@ -61,6 +69,12 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
             AddStuffBar.snippetInputOpen.value = false
             Helper.getIMM(context).hideSoftInputFromWindow(b.snippetInput.windowToken, 0)
         }
+    }
+
+    private fun onStoryLineSelected(storyLine: StoryLine) {
+        storyLine.selected = !storyLine.selected
+        selectedStoryLines.value = Helper.getResubmitList(storyLine, selectedStoryLines.value!!)
+
     }
 
     private fun handleSelectedDramaType(dramaType: Drama) {
@@ -85,10 +99,6 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
             else {
                 closeSnippetInput()
             }
-        }
-
-        isStory.observe(context as LifecycleOwner) {
-            b.btnStory.setImageResource(if(it) R.drawable.icon_story_selected else R.drawable.icon_story)
         }
 
         isDrama.observe(context as LifecycleOwner) {

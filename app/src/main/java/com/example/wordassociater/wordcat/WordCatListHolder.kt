@@ -23,8 +23,9 @@ class WordCatListHolder(
 
     private fun setContent() {
         if(!wordCat.isHeader) {
-            b.plusSign.setImageResource(wordCat.getPlusSign())
+            b.plusSign.setImageResource(wordCat.getBg())
             b.catName.text = wordCat.name
+            b.checkBox.setImageResource(if(wordCat.isSelected) R.drawable.checked_box else R.drawable.unchecked_box)
         }
         else {
             b.plusSign.setImageResource(R.drawable.wordcat_plus_header)

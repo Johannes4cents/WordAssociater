@@ -12,6 +12,9 @@ data class WordCat(
     @Exclude
     var isHeader = false
 
+    @Exclude
+    var isSelected = false
+
     enum class Color {Pink, Blue, Brown, Green, Purple, Grey, Teal, Orange, Red}
 
     @Exclude
@@ -44,18 +47,4 @@ data class WordCat(
         }
     }
 
-    @Exclude
-    fun getPlusSign(): Int {
-        return when(color) {
-            Color.Pink -> R.drawable.wordcat_plus_pink
-            Color.Blue -> R.drawable.wordcat_plus_blue
-            Color.Brown -> R.drawable.wordcat_plus_brown
-            Color.Green -> R.drawable.wordcat_plus_green
-            Color.Purple -> R.drawable.wordcat_plus_purple
-            Color.Grey -> R.drawable.wordcat_plus_grey
-            Color.Teal -> R.drawable.wordcat_plus_teal
-            Color.Orange -> R.drawable.wordcat_plus_orange
-            Color.Red -> R.drawable.wordcat_plus_red
-        }
-    }
 }

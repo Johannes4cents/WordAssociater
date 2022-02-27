@@ -1,6 +1,8 @@
 package com.example.wordassociater.utils
 
 import android.content.Context
+import android.text.InputFilter
+import android.text.InputType
 import android.util.AttributeSet
 import android.util.Log
 import android.view.Gravity
@@ -50,6 +52,15 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
 
     fun setStoryPart(storyPart: StoryPart) {
         this.storyPart = storyPart
+    }
+
+    fun setInputTypeNumbers() {
+        b.inputField.inputType = InputType.TYPE_CLASS_NUMBER
+    }
+
+    fun setMaxInput(maxInput: Int) {
+        val inputFilter = InputFilter.LengthFilter(maxInput)
+        b.inputField.filters = arrayOf(inputFilter)
     }
 
     private fun setClickListener() {

@@ -20,6 +20,7 @@ class WordCatSelector(context: Context, attributeSet: AttributeSet): LinearLayou
 
     private fun setName(wordCat: WordCat) {
         b.catName.text = wordCat.name
+        b.catIcon.setImageResource(wordCat.getBg())
         onCatSelected(wordCat)
     }
 

@@ -52,7 +52,7 @@
             android:padding="5dp"
             android:layout_width="80dp"
             android:layout_height="40dp"
-            android:src="@drawable/btn_open_words_list"
+            android:src="@drawable/icon_word"
             />
 
         <androidx.recyclerview.widget.RecyclerView

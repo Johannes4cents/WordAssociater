@@ -13,10 +13,10 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_weight="1"
-        android:padding="7dp"
+        android:padding="12dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/wordcat_plus_blue"
+        app:srcCompat="@drawable/wordcat_bg_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnAddObject"/>
 

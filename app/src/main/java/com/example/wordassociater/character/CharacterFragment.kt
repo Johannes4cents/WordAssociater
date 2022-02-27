@@ -80,10 +80,6 @@ class CharacterFragment: Fragment() {
             getAndSubmitSnippets()
         }
 
-        b.buttonStrains.setOnClickListener {
-            b.specificCharacterRecycler.visibility = View.VISIBLE
-            b.characterDescriptionLinear.visibility = View.GONE
-        }
 
         b.buttonDialogues.setOnClickListener {
             b.specificCharacterRecycler.visibility = View.VISIBLE

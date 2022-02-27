@@ -13,14 +13,17 @@ import com.example.wordassociater.databinding.FragmentHeritageBinding
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.popups.popSearchWord
 import com.example.wordassociater.utils.Helper
+import java.util.*
 
 class HeritageFragment: Fragment() {
     lateinit var b : FragmentHeritageBinding
 
     val rootOfLiveList = MutableLiveData<List<Word>>()
     private val synonymLiveList = MutableLiveData<List<String>>()
+    private val stemsLiveList = MutableLiveData<List<String>>()
     companion object {
         lateinit var word: Word
         lateinit var comingFrom: Frags
@@ -60,11 +63,25 @@ class HeritageFragment: Fragment() {
 
         }
 
+        b.deleteWord.setOnClickListener {
+            Pop(b.deleteWord.context).confirmationPopUp(b.deleteWord, ::onDeletionConfirmed)
+        }
+
+    }
+
+    private fun onDeletionConfirmed(confirmation: Boolean) {
+        if(confirmation) {
+            word.delete()
+            findNavController().navigate(R.id.action_heritageFragment_to_ViewPagerFragment)
+        }
     }
 
     private fun setRecycler() {
         synonymLiveList.value = word.synonyms
         b.synonymRecycler.initRecycler(word, synonymLiveList, ::onSynonymHeaderClicked, ::onSynonymEntered)
+
+        stemsLiveList.value = word.stems
+        b.stemsRecycler.initRecycler(word, stemsLiveList, ::onStemHeaderClicked, ::onStemEntered)
     }
 
     private fun onSynonymHeaderClicked() {
@@ -72,20 +89,34 @@ class HeritageFragment: Fragment() {
         b.synonymRecycler.adapter?.notifyDataSetChanged()
     }
 
+
     private fun onSynonymEntered(text: String) {
-        val strippedWord = Helper.stripWord(text).capitalize()
-        if(strippedWord != "" || text != "") {
+        val strippedWord = Helper.stripWord(text).capitalize(Locale.ROOT)
+        if(strippedWord != "" || text != "" || word.synonyms.contains(text) || strippedWord != "synonymHeader") {
             word.synonyms.add(strippedWord)
             synonymLiveList.value = word.synonyms
             b.synonymRecycler.adapter?.notifyDataSetChanged()
         }
+    }
 
+    private fun onStemHeaderClicked() {
+        stemsLiveList.value = word.stems + listOf("")
+        b.stemsRecycler.adapter?.notifyDataSetChanged()
+    }
 
+    private fun onStemEntered(text: String) {
+        val strippedWord = Helper.stripWord(text).capitalize(Locale.ROOT)
+        if(strippedWord != "" || text != "" || word.stems.contains(text) || strippedWord != "stemHeader") {
+            word.stems.add(strippedWord)
+            stemsLiveList.value = word.stems
+            b.synonymRecycler.adapter?.notifyDataSetChanged()
+        }
     }
 
     private fun updateWord() {
         FireWords.update(word.id,"synonyms",word.synonyms)
         FireWords.update(word.id,"rootOf", word.rootOf)
+        FireWords.update(word.id, "stems", word.stems)
     }
 
 

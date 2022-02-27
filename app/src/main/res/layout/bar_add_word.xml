@@ -30,7 +30,7 @@
 
             <EditText
                 android:id="@+id/wordInput"
-                android:background="@color/light_blue"
+                android:background="@color/snippets"
                 android:layout_width="180dp"
                 android:layout_height="45dp"
                 android:ems="10"
@@ -46,7 +46,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.example.wordassociater.wordcat.WordCatSelector
-                android:background="@color/light_blue"
+                android:background="@color/snippets"
                 android:id="@+id/wordCatSelector"
                 android:layout_height="45dp"
                 android:layout_width="100dp"
@@ -56,9 +56,10 @@
 
         <ImageView
             android:layout_weight="1"
+            android:padding="10dp"
             android:id="@+id/save_btn"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/btn_unfold"/>
+            android:src="@drawable/btn_add_word"/>
     </LinearLayout>
 </LinearLayout>

@@ -126,7 +126,7 @@ class NotesFragment: Fragment() {
             b.noteRecycler.scrollToPosition(noteAdapter.itemCount - 1)
         }
 
-        b.btnStory.setOnClickListener {
+        b.btnStoryLines.setOnClickListener {
             selectInitialButton(Note.Type.Story)
             currentListType = Note.Type.Story
             noteAdapter.submitList(NoteLists.storyNotes.filter { n -> !n.archived }.sortedBy { n -> n.id }.reversed())

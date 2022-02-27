@@ -4,6 +4,7 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.FireChars
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.utils.Date
 import com.example.wordassociater.utils.Drama
 import com.example.wordassociater.utils.StoryPart
 import com.google.firebase.firestore.Exclude
@@ -17,8 +18,9 @@ data class Snippet(override var content: String = "",
                    override var characterList: MutableList<Long> = mutableListOf(),
                    override var nuwList: MutableList<Long> = mutableListOf(),
                    override var storyLineList: MutableList<Long> = mutableListOf(),
+                   override var date: Date = Date(0,0,1900),
                    var drama: Drama = Drama.None,
-): StoryPart(id, content, wordList, characterList, nuwList, storyLineList) {
+): StoryPart(id, content, wordList, characterList, nuwList, storyLineList, date) {
     @Exclude
     var recyclerHeader = false
 

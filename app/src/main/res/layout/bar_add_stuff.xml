@@ -26,11 +26,11 @@
             android:layout_height="45dp"
             android:src="@drawable/btn_new_dialogue"
             />
-
+c
         <ImageView
             android:layout_weight="1"
             android:id="@+id/btnNewSnippet"
-            android:padding="4dp"
+            android:padding="8dp"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:src="@drawable/btn_new_snippet" />
@@ -38,11 +38,11 @@
 
         <ImageView
             android:layout_weight="1"
-            android:padding="7dp"
+            android:padding="12dp"
             android:id="@+id/btnNewWord"
             android:layout_width="0dp"
             android:layout_height="45dp"
-            android:src="@drawable/btn_open_words_list"/>
+            android:src="@drawable/icon_word"/>
     </LinearLayout>
 
     <com.example.wordassociater.bars.AddWordBar

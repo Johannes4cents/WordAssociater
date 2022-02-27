@@ -19,7 +19,8 @@ data class Word(
         var branchOf: String = "",
         var synonyms: MutableList<String> = mutableListOf(),
         var rootOf: MutableList<Long> = mutableListOf(),
-        var wordConnectionsList: MutableList<Long> = mutableListOf()
+        var wordConnectionsList: MutableList<Long> = mutableListOf(),
+        var stems: MutableList<String> = mutableListOf()
 )
 {
     @Exclude

@@ -103,6 +103,7 @@
 
     <LinearLayout
         android:background="#EDEDED"
+        android:id="@+id/bottonBtns"
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <ImageView

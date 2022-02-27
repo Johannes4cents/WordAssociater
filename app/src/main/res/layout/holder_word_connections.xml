@@ -15,9 +15,10 @@
 
         <ImageView
             android:id="@+id/characterPortrait"
+            android:padding="15dp"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/btn_open_words_list"
+            android:src="@drawable/icon_word"
             />
 
         <TextView

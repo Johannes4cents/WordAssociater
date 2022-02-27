@@ -1,6 +1,5 @@
 package com.example.wordassociater.popups
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
@@ -26,15 +25,15 @@ fun popSearchWord(
     }
     fun setObserver() {
         b.searchBar.getWords { wordsList ->
-            Log.i("wordPopUp", "setObserver in popSearchWord wordsList count is ${wordsList.count()}")
             popUpAdapter.submitList(wordsList + selectedWordsList.value as List<Word>)
             b.wordRecycler.scrollToPosition(0)
+
         }
 
         selectedWordsList.observe(from.context as LifecycleOwner) {
-            Log.i("wordPopUp", "popSearchWord / setObserver")
             popUpAdapter.submitList(it)
             b.wordRecycler.scrollToPosition(0)
+
         }
     }
 

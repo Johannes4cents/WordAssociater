@@ -43,7 +43,7 @@ class NuwHolder(
 
     private fun setUpgradeIcon(): Int {
         return when(nuw.isWord) {
-            true -> R.drawable.btn_open_words_list
+            true -> R.drawable.icon_word
             false -> R.drawable.icon_upgrade
         }
     }

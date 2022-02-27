@@ -1,6 +1,7 @@
 package com.example.wordassociater.words
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,6 @@ import com.example.wordassociater.databinding.FragmentWordsListBinding
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.firestore.FireWordCats
-import com.example.wordassociater.popups.popColorPicker
 import com.example.wordassociater.utils.AdapterType
 import com.example.wordassociater.utils.Page
 import com.example.wordassociater.wordcat.WordCatAdapter
@@ -50,9 +50,6 @@ class WordsListFragment: Fragment() {
             ViewPagerFragment.goTopage(Page.Start)
         }
 
-        b.btnColorPicker.setOnClickListener {
-            popColorPicker(b.btnColorPicker, ::onColorSelected)
-        }
     }
 
     private fun handleSearchBar() {
@@ -63,8 +60,11 @@ class WordsListFragment: Fragment() {
     }
 
     private fun setFirstList() {
-        if(selectedWordCat.value == null) selectedWordCat.value = Main.wordCatsList.value!![1]
-        handleColorBtnImage()
+
+        if(selectedWordCat.value == null) {
+            Log.i("WordsList", "setFirstList called inside if")
+            selectedWordCat.value = Main.wordCatsList.value!![1]
+        }
     }
 
     private fun setRecycler() {
@@ -72,7 +72,7 @@ class WordsListFragment: Fragment() {
         b.wordCatRecycler.setHeader(false)
         adapter = WordAdapter(AdapterType.List, ::handleWordSelected, null)
         b.wordRecycler.adapter = adapter
-        adapter.submitList(Main.wordsList.value!!.toMutableList().sortedBy { w -> w.text })
+        if(selectedWordCat.value != null) adapter.submitList(getCatFilteredList(selectedWordCat.value!!))
     }
 
     private fun handleDelete(word: Word) {
@@ -84,11 +84,6 @@ class WordsListFragment: Fragment() {
             FireWordCats.update(selectedWordCat.value!!.id, "color", color)
             selectedWordCat.value!!.color = color
         }
-
-    }
-
-    private fun handleColorBtnImage() {
-        b.btnColorPicker.setImageResource(selectedWordCat.value!!.getBg())
     }
 
     private fun onCatClicked(wordCat: WordCat) {
@@ -103,15 +98,20 @@ class WordsListFragment: Fragment() {
 
     private fun setObserver() {
         currentList.observe(b.root.context as LifecycleOwner) {
+            Log.i("wordsList", "setObserver called")
             if(it != null) adapter.submitList(it.sortedBy { w -> w.text }.reversed().sortedBy { w -> w.used }.reversed())
             b.wordRecycler.scrollToPosition(0)
+            b.counterWords.text = it.count().toString()
         }
 
         selectedWordCat.observe(context as LifecycleOwner) {
-            val submitList = Main.wordsList.value?.filter { w -> w.cats.contains(it.id) }
-            currentList.value = submitList
-            handleColorBtnImage()
+            currentList.value = getCatFilteredList(it)
+
         }
+    }
+
+    private fun getCatFilteredList(wordCat: WordCat): List<Word>? {
+        return Main.wordsList.value?.filter { w -> w.cats.contains(wordCat.id) }
     }
 
 

@@ -5,6 +5,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import com.example.wordassociater.R
 import com.example.wordassociater.databinding.BarTopBarBinding
 
 class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
@@ -13,10 +16,27 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
     val nuwImage = b.btnNuws
     val wordsImage = b.btnWord
     val dramaImage = b.btnDrama
+    private var selectedView: MutableLiveData<View> = MutableLiveData<View>()
+    private var showIconSelected = false
 
+    init {
+        setObserver()
+    }
+
+    fun showIconSelection() {
+        showIconSelected = true
+    }
+
+    fun showLeftText(text: String) {
+        b.btnBack.visibility = View.GONE
+        b.leftText.visibility = View.VISIBLE
+        b.leftText.text = text
+
+    }
 
     fun setNuwButton(func: () -> Unit) {
         b.btnNuws.setOnClickListener {
+            selectedView.value = b.btnNuws
             func()
         }
     }
@@ -28,6 +48,7 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
 
     fun setBackButton(func: () -> Unit) {
         b.btnBack.setOnClickListener {
+            selectedView.value = b.btnBack
             func()
         }
     }
@@ -39,6 +60,7 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
 
     fun setSaveButton(func: () -> Unit) {
         b.btnSave.setOnClickListener {
+            selectedView.value = b.btnSave
             func()
         }
     }
@@ -50,6 +72,7 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
 
     fun setCharacterButton(func: () -> Unit) {
         b.btnCharacter.setOnClickListener {
+            selectedView.value = b.btnCharacter
             func()
         }
     }
@@ -61,6 +84,7 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
 
     fun setWordButton(func: () -> Unit) {
         b.btnWord.setOnClickListener {
+            selectedView.value = b.btnWord
             func()
         }
     }
@@ -72,6 +96,7 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
 
     fun setDramaButton(func: () -> Unit) {
         b.btnDrama.setOnClickListener {
+            selectedView.value = b.btnDrama
             func()
         }
     }
@@ -79,5 +104,16 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
     fun setDramaIconAndVisibility(icon: Int, visible: Boolean) {
         b.btnDrama.setImageResource(icon)
         b.btnDrama.visibility = if(visible) View.VISIBLE else View.GONE
+    }
+
+    private fun setObserver() {
+        selectedView.observe(context as LifecycleOwner) {
+            val viewList = listOf(b.btnBack,nuwImage, wordsImage, dramaImage, characterImage, b.btnSave)
+            if(showIconSelected) {
+                for(v in viewList) {
+                    v.setBackgroundColor(if(v == selectedView) b.root.resources.getColor(R.color.lightYellow) else b.root.resources.getColor(R.color.white))
+                }
+            }
+        }
     }
 }

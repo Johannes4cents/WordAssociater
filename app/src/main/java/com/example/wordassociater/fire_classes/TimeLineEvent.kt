@@ -1,5 +1,6 @@
 package com.example.wordassociater.fire_classes
 
+import com.example.wordassociater.utils.Date
 import com.example.wordassociater.utils.StoryPart
 
 class TimeLineEvent(
@@ -9,5 +10,6 @@ class TimeLineEvent(
         override var wordList: MutableList<Long> = mutableListOf(),
         override var nuwList: MutableList<Long> = mutableListOf(),
         override var storyLineList: MutableList<Long> = mutableListOf(),
-): StoryPart(id, content, characterList, wordList, nuwList, storyLineList) {
+        override var date: Date = Date(0,0,1900)
+): StoryPart(id, content, characterList, wordList, nuwList, storyLineList, date) {
 }

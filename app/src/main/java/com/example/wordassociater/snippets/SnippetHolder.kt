@@ -10,6 +10,8 @@ import com.example.wordassociater.databinding.HolderSnippetBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.popups.Pop
+import com.example.wordassociater.popups.popDate
+import com.example.wordassociater.utils.Date
 
 class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
                     val clickSnippetFunc: (snippet:Snippet) -> Unit): RecyclerView.ViewHolder(b.root) {
@@ -77,9 +79,17 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
 
         }
 
+        b.btnDate.setOnClickListener {
+            popDate(b.btnDate, ::onDateEntered, null)
+        }
+
         b.root.setOnClickListener {
             clickSnippetFunc(snippet)
         }
+    }
+
+    private fun onDateEntered(date: Date) {
+        FireSnippets.update(snippet.id, "date", date)
     }
 
     private fun connectSnippets(snippetOne: Snippet, snippetTwo: Snippet) {

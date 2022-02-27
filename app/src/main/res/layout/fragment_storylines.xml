@@ -8,6 +8,7 @@
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
+
     <com.example.wordassociater.storylines.StoryLineRecycler
         android:id="@+id/storyLineRecycler"
         android:layout_width="match_parent"

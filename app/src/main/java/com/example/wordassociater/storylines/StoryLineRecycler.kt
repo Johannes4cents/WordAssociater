@@ -10,11 +10,11 @@ import com.example.wordassociater.fire_classes.StoryLine
 
 class StoryLineRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(context, attributeSet) {
     lateinit var storyLineAdapter: StoryLineAdapter
-    lateinit var storyLineLiveList: MutableLiveData<List<StoryLine>>
+    lateinit var storyLineLiveList: MutableLiveData<List<StoryLine>?>
 
-    fun initRecycler(liveList: MutableLiveData<List<StoryLine>>,
+    fun initRecycler(liveList: MutableLiveData<List<StoryLine>?>,
                      onStoryLineSelected: (storyLine: StoryLine) -> Unit,
-                     onHeaderSelected: () -> Unit) {
+                     onHeaderSelected: (() -> Unit)?) {
         storyLineAdapter = StoryLineAdapter(onStoryLineSelected, onHeaderSelected)
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         adapter = storyLineAdapter

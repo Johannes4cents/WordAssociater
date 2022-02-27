@@ -16,14 +16,17 @@ import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Sphere
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordCat
+import com.example.wordassociater.firestore.FireWordCats
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.popSelectSphere
+import com.example.wordassociater.popups.popWordCatMultiSelect
 import com.example.wordassociater.snippets.SnippetAdapter
 import com.example.wordassociater.utils.Page
 
 class WordDetailedFragment: Fragment() {
     lateinit var b: FragmentWordDetailedBinding
     private val selectedSpheres = MutableLiveData<List<Sphere>?>()
+    private val selectedCats = MutableLiveData<List<WordCat>>()
 
     companion object {
         lateinit var word: Word
@@ -41,10 +44,22 @@ class WordDetailedFragment: Fragment() {
 
     private fun setContent() {
         b.wordText.text = word.text
-        b.wordBgImage.setBackgroundResource(word.getCatsList()[0].getBg())
-        b.btnNewWord.visibility = View.GONE
+        pickFirstWordCatColor()
         getSpheresList()
         selectSpheresInList()
+        if(word.cats.isNotEmpty()) b.catColor.setImageResource(Main.getWordCat(word.cats[0])!!.getBg())
+    }
+
+    private fun makeSelectedWordCatList(): List<WordCat> {
+        val wordCatList = Main.wordCatsList.value!!.toMutableList()
+        for(w in wordCatList) {
+            w.isSelected = word.cats.contains(w.id)
+        }
+        for(w in wordCatList) {
+            Log.i("wordCat", "isSelected = ${w.isSelected}")
+        }
+        return wordCatList
+
     }
 
     private fun getSpheresList() {
@@ -65,15 +80,20 @@ class WordDetailedFragment: Fragment() {
         selectedSpheres.value = sphereList
     }
 
+    private fun pickFirstWordCatColor() {
+        if(word.cats.isNotEmpty()) {
+            b.catColor.setImageResource(Main.getWordCat(word.cats[0])!!.getBg())
+        }
+        else {
+            b.catColor.setImageResource(R.drawable.wordcat_bg_none)
+        }
+    }
+
     private fun setClickListener() {
         b.backButton.setOnClickListener {
             findNavController().navigate(R.id.action_wordDetailedFragment_to_ViewPagerFragment)
             if(comingFromList != null) WordsListFragment.selectedWordCat.value = comingFromList
             ViewPagerFragment.comingFrom = Page.Words
-        }
-
-        b.buttonStrains.setOnClickListener {
-
         }
 
         b.buttonSnippets.setOnClickListener {
@@ -95,6 +115,21 @@ class WordDetailedFragment: Fragment() {
         b.btnSpheres.setOnClickListener {
             popSelectSphere(b.btnSpheres, selectedSpheres, ::handleSelectedSphere)
         }
+
+        b.catColor.setOnClickListener {
+            popWordCatMultiSelect(b.catColor, selectedCats, ::onWordCatClicked)
+            selectedCats.value = makeSelectedWordCatList()
+        }
+    }
+
+    private fun onWordCatClicked(wordCat: WordCat) {
+        wordCat.isSelected = !wordCat.isSelected
+        if(!wordCat.isSelected) word.cats.remove(wordCat.id)
+        else word.cats.add(wordCat.id)
+
+        FireWordCats.update(word.id, "cats", word.cats)
+        selectedCats.value = makeSelectedWordCatList()
+        pickFirstWordCatColor()
     }
 
     private fun handleSelectedSphere(sphere: Sphere) {

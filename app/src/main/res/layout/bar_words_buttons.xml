@@ -13,6 +13,7 @@
 
         <ImageView
             android:id="@+id/btnClearAll"
+            android:padding="15dp"
             android:layout_weight="1"
             android:src="@drawable/icon_red_x"
             android:layout_width="55dp"
@@ -22,12 +23,13 @@
             android:id="@+id/btnSpheres"
             android:layout_weight="1"
             android:padding="10dp"
-            android:src="@drawable/icon_sphere"
+            android:src="@drawable/sphere_blue"
             android:layout_width="55dp"
             android:layout_height="55dp"/>
 
         <ImageView
             android:id="@+id/btnRollDice"
+            android:padding="7dp"
             android:layout_weight="1"
             android:src="@drawable/icon_roll_dice"
             android:layout_width="50dp"

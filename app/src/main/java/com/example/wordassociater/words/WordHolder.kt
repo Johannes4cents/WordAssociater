@@ -24,6 +24,7 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
         setClickListener()
         setWord()
         setPortrait()
+        highLightSelected()
     }
 
     private fun checkIfCharacter() {
@@ -35,8 +36,9 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
         }
     }
 
-    private fun setConnectIcon() {
-        b.connectIcon.visibility = if(word!!.wordConnectionsList.count() > 0) View.VISIBLE else View.INVISIBLE
+    private fun highLightSelected() {
+        b.selectLinear.setBackgroundColor(if(word!!.selected) b.selectLinear.resources.getColor(R.color.lightYellow) else b.root.resources.getColor(R.color.snippets))
+        b.wordText.setTextColor(if(word.selected) b.root.resources.getColor(R.color.black) else b.root.resources.getColor(R.color.white))
     }
 
     private fun setClickListener() {
@@ -85,18 +87,17 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
 
     }
 
+    private fun setConnectIcon() {
+        b.connectIcon.visibility = if(word!!.wordConnectionsList.count() > 0) View.VISIBLE else View.GONE
+    }
+
+
+
 
     private fun setWord() {
-        val firstCat = word!!.getCatsList()[0]
-
-        b.wordText.text = getShortenedWord(word.text, b.wordText)
-        if(word.selected) {
-            b.root.setBackgroundResource(R.drawable.word_bg_selected)
-        }
-        else {
-            b.root.setBackgroundResource(firstCat.getBg())
-        }
-
+        b.wordText.text = getShortenedWord(word!!.text, b.wordText)
+        b.catIcon.setImageResource(Main.getWordCat(word.cats[0])!!.getBg())
+        
     }
 
     private fun setPortrait() {
