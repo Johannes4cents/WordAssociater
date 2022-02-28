@@ -201,7 +201,7 @@
     </fragment>
     <fragment
         android:id="@+id/storyLinesListFragment"
-        android:name="com.example.wordassociater.storylines.StoryLinesListFragment"
+        android:name="com.example.wordassociater.storylines.StoryFragment"
         android:label="StoryLinesListFragment" >
         <action
             android:id="@+id/action_storyLinesListFragment_to_ViewPagerFragment"

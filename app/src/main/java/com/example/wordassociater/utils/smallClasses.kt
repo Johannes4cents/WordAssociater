@@ -11,9 +11,12 @@ open class StoryPart(
         open var characterList: MutableList<Long>,
         open var nuwList: MutableList<Long>,
         open var storyLineList: MutableList<Long>,
-        open var date: Date
+        open var date: Date,
+        open var type: Type
         ) {
-
+    enum class Type { Snippet, Event, Dialogue, Prose }
+    @Exclude
+    var isStoryPartHeader = false
 
     @Exclude
     fun getWordsAsStory(): MutableList<Word> {

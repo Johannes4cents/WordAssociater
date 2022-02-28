@@ -9,7 +9,7 @@ data class StoryLine(
 ) {
     var wordsList: MutableList<Word> = mutableListOf()
     var snippetList: MutableList<Snippet> = mutableListOf()
-    var eventList: MutableList<TimeLineEvent> = mutableListOf()
+    var eventList: MutableList<Event> = mutableListOf()
     var icon: Icon = Icon.Planet
     var description: String = ""
 

@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <com.example.wordassociater.bars.TopBar
-        android:id="@+id/topBar"
+        android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

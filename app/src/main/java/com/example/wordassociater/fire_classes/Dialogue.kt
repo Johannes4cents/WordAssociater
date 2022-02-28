@@ -12,16 +12,17 @@ import com.google.firebase.firestore.Exclude
 
 data class Dialogue(
         override var id: Long = 0,
-        override var characterList: MutableList<Long> = mutableListOf(),
+        override var characterList: MutableList<Long> = mutableListOf(22),
         override var content: String = "",
         override var nuwList: MutableList<Long> = mutableListOf(),
-        override var wordList: MutableList<Long> = mutableListOf(),
+        override var wordList: MutableList<Long> = mutableListOf(0),
         override var storyLineList: MutableList<Long> = mutableListOf(),
         override var date: Date = Date(0,"May",1000),
+        override var type: Type = Type.Dialogue,
         var currentIndex: Int = 1,
         var drama: Drama = Drama.None,
         var bubbleList: MutableList<Long> = mutableListOf()
-): StoryPart(id, content, wordList, characterList, nuwList, storyLineList, date) {
+): StoryPart(id, content, wordList, characterList, nuwList, storyLineList, date,type) {
     @Exclude
     fun getCharacter(): List<Character> {
         val charList = mutableListOf<Character>()

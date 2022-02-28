@@ -4,16 +4,22 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.example.wordassociater.bars.TopBar
+    <com.example.wordassociater.storylines.StoryBar
         android:background="@color/snippets"
-        android:id="@+id/topBar"
+        android:id="@+id/story_bar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:layout_height="40dp"/>
 
     <com.example.wordassociater.storylines.StoryLineRecycler
         android:id="@+id/storyLineRecycler"
         android:layout_width="match_parent"
         android:layout_height="40dp"/>
+
+    <com.example.wordassociater.timeline.Timeline
+        android:id="@+id/timelineRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
 
 </LinearLayout>

@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:id="@+id/topBar"
+        android:id="@+id/story_bar"
         android:gravity="end"
         android:layout_marginEnd="4dp"
         android:layout_width="match_parent"

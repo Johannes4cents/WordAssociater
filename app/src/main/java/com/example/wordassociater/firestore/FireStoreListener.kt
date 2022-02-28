@@ -28,6 +28,22 @@ object FireStoreListener {
         getStoryLines()
     }
 
+    private fun addAnyCharacterAndWordToSnippets() {
+        val anyChar = Character(id = 22, name = "Any", connectId = 0)
+        val anyWord = Word(id = 0, text = "Any")
+        FireChars.add(anyChar,null)
+        FireLists.snippetsList.get().addOnSuccessListener { docs ->
+            for(doc in docs) {
+                val item = doc.toObject(Snippet::class.java)
+                item.characterList.add(anyChar.id)
+                item.wordList.add(0)
+                FireSnippets.update(item.id, "characterList", item.characterList)
+                FireSnippets.update(item.id, "wordList", item.wordList)
+            }
+        }
+
+    }
+
     private fun getCharacters() {
         FireLists.characterList.addSnapshotListener { docs, _ ->
             if(docs != null) {

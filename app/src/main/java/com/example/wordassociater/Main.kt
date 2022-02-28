@@ -18,17 +18,19 @@ class Main : AppCompatActivity() {
 
     companion object {
         var inFragment = Frags.START
-        var characterList = MutableLiveData<List<Character>?>()
-        var snippetList = MutableLiveData<List<Snippet>?>()
-        var notesList = MutableLiveData<List<Note>?>()
-        var bubbleList = MutableLiveData<List<Bubble>?>()
-        var dialogueList = MutableLiveData<List<Dialogue>?>()
-        val sphereList = MutableLiveData<List<Sphere>?>()
-        val wordsList = MutableLiveData<List<Word>?>()
-        val wordCatsList = MutableLiveData<List<WordCat>?>()
-        val nuwsList = MutableLiveData<List<Nuw>?>()
-        val activeWordCats = MutableLiveData<List<WordCat>?>()
-        val storyLineList = MutableLiveData<List<StoryLine>?>()
+        var characterList = MutableLiveData<List<Character>?>(mutableListOf())
+        var snippetList = MutableLiveData<List<Snippet>?>(mutableListOf())
+        var notesList = MutableLiveData<List<Note>?>(mutableListOf())
+        var bubbleList = MutableLiveData<List<Bubble>?>(mutableListOf())
+        var dialogueList = MutableLiveData<List<Dialogue>?>(mutableListOf())
+        val sphereList = MutableLiveData<List<Sphere>?>(mutableListOf())
+        val wordsList = MutableLiveData<List<Word>?>(mutableListOf())
+        val wordCatsList = MutableLiveData<List<WordCat>?>(mutableListOf())
+        val nuwsList = MutableLiveData<List<Nuw>?>(mutableListOf())
+        val activeWordCats = MutableLiveData<List<WordCat>?>(mutableListOf())
+        val storyLineList = MutableLiveData<List<StoryLine>?>(mutableListOf())
+        val proseList = MutableLiveData<List<Prose>?>(mutableListOf())
+        val eventList = MutableLiveData<List<Event>?>(mutableListOf())
 
         //commonWOrds
         val commonWordsGerman = MutableLiveData<List<CommonWord>?>()
@@ -48,6 +50,9 @@ class Main : AppCompatActivity() {
             return getCommonWordsListReference(language).value?.find { cm -> cm.text == text }
         }
 
+        fun getStoryLine(id: Long): StoryLine? {
+            return storyLineList.value!!.find { s -> s.id == id }
+        }
         fun getCommonWordType(language: Language, text: String): CommonWord.Type {
             val commonWord= getCommonWordsListReference(language).value?.find { cm -> cm.text == text }
             return when(commonWord?.type) {

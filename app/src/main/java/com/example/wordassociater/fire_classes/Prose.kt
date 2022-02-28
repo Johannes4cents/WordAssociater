@@ -7,10 +7,11 @@ data class Prose(
         override var id: Long = 0,
         override var content: String = "",
         var header: String = "",
-        override var wordList: MutableList<Long> = mutableListOf(),
-        override var characterList: MutableList<Long> = mutableListOf(),
+        override var wordList: MutableList<Long> = mutableListOf(0),
+        override var characterList: MutableList<Long> = mutableListOf(22),
         override var nuwList: MutableList<Long> = mutableListOf(),
         override var storyLineList: MutableList<Long> = mutableListOf(),
-        override var date: Date = Date()
-        ): StoryPart(id, content, wordList, characterList, nuwList, storyLineList, date) {
+        override var date: Date = Date(),
+        override var type: Type = Type.Prose
+        ): StoryPart(id, content, wordList, characterList, nuwList, storyLineList, date, type) {
 }

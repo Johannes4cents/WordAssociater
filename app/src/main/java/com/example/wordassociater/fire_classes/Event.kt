@@ -5,16 +5,17 @@ import com.example.wordassociater.utils.Date
 import com.example.wordassociater.utils.StoryPart
 import com.google.firebase.firestore.Exclude
 
-class TimeLineEvent(
+class Event(
         override var id: Long = 0,
         override var content: String = "",
-        override var characterList: MutableList<Long> = mutableListOf(),
-        override var wordList: MutableList<Long> = mutableListOf(),
+        override var characterList: MutableList<Long> = mutableListOf(22),
+        override var wordList: MutableList<Long> = mutableListOf(0),
         override var nuwList: MutableList<Long> = mutableListOf(),
         override var storyLineList: MutableList<Long> = mutableListOf(),
         override var date: Date = Date(0,"May",1100),
+        override var type: Type = Type.Event,
         var image: Image = Image.Airplane
-): StoryPart(id, content, characterList, wordList, nuwList, storyLineList, date) {
+): StoryPart(id, content, characterList, wordList, nuwList, storyLineList, date, type) {
     enum class Image { Airplane, Crown, Explosion, Food, Handshake, Party, Pistol, Shield }
 
     @Exclude

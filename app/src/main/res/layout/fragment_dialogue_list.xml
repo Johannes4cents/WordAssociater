@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:gravity="center"
-        android:id="@+id/topBar"
+        android:id="@+id/story_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal">

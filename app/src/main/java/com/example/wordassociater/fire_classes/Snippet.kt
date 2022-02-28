@@ -11,16 +11,17 @@ import com.google.firebase.firestore.Exclude
 
 data class Snippet(override var content: String = "",
                    override var id: Long = 0,
-                   override var wordList: MutableList<Long> = mutableListOf(),
+                   override var wordList: MutableList<Long> = mutableListOf(0),
                    var header: String = "",
                    var connectedSnippetsList: MutableList<Long> = mutableListOf(),
                    var layer: Int = 1,
-                   override var characterList: MutableList<Long> = mutableListOf(),
+                   override var characterList: MutableList<Long> = mutableListOf(22),
                    override var nuwList: MutableList<Long> = mutableListOf(),
                    override var storyLineList: MutableList<Long> = mutableListOf(),
                    override var date: Date = Date(0,"May",1000),
                    var drama: Drama = Drama.None,
-): StoryPart(id, content, wordList, characterList, nuwList, storyLineList, date) {
+                   override var type: Type = Type.Snippet
+): StoryPart(id, content, wordList, characterList, nuwList, storyLineList, date, type) {
     @Exclude
     var recyclerHeader = false
 

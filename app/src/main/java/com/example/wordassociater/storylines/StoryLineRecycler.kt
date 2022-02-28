@@ -6,7 +6,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wordassociater.Main
 import com.example.wordassociater.fire_classes.StoryLine
+import com.example.wordassociater.utils.StoryPart
 
 class StoryLineRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(context, attributeSet) {
     lateinit var storyLineAdapter: StoryLineAdapter
@@ -30,4 +32,6 @@ class StoryLineRecycler(context: Context, attributeSet: AttributeSet): RecyclerV
             else storyLineAdapter.submitList(listOf(header))
         }
     }
+
+
 }

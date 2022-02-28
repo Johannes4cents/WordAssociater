@@ -92,9 +92,9 @@
 
     </LinearLayout>
 
-
-
     <View
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
@@ -111,5 +111,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:background="@android:color/darker_gray"/>
 </LinearLayout>
