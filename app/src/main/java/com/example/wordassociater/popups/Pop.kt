@@ -9,10 +9,7 @@ import android.view.View
 import android.widget.PopupWindow
 import com.example.wordassociater.Main
 import com.example.wordassociater.character.CharacterAdapter
-import com.example.wordassociater.databinding.PopupCharacterRecyclerBinding
 import com.example.wordassociater.databinding.PopupConfirmDeletionBinding
-import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.words.WordLinear
 
 class Pop(val context: Context) {
     private val popWindow = PopupWindow(context)
@@ -42,46 +39,4 @@ class Pop(val context: Context) {
     }
 
 
-    fun characterRecyclerConnectSnippets( view: View, characterList: List<Character>) {
-        val binding = PopupCharacterRecyclerBinding.inflate(LayoutInflater.from(context), null, false)
-        var adapter = CharacterAdapter(CharacterAdapter.Mode.CONNECTSNIPPETS, characterList)
-        binding.characterRecycler.adapter = adapter
-        adapter.submitList(Main.characterList.value)
-        popWindow.height = 1000
-        popWindow.width = 900
-        windowSetup(binding.root, view)
-    }
-
-
-    fun characterRecycler(view: View, toMode: CharacterAdapter.Mode) {
-        charMode = toMode
-        val binding = PopupCharacterRecyclerBinding.inflate(LayoutInflater.from(context), null, false)
-        characterAdapter = CharacterAdapter(toMode)
-        binding.characterRecycler.adapter = characterAdapter
-        popWindow.height = 1000
-        popWindow.width = 900
-        windowSetup(binding.root, view)
-        handleAdapterModes()
-
-        binding.clearAllBtn.setOnClickListener {
-            CharacterAdapter.selectedCharacterList.clear()
-            CharacterAdapter.selectedNameChars.clear()
-            WordLinear.deselectWords()
-            CharacterAdapter.characterListTrigger.value = Unit
-        }
-    }
-
-    private fun handleAdapterModes() {
-        when(charMode) {
-            CharacterAdapter.Mode.UPDATE -> {
-                characterAdapter.submitList(characterListUpdate)
-            }
-            CharacterAdapter.Mode.SELECT -> {
-                characterAdapter.submitList(characterListSelect)
-            }
-            else -> {
-
-            }
-        }
-    }
 }

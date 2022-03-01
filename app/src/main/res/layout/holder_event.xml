@@ -30,31 +30,32 @@
             android:layout_marginStart="4dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/icon_red_x" />
+            android:src="@drawable/icon_delete" />
 
         <TextView
             android:layout_weight="1"
-            android:id="@+id/headerText"
+            android:id="@+id/eventName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Event"
             android:textColor="@color/white"
             android:fontFamily="@font/roboto_bold"
-            android:textSize="22sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/btnDate"
-            android:src="@drawable/icon_timeline"
-            android:layout_width="60dp"
-            android:layout_height="25dp"/>
+        <com.example.wordassociater.date.DateHolder
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/date"
+            />
 
     </LinearLayout>
 
     <View
+        android:id="@+id/lineSmall"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
@@ -63,7 +64,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="50dp">
 
         <ImageView
             android:id="@+id/eventIconLeft"
@@ -80,8 +81,8 @@
             android:gravity="center"
             android:textColor="@color/white"
             android:text="This is a test Text I dont know what \n neue leine \n noch enie"
-            android:id="@+id/contentPreview"
-            android:textSize="16sp"
+            android:id="@+id/eventDescription"
+            android:textSize="12sp"
             android:fontFamily="@font/roboto_bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
@@ -95,6 +96,7 @@
             />
     </LinearLayout>
     <View
+        android:id="@+id/lineBig"
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:background="@android:color/darker_gray"/>

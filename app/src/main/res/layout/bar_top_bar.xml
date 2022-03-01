@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:background="@color/snippetsLite"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    android:layout_marginTop="4dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/btnBack"
-        android:padding="2dp"
+        android:id="@+id/btnLeft"
         android:layout_width="60dp"
         android:layout_height="45dp"
-        android:layout_marginStart="2dp"
         android:src="@drawable/back_icon" />
 
     <TextView
@@ -30,7 +28,7 @@
         android:src="@drawable/back_icon" />
 
     <ImageView
-        android:id="@+id/btnNuws"
+        android:id="@+id/btn1"
         android:padding="10dp"
         android:layout_weight="1"
         android:src="@drawable/icon_nuw"
@@ -39,7 +37,7 @@
         />
 
     <ImageView
-        android:id="@+id/btnWord"
+        android:id="@+id/btn2"
         android:src="@drawable/icon_word"
         android:layout_weight="1"
         android:layout_width="0dp"
@@ -49,24 +47,31 @@
     <ImageView
         android:padding="10dp"
         android:layout_weight="1"
-        android:id="@+id/btnDrama"
+        android:id="@+id/btn3"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:src="@drawable/icon_dramaturgy" />
 
     <ImageView
         android:layout_weight="1"
-        android:id="@+id/btnCharacter"
+        android:id="@+id/btn4"
         android:padding="10dp"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:src="@drawable/icon_edit_character" />
+        android:src="@drawable/icon_character" />
 
     <ImageView
-        android:id="@+id/btnSave"
-        android:padding="2dp"
+        android:padding="10dp"
+        android:layout_weight="1"
+        android:id="@+id/btn5"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:src="@drawable/icon_story" />
+
+    <ImageView
+        android:id="@+id/btnRight"
         android:layout_width="60dp"
         android:layout_height="45dp"
-        android:src="@drawable/btn_save_strain" />
+        android:src="@drawable/btn_save" />
 
 </LinearLayout>

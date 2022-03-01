@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderCharacterBinding
+import com.example.wordassociater.databinding.HolderCharacterPreviewBinding
 import com.example.wordassociater.fire_classes.Character
 
 
@@ -16,7 +17,7 @@ class CharacterAdapter(
         val selectFunc: ((char: Character) -> Unit)? = null
 )
     : ListAdapter<Character, RecyclerView.ViewHolder>(CharacterDiff()) {
-    public enum class Mode { MAIN, LIST, SELECT, PREVIEW, UPDATE, CONNECTSNIPPETS}
+    public enum class Mode { MAIN, LIST, PREVIEW, UPDATE, CONNECTSNIPPETS}
 
     companion object {
         var selectedCharacterList = mutableListOf<Character>()
@@ -25,12 +26,14 @@ class CharacterAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return CharacterHolder(HolderCharacterBinding.inflate(LayoutInflater.from(parent.context)))
+        return if(mode != Mode.PREVIEW) CharacterHolder(HolderCharacterBinding.inflate(LayoutInflater.from(parent.context)))
+        else CharacterHolderPreview(HolderCharacterPreviewBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val character = currentList[position]
-        (holder as CharacterHolder).onBind(character, this, selectFunc)
+        if(mode != Mode.PREVIEW) (holder as CharacterHolder).onBind(character, this, selectFunc)
+        else (holder as CharacterHolderPreview).onBind(character)
     }
 }
 

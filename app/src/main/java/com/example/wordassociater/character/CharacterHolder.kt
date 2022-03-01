@@ -27,9 +27,6 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
     }
 
     private fun setContent() {
-        if( adapter.mode == CharacterAdapter.Mode.SELECT ) {
-            character.selected = CharacterAdapter.selectedCharacterList.contains(character)
-        }
         b.characterName.text = character.name
         if(character.imgUrl != "") Glide.with(b.characterPortrait).load(character.imgUrl).into(b.characterPortrait)
 
@@ -53,20 +50,6 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
             CharacterAdapter.Mode.LIST -> {
                 b.root.setOnClickListener {
                     takeCharacterFunc(character)
-                }
-            }
-            CharacterAdapter.Mode.SELECT -> {
-                b.root.setOnClickListener {
-                    character.selected = !character.selected
-                    if(character.selected) {
-                        CharacterAdapter.selectedCharacterList.add(character)
-                    }
-                    else {
-                        CharacterAdapter.selectedCharacterList.remove(character)
-                        removeSelectedFromCharacterWord()
-
-                    }
-                    CharacterAdapter.characterListTrigger.value = Unit
                 }
             }
 
@@ -110,14 +93,6 @@ class CharacterHolder(val b: HolderCharacterBinding): RecyclerView.ViewHolder(b.
         when(adapter.mode) {
             CharacterAdapter.Mode.LIST -> {
                 b.buttonSelected.setImageResource(R.drawable.arrow_right)
-            }
-            CharacterAdapter.Mode.SELECT, CharacterAdapter.Mode.MAIN -> {
-                if(character.selected) {
-                    b.buttonSelected.setImageResource(R.drawable.checked_box)
-                }
-                else {
-                    b.buttonSelected.setImageResource(R.drawable.unchecked_box)
-                }
             }
             CharacterAdapter.Mode.PREVIEW, CharacterAdapter.Mode.UPDATE, CharacterAdapter.Mode.CONNECTSNIPPETS  -> {
                 b.buttonSelected.visibility = View.GONE

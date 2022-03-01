@@ -8,6 +8,7 @@ import com.example.wordassociater.fire_classes.StoryLine
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireStoryLines
 import com.example.wordassociater.utils.Helper
+import java.util.*
 
 fun popCreateStoryLine(from: View) {
     val b = PopupStorylinePickerBinding.inflate(LayoutInflater.from(from.context), null, false)
@@ -16,14 +17,18 @@ fun popCreateStoryLine(from: View) {
     var pickedIcon: View? = null
     fun checkIfSelected() {
         for(v in viewList) {
-            v.setBackgroundColor(if(v == pickedIcon) from.resources.getColor( R.color.lightYellow) else from.resources.getColor(R.color.popGrey))
+            v.setBackgroundColor(if(v == pickedIcon) from.resources.getColor( R.color.lightYellow) else from.resources.getColor(R.color.snippets))
         }
     }
 
     b.nameInput.setCenterGravity()
 
     val storyLine = StoryLine(id= FireStats.getStoryLineId())
+    b.nameInput.setTextColorToWhite()
+    b.nameInput.setInputHint("New storyline")
+    b.nameInput.setToRobotoBold()
     b.nameInput.showInputField()
+
 
     b.nameInput.setContentFunc {
         storyLine.name = it
@@ -114,6 +119,7 @@ fun popCreateStoryLine(from: View) {
                 Helper.toast("please enter a name for the Storyline", from.context)
             }
             else -> {
+                storyLine.name = b.nameInput.content.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT)
                 FireStoryLines.add(storyLine, from.context)
                 pop.dismiss()
             }

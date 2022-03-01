@@ -7,7 +7,7 @@ import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Word
 
 object ListHelper {
-    fun setWordList(selectedWordList: List<Word>, liveWordList: MutableLiveData<List<Word>>) {
+    fun setWordList(selectedWordList: List<Word>, liveWordList: MutableLiveData<List<Word>>, plusAny: Boolean = false )  {
         val wordList = Main.wordsList.value!!.toMutableList()
         for(w in wordList) {
             w.selected = selectedWordList.contains(w)
@@ -15,8 +15,19 @@ object ListHelper {
         Log.i("wordList", "selectedWordList is $selectedWordList")
 
         val newList = selectedWordList + wordList.sortedBy { w -> w.text }.sortedBy { w -> w.selected }.toMutableList()
-        liveWordList.value = newList.toMutableList()
+        var anyList = newList.toMutableList()
+        if(plusAny) {
+
+            val any = anyList.find { w -> w.text == "Any" }
+            anyList.remove(any!!)
+
+            anyList = (mutableListOf(any) + anyList).toMutableList()
+
+        }
+
+        liveWordList.value = if(!plusAny) newList.toMutableList() else anyList
     }
+
 
     fun handleSelectAndSetFullCharacterList(storyPart: StoryPart, liveList: MutableLiveData<List<Character>> ) {
         val notSelectedList = mutableListOf<Character>()
@@ -26,5 +37,15 @@ object ListHelper {
         }
         liveList.value = notSelectedList
     }
+
+    fun checkIfCharacterSelected(list: List<Character>): Boolean {
+        var selected = false
+        for(c in list) {
+            if(c.selected) selected = true; break
+        }
+        return selected
+    }
+
+
 
 }

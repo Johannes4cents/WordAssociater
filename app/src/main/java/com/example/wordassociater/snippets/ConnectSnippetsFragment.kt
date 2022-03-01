@@ -16,7 +16,6 @@ import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.firestore.FireStats
-import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.utils.Helper
 
 class ConnectSnippetsFragment: Fragment() {
@@ -47,7 +46,6 @@ class ConnectSnippetsFragment: Fragment() {
         }
 
         b.characterBtn.setOnClickListener {
-            Pop(b.characterBtn.context).characterRecyclerConnectSnippets(b.characterBtn, newSnippet.getCharacters())
         }
     }
 

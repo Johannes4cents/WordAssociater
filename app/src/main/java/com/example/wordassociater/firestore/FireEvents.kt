@@ -1,10 +1,16 @@
 package com.example.wordassociater.firestore
 
+import android.content.Context
 import com.example.wordassociater.fire_classes.Event
+import com.example.wordassociater.utils.Helper
 
 object FireEvents {
-    fun add(event: Event) {
-        FireLists.eventsList.document(event.id.toString()).set(event)
+    fun add(event: Event, context: Context? = null) {
+        FireLists.eventsList.document(event.id.toString()).set(event).addOnSuccessListener {
+            if(context != null) {
+                Helper.toast("Event: ${event.content} added", context)
+            }
+        }
     }
 
     fun update(id: Long, fieldName: String, value: Any) {

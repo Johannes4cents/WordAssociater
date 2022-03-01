@@ -6,29 +6,34 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.wordassociater.databinding.DateBinding
+import com.example.wordassociater.fire_classes.Event
 import com.example.wordassociater.fire_classes.Snippet
+import com.example.wordassociater.firestore.FireEvents
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.utils.Date
 import com.example.wordassociater.utils.StoryPart
 
 class DateHolder(context: Context, attributeSet: AttributeSet): ConstraintLayout(context, attributeSet) {
-    val b = DateBinding.inflate(LayoutInflater.from(context), this, true)
-    lateinit var date: Date
-    lateinit var storyPart: StoryPart
+    private val b = DateBinding.inflate(LayoutInflater.from(context), this, true)
+    private lateinit var date: Date
+    private lateinit var storyPart: StoryPart
+    private var newEvent = false
+    var popFromView: View = b.root
 
     init {
     }
 
-    fun setDateHolder(date:Date, storyPart: StoryPart) {
+    fun setDateHolder(date:Date, storyPart: StoryPart, newEvent: Boolean = false, popFromView: View? = null) {
         this.date = date
         this.storyPart = storyPart
+        if(popFromView != null) this.popFromView = popFromView
         setClickListener()
         setContent()
     }
 
     private fun setClickListener() {
         b.root.setOnClickListener {
-            popDateSelector(b.root, date, ::onDateSelected)
+            popDateSelector(popFromView, date, ::onDateSelected)
         }
     }
 
@@ -51,6 +56,9 @@ class DateHolder(context: Context, attributeSet: AttributeSet): ConstraintLayout
         setContent()
         when(storyPart) {
             is Snippet -> FireSnippets.update(storyPart.id, "date", date)
+            is Event -> {
+                if(!newEvent) FireEvents.update(storyPart.id, "date", date)
+            }
         }
 
     }

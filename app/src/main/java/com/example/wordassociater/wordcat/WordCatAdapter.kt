@@ -11,7 +11,7 @@ import com.example.wordassociater.databinding.HolderWordCatListBinding
 import com.example.wordassociater.fire_classes.WordCat
 
 class WordCatAdapter(val type: Type, private val onCatSelected: (wordCat: WordCat) -> Unit): ListAdapter<WordCat, RecyclerView.ViewHolder>(WordCatDiff()) {
-    enum class Type { BTN, List, SINGLEPICK }
+    enum class Type { BTN, List, SINGLEPICK, ALLOPTIONS }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val btnHolder = WordCatButtonHolder(HolderWordCatBinding.inflate(LayoutInflater.from(parent.context)), onCatSelected)
         val listHolder = WordCatListHolder(type, HolderWordCatListBinding.inflate(LayoutInflater.from(parent.context)), onCatSelected)
@@ -20,6 +20,7 @@ class WordCatAdapter(val type: Type, private val onCatSelected: (wordCat: WordCa
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(type == Type.BTN) (holder as WordCatButtonHolder).onBind(getItem(position))
+        else if( type == Type.ALLOPTIONS)
         else (holder as WordCatListHolder).onBind(getItem(position))
 
     }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@color/snippetsLite"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/btnLeft"
+        android:padding="2dp"
+        android:layout_width="60dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="2dp"
+        android:src="@drawable/back_icon" />
+
+    <ImageView
+        android:visibility="invisible"
+        android:id="@+id/btn1"
+        android:padding="10dp"
+        android:layout_weight="1"
+        android:src="@drawable/icon_nuw"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        />
+
+    <ImageView
+        android:visibility="invisible"
+        android:id="@+id/btn2"
+        android:src="@drawable/icon_word"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:padding="15dp"
+        />
+    <ImageView
+        android:visibility="invisible"
+        android:padding="10dp"
+        android:layout_weight="1"
+        android:id="@+id/btn3"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:src="@drawable/icon_dramaturgy" />
+
+    <ImageView
+        android:visibility="invisible"
+        android:layout_weight="1"
+        android:id="@+id/btn4"
+        android:padding="10dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:src="@drawable/icon_character" />
+
+    <ImageView
+        android:padding="10dp"
+        android:layout_weight="1"
+        android:id="@+id/btn5"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:src="@drawable/icon_pin_unselected" />
+
+    <ImageView
+        android:visibility="invisible"
+        android:id="@+id/btnRight"
+        android:padding="5dp"
+        android:layout_width="60dp"
+        android:layout_height="45dp"
+        android:src="@drawable/arrow_right" />
+
+</LinearLayout>

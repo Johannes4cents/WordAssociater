@@ -37,7 +37,7 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
 
-            android:src="@drawable/btn_save_strain"
+            android:src="@drawable/btn_save"
             />
     </LinearLayout>
 

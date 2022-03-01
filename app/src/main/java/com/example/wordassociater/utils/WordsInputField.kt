@@ -20,7 +20,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.InputFieldWordsBinding
-import com.example.wordassociater.fire_classes.Dialogue
 import com.example.wordassociater.fire_classes.Nuw
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Word
@@ -62,6 +61,10 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         this.storyPart = storyPart
     }
 
+    fun setHintInTextField(hint: String) {
+        b.textField.text = hint
+    }
+
     fun setInputTypeNumbers() {
         b.inputField.inputType = InputType.TYPE_CLASS_NUMBER
     }
@@ -69,6 +72,16 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     fun setToRobotoBold() {
         val typeFace: Typeface? = ResourcesCompat.getFont(b.root.context, R.font.roboto_bold)
         b.inputField.typeface = typeFace
+    }
+
+    fun setTextColorToWhite() {
+        b.inputField.setTextColor(b.root.resources.getColor(R.color.white))
+        b.textField.setTextColor(b.root.resources.getColor(R.color.white))
+        b.inputField.setHintTextColor(b.root.resources.getColor(R.color.white))
+    }
+
+    fun setInputHint(hint: String) {
+        b.inputField.hint = hint
     }
 
     fun setMaxInput(maxInput: Int) {
@@ -106,10 +119,6 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
             }
         }
 
-    }
-
-    fun setHint(hint: String) {
-        b.inputField.hint = hint
     }
 
     fun setOnEnterFunc(onEnter: (content: String) -> Unit) {
@@ -245,10 +254,10 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 updateList()
                 if(onEnterFunc != null) {
+                    Log.i("eventProb", "onKeyListenerCalled")
                     saveInput()
                     onEnterFunc!!(content)
                 }
-
                 if(hideOnEnter) saveInput()
 
                 return@OnKeyListener true
@@ -266,6 +275,8 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         Main.outsideEditClicked.observe(context as LifecycleOwner) {
             if(checkOutsideEditClick) {
                 saveInput()
+                if(onEnterFunc != null) onEnterFunc!!(content)
+                if(takeContentFunc != null) takeContentFunc!!(content)
                 Log.i("focusTest", "outside Edit Clicked")
             }
         }
@@ -342,7 +353,6 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
             storyPart!!.nuwList.add(nuw.id)
             when(storyPart) {
                 is Snippet -> FireSnippets.update(storyPart!!.id, "nuwList", storyPart!!.nuwList)
-                is Dialogue -> FireDialogue.update(storyPart!!.id, "nuwList", storyPart!!.nuwList)
             }
             FireNuws.update(nuw.id, "usedIn", nuw.usedIn)
             FireNuws.update(nuw.id, "usedAmount", nuw.usedAmount)

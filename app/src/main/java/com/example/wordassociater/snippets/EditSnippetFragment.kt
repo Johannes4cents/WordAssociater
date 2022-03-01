@@ -16,10 +16,12 @@ import com.example.wordassociater.databinding.FragmentEditSnippetBinding
 import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.firestore.FireChars
 import com.example.wordassociater.firestore.FireSnippets
+import com.example.wordassociater.firestore.FireStoryLines
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.popCharacterSelector
 import com.example.wordassociater.popups.popNuwsEdit
 import com.example.wordassociater.popups.popSearchWord
+import com.example.wordassociater.popups.popSelectStoryLine
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.ListHelper
 
@@ -27,6 +29,7 @@ class EditSnippetFragment: Fragment() {
     lateinit var b : FragmentEditSnippetBinding
     lateinit var charAdapter: CharacterAdapter
     private val liveWordList = MutableLiveData<List<Word>>()
+    private val liveStoryLineList = MutableLiveData<List<StoryLine>>()
     // Character
     private val characterList = MutableLiveData<List<Character>>()
     companion object {
@@ -41,6 +44,9 @@ class EditSnippetFragment: Fragment() {
         b = FragmentEditSnippetBinding.inflate(inflater)
         ListHelper.handleSelectAndSetFullCharacterList(snippet, characterList)
         setWordList()
+        setCharListOnOpen()
+        setStorylineListonOpen()
+        setStoryLineImage()
         setClickListener()
         setWordsInput()
         setRecycler()
@@ -54,37 +60,77 @@ class EditSnippetFragment: Fragment() {
         b.snippetInput.setTextField(snippet.content)
     }
 
+    private fun setStoryLineImage() {
+        val selectedStoryLine = mutableListOf<StoryLine>()
+        for (sl in liveStoryLineList.value!!) {
+            if(sl.selected) selectedStoryLine.add(sl)
+        }
+        if(selectedStoryLine.isNotEmpty()) {
+            b.topBar.btn5.setImageResource(selectedStoryLine[0].getIcon())
+        }
+        else {
+            b.topBar.btn5.setImageResource(R.drawable.icon_story)
+        }
+    }
+
 
     private fun setWordList() {
         ListHelper.setWordList(snippet.getWords(), liveWordList)
     }
 
+    private fun setCharListOnOpen() {
+        val charList = Main.characterList.value!!.toMutableList()
+        for(c in charList) {
+            if(snippet.characterList.contains(c.id)) c.selected = true
+        }
+        characterList.value = charList
+    }
+
+    private fun setStorylineListonOpen() {
+        val storyLineList = Main.storyLineList.value!!.toMutableList()
+        for(sl in storyLineList) {
+            if(snippet.storyLineList.contains(sl.id)) sl.selected = true
+        }
+        liveStoryLineList.value = storyLineList
+    }
+
     private fun setClickListener() {
-        b.topBar.setSaveButton {
+        b.topBar.setRightButton {
             saveSnippet()
             findNavController().navigate(R.id.action_editSnippetFragment_to_snippetFragment)
         }
 
-        b.topBar.setBackButton {
+        b.topBar.setLeftBtn {
             snippet.wordList = oldSnippet.wordList
             snippet.characterList = oldSnippet.characterList
             findNavController().navigate(R.id.action_editSnippetFragment_to_snippetFragment)
         }
 
-        b.topBar.setCharacterButton {
-            popCharacterSelector(b.topBar.characterImage, characterList, ::handleCharacterSelected)
+        b.topBar.setBtn4 {
+            setCharListOnOpen()
+            popCharacterSelector(b.topBar.btn4, characterList, ::handleCharacterSelected)
         }
 
-        b.topBar.setWordButton {
+        b.topBar.setBtn2 {
             setWordList()
-            popSearchWord(b.topBar.wordsImage, ::handleWordClick , liveWordList)
+            popSearchWord(b.topBar.btn2, ::handleWordClick , liveWordList)
         }
 
-        b.topBar.setNuwButton {
+        b.topBar.setBtn1 {
             b.snippetInput.getNuwsForPopup { liveList, onUpgradeClicked, onDirtClicked, onPotatoClicked ->
-                popNuwsEdit(b.topBar.nuwImage, liveList, onUpgradeClicked, onDirtClicked, onPotatoClicked, ::addNuwWordToSnippet )
+                popNuwsEdit(b.topBar.btn1, liveList, onUpgradeClicked, onDirtClicked, onPotatoClicked, ::addNuwWordToSnippet )
             }
         }
+
+        b.topBar.setBtn5 {
+            popSelectStoryLine(b.topBar.btn5, ::onStoryLineSelected, liveStoryLineList, fromMiddle = false)
+        }
+    }
+
+    private fun onStoryLineSelected(storyLine: StoryLine) {
+        storyLine.selected = !storyLine.selected
+        liveStoryLineList.value = Helper.getResubmitList(storyLine, liveStoryLineList.value!!)
+        setStoryLineImage()
     }
 
     private fun addNuwWordToSnippet(nuw: Nuw) {
@@ -116,6 +162,16 @@ class EditSnippetFragment: Fragment() {
                 word.decreaseWordUsed()
                 FireWords.update(word.id, "snippetsList", word.snippetsList)
                 Log.i("deselectTest", "word.strainsList after = ${word.strainsList}")
+            }
+        }
+    }
+
+    private fun handleStoryLineDeselected() {
+        for(storylineId in oldSnippet.storyLineList) {
+            if(!snippet.storyLineList.contains(storylineId)) {
+                val storyLine = Main.getStoryLine(storylineId)
+                storyLine!!.snippetList.remove(snippet.id)
+                FireStoryLines.update(storyLine.id, "snippetList", storyLine.snippetList)
             }
         }
     }
@@ -161,6 +217,8 @@ class EditSnippetFragment: Fragment() {
             else {
                 if(snippet.characterList.contains(c.id)) {
                     snippet.characterList.remove(c.id)
+                    c.snippetsList.remove(c.id)
+                    FireChars.update(c.id, "snippetsList", c.snippetsList)
                 }
             }
         }
@@ -172,12 +230,27 @@ class EditSnippetFragment: Fragment() {
                 FireWords.update(w.id, "snippetsList", w.snippetsList)
             }
         }
+
+        saveStoryLines()
+        handleStoryLineDeselected()
         Log.i("nuws", "snippet nuwlsit is: ${snippet.nuwList}")
         FireSnippets.add(snippet, context)
         characterList.value = mutableListOf()
         WordConnection.connect(snippet)
         handleWordDeselected()
         handleCharacterDeselected()
+    }
+
+    private fun saveStoryLines() {
+        for (storyLine in liveStoryLineList.value!!) {
+            if(storyLine.selected && !snippet.storyLineList.contains(storyLine.id)) {
+                snippet.storyLineList.add(storyLine.id)
+            }
+            if(!storyLine.selected) {
+                snippet.storyLineList.remove(storyLine.id)
+            }
+        }
+        FireSnippets.update(snippet.id, "storyLineList", snippet.storyLineList)
     }
 
 

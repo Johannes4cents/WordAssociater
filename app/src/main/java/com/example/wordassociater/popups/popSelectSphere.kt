@@ -30,7 +30,7 @@ fun popSelectSphere(view: View, sphereList: MutableLiveData<List<Sphere>?>, hand
             if (it != null) {
                 for(sphere in it) {
                     val sphereHolder = HolderSphereBinding.inflate(LayoutInflater.from(b.root.context), null, false)
-                    sphereHolder.checkbox.setImageResource(if(sphere.selected) R.drawable.checked_box else R.drawable.unchecked_box)
+                    sphereHolder.checkbox.setImageResource(if(sphere.selected) R.drawable.checked_box else R.drawable.checkbox_unchecked)
                     sphereHolder.sphereName.text = sphere.name
                     sphereHolder.iconSphere.setImageResource(sphere.getColor())
                     sphereHolder.root.setOnClickListener {

@@ -16,4 +16,8 @@ object FireWordCats {
     fun update(id: Long, fieldName: String, value: Any){
         FireLists.wordCatList.document(id.toString()).update(fieldName, value)
     }
+
+    fun delete(id: Long) {
+        FireLists.wordCatList.document(id.toString()).delete()
+    }
 }

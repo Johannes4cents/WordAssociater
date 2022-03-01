@@ -12,6 +12,7 @@ import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.firestore.FireStoreListener
 import com.example.wordassociater.utils.CommonWord
 import com.example.wordassociater.utils.Language
+import com.example.wordassociater.utils.StoryPart
 
 
 class Main : AppCompatActivity() {
@@ -42,12 +43,22 @@ class Main : AppCompatActivity() {
 
         val outsideEditClicked = MutableLiveData<Unit>()
 
+
+
         fun getWordConnection(id: Long): WordConnection? {
             return wordConnectionsList.find { wc -> wc.id == id }
         }
 
         fun getCommonWord(language: Language, text: String): CommonWord? {
             return getCommonWordsListReference(language).value?.find { cm -> cm.text == text }
+        }
+
+        fun getEvent(id: Long): Event? {
+            return eventList.value!!.find { e -> e.id == id }
+        }
+
+        fun getProse(id: Long): Prose? {
+            return proseList.value!!.find { p -> p.id == id}
         }
 
         fun getStoryLine(id: Long): StoryLine? {
@@ -69,6 +80,11 @@ class Main : AppCompatActivity() {
 
         fun getCharacter(id: Long): Character? {
             return characterList.value?.find { c -> c.id == id }
+        }
+
+        fun getStoryPart(id: Long): StoryPart? {
+            val parts = (snippetList.value!! + proseList.value!!+ eventList.value!!).toList()
+            return parts.find { sp -> sp.id == id }
         }
 
         fun getNuw(name: String): Nuw? {

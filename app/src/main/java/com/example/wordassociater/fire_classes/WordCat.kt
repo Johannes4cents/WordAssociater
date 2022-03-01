@@ -1,13 +1,18 @@
 package com.example.wordassociater.fire_classes
 
+import com.example.wordassociater.Main
 import com.example.wordassociater.R
+import com.example.wordassociater.firestore.FireWordCats
+import com.example.wordassociater.firestore.FireWords
 import com.google.firebase.firestore.Exclude
 
 data class WordCat(
         val id: Long = 0,
         val name: String = "",
-        var color: Color = Color.Blue
+        var color: Color = Color.Blue,
+        var wordList: MutableList<Long> = mutableListOf()
 ) {
+    val importance = 5
     var active: Boolean = true
     @Exclude
     var isHeader = false
@@ -15,23 +20,20 @@ data class WordCat(
     @Exclude
     var isSelected = false
 
-    enum class Color {Pink, Blue, Brown, Green, Purple, Grey, Teal, Orange, Red}
+    enum class Color {Pink, Blue, Brown, Green, Purple, Grey, Teal, Orange, Red, Character, Location, Undefined, Event}
 
     @Exclude
-    fun getColor(): Int {
-        return when(color) {
-            Color.Pink -> R.color.wordPink
-            Color.Blue -> R.color.wordBlue
-            Color.Brown -> R.color.wordBrown
-            Color.Green -> R.color.green
-            Color.Purple -> R.color.wordPurple
-            Color.Grey -> R.color.wordGrey
-            Color.Teal -> R.color.wordTeal
-            Color.Orange -> R.color.wordOrange
-            Color.Red -> R.color.wordRed
+    fun delete() {
+        for(w in wordList) {
+            val word = Main.getWord(w)
+            if(word != null) {
+                word.cats.remove(id)
+                if(word.cats.isEmpty()) word.cats.add(0)
+                FireWords.update(word.id, "cats", word.cats)
+            }
         }
+        FireWordCats.delete(id)
     }
-
     @Exclude
     fun getBg(): Int {
         return when(color) {
@@ -44,6 +46,10 @@ data class WordCat(
             Color.Teal -> R.drawable.wordcat_bg_teal
             Color.Orange -> R.drawable.wordcat_bg_orange
             Color.Red -> R.drawable.wordcat_bg_red
+            Color.Character -> R.drawable.wordcat_bg_character
+            Color.Location -> R.drawable.wordcat_bg_location
+            Color.Undefined -> R.drawable.wordcat_bg_undefined
+            Color.Event -> R.drawable.wordcat_bg_event
         }
     }
 

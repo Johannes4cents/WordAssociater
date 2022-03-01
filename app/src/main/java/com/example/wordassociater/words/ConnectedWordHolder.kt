@@ -23,7 +23,6 @@ class ConnectedWordHolder(
         val firstCat = connectedWord.word.getCatsList()[0]
         b.wordName.text = connectedWord.word.text
         b.fieldAmountConnected.text = connectedWord.amount.toString()
-        b.typeInitials.setBackgroundColor(b.root.context.resources.getColor(firstCat.getColor()))
         b.typeInitials.text = firstCat.name.take(3)
     }
 

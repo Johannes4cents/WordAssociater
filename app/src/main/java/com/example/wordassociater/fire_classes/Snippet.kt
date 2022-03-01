@@ -19,11 +19,15 @@ data class Snippet(override var content: String = "",
                    override var nuwList: MutableList<Long> = mutableListOf(),
                    override var storyLineList: MutableList<Long> = mutableListOf(),
                    override var date: Date = Date(0,"May",1000),
+                   var eventList: MutableList<Long> = mutableListOf(),
                    var drama: Drama = Drama.None,
                    override var type: Type = Type.Snippet
 ): StoryPart(id, content, wordList, characterList, nuwList, storyLineList, date, type) {
     @Exclude
     var recyclerHeader = false
+
+    @Exclude
+    var onSnippetClicked : ((snippet:Snippet) -> Unit) ? = null
 
     @Exclude
     fun getCharacters(): List<Character> {
@@ -40,6 +44,23 @@ data class Snippet(override var content: String = "",
             FireSnippets.update(id, "characterList", characterList)
         }
         return chars
+    }
+
+    fun getStoryLines(): List<StoryLine> {
+        val list = mutableListOf<StoryLine>()
+        val toRemoveList = mutableListOf<Long>()
+        for(id in storyLineList) {
+            val sl = Main.getStoryLine(id)
+            if(sl != null) {
+                list.add(sl)
+            } else toRemoveList.add(id)
+        }
+
+        for(id in toRemoveList) {
+            storyLineList.remove(id)
+            FireSnippets.update(this.id, "storyLineList", storyLineList)
+        }
+        return list
     }
 
     @Exclude
@@ -111,6 +132,13 @@ data class Snippet(override var content: String = "",
             snippet.connectedSnippetsList.remove(id)
             FireSnippets.update(snippet.id, "connectedSnippets", snippet.connectedSnippetsList)
         }
+
+        for(storyLine in getStoryLines()) {
+            storyLine.snippetList.remove(id)
+
+        }
+
+
 
         FireSnippets.delete(id)
     }

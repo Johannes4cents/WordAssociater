@@ -9,9 +9,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.character.CharacterAdapter
+import com.example.wordassociater.bars.NewSnippetBar
 import com.example.wordassociater.databinding.HolderWordBinding
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.utils.ListHelper
 
 class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null ): ConstraintLayout(context, attrs) {
     val b = HolderWordBinding.inflate(LayoutInflater.from(context), this, true)
@@ -66,22 +67,28 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
                 c.connectId == word!!.connectId
             }
             if(character != null) {
-                CharacterAdapter.selectedCharacterList.add(character)
-                CharacterAdapter.selectedNameChars.add(character)
-                CharacterAdapter.characterListTrigger.value = Unit
+                val listAlreadyThere = ListHelper.checkIfCharacterSelected(NewSnippetBar.selectedCharacterList.value!!)
+                val charList = if(!listAlreadyThere) Main.characterList.value!!.toMutableList() else NewSnippetBar.selectedCharacterList.value!!.toMutableList()
+                for(c in charList) {
+                    if(c.id == character.id)c.selected = !c.selected
+                }
+                NewSnippetBar.selectedCharacterList.value = charList
             }
         }
     }
 
     private fun deselectCharacter() {
         if(char) {
-            val character = Main.characterList.value?.find { c ->
+            val character = NewSnippetBar.selectedCharacterList.value?.find { c ->
                 c.connectId == word!!.connectId
             }
             if(character != null) {
-                CharacterAdapter.selectedCharacterList.remove(character)
-                CharacterAdapter.selectedNameChars.remove(character)
-                CharacterAdapter.characterListTrigger.value = Unit
+                val listAlreadyThere = ListHelper.checkIfCharacterSelected(NewSnippetBar.selectedCharacterList.value!!)
+                val charList = if(!listAlreadyThere) Main.characterList.value!!.toMutableList() else NewSnippetBar.selectedCharacterList.value!!.toMutableList()
+                for(c in charList) {
+                    if(c.id == character.id)c.selected = !c.selected
+                }
+                NewSnippetBar.selectedCharacterList.value = charList
             }
         }
 

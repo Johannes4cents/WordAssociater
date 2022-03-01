@@ -29,15 +29,16 @@
 
         <ImageView
             android:id="@+id/characterBtn"
+            android:padding="5dp"
             android:layout_width="60dp"
             android:layout_height="45dp"
-            android:src="@drawable/icon_edit_character" />
+            android:src="@drawable/icon_character" />
 
         <ImageView
             android:id="@+id/saveBtn"
             android:layout_width="60dp"
             android:layout_height="45dp"
-            android:src="@drawable/btn_save_strain" />
+            android:src="@drawable/btn_save" />
 
     </LinearLayout>
 

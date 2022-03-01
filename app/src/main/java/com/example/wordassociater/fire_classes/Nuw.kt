@@ -22,12 +22,15 @@ data class Nuw(
 
         @Exclude
         fun upgradeToWord() {
-                if(checkIfWordExists() == null) {
-                        val word = Word()
-                        word.id = FireStats.getWordId()
-                        word.text = text
-                        FireWords.add(word, null)
-                        isWord = true
+                if(text != "Any" && text != "any") {
+                        if(checkIfWordExists() == null) {
+                                val word = Word()
+                                word.id = FireStats.getWordId()
+                                word.text = text
+                                FireWords.add(word, null)
+                                Main.getWordCat(0)?.wordList?.add(word.id)
+                                isWord = true
+                        }
                 }
         }
 

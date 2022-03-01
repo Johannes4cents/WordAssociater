@@ -10,7 +10,7 @@ import com.example.wordassociater.wordcat.WordCatAdapter
 
 fun popSingleSelectWordCat(from: View, onCatSelected: (wordCat: WordCat) -> Unit) {
     val b = PopWordCatBinding.inflate(LayoutInflater.from(from.context), null, false)
-    val pop = Helper.getPopUp(b.root, from, 750,600)
+    val pop = Helper.getPopUp(b.root, from)
 
     fun interceptOnCatSelected(wordCat: WordCat) {
         onCatSelected(wordCat)

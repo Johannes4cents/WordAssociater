@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:src="@drawable/icon_red_x"
+            android:src="@drawable/back_icon"
             />
         <ImageView
             android:id="@+id/btnSave"
@@ -29,7 +29,7 @@
             android:layout_weight="1"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:src="@drawable/btn_save_strain"
+            android:src="@drawable/btn_save"
             />
     </LinearLayout>
 

@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.HolderSnippetBinding
@@ -30,6 +31,10 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
         b.wordsRecycler.initRecycler(MutableLiveData())
         b.wordsRecycler.submitList(snippet.getWords())
         b.dateHolder.setDateHolder(snippet.date, snippet)
+        if(snippet.storyLineList.isNotEmpty()) {
+            b.iconStorylines.setImageResource(Main.getStoryLine(snippet.storyLineList[0])!!.getIcon())
+        }
+
         checkWordList()
 
     }

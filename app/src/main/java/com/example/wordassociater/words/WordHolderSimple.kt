@@ -28,7 +28,7 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
     private fun setContent() {
         b.content.text = word.text
         if(word.imgUrl != "") Glide.with(b.root).load(word.imgUrl).into(b.characterPortrait)
-        if(adapterType == AdapterType.Popup) b.checkbox.setImageResource(if(word.selected) R.drawable.checked_box else R.drawable.unchecked_box)
+        if(adapterType == AdapterType.Popup) b.checkbox.setImageResource(if(word.selected) R.drawable.checked_box else R.drawable.checkbox_unchecked)
         else {
             if(word.cats.isNotEmpty()) {
                 b.checkbox.setImageResource(Main.getWordCat(word.cats[0])!!.getBg())
@@ -47,7 +47,7 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
 
     private fun setClickListener() {
         b.root.setOnClickListener {
-            b.checkbox.setImageResource(if(!word.selected) R.drawable.checked_box else R.drawable.unchecked_box)
+            b.checkbox.setImageResource(if(!word.selected) R.drawable.checked_box else R.drawable.checkbox_unchecked)
             takeWordFunc(word)
         }
 

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.example.wordassociater.utils.WordsInputField
+        android:id="@+id/eventNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/snippets" />
+
+    <com.example.wordassociater.utils.WordsInputField
+        android:id="@+id/eventDescriptionInput"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@color/snippets" />
+
+    <TableLayout
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:background="@color/snippets"
+        android:orientation="vertical">
+
+        <TableRow
+            android:id="@+id/row1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp">
+
+            <ImageView
+                android:id="@+id/explosion"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:padding="12dp"
+                android:src="@drawable/event_explosion" />
+
+            <ImageView
+                android:id="@+id/airplane"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:padding="20dp"
+                android:src="@drawable/event_airplane" />
+
+            <ImageView
+                android:id="@+id/crown"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:padding="17dp"
+                android:src="@drawable/event_crown" />
+        </TableRow>
+
+        <TableRow android:id="@+id/row2">
+
+            <ImageView
+                android:id="@+id/food"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:padding="15dp"
+                android:src="@drawable/event_food" />
+
+            <ImageView
+                android:id="@+id/handshake"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:padding="18dp"
+                android:src="@drawable/event_handshake" />
+
+            <ImageView
+                android:id="@+id/party"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:padding="15dp"
+                android:src="@drawable/event_party" />
+        </TableRow>
+
+        <TableRow android:id="@+id/row3">
+
+            <ImageView
+                android:id="@+id/shield"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:padding="15dp"
+                android:src="@drawable/event_shield" />
+
+            <ImageView
+                android:id="@+id/spy"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:padding="15dp"
+                android:src="@drawable/event_spy" />
+
+            <ImageView
+                android:id="@+id/pistol"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:padding="18dp"
+                android:src="@drawable/event_pistol" />
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#390101" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#230101" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#390101" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottonBtns"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="#5A5A5A"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/back_icon" />
+
+        <com.example.wordassociater.date.DateHolder
+            android:id="@+id/btnDate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/btnSave"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/btn_save" />
+    </LinearLayout>
+</LinearLayout>

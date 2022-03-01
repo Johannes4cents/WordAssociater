@@ -13,6 +13,8 @@ data class Word(
         var snippetsList: MutableList<Long> = mutableListOf(),
         var strainsList: MutableList<Long> = mutableListOf(),
         var dialogueList: MutableList<Long> = mutableListOf(),
+        val eventList: MutableList<Long> = mutableListOf(),
+        val proseList: MutableList<Long> = mutableListOf(),
         var connectId: Long = 0,
         var imgUrl: String = "",
         var spheres: MutableList<Long> = mutableListOf(2),
@@ -49,8 +51,8 @@ data class Word(
         val snippets = mutableListOf<Snippet>()
         val toRemoveIds = mutableListOf<Long>()
         for(l in strainsList) {
-            var strain = Main.getSnippet(l)
-            if(strain != null) snippets.add(strain)
+            var snippet = Main.getSnippet(l)
+            if(snippet != null) snippets.add(snippet)
             else toRemoveIds.add(l)
         }
         for(id in toRemoveIds) {
@@ -58,6 +60,37 @@ data class Word(
             FireWords.update(this.id, "snippetsList", snippetsList)
         }
         return snippets
+    }
+
+    fun getEvents(): List<Event> {
+        val events = mutableListOf<Event>()
+        val toRemoveIds = mutableListOf<Long>()
+        for(l in strainsList) {
+            var event = Main.getEvent(l)
+            if(event != null) events.add(event)
+            else toRemoveIds.add(l)
+        }
+        for(id in toRemoveIds) {
+            eventList.remove(id)
+            FireEvents.update(this.id, "eventList", eventList)
+        }
+        return events
+    }
+
+    @Exclude
+    fun getProse(): List<Prose> {
+        val proseList = mutableListOf<Prose>()
+        val toRemoveIds = mutableListOf<Long>()
+        for(l in strainsList) {
+            var prose = Main.getProse(l)
+            if(prose != null) proseList.add(prose)
+            else toRemoveIds.add(l)
+        }
+        for(id in toRemoveIds) {
+            snippetsList.remove(id)
+            FireWords.update(this.id, "snippetsList", snippetsList)
+        }
+        return proseList
     }
 
     @Exclude
@@ -149,6 +182,17 @@ data class Word(
             }
 
         }
+
+        for(event in getEvents()) {
+            event.wordList.remove(id)
+            FireEvents.update(event.id, "wordList", event.wordList)
+        }
+
+        for(prose in getProse()) {
+            prose.wordList.remove(id)
+            FireProse.update(prose.id, "wordList", prose.wordList)
+        }
+
         FireWords.delete(id)
 
     }
@@ -156,6 +200,8 @@ data class Word(
 
 
     companion object {
+        val any = Word(id = 0, text = "Any")
+
         fun convertToIdList(wordList: List<Word>): MutableList<Long> {
             val idList = mutableListOf<Long>()
             for(w in wordList) idList.add(w.id)

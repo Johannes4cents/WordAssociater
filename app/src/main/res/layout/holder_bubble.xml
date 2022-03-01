@@ -21,7 +21,7 @@
             android:id="@+id/portraitLeft"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/icon_portrait"
+            android:src="@drawable/icon_character"
             />
         <com.example.wordassociater.utils.WordsInputField
             android:gravity="center"
@@ -36,7 +36,7 @@
             android:id="@+id/portraitRight"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/icon_portrait"
+            android:src="@drawable/icon_character"
             />
 
     </LinearLayout>

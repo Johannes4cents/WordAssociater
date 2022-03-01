@@ -157,7 +157,6 @@ class EditDialogueFragment: Fragment() {
 
             handleWordDeselected()
             handleCharacterDeselected()
-            WordConnection.connect(dialogue)
             dialogue = Dialogue(id = FireStats.getStoryPartId())
             findNavController().navigate(R.id.action_editDialogueFragment_to_startFragment)
         }

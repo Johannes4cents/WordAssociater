@@ -62,15 +62,6 @@ data class Bubble(
                 Bubble.Color.Orange -> R.drawable.btn_add_bubble_orange_no_dots
             }
         }
-
-        fun getAddBubbleBg(bubbleColor: Color): Int {
-            return when(bubbleColor) {
-                Bubble.Color.Green -> R.drawable.btn_add_bubble_green
-                Bubble.Color.Blue -> R.drawable.btn_add_bubble_blue
-                Bubble.Color.Yellow -> R.drawable.btn_add_bubble_yellow
-                Bubble.Color.Orange -> R.drawable.btn_add_bubble_orange
-            }
-        }
     }
 
 }

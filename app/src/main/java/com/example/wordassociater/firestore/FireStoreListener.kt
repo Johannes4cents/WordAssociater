@@ -18,7 +18,6 @@ object FireStoreListener {
         getWords()
         getDialogues()
         getBubbles()
-        getCharactersOneTimeForSelectionList()
         getSpheres()
         getSpheresOneTime()
         getWordConnections()
@@ -26,22 +25,8 @@ object FireStoreListener {
         getNuws()
         getCommonWords()
         getStoryLines()
-    }
-
-    private fun addAnyCharacterAndWordToSnippets() {
-        val anyChar = Character(id = 22, name = "Any", connectId = 0)
-        val anyWord = Word(id = 0, text = "Any")
-        FireChars.add(anyChar,null)
-        FireLists.snippetsList.get().addOnSuccessListener { docs ->
-            for(doc in docs) {
-                val item = doc.toObject(Snippet::class.java)
-                item.characterList.add(anyChar.id)
-                item.wordList.add(0)
-                FireSnippets.update(item.id, "characterList", item.characterList)
-                FireSnippets.update(item.id, "wordList", item.wordList)
-            }
-        }
-
+        getEvents()
+        getProse()
     }
 
     private fun getCharacters() {
@@ -50,12 +35,37 @@ object FireStoreListener {
                 val charList = mutableListOf<Character>()
                 for(doc in docs) {
                     val character = doc.toObject(Character::class.java)
-                    character.selected = false
+                    if(character.id != 22L) character.selected = false
                     charList.add(character)
                 }
                 Main.characterList.value = charList
             }
+        }
+    }
 
+    private fun getProse() {
+        FireLists.proseList.addSnapshotListener { docs, error ->
+            if(docs != null) {
+                val proseList = mutableListOf<Prose>()
+                for(doc in docs) {
+                    val prose = doc.toObject(Prose::class.java)
+                    proseList.add(prose)
+                }
+                Main.proseList.value = proseList
+            }
+        }
+    }
+
+    private fun getEvents() {
+        FireLists.eventsList.addSnapshotListener { docs, error ->
+            if(docs != null) {
+                val eventList = mutableListOf<Event>()
+                for(doc in docs) {
+                    val event = doc.toObject(Event::class.java)
+                    eventList.add(event)
+                }
+                Main.eventList.value = eventList
+            }
         }
     }
 
@@ -65,6 +75,7 @@ object FireStoreListener {
                 val storyLines = mutableListOf<StoryLine>()
                 for(doc in docs) {
                     val storyLine = doc.toObject(StoryLine::class.java)
+                    storyLine.selected = false
                     storyLines.add(storyLine)
                 }
 
@@ -142,24 +153,6 @@ object FireStoreListener {
                     if(!Nuw.idList.contains(nuw.id)) Nuw.idList.add(nuw.id)
                 }
                 Main.nuwsList.value = nuwsList
-            }
-        }
-    }
-
-    private fun getCharactersOneTimeForSelectionList() {
-        FireLists.characterList.get().addOnSuccessListener{ docs->
-
-            var randomPerson = Character()
-            if(docs != null) {
-                var charList = mutableListOf<Character>()
-                for(doc in docs) {
-                    val character = doc.toObject(Character::class.java)
-                    character.selected = false
-                    if(character.id != 16L) charList.add(character)
-                    else randomPerson = character
-                }
-            }
-            else {
             }
         }
     }

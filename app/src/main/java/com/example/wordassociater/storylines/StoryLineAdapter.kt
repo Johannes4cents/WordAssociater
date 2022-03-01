@@ -26,8 +26,8 @@ class StoryLineAdapter(
     override fun getItemViewType(position: Int): Int {
         val storyLine = getItem(position)
         return when(storyLine.isHeader) {
-            true -> 2
             false -> 1
+            true -> 2
         }
     }
 

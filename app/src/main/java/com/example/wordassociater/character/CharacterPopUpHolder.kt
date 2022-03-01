@@ -22,7 +22,7 @@ class CharacterPopUpHolder(val b: HolderCharacterPopupBinding): RecyclerView.Vie
         b.characterName.text = character.name
 
         b.buttonSelected.setImageResource(
-                if(character.selected) R.drawable.checked_box else R.drawable.unchecked_box
+                if(character.selected) R.drawable.checked_box else R.drawable.checkbox_unchecked
         )
 
     }

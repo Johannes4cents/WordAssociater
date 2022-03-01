@@ -71,7 +71,7 @@
             android:id="@+id/saveBtn"
             android:layout_width="60dp"
             android:layout_height="45dp"
-            android:src="@drawable/btn_save_strain" />
+            android:src="@drawable/btn_save" />
     </LinearLayout>
     <RadioGroup
         android:id="@+id/radioGroup"

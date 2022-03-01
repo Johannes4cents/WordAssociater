@@ -2,7 +2,6 @@ package com.example.wordassociater.wordcat
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
@@ -52,8 +51,7 @@ class WordCatRecycler(context: Context, attributeSet: AttributeSet): RecyclerVie
 
     private fun setObserver(liveList: MutableLiveData<List<WordCat>?>) {
         liveList.observe(context as LifecycleOwner) {
-            Log.i("wordCat", "setObserver called")
-            val sortedList = it?.sortedBy { wc -> wc.active }
+            val sortedList = it?.sortedBy { wc -> wc.name }?.sortedBy { wc -> wc.importance }
             val header = WordCat(0, "Manage")
             header.isHeader = true
             if(it != null) {

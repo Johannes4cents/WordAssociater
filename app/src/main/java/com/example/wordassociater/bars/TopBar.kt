@@ -12,10 +12,11 @@ import com.example.wordassociater.databinding.BarTopBarBinding
 
 class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = BarTopBarBinding.inflate(LayoutInflater.from(context), this, true)
-    val characterImage = b.btnCharacter
-    val nuwImage = b.btnNuws
-    val wordsImage = b.btnWord
-    val dramaImage = b.btnDrama
+    val btn1 = b.btn1
+    val btn2 = b.btn2
+    val btn3 = b.btn3
+    val btn4 = b.btn4
+    val btn5 = b.btn5
     private var selectedView: MutableLiveData<View> = MutableLiveData<View>()
     private var showIconSelected = false
 
@@ -28,87 +29,100 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
     }
 
     fun showLeftText(text: String) {
-        b.btnBack.visibility = View.GONE
+        b.btnLeft.visibility = View.GONE
         b.leftText.visibility = View.VISIBLE
         b.leftText.text = text
 
     }
 
-    fun setNuwButton(func: () -> Unit) {
-        b.btnNuws.setOnClickListener {
-            selectedView.value = b.btnNuws
+    fun setLeftBtn(func: () -> Unit) {
+        b.btnLeft.setOnClickListener {
+            selectedView.value = b.btnLeft
             func()
         }
     }
 
-    fun setNuwIconAndVisibility(icon: Int, visible: Boolean) {
-        b.btnNuws.setImageResource(icon)
-        b.btnNuws.visibility = if(visible) View.VISIBLE else View.GONE
+    fun setLeftBtnIconAndVisibility(icon: Int, visible: Boolean) {
+        b.btnLeft.setImageResource(icon)
+        b.btnLeft.visibility = if(visible) View.VISIBLE else View.GONE
     }
 
-    fun setBackButton(func: () -> Unit) {
-        b.btnBack.setOnClickListener {
-            selectedView.value = b.btnBack
+
+    fun setBtn2(func: () -> Unit) {
+        b.btn2.setOnClickListener {
+            selectedView.value = b.btn2
             func()
         }
     }
 
-    fun setBackIconAndVisibility(icon: Int, visible: Boolean) {
-        b.btnBack.setImageResource(icon)
-        b.btnBack.visibility = if(visible) View.VISIBLE else View.GONE
+    fun setBtn2IconAndVisibility(icon: Int, visible: Boolean) {
+        b.btn2.setImageResource(icon)
+        b.btn2.visibility = if(visible) View.VISIBLE else View.GONE
     }
 
-    fun setSaveButton(func: () -> Unit) {
-        b.btnSave.setOnClickListener {
-            selectedView.value = b.btnSave
+    fun setBtn1(func: () -> Unit) {
+        b.btn1.setOnClickListener {
+            selectedView.value = b.btn1
             func()
         }
     }
 
-    fun setSaveIconAndVisibility(icon: Int, visible: Boolean) {
-        b.btnSave.setImageResource(icon)
-        b.btnSave.visibility = if(visible) View.VISIBLE else View.GONE
+    fun setBtn1IconAndVisibility(icon: Int, visible: Boolean) {
+        b.btn1.setImageResource(icon)
+        b.btn1.visibility = if(visible) View.VISIBLE else View.GONE
     }
 
-    fun setCharacterButton(func: () -> Unit) {
-        b.btnCharacter.setOnClickListener {
-            selectedView.value = b.btnCharacter
+    fun setBtn3(func: () -> Unit) {
+        b.btn3.setOnClickListener {
+            selectedView.value = b.btn3
             func()
         }
     }
 
-    fun setCharacterIconAndVisibility(icon: Int, visible: Boolean) {
-        b.btnCharacter.setImageResource(icon)
-        b.btnCharacter.visibility = if(visible) View.VISIBLE else View.GONE
+    fun setBtn3IconAndVisibility(icon: Int, visible: Boolean) {
+        b.btn3.setImageResource(icon)
+        b.btn3.visibility = if(visible) View.VISIBLE else View.GONE
     }
 
-    fun setWordButton(func: () -> Unit) {
-        b.btnWord.setOnClickListener {
-            selectedView.value = b.btnWord
+    fun setBtn4(func: () -> Unit) {
+        b.btn4.setOnClickListener {
+            selectedView.value = b.btn4
             func()
         }
     }
 
-    fun setWordIconAndVisibility(icon: Int, visible: Boolean) {
-        b.btnWord.setImageResource(icon)
-        b.btnWord.visibility = if(visible) View.VISIBLE else View.GONE
+    fun setBtn4IconAndVisibility(icon: Int, visible: Boolean) {
+        b.btn4.setImageResource(icon)
+        b.btn4.visibility = if(visible) View.VISIBLE else View.GONE
     }
 
-    fun setDramaButton(func: () -> Unit) {
-        b.btnDrama.setOnClickListener {
-            selectedView.value = b.btnDrama
+    fun setBtn5(func: () -> Unit) {
+        b.btn5.setOnClickListener {
+            selectedView.value = b.btn5
             func()
         }
     }
 
-    fun setDramaIconAndVisibility(icon: Int, visible: Boolean) {
-        b.btnDrama.setImageResource(icon)
-        b.btnDrama.visibility = if(visible) View.VISIBLE else View.GONE
+    fun setBtn5IconAndVisibility(icon: Int, visible: Boolean) {
+        b.btn4.setImageResource(icon)
+        b.btn4.visibility = if(visible) View.VISIBLE else View.GONE
+    }
+
+    fun setRightButton(func: () -> Unit) {
+        b.btnRight.setOnClickListener {
+            selectedView.value = b.btnRight
+            func()
+        }
+    }
+
+    fun setRightBtnIconAndVisibility(icon: Int, visible: Boolean) {
+        b.btnRight.setImageResource(icon)
+        b.btnRight.visibility = if(visible) View.VISIBLE else View.GONE
     }
 
     private fun setObserver() {
         selectedView.observe(context as LifecycleOwner) {
-            val viewList = listOf(b.btnBack,nuwImage, wordsImage, dramaImage, characterImage, b.btnSave)
+            val viewList = listOf(b.btnLeft,btn1, btn2, btn3, btn4, b.btnRight)
             if(showIconSelected) {
                 for(v in viewList) {
                     v.setBackgroundColor(if(v == selectedView) b.root.resources.getColor(R.color.lightYellow) else b.root.resources.getColor(R.color.white))

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_marginTop="4dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="4dp"
+    >
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:padding="8dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/filter_icon"
+            />
+
+        <TextView
+            android:fontFamily="@font/roboto_bold"
+            android:layout_weight="4"
+            android:id="@+id/filterName"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/checkbox"
+            android:layout_marginStart="4dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/checkbox_unchecked"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+</LinearLayout>

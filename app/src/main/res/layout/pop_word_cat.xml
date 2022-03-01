@@ -2,22 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="left"
-    android:background="#ffffff"
+    android:background="@color/snippets"
     android:orientation="vertical"
-    android:layout_width="100dp"
-    android:layout_height="wrap_content">
-    <ImageView
-        android:id="@+id/btnBack"
-        android:src="@drawable/back_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        />
+    android:layout_width="140dp"
+    android:layout_height="200dp">
     <androidx.recyclerview.widget.RecyclerView
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:id="@+id/wordCatRecycler"
         android:minHeight="50dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="140dp"
+        android:layout_height="160dp"/>
 
 
 </LinearLayout>

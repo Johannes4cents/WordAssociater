@@ -28,4 +28,5 @@
     <color name="lightYellow">#FFFDBC</color>
     <color name="popGrey">#D6D6D6</color>
     <color name="snippets">#353535</color>
+    <color name="snippetsLite">#FF4A4A4A</color>
 </resources>

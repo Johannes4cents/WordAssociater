@@ -102,6 +102,25 @@
     </TableLayout>
 
     <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:background="#390101"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <View
+            android:background="#230101"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+        <View
+            android:background="#390101"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:background="#5A5A5A"
         android:id="@+id/bottonBtns"
         android:layout_width="match_parent"
@@ -116,7 +135,7 @@
         <ImageView
             android:layout_weight="1"
             android:id="@+id/btnSave"
-            android:src="@drawable/btn_save_strain"
+            android:src="@drawable/btn_save"
             android:layout_width="100dp"
             android:layout_height="30dp"/>
     </LinearLayout>

@@ -3,6 +3,7 @@ package com.example.wordassociater.bars
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View.OnKeyListener
@@ -11,6 +12,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
+import com.example.wordassociater.R
 import com.example.wordassociater.databinding.BarSearchBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Word
@@ -28,9 +30,21 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
         onChangeListener()
     }
 
+    fun setHint(hint: String) {
+        b.searchInput.hint = hint
+    }
+
+    fun setGravityToCenter() {
+        b.searchInput.gravity = Gravity.CENTER
+    }
+
+    fun setTextColorToWhite() {
+        b.searchInput.setTextColor(b.root.resources.getColor(R.color.white))
+        b.searchInput.setHintTextColor(b.root.resources.getColor(R.color.white))
+    }
 
     private fun setKeyListener() {
-        b.searchStrainsInput.setOnKeyListener(OnKeyListener { v, keyCode, event ->
+        b.searchInput.setOnKeyListener(OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 updateList()
                 return@OnKeyListener true
@@ -45,7 +59,7 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
     }
 
     private fun onChangeListener() {
-        b.searchStrainsInput.doOnTextChanged { text, start, before, count ->
+        b.searchInput.doOnTextChanged { text, start, before, count ->
             if(text != null) {
                 updateList()
             }
@@ -53,7 +67,7 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
     }
 
     private fun updateList() {
-        var newWords = b.searchStrainsInput.text.split("\\s".toRegex()).toMutableList()
+        var newWords = b.searchInput.text.split("\\s".toRegex()).toMutableList()
         var strippedWords = mutableListOf<String>()
         for(w in newWords) {
             if(w.isNotEmpty()) strippedWords.add(Helper.stripWord(w))

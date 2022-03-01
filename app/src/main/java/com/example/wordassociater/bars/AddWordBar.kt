@@ -127,12 +127,16 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
 
             if(takesWordFunc == null) {
                 if(!Helper.checkIfWordExists(newWord, context)) {
-                    val connectId = FireStats.getCharConnectId()
-                    handleCharacter(connectId, newWord)
-                    handleWordLinear(newWord)
-                    FireWords.add(newWord, context)
-                    AddStuffBar.newWordInputOpen.value = false
-
+                    if(newWord.text != "Any" && newWord.text != "any") {
+                        val connectId = FireStats.getCharConnectId()
+                        handleCharacter(connectId, newWord)
+                        handleWordLinear(newWord)
+                        FireWords.add(newWord, context)
+                        AddStuffBar.newWordInputOpen.value = false
+                    }
+                    else {
+                        Helper.toast("Add any word. It can be any but this one", context)
+                    }
                 }
             }
             else {
@@ -145,12 +149,16 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
     }
     private fun handleCharacter(connectId: Long, newWord: Word) {
         if(selectedWordCat.name == "Character") {
-            val character = Character(
-                    id =  FireStats.getCharId(),
-                    name = b.wordInput.text.toString(),
-                     connectId = connectId)
-            FireChars.add(character, context)
-            newWord.connectId = connectId
+            if(b.wordInput.text.toString() != "Any" && b.wordInput.text.toString() != "any") {
+                val character = Character(
+                        id =  FireStats.getCharId(),
+                        name = b.wordInput.text.toString(),
+                        connectId = connectId)
+                FireChars.add(character, context)
+                newWord.connectId = connectId
+            }
+            else Helper.toast("A girl says a name. Any name but any", context)
+
         }
     }
 

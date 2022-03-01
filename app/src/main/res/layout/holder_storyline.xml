@@ -8,10 +8,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <ImageView
-        android:padding="5dp"
         android:id="@+id/storyIcon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:src="@drawable/storyline_bones"
         />
 
@@ -27,12 +26,11 @@
         />
 
     <ImageView
-        android:visibility="gone"
-        android:padding="5dp"
         android:id="@+id/checkbox"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/unchecked_box"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/storyline_selected"
+        android:layout_marginEnd="4dp"
         />
 
 </LinearLayout>

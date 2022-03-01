@@ -38,9 +38,16 @@
             android:layout_width="0dp"
             android:layout_height="25dp"/>
 
+        <ImageView
+            android:id="@+id/iconStorylines"
+            android:layout_marginEnd="4dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_story" />
+
         <com.example.wordassociater.buttons.StrainLayerButton
             android:layout_marginEnd="4dp"
-            android:id="@+id/strainLayerButton"
+            android:id="@+id/layer_button"
             android:layout_width="30dp"
             android:layout_height="30dp"/>
     </LinearLayout>
@@ -67,7 +74,7 @@
             android:layout_marginStart="4dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/icon_red_x" />
+            android:src="@drawable/icon_delete" />
 
         <TextView
             android:layout_weight="1"

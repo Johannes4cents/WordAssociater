@@ -51,7 +51,7 @@
             android:id="@+id/deleteBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/icon_red_x"
+            android:src="@drawable/icon_delete"
             />
     </LinearLayout>
 

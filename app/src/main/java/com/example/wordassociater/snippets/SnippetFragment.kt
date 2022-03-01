@@ -34,12 +34,13 @@ class SnippetFragment: Fragment() {
         setClickListener()
         setObserver()
         setSearchBar()
+        b.layerButton
         return b.root
     }
 
     private fun handleLayerButton() {
-        b.strainLayerButton.setClickListener()
-        b.strainLayerButton.currentLayer.observe(context as LifecycleOwner) {
+        b.layerButton.setClickListener()
+        b.layerButton.currentLayer.observe(context as LifecycleOwner) {
             var filteredList = Main.snippetList.value?.filter { snippet -> snippet.layer >= it }?.sortedBy { s -> s.id }?.reversed()
             snippetAdapter.submitList(filteredList)
         }
@@ -51,6 +52,10 @@ class SnippetFragment: Fragment() {
     }
 
     private fun setSearchBar() {
+
+        b.searchSnippetsInput.setHint("Search")
+        b.searchSnippetsInput.setTextColorToWhite()
+        b.searchSnippetsInput.setGravityToCenter()
         b.searchSnippetsInput.getSnippets {
             if(it.isEmpty()) snippetAdapter.submitList(Main.snippetList.value?.sortedBy { s -> s.id }?.reversed())
             else snippetAdapter.submitList(it.sortedBy { s -> s.id }.reversed())
@@ -65,7 +70,11 @@ class SnippetFragment: Fragment() {
     }
 
     private fun setClickListener() {
-        b.backBtn.setOnClickListener {
+        b.btnFilter.setOnClickListener {
+
+        }
+
+        b.pinBar.setOnClickListener {
             ViewPagerFragment.comingFrom = Page.Start
             findNavController().navigate(R.id.action_snippetFragment_to_startFragment)
         }

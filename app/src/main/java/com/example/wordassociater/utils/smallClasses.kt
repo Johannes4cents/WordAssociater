@@ -14,7 +14,7 @@ open class StoryPart(
         open var date: Date,
         open var type: Type
         ) {
-    enum class Type { Snippet, Event, Dialogue, Prose }
+    enum class Type { Snippet, Event, Prose, Header }
     @Exclude
     var isStoryPartHeader = false
 
@@ -30,6 +30,7 @@ open class StoryPart(
         return words
     }
 
+
     companion object {
         fun getIdList(wordsList: MutableList<StoryPart>): List<Long> {
             var idList = mutableListOf<Long>()
@@ -38,8 +39,17 @@ open class StoryPart(
             }
             return idList
         }
+        fun getListFromIds(wordsList: List<Long>): List<StoryPart> {
+            var storyParts = mutableListOf<StoryPart>()
+            for(id in wordsList) {
+                val sp = Main.getStoryPart(id)
+                if(sp != null) storyParts.add(sp)
+            }
+            return storyParts
+        }
     }
 }
+
 
 class CommonWord(val text: String = "",val language: Language = Language.German, val type: Type = Type.Very ) {
     enum class Type { Very, Somewhat, Uncommon}

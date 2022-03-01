@@ -18,7 +18,7 @@ class CharacterSelectDialogueHolder(
     }
 
     private fun setContent() {
-        b.buttonSelected.setImageResource(if(character.selected) R.drawable.checked_box else R.drawable.unchecked_box)
+        b.buttonSelected.setImageResource(if(character.selected) R.drawable.checked_box else R.drawable.checkbox_unchecked)
         b.characterName.text = character.name
         Glide.with(b.root.context).load(character.imgUrl).into(b.characterPortrait)
     }

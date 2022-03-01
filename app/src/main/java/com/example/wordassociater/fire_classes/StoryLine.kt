@@ -8,15 +8,16 @@ data class StoryLine(
         var name: String = ""
 ) {
     var wordsList: MutableList<Word> = mutableListOf()
-    var snippetList: MutableList<Snippet> = mutableListOf()
-    var eventList: MutableList<Event> = mutableListOf()
+    var snippetList: MutableList<Long> = mutableListOf()
+    var eventList: MutableList<Long> = mutableListOf()
     var icon: Icon = Icon.Planet
     var description: String = ""
 
     enum class Icon { Knife, Planet, Bones, Heart, Fire, Eye, Friends, Letter, Money, Hospital, Science, Computer}
-
     @Exclude
     var isHeader = false
+    @Exclude
+    var selected = false
 
     @Exclude
     fun getIcon(): Int {
@@ -36,7 +37,16 @@ data class StoryLine(
         }
     }
 
-    @Exclude
-    var selected = false
+    companion object {
+        fun getIdList(list: List<StoryLine>): List<Long> {
+            val idList = mutableListOf<Long>()
+            for(sl in list) {
+                idList.add(sl.id)
+            }
+            return idList
+        }
+    }
+
+
 
 }

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@color/snippets"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/toggleLinear"
+        android:background="@color/white"
+        android:gravity="start|center"
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+        <TextView
+            android:id="@+id/toggleDescription"
+            android:textColor="@color/black"
+            android:text="Toggle Bar Color"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:id="@+id/btnToggleBarColor"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/snippets"
+            android:layout_margin="5dp"
+            android:layout_width="0dp"
+            android:layout_height="25dp">
+            <TextView
+                android:textColor="@color/white"
+                android:text="Dark"
+                android:id="@+id/toggleText"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/white"
+            android:text="Content"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.example.wordassociater.display_filter.DisplayFilterRecycler
+            android:id="@+id/contentOptionRecycler"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/white"
+            android:text="Bars"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.example.wordassociater.display_filter.DisplayFilterRecycler
+            android:id="@+id/barOptionRecycler"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textColor="@color/white"
+            android:text="Icons"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.example.wordassociater.display_filter.DisplayFilterRecycler
+            android:id="@+id/iconOptionRecycler"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+</LinearLayout>

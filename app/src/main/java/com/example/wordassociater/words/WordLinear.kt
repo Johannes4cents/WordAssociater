@@ -35,8 +35,9 @@ class WordLinear(context: Context, attributeSet: AttributeSet): LinearLayout(con
             var tries = 0
             var randomWord : Word? = null
             while(tries < 200 && (
-                            randomWord == null || WordLinear.wordList.contains(randomWord) || !Helper.checkIfWordInRightSphere(randomWord))) {
-                randomWord = Main.wordsList.value?.filter { w -> w.cats.contains(wordCat.id) }?.random()
+                            randomWord == null || wordList.contains(randomWord) || !Helper.checkIfWordInRightSphere(randomWord))) {
+                val catWords = Main.wordsList.value?.filter { w -> w.cats.contains(wordCat.id) }
+                if(catWords?.isNotEmpty() == true) randomWord = catWords.random()
                 tries++
             }
             if(randomWord != null && !Helper.checkIfWordInRightSphere(randomWord)) randomWord = null
