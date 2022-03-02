@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.BarSearchBinding
+import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.Helper
@@ -28,6 +29,8 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
     init {
         setKeyListener()
         onChangeListener()
+        setObserver()
+
     }
 
     fun setHint(hint: String) {
@@ -112,6 +115,12 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
                 }
             }
             takeSnippetsFunc(foundSnippets)
+        }
+    }
+
+    private fun setObserver() {
+        DisplayFilter.barColorDark.observe(context as LifecycleOwner) {
+            b.root.setBackgroundColor(if(it) b.root.context.resources.getColor(R.color.snippetsLite) else b.root.context.resources.getColor(R.color.white))
         }
     }
 

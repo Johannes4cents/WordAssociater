@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
     android:orientation="vertical"
     android:layout_width="35dp"
     android:layout_height="wrap_content">
@@ -8,15 +9,17 @@
     <View
         android:id="@+id/storyPartLine"
         android:visibility="gone"
+        android:layout_marginEnd="8dp"
         android:background="@color/wordBlue"
         android:layout_width="match_parent"
-        android:layout_height="4dp"/>
+        android:layout_height="2dp"/>
 
     <ImageView
         android:id="@+id/eventImage"
-        android:padding="5dp"
-        android:src="@drawable/event_pistol"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:src="@drawable/event_food"
         android:layout_width="35dp"
-        android:layout_height="35dp"/>
+        android:layout_height="25dp"/>
 
 </LinearLayout>

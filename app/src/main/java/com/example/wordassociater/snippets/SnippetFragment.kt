@@ -70,9 +70,6 @@ class SnippetFragment: Fragment() {
     }
 
     private fun setClickListener() {
-        b.btnFilter.setOnClickListener {
-
-        }
 
         b.pinBar.setOnClickListener {
             ViewPagerFragment.comingFrom = Page.Start

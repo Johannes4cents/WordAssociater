@@ -9,6 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.BarTopBarBinding
+import com.example.wordassociater.display_filter.DisplayFilter
 
 class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = BarTopBarBinding.inflate(LayoutInflater.from(context), this, true)
@@ -128,6 +129,10 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
                     v.setBackgroundColor(if(v == selectedView) b.root.resources.getColor(R.color.lightYellow) else b.root.resources.getColor(R.color.white))
                 }
             }
+        }
+
+        DisplayFilter.barColorDark.observe(context as LifecycleOwner) {
+            b.root.setBackgroundColor(if(it) b.root.context.resources.getColor(R.color.snippetsLite) else b.root.context.resources.getColor(R.color.white))
         }
     }
 }

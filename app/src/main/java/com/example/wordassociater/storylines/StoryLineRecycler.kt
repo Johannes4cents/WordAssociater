@@ -6,6 +6,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wordassociater.R
+import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.StoryLine
 
 class StoryLineRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(context, attributeSet) {
@@ -40,6 +42,10 @@ class StoryLineRecycler(context: Context, attributeSet: AttributeSet): RecyclerV
                 storyLineAdapter.notifyDataSetChanged()
             }
 
+        }
+
+        DisplayFilter.barColorDark.observe(context as LifecycleOwner) {
+            setBackgroundColor(if(it) resources.getColor(R.color.snippets) else resources.getColor(R.color.white))
         }
     }
 

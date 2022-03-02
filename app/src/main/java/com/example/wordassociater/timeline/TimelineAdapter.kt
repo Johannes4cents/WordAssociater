@@ -79,7 +79,8 @@ class StoryPartDiff: DiffUtil.ItemCallback<StoryPart>() {
                         oldItem.characterList == newItem.characterList &&
                         oldItem.date == newItem.date &&
                         oldItem.wordList == newItem.wordList &&
-                        oldItem.storyLineList == newItem.storyLineList
+                        oldItem.storyLineList == newItem.storyLineList &&
+                        oldItem.date == newItem.date
                 )
     }
 

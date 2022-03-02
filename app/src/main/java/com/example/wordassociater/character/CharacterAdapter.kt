@@ -14,7 +14,8 @@ import com.example.wordassociater.fire_classes.Character
 class CharacterAdapter(
         var mode: Mode,
         val characterList : List<Character>? = null,
-        val selectFunc: ((char: Character) -> Unit)? = null
+        val selectFunc: ((char: Character) -> Unit)? = null,
+        val fromStory: Boolean = false
 )
     : ListAdapter<Character, RecyclerView.ViewHolder>(CharacterDiff()) {
     public enum class Mode { MAIN, LIST, PREVIEW, UPDATE, CONNECTSNIPPETS}
@@ -27,7 +28,7 @@ class CharacterAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if(mode != Mode.PREVIEW) CharacterHolder(HolderCharacterBinding.inflate(LayoutInflater.from(parent.context)))
-        else CharacterHolderPreview(HolderCharacterPreviewBinding.inflate(LayoutInflater.from(parent.context)))
+        else CharacterHolderPreview(HolderCharacterPreviewBinding.inflate(LayoutInflater.from(parent.context)), fromStory)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

@@ -27,6 +27,12 @@ object FireStats {
         return number
     }
 
+    fun getFamNumber(): Long {
+        val number = FireLists.stats!!.famNumber + 1
+        FireLists.fireStats.update("famNumber", number)
+        return number
+    }
+
     fun getWordCatId(): Long {
         val number = FireLists.stats!!.wordCatNumber + 1
         FireLists.fireStats.update("wordCatNumber", number)

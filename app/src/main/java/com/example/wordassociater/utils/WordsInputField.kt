@@ -292,34 +292,37 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
 
     private fun createNuws(): List<Nuw> {
         val newNuws = mutableListOf<Nuw>()
-        for(string in getContentToList(content)) {
-            if(Main.getCommonWord(Language.German, string) == null) {
-                val nuw = Nuw.getNuw(string)
-                Log.i("comboNuws", "nuw text is ${nuw.text}")
-                val word = nuw.checkIfWordExists()
-                if(word != null) {
-                    nuw.isWord = true
-                    nuw.usedAmount = word.used
-                }
+        if(nuwInput) {
+            for(string in getContentToList(content)) {
+                if(Main.getCommonWord(Language.German, string) == null) {
+                    val nuw = Nuw.getNuw(string)
+                    Log.i("comboNuws", "nuw text is ${nuw.text}")
+                    val word = nuw.checkIfWordExists()
+                    if(word != null) {
+                        nuw.isWord = true
+                        nuw.usedAmount = word.used
+                    }
 
-                if(storyPart != null) {
-                    for(w in storyPart!!.getWordsAsStory()) {
-                        if(Helper.stripWord(w.text).capitalize(Locale.ROOT) == nuw.text || w.synonyms.contains(nuw.text)) {
-                            nuw.isUsed = true
+                    if(storyPart != null) {
+                        for(w in storyPart!!.getWordsAsStory()) {
+                            if(Helper.stripWord(w.text).capitalize(Locale.ROOT) == nuw.text || w.synonyms.contains(nuw.text)) {
+                                nuw.isUsed = true
+                            }
                         }
                     }
-                }
-                var alreadyThere = false
+                    var alreadyThere = false
 
-                for(n in newNuws) {
-                    if(n.text == nuw.text) {
-                        alreadyThere = true
-                        break
+                    for(n in newNuws) {
+                        if(n.text == nuw.text) {
+                            alreadyThere = true
+                            break
+                        }
                     }
+                    if(!alreadyThere) newNuws.add(nuw)
                 }
-                if(!alreadyThere) newNuws.add(nuw)
             }
         }
+
 
         return newNuws
     }

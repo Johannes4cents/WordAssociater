@@ -14,8 +14,8 @@ class WordPreviewRecycler(context: Context, attributeSet: AttributeSet): Recycle
     lateinit var liveList: MutableLiveData<List<Word>>
     lateinit var onWordClicked: (word:Word) -> Unit
 
-    fun initRecycler(liveList: MutableLiveData<List<Word>>) {
-        previewAdapter = WordAdapter(AdapterType.Preview, ::onWordClicked, null)
+    fun initRecycler(liveList: MutableLiveData<List<Word>>,fromStory: Boolean = false) {
+        previewAdapter = WordAdapter(AdapterType.Preview, ::onWordClicked, null, fromStory =  fromStory)
         adapter = previewAdapter
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL ,false)
         this.liveList = liveList
@@ -40,5 +40,7 @@ class WordPreviewRecycler(context: Context, attributeSet: AttributeSet): Recycle
             previewAdapter.submitList(selectedChars)
         }
     }
+
+
 
 }

@@ -56,7 +56,7 @@ data class Nuw(
 
                         // check stems
                         for(stem in w.stems) {
-                                if(text.contains(stem)) {
+                                if(text.contains(stem) && text != stem && !w.synonyms.contains(text)) {
                                         w.synonyms.add(text)
                                         FireWords.update(w.id, "synonyms", w.synonyms)
                                         val sc = SynonymCheck(stem, w.text)

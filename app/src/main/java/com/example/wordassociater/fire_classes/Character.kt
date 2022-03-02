@@ -74,7 +74,7 @@ data class Character(
 
 
         companion object {
-                val any = Character(id= 22, name="Any")
+                val any = Character(id= 22, name="Any", imgUrl = "https://imgur.com/ZYRfiqy.png")
                 fun getIdList(charList: List<Character>): MutableList<Long> {
                         val idList = mutableListOf<Long>()
                         for(c in charList) {

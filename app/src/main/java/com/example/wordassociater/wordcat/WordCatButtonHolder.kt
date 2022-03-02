@@ -9,6 +9,7 @@ import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.HolderWordCatBinding
+import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.firestore.FireWordCats
 import com.example.wordassociater.popups.popWordCatAllOptions
@@ -46,6 +47,10 @@ class WordCatButtonHolder(val b : HolderWordCatBinding, val onCatClicked: (wordC
     private fun setObserver() {
         selectedWordCat.observe(b.root.context as LifecycleOwner) {
             if(Main.inFragment != Frags.START) b.btnImage.setImageResource(if(selectedWordCat.value != wordCat && !wordCat.isHeader) wordCat.getBg() else R.drawable.wordcat_bg_selected)
+        }
+
+        DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
+            b.descriptionText.setTextColor(if(it) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(R.color.black))
         }
     }
 
@@ -88,7 +93,6 @@ class WordCatButtonHolder(val b : HolderWordCatBinding, val onCatClicked: (wordC
             wc.isSelected = Main.activeWordCats.value!!.contains(wc)
         }
     }
-
 
 }
 

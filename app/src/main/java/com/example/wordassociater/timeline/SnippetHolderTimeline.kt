@@ -1,14 +1,18 @@
 package com.example.wordassociater.timeline
 
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.HolderSnippetBinding
+import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Snippet
+import com.example.wordassociater.fire_classes.StoryLine
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.snippets.ConnectSnippetsFragment
@@ -23,17 +27,17 @@ class SnippetHolderTimeline(val b: HolderSnippetBinding, val onSnippetSelected: 
         setClickListener()
         setBackground()
         setRecycler()
+        handleTextColors()
     }
 
     private fun setContent() {
         b.textFieldId.text = snippet.id.toString()
         b.contentPreview.text = snippet.content
-        b.wordsRecycler.initRecycler(MutableLiveData())
-        b.wordsRecycler.submitList(snippet.getWords())
+
         b.dateHolder.setDateHolder(snippet.date, snippet)
-        if(snippet.storyLineList.isNotEmpty()) {
-            b.iconStorylines.setImageResource(Main.getStoryLine(snippet.storyLineList[0])!!.getIcon())
-        }
+        b.storyLineRecycler.visibility = if(snippet.storyLineList.isNotEmpty()) View.VISIBLE else View.GONE
+        Log.i("dateProb", "is date visible? ${b.dateHolder.isVisible}")
+        setObserver()
         checkWordList()
     }
 
@@ -42,6 +46,7 @@ class SnippetHolderTimeline(val b: HolderSnippetBinding, val onSnippetSelected: 
         for(w in snippet.getWords()) {
             wordString += "${w.text} "
         }
+        Log.i("dateProb", "is date visible? last call ${b.dateHolder.isVisible}")
     }
 
     private fun setBackground() {
@@ -73,7 +78,6 @@ class SnippetHolderTimeline(val b: HolderSnippetBinding, val onSnippetSelected: 
                     connectSnippets(SnippetFragment.selectedSnippet!!, snippet)
                 }
             }
-
         }
 
         b.root.setOnClickListener {
@@ -102,10 +106,42 @@ class SnippetHolderTimeline(val b: HolderSnippetBinding, val onSnippetSelected: 
     }
 
     private fun setRecycler() {
-        val adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
+        val adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW, fromStory = true)
         b.characterRecycler.adapter = adapter
-        adapter.submitList(snippet.getCharacters())
+        val notAnyChar = snippet.getCharacters().filter { c -> c.id != 22L }
+        adapter.submitList(notAnyChar)
         if(snippet.characterList.isNotEmpty()) b.characterRecycler.visibility = View.VISIBLE
+
+        val liveList = MutableLiveData<List<StoryLine>>()
+        b.storyLineRecycler.initRecycler(liveList, true)
+        liveList.value = snippet.getStoryLines()
+
+        b.wordsRecycler.visibility = if(snippet.wordList.isEmpty()) View.GONE else View.VISIBLE
+        b.wordsRecycler.initRecycler(MutableLiveData(), fromStory = true)
+        val notAnyWord = snippet.getWords().filter { w -> w.id != 0L }
+        b.wordsRecycler.submitList(notAnyWord)
+    }
+
+    private fun setObserver() {
+        DisplayFilter.observeConnectShown(b.root.context, b.connectBtn)
+        DisplayFilter.observeLinesShown(b.root.context, listOf(b.lineSmall, b.lineBig))
+        DisplayFilter.observeDateShown(b.root.context, b.dateHolder)
+        DisplayFilter.observeContentShown(b.root.context, b.contentPreview)
+        DisplayFilter.observeTitleShown(b.root.context, b.headerText)
+        DisplayFilter.observeCharacterShown(b.root.context, b.characterRecycler)
+        DisplayFilter.observeDeleteShown(b.root.context, b.btnDelete)
+        DisplayFilter.observeWordsShown(b.root.context, b.wordsRecycler)
+        DisplayFilter.observeDateShown(b.root.context, b.dateHolder)
+        DisplayFilter.observeLayerShown(b.root.context, b.layerButton)
+        DisplayFilter.observeStoryLineShown(b.root.context, b.storyLineRecycler)
+    }
+
+    private fun handleTextColors() {
+        DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
+            b.contentPreview.setTextColor(if(it) b.root.resources.getColor(R.color.white) else b.root.resources.getColor(R.color.black))
+            b.headerText.setTextColor(if(it) b.root.resources.getColor(R.color.white) else b.root.resources.getColor(R.color.black))
+            b.root.setBackgroundColor(if(it)b.root.resources.getColor(R.color.snippets) else b.root.resources.getColor(R.color.white))
+        }
     }
 
 }

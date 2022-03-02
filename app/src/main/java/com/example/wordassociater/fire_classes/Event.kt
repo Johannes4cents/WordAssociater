@@ -1,5 +1,6 @@
 package com.example.wordassociater.fire_classes
 
+import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.firestore.*
@@ -61,6 +62,7 @@ class Event(
             val sl = Main.getStoryLine(sl)
             if(sl != null) {
                 sl.eventList.remove(id)
+                Log.i("eventProb", "sl is ${sl.id} and its Found")
                 FireStoryLines.update(sl.id, "eventList", sl.eventList)
             }
         }

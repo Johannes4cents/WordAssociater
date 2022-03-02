@@ -1,6 +1,7 @@
 package com.example.wordassociater.utils
 
 import com.example.wordassociater.Main
+import com.example.wordassociater.R
 import com.example.wordassociater.fire_classes.Word
 import com.google.firebase.firestore.Exclude
 
@@ -17,6 +18,9 @@ open class StoryPart(
     enum class Type { Snippet, Event, Prose, Header }
     @Exclude
     var isStoryPartHeader = false
+
+    @Exclude
+    var index = 0
 
     @Exclude
     fun getWordsAsStory(): MutableList<Word> {
@@ -53,9 +57,20 @@ open class StoryPart(
 
 class CommonWord(val text: String = "",val language: Language = Language.German, val type: Type = Type.Very ) {
     enum class Type { Very, Somewhat, Uncommon}
+
+    companion object {
+        fun getTypeImage(type: Type): Int {
+            return when(type) {
+                Type.Very -> R.drawable.common_type_very
+                Type.Somewhat -> R.drawable.common_type_somewhat
+                Type.Uncommon -> R.drawable.icon_word
+            }
+        }
+    }
 }
 
 class SynonymCheck(val oldWord: String = "", val newWord: String = "")
+class FamCheck(val oldFam: String = "", val newFam: String = "")
 
 enum class Language {German, English}
 

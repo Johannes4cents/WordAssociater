@@ -8,6 +8,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.example.wordassociater.storylines.SimpleStoryLineRecycler
+        android:id="@+id/storyLineRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:gravity="center"
@@ -37,13 +42,6 @@
             android:id="@+id/wordsRecycler"
             android:layout_width="0dp"
             android:layout_height="25dp"/>
-
-        <ImageView
-            android:id="@+id/iconStorylines"
-            android:layout_marginEnd="4dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/icon_story" />
 
         <com.example.wordassociater.buttons.StrainLayerButton
             android:layout_marginEnd="4dp"
@@ -100,6 +98,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/lineSmall"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
         android:layout_width="match_parent"
@@ -116,6 +115,7 @@
         android:layout_height="wrap_content"/>
 
     <View
+        android:id="@+id/lineBig"
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_marginStart="5dp"

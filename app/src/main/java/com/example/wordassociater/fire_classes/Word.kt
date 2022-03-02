@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.*
 import com.google.firebase.firestore.Exclude
+import java.util.*
 
 data class Word(
         var text: String = "",
@@ -17,6 +18,7 @@ data class Word(
         val proseList: MutableList<Long> = mutableListOf(),
         var connectId: Long = 0,
         var imgUrl: String = "",
+        var famList: MutableList<Long> = mutableListOf(),
         var spheres: MutableList<Long> = mutableListOf(2),
         var branchOf: String = "",
         var synonyms: MutableList<String> = mutableListOf(),
@@ -45,6 +47,24 @@ data class Word(
         return catsList
     }
 
+    @Exclude
+    fun getFams(): List<Fam> {
+        val fams = mutableListOf<Fam>()
+        val toRemoveIds = mutableListOf<Long>()
+        for(id in famList) {
+            val fam = Main.getFam(id)
+            if(fam != null) {
+                fams.add(fam)
+            }
+            else toRemoveIds.add(id)
+        }
+
+        for(id in toRemoveIds) {
+            famList.remove(id)
+            FireWords.update(this.id, "famList", famList)
+        }
+        return fams
+    }
 
     @Exclude
     fun getSnippets(): List<Snippet> {
@@ -60,6 +80,10 @@ data class Word(
             FireWords.update(this.id, "snippetsList", snippetsList)
         }
         return snippets
+    }
+
+    fun checkIfFamExists(name: String): Fam? {
+        return getFams().find { f -> f.text.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT) == name.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT) }
     }
 
     fun getEvents(): List<Event> {
@@ -191,6 +215,10 @@ data class Word(
         for(prose in getProse()) {
             prose.wordList.remove(id)
             FireProse.update(prose.id, "wordList", prose.wordList)
+        }
+
+        for(fam in getFams()) {
+            fam.delete()
         }
 
         FireWords.delete(id)

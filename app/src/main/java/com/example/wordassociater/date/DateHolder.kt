@@ -2,6 +2,7 @@ package com.example.wordassociater.date
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -38,6 +39,7 @@ class DateHolder(context: Context, attributeSet: AttributeSet): ConstraintLayout
     }
 
     private fun setContent() {
+        Log.i("dateProb", "inSetContent of Date year is ${date.year}")
         if(date.year < 1800) {
             b.dateLinear.visibility = View.GONE
             b.timeLineIcon.visibility = View.VISIBLE

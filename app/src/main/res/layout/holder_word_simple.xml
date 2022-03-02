@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/snippets"
     android:layout_marginEnd="4dp"
     >
     <LinearLayout
@@ -14,7 +15,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/characterPortrait"
+            android:id="@+id/wordCatIcon"
             android:padding="12dp"
             android:layout_width="45dp"
             android:layout_height="45dp"
@@ -25,7 +26,7 @@
             android:fontFamily="@font/roboto_bold"
             android:layout_weight="4"
             android:id="@+id/content"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>

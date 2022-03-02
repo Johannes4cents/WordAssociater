@@ -10,7 +10,7 @@ data class WordCat(
         val id: Long = 0,
         val name: String = "",
         var color: Color = Color.Blue,
-        var wordList: MutableList<Long> = mutableListOf()
+        var wordList: MutableList<Long> = mutableListOf(),
 ) {
     val importance = 5
     var active: Boolean = true
@@ -20,7 +20,15 @@ data class WordCat(
     @Exclude
     var isSelected = false
 
+    @Exclude
+    var used: Int = 0
+
     enum class Color {Pink, Blue, Brown, Green, Purple, Grey, Teal, Orange, Red, Character, Location, Undefined, Event}
+
+    @Exclude
+    fun countUsed() {
+        used = wordList.count()
+    }
 
     @Exclude
     fun delete() {

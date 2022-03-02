@@ -47,27 +47,46 @@ class TimelineRecycler(context: Context, attributeSet: AttributeSet): RecyclerVi
         selectedWords?.let { makeObserver(it) }
         selectedCharacters?.let { makeObserver(it) }
         whatParts?.let { makeObserver(it) }
+
+        Main.eventList.observe(context as LifecycleOwner) {
+            filterAndSubmitList()
+        }
+
+        Main.snippetList.observe(context as LifecycleOwner) {
+            filterAndSubmitList()
+        }
+
+        Main.proseList.observe(context as LifecycleOwner) {
+            filterAndSubmitList()
+        }
     }
 
     private fun <T>makeObserver(liveData: MutableLiveData<T>) {
         liveData.observe(context as LifecycleOwner) {
-            var storyParts = filteredStoryParts()
-            timelineAdapter.submitList(getHeaderList(storyParts))
-            onStoryPartsDisplayed(storyParts)
+            filterAndSubmitList()
         }
     }
 
+    private fun filterAndSubmitList() {
+        var storyParts = filteredStoryParts()
+        timelineAdapter.submitList(getHeaderList(storyParts))
+        onStoryPartsDisplayed(storyParts)
+    }
+
     private fun getHeaderList(list: List<StoryPart>): List<StoryPart> {
-        var submitList = list
+        var submitList = list.sortedBy { sp -> sp.date.day }.sortedBy { sp -> sp.date.month }.sortedBy { sp -> sp.date.year }
         val header = StoryPart(id = 0, "", mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), Date(), StoryPart.Type.Header)
         header.isStoryPartHeader = true
+
+        //check if at least 1 storyLine is selected
         val activeStoryLines = mutableListOf<StoryLine>()
         for(sl in liveStoryLines!!.value!!) {
             if(sl.selected) activeStoryLines.add(sl)
         }
+        // add the storyLines to the Header for when creating an Event
         header.storyLineList = StoryLine.getIdList(activeStoryLines).toMutableList()
         if(activeStoryLines.isNotEmpty()) {
-            submitList = submitList + listOf(header)
+            submitList = listOf(header) + submitList
         }
         return submitList
     }
@@ -85,14 +104,6 @@ class TimelineRecycler(context: Context, attributeSet: AttributeSet): RecyclerVi
         if(!storyPart.characterList.contains(anyChar.id)) storyPart.characterList.add(anyChar.id)
         if(!storyPart.wordList.contains(anyWord.id)) storyPart.wordList.add(anyWord.id)
     }
-
-    private fun removeAnyCharacterAndWord(storyPart: StoryPart) {
-        storyPart.characterList.remove(22)
-        storyPart.wordList.remove(0)
-
-    }
-
-
 
     private fun filteredStoryParts(): List<StoryPart> {
         var qualifiedParts = getAllStoryParts().toMutableList()
@@ -114,8 +125,6 @@ class TimelineRecycler(context: Context, attributeSet: AttributeSet): RecyclerVi
             }
         }
 
-        Log.i("filterProb" ,"count after liveStoryLine : ${qualifiedParts.count()}")
-
         if(selectedCharacters != null) {
             var parts = qualifiedParts.toList()
             for(sp in parts) {
@@ -130,24 +139,20 @@ class TimelineRecycler(context: Context, attributeSet: AttributeSet): RecyclerVi
             }
         }
 
-        Log.i("filterProb" ,"count after selectedChars : ${qualifiedParts.count()}")
-
         if(selectedWords != null) {
             val parts = qualifiedParts.toList()
             for(sp in parts) {
-                Log.i("filterProb", "does sp contain Any? ${sp.wordList}")
                 var markedForRemoval = true
                 for(word in selectedWords!!.value!!) {
                     if(word.selected && sp.wordList.contains(word.id)) {
+                        Log.i("filterProb", "selected Word is ${word.text}")
                         markedForRemoval = false
                         break
                     }
                 }
-                if(markedForRemoval) qualifiedParts.remove(markedForRemoval)
+                if(markedForRemoval) qualifiedParts.remove(sp)
             }
         }
-
-        Log.i("filterProb" ,"count after selectedWords : ${qualifiedParts.count()}")
 
         if(whatParts != null) {
             val parts = qualifiedParts.toList()
@@ -163,6 +168,7 @@ class TimelineRecycler(context: Context, attributeSet: AttributeSet): RecyclerVi
             }
         }
 
-        return qualifiedParts.sortedBy { sp -> sp.date.year }.sortedBy { sp -> sp.date.getMonthNumber() }.sortedBy { sp -> sp.date.day }
+        return qualifiedParts.sortedBy { sp -> sp.date.day }.sortedBy { sp -> sp.date.month }.sortedBy { sp -> sp.date.year }
     }
+
 }

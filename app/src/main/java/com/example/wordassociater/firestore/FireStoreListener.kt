@@ -43,6 +43,10 @@ object FireStoreListener {
         }
     }
 
+    private fun getFams() {
+
+    }
+
     private fun getProse() {
         FireLists.proseList.addSnapshotListener { docs, error ->
             if(docs != null) {
@@ -248,6 +252,7 @@ object FireStoreListener {
                 val activeWordCats = mutableListOf<WordCat>()
                 for(doc in docs) {
                     val wordCat = doc.toObject(WordCat::class.java)
+                    wordCat.countUsed()
                     wordCatList.add(wordCat)
                     if(wordCat.active) activeWordCats.add(wordCat)
                 }

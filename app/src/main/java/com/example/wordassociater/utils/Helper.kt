@@ -129,7 +129,7 @@ object Helper {
     }
 
     fun stripWord(word: String): String {
-        return word.toLowerCase()
+        return word.toLowerCase(Locale.ROOT)
                 .replace("/", "")
                 .replace("!", "")
                 .replace("/", "")
@@ -143,6 +143,23 @@ object Helper {
                 .replace("'", "")
                 .replace("&", "")
                 .replace("%", "")
+    }
+
+    fun stripWordLeaveWhiteSpace(word: String): String {
+        return word.toLowerCase(Locale.ROOT)
+                .replace("/", "")
+                .replace("!", "")
+                .replace("/", "")
+                .replace("(", "")
+                .replace(")", "")
+                .replace(".", "")
+                .replace(",", "")
+                .replace("%", "")
+                .replace("?", "")
+                .replace("'", "")
+                .replace("&", "")
+                .replace("%", "")
+                .capitalize().trim()
     }
 
     fun contentToWordList(content: String): List<String> {

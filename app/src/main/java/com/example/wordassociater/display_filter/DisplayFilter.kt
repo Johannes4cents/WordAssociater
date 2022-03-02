@@ -2,9 +2,7 @@ package com.example.wordassociater.display_filter
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import android.view.View.OnClickListener
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -35,13 +33,13 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
         val contentShown = MutableLiveData(true)
 
         fun observeTitleShown(context: Context, view: View) {
-            connectShown.observe(context as LifecycleOwner) {
-                view.visibility = if(it) View.VISIBLE else View.GONE
+            titleShown.observe(context as LifecycleOwner) {
+                view.visibility = if(it) View.VISIBLE else View.INVISIBLE
             }
         }
 
         fun observeContentShown(context: Context, view: View) {
-            connectShown.observe(context as LifecycleOwner) {
+            contentShown.observe(context as LifecycleOwner) {
                 view.visibility = if(it) View.VISIBLE else View.GONE
             }
         }
@@ -87,7 +85,7 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
 
         fun observeDateShown(context: Context, date: View) {
             dateShown.observe(context as LifecycleOwner) {
-                if(it) date.visibility = View.GONE else View.VISIBLE
+                date.visibility = if(it) View.VISIBLE else View.INVISIBLE
             }
         }
 
@@ -109,12 +107,7 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
     }
 
     private fun setClickListener() {
-        OnClickListener {
-            Log.i("testen", "test")
-        }
-
         setOnClickListener {
-            Log.i("testen", "test")
             popDisplayFilter(this, filterLiveOptions, ::onOptionSelected)
         }
     }
@@ -125,9 +118,18 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
                 wordsShown.value = !wordsShown.value!!
             }
             FilterOption.Type.CharacterList -> characterShown.value = !characterShown.value!!
-            FilterOption.Type.Date -> dateShown.value = !dateShown.value!!
+            FilterOption.Type.Date -> {
+                dateShown.value = !dateShown.value!!
+            }
             FilterOption.Type.Divider -> linesShown.value = !linesShown.value!!
             FilterOption.Type.BarColorDark -> barColorDark.value = !barColorDark.value!!
+            FilterOption.Type.Delete -> deleteShown.value = !deleteShown.value!!
+            FilterOption.Type.Layer -> layerShown.value = !layerShown.value!!
+            FilterOption.Type.Connect -> connectShown.value = !connectShown.value!!
+            FilterOption.Type.StoryLine -> storyLineShown.value = !storyLineShown.value!!
+            FilterOption.Type.DramaIcon -> dramaShown.value = !dramaShown.value!!
+            FilterOption.Type.Title -> titleShown.value = !titleShown.value!!
+            FilterOption.Type.Content -> contentShown.value = !contentShown.value!!
         }
         handleResubmitList(option)
     }

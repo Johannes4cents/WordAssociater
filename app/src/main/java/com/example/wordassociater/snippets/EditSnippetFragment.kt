@@ -89,7 +89,7 @@ class EditSnippetFragment: Fragment() {
     private fun setStorylineListonOpen() {
         val storyLineList = Main.storyLineList.value!!.toMutableList()
         for(sl in storyLineList) {
-            if(snippet.storyLineList.contains(sl.id)) sl.selected = true
+            sl.selected = snippet.storyLineList.contains(sl.id)
         }
         liveStoryLineList.value = storyLineList
     }
@@ -245,12 +245,17 @@ class EditSnippetFragment: Fragment() {
         for (storyLine in liveStoryLineList.value!!) {
             if(storyLine.selected && !snippet.storyLineList.contains(storyLine.id)) {
                 snippet.storyLineList.add(storyLine.id)
+                storyLine.snippetList.add(snippet.id)
+                FireStoryLines.update(storyLine.id, "snippetList", storyLine.snippetList)
             }
             if(!storyLine.selected) {
                 snippet.storyLineList.remove(storyLine.id)
+                storyLine.snippetList.remove(snippet.id)
+                FireStoryLines.update(storyLine.id, "snippetList", storyLine.snippetList)
             }
         }
         FireSnippets.update(snippet.id, "storyLineList", snippet.storyLineList)
+
     }
 
 

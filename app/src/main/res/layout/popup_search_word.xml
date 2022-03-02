@@ -5,6 +5,29 @@
     android:orientation="vertical"
     android:layout_width="300dp"
     android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/selectAllLinear"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/back_icon" />
+
+        <ImageView
+            android:padding="5dp"
+            android:layout_weight="1"
+            android:id="@+id/btnSelectALl"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/storyline_selected" />
+    </LinearLayout>
+
     <com.example.wordassociater.bars.SearchBar
         android:id="@+id/searchBar"
         android:layout_width="match_parent"

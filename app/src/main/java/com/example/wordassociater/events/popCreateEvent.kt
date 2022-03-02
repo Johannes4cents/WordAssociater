@@ -130,7 +130,6 @@ fun popCreateEvent(from: View, storyLineList : List<Long>) {
         else {
             for(sl in event.getStoryLines()) {
                 sl.eventList.add(event.id)
-                Log.i("eventProb", "sl is ${sl.name}")
                 FireStoryLines.update(sl.id, "eventList", sl.eventList)
             }
             FireEvents.add(event)

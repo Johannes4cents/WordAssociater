@@ -1,15 +1,17 @@
 package com.example.wordassociater.words
 
+import android.view.View
 import androidx.core.view.updatePadding
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.HolderWordSimpleBinding
+import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.AdapterType
 
-class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder(b.root) {
+class WordHolderSimple(val b : HolderWordSimpleBinding, private val fromStory: Boolean = false): RecyclerView.ViewHolder(b.root) {
     private lateinit var word : Word
     private lateinit var takeWordFunc: (word: Word) -> Unit
     private lateinit var adapterType: AdapterType
@@ -23,11 +25,12 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
         this.adapterType = adapterType
         setContent()
         setClickListener()
+        setObserver()
     }
 
     private fun setContent() {
+        if(word.id == 0L) b.root.visibility = View.GONE
         b.content.text = word.text
-        if(word.imgUrl != "") Glide.with(b.root).load(word.imgUrl).into(b.characterPortrait)
         if(adapterType == AdapterType.Popup) b.checkbox.setImageResource(if(word.selected) R.drawable.checked_box else R.drawable.checkbox_unchecked)
         else {
             if(word.cats.isNotEmpty()) {
@@ -53,6 +56,14 @@ class WordHolderSimple(val b : HolderWordSimpleBinding): RecyclerView.ViewHolder
 
         b.checkbox.setOnClickListener {
             if(rightButtonFunc != null) rightButtonFunc!!(word)
+        }
+    }
+
+    private fun setObserver() {
+        if(fromStory) {
+            DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
+                b.content.setTextColor(if(it) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(R.color.black))
+            }
         }
     }
 

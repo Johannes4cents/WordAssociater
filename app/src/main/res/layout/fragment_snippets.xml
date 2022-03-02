@@ -19,12 +19,11 @@
         android:layout_height="50dp"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/btnFilter"
+        <com.example.wordassociater.display_filter.DisplayFilter
+            android:id="@+id/displayFilter"
             android:padding="5dp"
             android:layout_width="60dp"
             android:layout_height="45dp"
-            android:src="@drawable/filter_icon"
             />
         <com.example.wordassociater.bars.SearchBar
             android:id="@+id/searchSnippetsInput"

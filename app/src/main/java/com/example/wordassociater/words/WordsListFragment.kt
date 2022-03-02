@@ -62,7 +62,6 @@ class WordsListFragment: Fragment() {
     private fun setFirstList() {
 
         if(selectedWordCat.value == null) {
-            Log.i("WordsList", "setFirstList called inside if")
             selectedWordCat.value = Main.wordCatsList.value!![1]
         }
     }

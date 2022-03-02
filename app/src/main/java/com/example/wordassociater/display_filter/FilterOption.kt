@@ -12,8 +12,10 @@ data class FilterOption(val name:String, val type: Type, val forWhat: For, val i
 
         private fun createFilter(): List<FilterOption> {
             val filterList = mutableListOf<FilterOption>()
-            val filterTitle = FilterOption("Title", Type.Title, For.Content, R.drawable.icon_content)
+            val filterTitle = FilterOption("Title", Type.Title, For.Content, R.drawable.icon_title)
             filterList.add(filterTitle)
+            val filterContent = FilterOption("Content", Type.Content, For.Content, R.drawable.icon_content)
+            filterList.add(filterContent)
             val filterWordsList = FilterOption("Connected Words", Type.WordsList, For.Bar, R.drawable.icon_word)
             filterList.add(filterWordsList)
             val filterCharacterList = FilterOption("Character List", Type.CharacterList, For.Bar, R.drawable.icon_character)
@@ -30,7 +32,7 @@ data class FilterOption(val name:String, val type: Type, val forWhat: For, val i
             filterList.add(filterLayerIcon)
             val filterDeleteIcon = FilterOption("Delete Icon", Type.Delete, For.Icon, R.drawable.icon_delete)
             filterList.add(filterDeleteIcon)
-            val filterStoryLineIcon = FilterOption("Storyline Icon", Type.StoryLine, For.Icon, R.drawable.icon_story)
+            val filterStoryLineIcon = FilterOption("Storylines", Type.StoryLine, For.Bar, R.drawable.icon_story)
             filterList.add(filterStoryLineIcon)
             val filterDramaIcon = FilterOption("Drama Icon", Type.DramaIcon, For.Icon, R.drawable.icon_dramaturgy)
             filterList.add(filterDramaIcon)

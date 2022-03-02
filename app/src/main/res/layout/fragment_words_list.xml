@@ -7,6 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:background="@color/snippets"
         android:id="@+id/story_bar"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -30,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.example.wordassociater.wordcat.WordCatRecycler
+            android:background="@color/snippets"
             android:layout_weight="1"
             android:id="@+id/wordCatRecycler"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -38,6 +40,7 @@
             android:layout_height="50dp"/>
 
         <TextView
+            android:background="@color/snippets"
             android:gravity="center"
             android:id="@+id/counterWords"
             android:fontFamily="@font/roboto_bold"

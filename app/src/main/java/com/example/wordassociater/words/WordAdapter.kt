@@ -15,13 +15,14 @@ class WordAdapter(
         private val adapterType: AdapterType,
         private val takeWordFunc: (word: Word) -> Unit,
         private val rightButtonFunc: ((word:Word) -> Unit)?,
-        private val onHeaderClicked: ((text: String) -> Unit)? = null)
+        private val onHeaderClicked: ((text: String) -> Unit)? = null,
+        private val fromStory: Boolean = false)
     : ListAdapter<Word, RecyclerView.ViewHolder>(WordDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if(viewType == 1) {
-            if(adapterType == AdapterType.Preview) WordHolderPreview(HolderWordPreviewBinding.inflate(LayoutInflater.from(parent.context)))
-            else WordHolderSimple(HolderWordSimpleBinding.inflate(LayoutInflater.from(parent.context)))
+            if(adapterType == AdapterType.Preview) WordHolderPreview(HolderWordPreviewBinding.inflate(LayoutInflater.from(parent.context)),fromStory)
+            else WordHolderSimple(HolderWordSimpleBinding.inflate(LayoutInflater.from(parent.context)), fromStory)
         }
         else {
             SearchWordsHeader(HeaderSearchWordBinding.inflate(LayoutInflater.from(parent.context)), onHeaderClicked)

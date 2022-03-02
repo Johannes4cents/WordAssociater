@@ -16,6 +16,6 @@ class FilterOptionHolder(val b: HolderFilterOptionBinding, val onOptionClicked: 
         }
 
         b.checkbox.setImageResource(if(filterOption.selected) R.drawable.checked_box else R.drawable.checkbox_unchecked)
-
+        b.optionIcon.setImageResource(filterOption.icon)
     }
 }

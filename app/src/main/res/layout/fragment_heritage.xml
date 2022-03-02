@@ -153,8 +153,8 @@
             android:text="Synonyms:"
             android:textSize="20sp" />
 
-        <com.example.wordassociater.synonyms.SynonymRecycler
-            android:id="@+id/synonymRecycler"
+        <com.example.wordassociater.fams.FamRecycler
+            android:id="@+id/famRecycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>

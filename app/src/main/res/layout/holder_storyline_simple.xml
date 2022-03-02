@@ -1,0 +1,27 @@
+<LinearLayout
+    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/storyLine_Icon"
+        android:padding="2dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/storyline_heart" />
+    <TextView
+        android:id="@+id/storyLineName"
+        android:gravity="center"
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Alle Sterben tod"
+        />
+
+
+</LinearLayout>

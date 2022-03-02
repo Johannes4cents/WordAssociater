@@ -32,6 +32,7 @@ class Main : AppCompatActivity() {
         val storyLineList = MutableLiveData<List<StoryLine>?>(mutableListOf())
         val proseList = MutableLiveData<List<Prose>?>(mutableListOf())
         val eventList = MutableLiveData<List<Event>?>(mutableListOf())
+        val famList = MutableLiveData<List<Fam>?>(mutableListOf())
 
         //commonWOrds
         val commonWordsGerman = MutableLiveData<List<CommonWord>?>()
@@ -59,6 +60,10 @@ class Main : AppCompatActivity() {
 
         fun getProse(id: Long): Prose? {
             return proseList.value!!.find { p -> p.id == id}
+        }
+
+        fun getFam(id:Long): Fam? {
+            return famList.value!!.find { f -> f.id == id }
         }
 
         fun getStoryLine(id: Long): StoryLine? {
