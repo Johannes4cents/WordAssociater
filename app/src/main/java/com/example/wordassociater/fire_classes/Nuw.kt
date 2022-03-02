@@ -1,13 +1,11 @@
 package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.Main
-import com.example.wordassociater.firestore.FireLists
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.utils.FamCheck
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.utils.SynonymCheck
 import com.google.firebase.firestore.Exclude
-import java.util.*
 
 data class Nuw(
         var id: Long = 0,
@@ -26,7 +24,7 @@ data class Nuw(
                         if(checkIfWordExists() == null) {
                                 val word = Word()
                                 word.id = FireStats.getWordId()
-                                word.text = text
+                                word.text = Helper.stripWordLeaveWhiteSpace(text)
                                 FireWords.add(word, null)
                                 Main.getWordCat(0)?.wordList?.add(word.id)
                                 isWord = true
@@ -49,18 +47,19 @@ data class Nuw(
         fun checkIfWordExists(): Word? {
                 var foundWord: Word? = null
                 for(w in Main.wordsList.value!!) {
-                        if(w.synonyms.contains(text) || Helper.stripWord(w.text).capitalize(Locale.ROOT) == text) {
-                                foundWord = w
-                                break
+                        // check fams
+                        for(fam in w.getFams()) {
+                                if(fam.text == Helper.stripWordLeaveWhiteSpace(text)) {
+                                        foundWord = w
+                                }
                         }
-
                         // check stems
                         for(stem in w.stems) {
-                                if(text.contains(stem) && text != stem && !w.synonyms.contains(text)) {
-                                        w.synonyms.add(text)
-                                        FireWords.update(w.id, "synonyms", w.synonyms)
-                                        val sc = SynonymCheck(stem, w.text)
-                                        FireLists.addNewSynonymsToInspect(sc)
+                                if(text.contains(stem) && text != stem && !w.getFamStrings().contains(text)) {
+                                        val fam = Fam(FireStats.getFamNumber(), text)
+                                        w.famList.add(fam.id)
+                                        FireWords.update(w.id, "famList", w.famList)
+                                        FamCheck.addFamCheck(stem, w.text)
                                         foundWord = w
                                         break
                                 }

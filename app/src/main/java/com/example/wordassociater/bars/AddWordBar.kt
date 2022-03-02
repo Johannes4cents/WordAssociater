@@ -13,13 +13,8 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.StartFragment
 import com.example.wordassociater.databinding.BarAddWordBinding
-import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.fire_classes.Sphere
-import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.fire_classes.WordCat
-import com.example.wordassociater.firestore.FireChars
-import com.example.wordassociater.firestore.FireStats
-import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.fire_classes.*
+import com.example.wordassociater.firestore.*
 import com.example.wordassociater.popups.popSelectSphere
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Helper.getIMM
@@ -27,7 +22,7 @@ import com.example.wordassociater.words.WordLinear
 
 class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
     val b = BarAddWordBinding.inflate(LayoutInflater.from(context), this, true)
-    var selectedWordCat = WordCat(1,"Adjective", WordCat.Color.Pink)
+    lateinit var selectedWordCat: WordCat
     var newWord = Word()
     var takesWordFunc : ((word:Word) -> Unit)? = null
 
@@ -41,7 +36,14 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
         handleSphereIconColor()
         setClickListener()
         setObserver()
+        setSelectedWordCat()
 
+    }
+
+    private fun setSelectedWordCat() {
+        for(wc in Main.wordCatsList.value!!) {
+            if(wc.id == 0L) selectedWordCat = wc
+        }
     }
 
     fun handleTakesWordFunc(takesWordFunc : (word : Word) -> Unit) {
@@ -120,17 +122,23 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
     }
 
     private fun addWord() {
-        if(b.wordInput.text.isNotEmpty()) {
-            newWord.text = b.wordInput.text.toString()
+        if(b.wordInput.text.isNotEmpty() ) {
+            newWord.text = Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString())
             if(!newWord.cats.contains(selectedWordCat.id)) newWord.cats.add(selectedWordCat.id)
             newWord.id = FireStats.getWordId()
 
             if(takesWordFunc == null) {
-                if(!Helper.checkIfWordExists(newWord, context)) {
+                val existingWord = Main.getWordByText(newWord.text)
+                if(existingWord == null) {
                     if(newWord.text != "Any" && newWord.text != "any") {
-                        val connectId = FireStats.getCharConnectId()
-                        handleCharacter(connectId, newWord)
+                        //handle special wordCats
+                        val connectId = FireStats.getConnectId()
+                        handleNewCharacter(connectId, newWord)
+                        handleNewLocation(connectId, newWord)
+                        handleNewEvent(connectId, newWord)
+
                         handleWordLinear(newWord)
+                        makeFam(newWord)
                         FireWords.add(newWord, context)
                         AddStuffBar.newWordInputOpen.value = false
                     }
@@ -147,8 +155,51 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
             AddStuffBar.newWordInputOpen.value = false
         }
     }
-    private fun handleCharacter(connectId: Long, newWord: Word) {
-        if(selectedWordCat.name == "Character") {
+
+    private fun makeFam(word: Word) {
+        val fam = Fam(FireStats.getFamNumber(), word.text)
+        word.famList.add(fam.id)
+        fam.word = word.id
+        fam.main = true
+        FireFams.add(fam)
+    }
+
+    private fun handleNewLocation(connectId: Long, newWord: Word) {
+        if(selectedWordCat.type == WordCat.Type.Location) {
+            if(b.wordInput.text.toString() != "Any" && b.wordInput.text.toString() != "any") {
+                val location = Location(
+                        id =  FireStats.getLocationId(),
+                        name = Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString()),
+                        connectId = connectId)
+
+                location.wordList = Word.convertToIdList(WordLinear.selectedWords)
+                FireLocations.add(location, context)
+                newWord.connectId = connectId
+            }
+            else Helper.toast("When you imagine any location. Don't just imagine ANY location", context)
+
+        }
+    }
+
+    private fun handleNewEvent(connectId: Long, newWord: Word) {
+        if(selectedWordCat.type == WordCat.Type.Event) {
+            if(Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString()) != "Any") {
+                val event = Event(
+                        id =  FireStats.getLocationId(),
+                        content = Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString()),
+                        connectId = connectId)
+
+                event.wordList = Word.convertToIdList(WordLinear.selectedWords)
+
+                FireEvents.add(event, context)
+                newWord.connectId = connectId
+            }
+            else Helper.toast("Any event can happen, but which one's on your mind?", context)
+        }
+    }
+
+    private fun handleNewCharacter(connectId: Long, newWord: Word) {
+        if(selectedWordCat.type == WordCat.Type.Character) {
             if(b.wordInput.text.toString() != "Any" && b.wordInput.text.toString() != "any") {
                 val character = Character(
                         id =  FireStats.getCharId(),

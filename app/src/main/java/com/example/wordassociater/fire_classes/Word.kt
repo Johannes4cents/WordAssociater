@@ -12,17 +12,13 @@ data class Word(
         var id: Long = 0,
         var used: Int = 0,
         var snippetsList: MutableList<Long> = mutableListOf(),
-        var strainsList: MutableList<Long> = mutableListOf(),
         var dialogueList: MutableList<Long> = mutableListOf(),
-        val eventList: MutableList<Long> = mutableListOf(),
-        val proseList: MutableList<Long> = mutableListOf(),
+        var eventList: MutableList<Long> = mutableListOf(),
+        var proseList: MutableList<Long> = mutableListOf(),
         var connectId: Long = 0,
         var imgUrl: String = "",
         var famList: MutableList<Long> = mutableListOf(),
         var spheres: MutableList<Long> = mutableListOf(2),
-        var branchOf: String = "",
-        var synonyms: MutableList<String> = mutableListOf(),
-        var rootOf: MutableList<Long> = mutableListOf(),
         var wordConnectionsList: MutableList<Long> = mutableListOf(),
         var stems: MutableList<String> = mutableListOf()
 )
@@ -48,6 +44,20 @@ data class Word(
     }
 
     @Exclude
+    fun getFamStrings(): List<String> {
+        val stringList = mutableListOf<String>()
+        for(fam in getFams()) {
+            stringList.add(fam.text)
+        }
+        return stringList
+    }
+
+    @Exclude
+    fun getMainFam(): Fam? {
+        return getFams().find { f -> f.main }
+    }
+
+    @Exclude
     fun getFams(): List<Fam> {
         val fams = mutableListOf<Fam>()
         val toRemoveIds = mutableListOf<Long>()
@@ -70,7 +80,7 @@ data class Word(
     fun getSnippets(): List<Snippet> {
         val snippets = mutableListOf<Snippet>()
         val toRemoveIds = mutableListOf<Long>()
-        for(l in strainsList) {
+        for(l in snippetsList) {
             var snippet = Main.getSnippet(l)
             if(snippet != null) snippets.add(snippet)
             else toRemoveIds.add(l)
@@ -89,7 +99,7 @@ data class Word(
     fun getEvents(): List<Event> {
         val events = mutableListOf<Event>()
         val toRemoveIds = mutableListOf<Long>()
-        for(l in strainsList) {
+        for(l in eventList) {
             var event = Main.getEvent(l)
             if(event != null) events.add(event)
             else toRemoveIds.add(l)
@@ -103,18 +113,18 @@ data class Word(
 
     @Exclude
     fun getProse(): List<Prose> {
-        val proseList = mutableListOf<Prose>()
+        val pList = mutableListOf<Prose>()
         val toRemoveIds = mutableListOf<Long>()
-        for(l in strainsList) {
+        for(l in proseList) {
             var prose = Main.getProse(l)
-            if(prose != null) proseList.add(prose)
+            if(prose != null) pList.add(prose)
             else toRemoveIds.add(l)
         }
         for(id in toRemoveIds) {
-            snippetsList.remove(id)
-            FireWords.update(this.id, "snippetsList", snippetsList)
+            proseList.remove(id)
+            FireWords.update(this.id, "proseList", snippetsList)
         }
-        return proseList
+        return pList
     }
 
     @Exclude
@@ -145,7 +155,6 @@ data class Word(
             if(wc != null) wcs.add(wc)
             else toRemoveIds.add(id)
         }
-
         return wcs
     }
 
@@ -186,17 +195,6 @@ data class Word(
             FireDialogue.update(dialogue.id, "wordList", dialogue.wordList)
         }
 
-        val rootWord = Main.getWord(branchOf.toLong())
-        if(rootWord != null) {
-            rootWord.rootOf.remove(id)
-            FireWords.update(rootWord.id, "roofOf", rootWord.rootOf)
-        }
-
-        for(w in convertIdListToWord(rootOf)) {
-            w.branchOf = rootOf.toString()
-            FireWords.update(w.id, "branchOf", w.branchOf)
-        }
-
         for(wc in getWordConnections()) {
             val words = Word.convertIdListToWord(wc.wordsList)
             for(w in words){
@@ -223,6 +221,26 @@ data class Word(
 
         FireWords.delete(id)
 
+    }
+
+    fun copyMe(): Word {
+        val copy = Word()
+        copy.text = text
+        copy.cats = cats.toMutableList()
+        copy.id = id
+        copy.used = used
+        copy.snippetsList = snippetsList.toMutableList()
+        copy.dialogueList = dialogueList.toMutableList()
+        copy.eventList = eventList.toMutableList()
+        copy.proseList = proseList.toMutableList()
+        copy.connectId = connectId
+        copy.imgUrl = imgUrl
+        copy.famList = famList.toMutableList()
+        copy.spheres = spheres.toMutableList()
+        copy.wordConnectionsList = wordConnectionsList.toMutableList()
+        copy.stems = stems.toMutableList()
+
+        return copy
     }
 
 

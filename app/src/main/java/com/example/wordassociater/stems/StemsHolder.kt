@@ -1,10 +1,8 @@
 package com.example.wordassociater.stems
 
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderStemBinding
-import com.example.wordassociater.words.HeritageFragment
 
 class StemsHolder(
         val b: HolderStemBinding,
@@ -17,7 +15,6 @@ class StemsHolder(
         b.stemText.setTextField(stem)
         b.stemText.hideOnEnter()
         b.stemText.setCenterGravity()
-        Log.i("saveSte", "StemsHolder word.synonyms are : ${HeritageFragment.word.synonyms}")
         when (stem) {
 
             "stemHeader" -> {

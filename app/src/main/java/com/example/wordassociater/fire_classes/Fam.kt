@@ -14,11 +14,16 @@ data class Fam(
         ) {
     var wordClass: Class = Class.Noun
     var commonWord: CommonWord.Type = CommonWord.Type.Uncommon
-    var isWord: Boolean = false
+    var alreadyWord: Boolean = false
     var word : Long = 0
-    enum class Class(val image: Int) { Verb(R.drawable.word_class_verb), Adjective(R.drawable.word_class_adjective), Noun(R.drawable.word_class_adjective) }
+    var main: Boolean = false
+    var firstOpen = false
+
+    enum class Class(val image: Int) { Verb(R.drawable.word_class_verb), Adjective(R.drawable.word_class_adjective), Noun(R.drawable.word_class_noun) }
     @Exclude
     var isHeader = false
+
+
 
     @Exclude
     fun checkIfCommon(): CommonWord? {
@@ -32,7 +37,7 @@ data class Fam(
         val word = Main.getWordByText(text)
         if(word != null) {
             commonWord = CommonWord.Type.Uncommon
-            isWord = true
+            alreadyWord = true
         }
         return word
     }
@@ -41,6 +46,11 @@ data class Fam(
     fun delete() {
         val word = Main.getWord(word)
         word!!.famList.remove(id)
+        if(main) {
+            val newMainFam = Main.getFam(word.famList[0])
+            newMainFam!!.main = true
+            FireFams.update(newMainFam.id, "main", newMainFam.main)
+        }
         FireWords.update(word.id, "famList", word.famList)
         FireFams.delete(id)
     }

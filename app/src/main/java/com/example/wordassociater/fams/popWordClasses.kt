@@ -1,4 +1,4 @@
-package com.example.wordassociater.synonyms
+package com.example.wordassociater.fams
 
 import android.view.LayoutInflater
 import android.view.View

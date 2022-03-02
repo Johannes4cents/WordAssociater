@@ -157,11 +157,9 @@ class EditSnippetFragment: Fragment() {
             if(!snippet.wordList.contains(wordId)) {
                 val word = Main.getWord(wordId)!!
                 WordConnection.disconnect(word, snippet.id)
-                Log.i("deselectTest", "word.strainsList before = ${word.strainsList}")
                 word.snippetsList.remove(snippet.id)
                 word.decreaseWordUsed()
                 FireWords.update(word.id, "snippetsList", word.snippetsList)
-                Log.i("deselectTest", "word.strainsList after = ${word.strainsList}")
             }
         }
     }

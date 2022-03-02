@@ -3,7 +3,16 @@ package com.example.wordassociater.fire_classes
 import com.example.wordassociater.R
 import com.google.firebase.firestore.Exclude
 
-data class Location(var id: Long, var name: String, var imgUrl: String = "", var image:Image = Image.Island) {
+data class Location(
+        var id: Long = 0,
+        var name: String = "",
+        var connectId: Long = 0
+        ) {
+    var imgUrl: String = ""
+    var image:Image = Image.Island
+    var snippetList: MutableList<Long> = mutableListOf()
+    var wordList: MutableList<Long> = mutableListOf()
+
     enum class Image { House, Car, Forrest, City, Lab, Island, Street, Factory, Apartment}
 
     @Exclude

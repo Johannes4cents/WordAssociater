@@ -8,12 +8,13 @@ import com.google.firebase.firestore.Exclude
 
 data class WordCat(
         val id: Long = 0,
-        val name: String = "",
-        var color: Color = Color.Blue,
-        var wordList: MutableList<Long> = mutableListOf(),
-) {
+        val name: String = "") {
+    var color: Color = Color.Blue
+    var wordList: MutableList<Long> = mutableListOf()
     val importance = 5
     var active: Boolean = true
+    var type: Type = Type.Other
+
     @Exclude
     var isHeader = false
 
@@ -24,6 +25,7 @@ data class WordCat(
     var used: Int = 0
 
     enum class Color {Pink, Blue, Brown, Green, Purple, Grey, Teal, Orange, Red, Character, Location, Undefined, Event}
+    enum class Type {Location, Any, Event, Character, Other}
 
     @Exclude
     fun countUsed() {

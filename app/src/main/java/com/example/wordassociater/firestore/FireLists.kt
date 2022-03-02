@@ -4,7 +4,6 @@ import com.example.wordassociater.fire_classes.Note
 import com.example.wordassociater.fire_classes.Stats
 import com.example.wordassociater.utils.FamCheck
 import com.example.wordassociater.utils.Language
-import com.example.wordassociater.utils.SynonymCheck
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -39,8 +38,8 @@ object FireLists {
 
     var stats: Stats? = Stats()
 
-    fun addNewSynonymsToInspect(sc: SynonymCheck) {
-        db.collection("synonymCheck").document("check").set(sc)
+    fun addNewFamCheck(sc: FamCheck) {
+        db.collection("famCheck").document("check").set(sc)
     }
 
     fun addNewFamsToInspect(famCheck: FamCheck) {

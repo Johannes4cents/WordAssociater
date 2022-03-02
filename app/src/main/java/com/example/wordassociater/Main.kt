@@ -113,7 +113,20 @@ class Main : AppCompatActivity() {
         }
 
         fun getWordByText(text: String): Word? {
-            return wordsList.value?.find { w -> w.text == text }
+            var word: Word? = null
+            for(w in wordsList.value!!) {
+                if(w.text == text) {
+                    word = w
+                    break
+                }
+                for(fam in w.getFams()) {
+                    if(fam.text == text) {
+                        word = w
+                        break
+                    }
+                }
+            }
+            return word
         }
 
         fun getBubble(id: Long): Bubble? {

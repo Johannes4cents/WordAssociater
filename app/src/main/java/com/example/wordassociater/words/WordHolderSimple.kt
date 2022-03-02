@@ -43,7 +43,7 @@ class WordHolderSimple(val b : HolderWordSimpleBinding, private val fromStory: B
             b.checkbox.requestLayout()
         }
 
-        b.synonymsCount.text = word.stems.count().toString()
+        b.stemCount.text = word.stems.count().toString()
         b.idField.text = word.id.toString()
         b.usedOrConnectionsField.text = word.used.toString()
     }

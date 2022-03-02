@@ -30,7 +30,7 @@ class ConnectSnippetsFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Main.inFragment = Frags.CONNECTSNIPPETS
         b = FragmentConnectSnippetsBinding.inflate(inflater)
-        setStrain()
+        setSnippet()
         setContent()
         setClickListener()
         return b.root
@@ -49,7 +49,7 @@ class ConnectSnippetsFragment: Fragment() {
         }
     }
 
-    private fun setStrain() {
+    private fun setSnippet() {
         newSnippet.content = snippetOne.content + " " + snippetTwo.content
         makeWordsList()
         makeCharacterList()

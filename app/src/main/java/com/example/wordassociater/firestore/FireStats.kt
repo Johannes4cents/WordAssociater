@@ -39,7 +39,7 @@ object FireStats {
         return number
     }
 
-    fun getCharConnectId() : Long {
+    fun getConnectId() : Long {
         val number = FireLists.stats!!.connectId + 1
         FireLists.fireStats.update("connectId", number)
         return number

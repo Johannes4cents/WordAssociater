@@ -14,7 +14,6 @@ class WordCatSelector(context: Context, attributeSet: AttributeSet): LinearLayou
 
     fun setCat(onCatSelected : (wordCat: WordCat) -> Unit) {
         this.onCatSelected = onCatSelected
-        b.catName.text = "Adjective"
         setClickListener()
     }
 

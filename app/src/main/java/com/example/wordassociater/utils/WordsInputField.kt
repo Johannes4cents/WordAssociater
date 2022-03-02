@@ -108,7 +108,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
                     firstClick = false
                 }
                 else {
-                    saveInput()
+                    hideInput()
                     if(takeContentFunc != null) takeContentFunc?.let { it1 -> it1(content) }
                     clicked = 0
                     firstClick = true
@@ -186,13 +186,14 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     }
 
     fun showInputField() {
+
         b.inputField.setText(b.inputField.text.toString())
         b.textField.visibility = View.GONE
         b.inputField.visibility = View.VISIBLE
         Helper.takeFocus(b.inputField, context)
     }
 
-    private fun saveInput() {
+    private fun hideInput() {
         b.textField.text = b.inputField.text
         b.inputField.setText(b.textField.text)
         content = b.inputField.text.toString()
@@ -253,12 +254,12 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         b.inputField.setOnKeyListener(OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 updateList()
+                if(hideOnEnter) hideInput()
                 if(onEnterFunc != null) {
                     Log.i("eventProb", "onKeyListenerCalled")
-                    saveInput()
                     onEnterFunc!!(content)
                 }
-                if(hideOnEnter) saveInput()
+
 
                 return@OnKeyListener true
             }
@@ -274,7 +275,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     private fun setOnFocusChange() {
         Main.outsideEditClicked.observe(context as LifecycleOwner) {
             if(checkOutsideEditClick) {
-                saveInput()
+                hideInput()
                 if(onEnterFunc != null) onEnterFunc!!(content)
                 if(takeContentFunc != null) takeContentFunc!!(content)
                 Log.i("focusTest", "outside Edit Clicked")
@@ -296,7 +297,6 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
             for(string in getContentToList(content)) {
                 if(Main.getCommonWord(Language.German, string) == null) {
                     val nuw = Nuw.getNuw(string)
-                    Log.i("comboNuws", "nuw text is ${nuw.text}")
                     val word = nuw.checkIfWordExists()
                     if(word != null) {
                         nuw.isWord = true
@@ -305,7 +305,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
 
                     if(storyPart != null) {
                         for(w in storyPart!!.getWordsAsStory()) {
-                            if(Helper.stripWord(w.text).capitalize(Locale.ROOT) == nuw.text || w.synonyms.contains(nuw.text)) {
+                            if(Helper.stripWordLeaveWhiteSpace(w.text) == nuw.text || w.getFamStrings().contains(nuw.text)) {
                                 nuw.isUsed = true
                             }
                         }

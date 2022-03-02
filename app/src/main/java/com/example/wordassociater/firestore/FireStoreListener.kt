@@ -27,6 +27,7 @@ object FireStoreListener {
         getStoryLines()
         getEvents()
         getProse()
+        getFams()
     }
 
     private fun getCharacters() {
@@ -44,7 +45,16 @@ object FireStoreListener {
     }
 
     private fun getFams() {
-
+        FireLists.famList.addSnapshotListener { docs, error ->
+            if(docs != null) {
+                val famList = mutableListOf<Fam>()
+                for(doc in docs) {
+                    val fam = doc.toObject(Fam::class.java)
+                    famList.add(fam)
+                }
+                Main.famList.value = famList
+            }
+        }
     }
 
     private fun getProse() {

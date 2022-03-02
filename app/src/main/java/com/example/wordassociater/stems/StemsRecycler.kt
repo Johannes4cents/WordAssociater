@@ -1,7 +1,6 @@
 package com.example.wordassociater.stems
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.SwipeToDeleteCallback
-import com.example.wordassociater.words.HeritageFragment
 
 class StemsRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(context, attributeSet) {
     lateinit var stemAdapter: StemAdapter
@@ -28,7 +26,6 @@ class StemsRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(
 
     fun setObserver() {
         stemList.observe(context as LifecycleOwner) {
-            Log.i("saveSte", "StemsRec/ setObserver word.synonyms are : ${HeritageFragment.word.synonyms}")
             val newList = it.toMutableSet()
             newList.remove("stemHeader")
             newList.remove("StemHeader")

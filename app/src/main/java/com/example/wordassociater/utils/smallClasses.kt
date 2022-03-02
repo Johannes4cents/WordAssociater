@@ -3,6 +3,7 @@ package com.example.wordassociater.utils
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.firestore.FireLists
 import com.google.firebase.firestore.Exclude
 
 open class StoryPart(
@@ -69,8 +70,17 @@ class CommonWord(val text: String = "",val language: Language = Language.German,
     }
 }
 
-class SynonymCheck(val oldWord: String = "", val newWord: String = "")
-class FamCheck(val oldFam: String = "", val newFam: String = "")
+
+class FamCheck(val stem: String = "", val newFam: String = "") {
+
+    companion object {
+        fun addFamCheck(stem: String, newFam: String) {
+            val famCheck = FamCheck(stem, newFam)
+            FireLists.addNewFamCheck(famCheck)
+        }
+    }
+
+}
 
 enum class Language {German, English}
 

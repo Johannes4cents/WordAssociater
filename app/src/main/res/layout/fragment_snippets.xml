@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <com.example.wordassociater.buttons.StrainLayerButton
+        <com.example.wordassociater.buttons.LayerButton
             android:layout_marginEnd="4dp"
             android:id="@+id/layer_button"
             android:layout_width="wrap_content"

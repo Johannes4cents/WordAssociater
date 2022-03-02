@@ -1,30 +1,43 @@
 package com.example.wordassociater.fams
 
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.HolderFamBinding
 import com.example.wordassociater.fire_classes.Fam
-import com.example.wordassociater.firestore.FireCommonWords
 import com.example.wordassociater.firestore.FireFams
-import com.example.wordassociater.synonyms.popWordClasses
 import com.example.wordassociater.utils.CommonWord
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.utils.Language
 
 class FamHolder(
         val b: HolderFamBinding,
-        val onHeaderClicked: () -> Unit,
-        private val onFamAdded: (fam: Fam) -> Unit
+        private val onHeaderClicked: () -> Unit,
+        private val onFamAdded: (fam: Fam) -> Unit,
+        private val onUpgradeFam: (fam: Fam) -> Unit,
+        private val onMakeCommonWord: (fam: Fam, type: CommonWord.Type) -> Unit,
 ): RecyclerView.ViewHolder(b.root) {
     lateinit var type: FamRecycler.Type
     lateinit var fam : Fam
     fun onBind(type: FamRecycler.Type, fam: Fam) {
         this.type = type
         this.fam = fam
-        if(fam.isHeader) setHeader()
-        else setFam()
+        when {
+            fam.isHeader -> setHeader()
+            type == FamRecycler.Type.Popup -> setPopUp()
+            else -> setFam()
+        }
+    }
+
+    private fun setPopUp() {
+        b.makeCommonWord.visibility = View.GONE
+        b.makeSomewhatCommonWord.visibility = View.GONE
+        b.btnClass.visibility = View.GONE
+        b.btnUpgrade.visibility = View.GONE
+
+        b.root.setOnClickListener {
+            onFamAdded(fam)
+        }
     }
 
     private fun setHeader() {
@@ -48,11 +61,13 @@ class FamHolder(
 
     private fun setIcons() {
         b.btnClass.setImageResource(fam.getClassImage())
-
+        setCommonWordIcon()
+        fam.checkIfCommon()
         setWordClassIcon()
     }
 
     private fun setCommonWordIcon() {
+
         b.makeCommonWord.setImageResource(when(fam.commonWord) {
             CommonWord.Type.Very -> R.drawable.common_type_very_already_common
             CommonWord.Type.Somewhat -> R.drawable.common_type_somewhat
@@ -76,8 +91,16 @@ class FamHolder(
             b.famText.setCenterGravity()
             b.famText.setContentFunc {
                 fam.text = Helper.stripWordLeaveWhiteSpace(it)
+                Log.i("famProb", "fam.text is ${fam.text}")
             }
-            b.famText.showInputField()
+            if(fam.firstOpen) {
+                fam.firstOpen = false
+                b.famText.showInputField()
+            }
+
+            b.famText.setOnEnterFunc {
+                onFamAdded(fam)
+            }
         }
         if(type == FamRecycler.Type.Popup) {
             b.famText.enableInput(false)
@@ -94,10 +117,16 @@ class FamHolder(
         }
 
         b.makeCommonWord.setOnClickListener {
-            makeCommonWord(CommonWord.Type.Very)
+            onMakeCommonWord(fam, CommonWord.Type.Very)
+            setCommonWordIcon()
         }
 
-        b.makeCommonWord.setOnClickListener {
+        b.makeSomewhatCommonWord.setOnClickListener {
+            onMakeCommonWord(fam, CommonWord.Type.Somewhat)
+            setCommonWordIcon()
+        }
+
+        b.btnUpgrade.setOnClickListener {
 
         }
     }
@@ -105,15 +134,10 @@ class FamHolder(
     private fun onClassPicked(type: Fam.Class) {
         fam.wordClass = type
         FireFams.update(fam.id, "wordClass", fam.wordClass)
+        setWordClassIcon()
     }
 
-    private fun makeCommonWord(type: CommonWord.Type) {
-        val commonWord = CommonWord(Helper.stripWordLeaveWhiteSpace(fam.text), Language.German, type)
-        if(Main.getCommonWord(Language.German, fam.text) == null ) FireCommonWords.add(commonWord)
-        else Helper.toast("Already a common Word", b.root.context)
-        fam.commonWord = type
-        setCommonWordIcon()
-    }
+
 
 
 

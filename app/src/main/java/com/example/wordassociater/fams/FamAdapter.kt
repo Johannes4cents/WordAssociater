@@ -6,9 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wordassociater.Main
 import com.example.wordassociater.databinding.HolderFamBinding
 import com.example.wordassociater.fire_classes.Fam
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.utils.CommonWord
 import com.example.wordassociater.utils.ItemTouchHelperAdapter
 
 class FamAdapter(
@@ -16,10 +18,12 @@ class FamAdapter(
         private val famLiveList: MutableLiveData<List<Fam>>,
         private val word: Word,
         private val onHeaderClicked: () -> Unit,
-        private val takeFamFunc: (fam: Fam) -> Unit
+        private val takeFamFunc: (fam: Fam) -> Unit,
+        private val onUpgradeFam: (fam: Fam) -> Unit,
+        private val onMakeCommonWord: (fam: Fam, type: CommonWord.Type) -> Unit,
 ): ListAdapter<Fam, RecyclerView.ViewHolder>(FamDiff()), ItemTouchHelperAdapter {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return FamHolder(HolderFamBinding.inflate(LayoutInflater.from(parent.context)), onHeaderClicked, takeFamFunc)
+        return FamHolder(HolderFamBinding.inflate(LayoutInflater.from(parent.context)), onHeaderClicked, takeFamFunc, onUpgradeFam, onMakeCommonWord)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -32,8 +36,13 @@ class FamAdapter(
 
     override fun onItemDismiss(position: Int) {
         val item = getItem(position)
-        word.famList.remove(item)
-        famLiveList.value = word.getFams()
+        if(Main.getWord(item.word)!!.famList.count() > 1) {
+            word.famList.remove(item.id)
+
+            item.delete()
+            famLiveList.value = word.getFams()
+        }
+
     }
 }
 
