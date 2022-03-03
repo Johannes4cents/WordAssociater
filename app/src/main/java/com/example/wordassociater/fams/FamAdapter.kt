@@ -37,8 +37,6 @@ class FamAdapter(
     override fun onItemDismiss(position: Int) {
         val item = getItem(position)
         if(Main.getWord(item.word)!!.famList.count() > 1) {
-            word.famList.remove(item.id)
-
             item.delete()
             famLiveList.value = word.getFams()
         }

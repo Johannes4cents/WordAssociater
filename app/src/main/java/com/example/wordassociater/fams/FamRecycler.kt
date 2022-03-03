@@ -2,6 +2,7 @@ package com.example.wordassociater.fams
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -42,8 +43,9 @@ class FamRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(co
     fun setObserver() {
         famList.observe(context as LifecycleOwner) {
             val newList = it.toMutableSet()
+            Log.i("famProb", " famRecycler/ setObserverlist is $it")
             if(type != Type.Popup) {
-                famAdapter.submitList(listOf(makeHeader()) + newList.sortedBy { f -> f.text }.reversed())
+                famAdapter.submitList(listOf(makeHeader()) + newList.sortedBy { f -> f.id }.reversed())
             }
             else {
                 famAdapter.submitList(it)

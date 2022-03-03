@@ -1,5 +1,6 @@
 package com.example.wordassociater.popups
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.MutableLiveData
@@ -31,7 +32,7 @@ fun popFamPicker(from: View, word: Word, onFamPicked: (fam: Fam) -> Unit, famLis
     fun blankUpgrade(fam: Fam) {
 
     }
-
+    Log.i("famProb", "in popSynonymPicker initRecycler")
     b.famRecycler.initRecycler(FamRecycler.Type.Popup, word, liveList, ::blankFunc, ::interceptedOnFamClicked,::blankUpgrade, ::blankCommonWord)
     liveList.value = famList
 }

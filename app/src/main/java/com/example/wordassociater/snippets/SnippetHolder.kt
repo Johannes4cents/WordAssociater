@@ -23,23 +23,17 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
         setClickListener()
         setBackground()
         setRecycler()
+        setBackGroundColorFirstTime()
     }
 
     private fun setContent() {
         b.textFieldId.text = snippet.id.toString()
         b.contentPreview.text = snippet.content
         b.dateHolder.setDateHolder(snippet.date, snippet)
+        b.headerText.text = snippet.header
         b.storyLineRecycler.visibility = if(snippet.storyLineList.isNotEmpty()) View.VISIBLE else View.GONE
         setObserver()
-        checkWordList()
 
-    }
-
-    private fun checkWordList() {
-        var wordString = ""
-        for(w in snippet.getWords()) {
-            wordString += "${w.text} "
-        }
     }
 
     private fun setBackground() {
@@ -112,8 +106,6 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
         adapter.submitList(notAnyChar)
         if(snippet.characterList.isNotEmpty()) b.characterRecycler.visibility = View.VISIBLE
 
-
-
         val liveList = MutableLiveData<List<StoryLine>>()
         b.storyLineRecycler.initRecycler(liveList)
         liveList.value = snippet.getStoryLines()
@@ -137,6 +129,14 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
         DisplayFilter.observeDateShown(b.root.context, b.dateHolder)
         DisplayFilter.observeLayerShown(b.root.context, b.layerButton)
         DisplayFilter.observeStoryLineShown(b.root.context, b.storyLineRecycler)
+        DisplayFilter.observeItemColorDark(b.root.context, b.root,  listOf(b.headerText, b.contentPreview))
+    }
+
+    private fun setBackGroundColorFirstTime() {
+        var dark = DisplayFilter.itemColorDark.value!!
+        b.root.setBackgroundColor(if(dark) b.root.context.resources.getColor(R.color.snippets) else b.root.context.resources.getColor(R.color.white))
+        b.contentPreview.setTextColor(if(dark) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(R.color.black))
+        b.headerText.setTextColor(if(dark) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(R.color.black))
     }
 
 }

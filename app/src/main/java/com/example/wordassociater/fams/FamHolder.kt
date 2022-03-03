@@ -1,6 +1,5 @@
 package com.example.wordassociater.fams
 
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.R
@@ -34,6 +33,9 @@ class FamHolder(
         b.makeSomewhatCommonWord.visibility = View.GONE
         b.btnClass.visibility = View.GONE
         b.btnUpgrade.visibility = View.GONE
+        b.famText.setTextField(fam.text)
+        b.famText.enableInput(false)
+
 
         b.root.setOnClickListener {
             onFamAdded(fam)
@@ -67,14 +69,13 @@ class FamHolder(
     }
 
     private fun setCommonWordIcon() {
-
         b.makeCommonWord.setImageResource(when(fam.commonWord) {
             CommonWord.Type.Very -> R.drawable.common_type_very_already_common
             CommonWord.Type.Somewhat -> R.drawable.common_type_somewhat
             CommonWord.Type.Uncommon -> R.drawable.common_type_very
         })
 
-        if(fam.commonWord == CommonWord.Type.Somewhat) b.makeSomewhatCommonWord.visibility = View.GONE
+        if(fam.commonWord == CommonWord.Type.Somewhat) b.makeSomewhatCommonWord.visibility = View.INVISIBLE
     }
 
     private fun setWordClassIcon() {
@@ -82,34 +83,35 @@ class FamHolder(
     }
 
     private fun setInputField() {
+
+        b.famText.disableNuwInput()
         b.famText.setTextField(fam.text)
+        b.famText.setCenterGravity()
+
         if(type == FamRecycler.Type.List) {
-            b.famText.disableNuwInput()
             b.famText.enableTwiceClickSafety()
-            b.famText.setTextField(fam.text)
             b.famText.hideOnEnter()
-            b.famText.setCenterGravity()
-            b.famText.setContentFunc {
-                fam.text = Helper.stripWordLeaveWhiteSpace(it)
-                Log.i("famProb", "fam.text is ${fam.text}")
-            }
+
             if(fam.firstOpen) {
                 fam.firstOpen = false
                 b.famText.showInputField()
             }
 
             b.famText.setOnEnterFunc {
+                fam.text = Helper.stripWordLeaveWhiteSpace(it)
                 onFamAdded(fam)
             }
         }
         if(type == FamRecycler.Type.Popup) {
             b.famText.enableInput(false)
+
         }
 
     }
 
     private fun setClickListener() {
         b.root.setOnClickListener {
+            fam.text = Helper.stripWordLeaveWhiteSpace(b.famText.content)
             onFamAdded(fam)
         }
         b.btnClass.setOnClickListener {

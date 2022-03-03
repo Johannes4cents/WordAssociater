@@ -55,7 +55,7 @@ data class Nuw(
                         }
                         // check stems
                         for(stem in w.stems) {
-                                if(text.contains(stem) && text != stem && !w.getFamStrings().contains(text)) {
+                                if(text.contains(stem, ignoreCase = true) && text != stem && !w.getFamStrings().contains(text)) {
                                         val fam = Fam(FireStats.getFamNumber(), text)
                                         w.famList.add(fam.id)
                                         FireWords.update(w.id, "famList", w.famList)

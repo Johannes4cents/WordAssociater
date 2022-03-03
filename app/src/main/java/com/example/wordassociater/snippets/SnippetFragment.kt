@@ -1,7 +1,6 @@
 package com.example.wordassociater.snippets
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.databinding.FragmentSnippetsBinding
+import com.example.wordassociater.databinding.HolderSnippetBinding
 import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.utils.Page
 
 class SnippetFragment: Fragment() {
     lateinit var b: FragmentSnippetsBinding
@@ -34,8 +32,15 @@ class SnippetFragment: Fragment() {
         setClickListener()
         setObserver()
         setSearchBar()
-        b.layerButton
+        handleLayerButton()
+        attachSnippetBinding()
         return b.root
+    }
+
+    private fun attachSnippetBinding() {
+        val snippetBinding = HolderSnippetBinding.inflate(layoutInflater, b.pinnedSnippetContainer, true)
+        snippetBinding.root.visibility = View.GONE
+        b.pinBar.takeBindingAndNavController(snippetBinding, findNavController(), R.id.action_snippetFragment_to_editSnippetFragment)
     }
 
     private fun handleLayerButton() {
@@ -52,7 +57,6 @@ class SnippetFragment: Fragment() {
     }
 
     private fun setSearchBar() {
-
         b.searchSnippetsInput.setHint("Search")
         b.searchSnippetsInput.setTextColorToWhite()
         b.searchSnippetsInput.setGravityToCenter()
@@ -63,18 +67,12 @@ class SnippetFragment: Fragment() {
     }
 
     private fun snippetClickedFunc(snippet: Snippet) {
-        Log.i("characterProb", "oldSnippet set")
-        EditSnippetFragment.oldSnippet = snippet.copyMe()
-        EditSnippetFragment.snippet = snippet
-        findNavController().navigate(R.id.action_snippetFragment_to_editSnippetFragment)
+        b.snippetsRecycler.smoothScrollToPosition(0)
+        b.pinBar.attachSnippet(snippet)
     }
 
     private fun setClickListener() {
 
-        b.pinBar.setOnClickListener {
-            ViewPagerFragment.comingFrom = Page.Start
-            findNavController().navigate(R.id.action_snippetFragment_to_startFragment)
-        }
     }
 
     private fun setObserver() {

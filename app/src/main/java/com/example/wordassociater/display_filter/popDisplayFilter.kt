@@ -25,11 +25,23 @@ fun popDisplayFilter(
         onOptionClicked(FilterOption.options.find { o -> o.type == FilterOption.Type.BarColorDark }!!)
     }
 
+    b.btnToggleBarColorItem.setOnClickListener {
+        onOptionClicked(FilterOption.options.find { o -> o.type == FilterOption.Type.ItemColorDark }!!)
+    }
+
     DisplayFilter.barColorDark.observe(from.context as LifecycleOwner) {
         b.toggleDescription.setTextColor(if(it) from.context.resources.getColor(R.color.black) else from.context.resources.getColor(R.color.white))
         b.toggleText.setTextColor(if(!it) from.context.resources.getColor(R.color.black) else from.context.resources.getColor(R.color.white))
         b.toggleLinear.setBackgroundColor(if(it) from.context.resources.getColor(R.color.white) else from.context.resources.getColor(R.color.snippets))
         b.btnToggleBarColor.setBackgroundColor(if(it) from.context.resources.getColor(R.color.snippets) else from.context.resources.getColor(R.color.white))
         b.toggleText.text = if(it) "Dark" else "Light"
+    }
+
+    DisplayFilter.itemColorDark.observe(from.context as LifecycleOwner) {
+        b.toggleDescriptionItem.setTextColor(if(it) from.context.resources.getColor(R.color.black) else from.context.resources.getColor(R.color.white))
+        b.toggleTextItem.setTextColor(if(!it) from.context.resources.getColor(R.color.black) else from.context.resources.getColor(R.color.white))
+        b.toggleLinearItem.setBackgroundColor(if(it) from.context.resources.getColor(R.color.white) else from.context.resources.getColor(R.color.snippets))
+        b.btnToggleBarColorItem.setBackgroundColor(if(it) from.context.resources.getColor(R.color.snippets) else from.context.resources.getColor(R.color.white))
+        b.toggleTextItem.text = if(it) "Dark" else "Light"
     }
 }

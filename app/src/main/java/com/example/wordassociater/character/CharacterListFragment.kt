@@ -44,7 +44,7 @@ class CharacterListFragment: Fragment() {
     }
 
     private fun setClickListener() {
-        b.backButton.setOnClickListener {
+        b.topBar.setLeftBtn {
             ViewPagerFragment.goTopage(Page.Start)
         }
     }

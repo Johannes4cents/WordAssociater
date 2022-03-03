@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.firestore.FireStoreListener
+import com.example.wordassociater.firestore.FireWordCats
 import com.example.wordassociater.utils.CommonWord
 import com.example.wordassociater.utils.Language
 import com.example.wordassociater.utils.StoryPart
@@ -33,10 +34,13 @@ class Main : AppCompatActivity() {
         val proseList = MutableLiveData<List<Prose>?>(mutableListOf())
         val eventList = MutableLiveData<List<Event>?>(mutableListOf())
         val famList = MutableLiveData<List<Fam>?>(mutableListOf())
+        val itemList = MutableLiveData<List<Item>?>(mutableListOf())
 
         //commonWOrds
-        val commonWordsGerman = MutableLiveData<List<CommonWord>?>()
-        val commonWordsEnglish = MutableLiveData<List<CommonWord>?>()
+        val commonWordsVeryGerman = MutableLiveData<List<CommonWord>?>()
+        val commonWordsSomewhatGerman = MutableLiveData<List<CommonWord>?>()
+        val commonWordsVeryEnglish = MutableLiveData<List<CommonWord>?>()
+        val commonWordsSomewhatEnglish = MutableLiveData<List<CommonWord>?>()
 
 
         var wordConnectionsList = mutableListOf<WordConnection>()
@@ -50,8 +54,8 @@ class Main : AppCompatActivity() {
             return wordConnectionsList.find { wc -> wc.id == id }
         }
 
-        fun getCommonWord(language: Language, text: String): CommonWord? {
-            return getCommonWordsListReference(language).value?.find { cm -> cm.text == text }
+        fun getCommonWord(language: Language, text: String, type: CommonWord.Type): CommonWord? {
+            return getCommonWordsListReference(language, type).value?.find { cm -> cm.text == text }
         }
 
         fun getEvent(id: Long): Event? {
@@ -62,6 +66,10 @@ class Main : AppCompatActivity() {
             return proseList.value!!.find { p -> p.id == id}
         }
 
+        fun getItem(id:Long): Item? {
+            return itemList.value!!.find { i -> i.id == id }
+        }
+
         fun getFam(id:Long): Fam? {
             return famList.value!!.find { f -> f.id == id }
         }
@@ -70,7 +78,10 @@ class Main : AppCompatActivity() {
             return storyLineList.value!!.find { s -> s.id == id }
         }
         fun getCommonWordType(language: Language, text: String): CommonWord.Type {
-            val commonWord= getCommonWordsListReference(language).value?.find { cm -> cm.text == text }
+            val allCommonWordsGerman = commonWordsVeryGerman.value!! + commonWordsSomewhatGerman.value!!
+            val allCommonWordsEnglsih = commonWordsVeryEnglish.value!! + commonWordsSomewhatEnglish.value!!
+            val list = if(language == Language.German) allCommonWordsGerman else allCommonWordsEnglsih
+            val commonWord= list.find { cm -> cm.text == text }
             return when(commonWord?.type) {
                 null -> CommonWord.Type.Uncommon
                 CommonWord.Type.Very -> CommonWord.Type.Very
@@ -141,10 +152,14 @@ class Main : AppCompatActivity() {
             return sphereList.value?.find { s -> s.id == id }
         }
 
-        fun getCommonWordsListReference(language: Language): MutableLiveData<List<CommonWord>?> {
+        fun getCommonWordsListReference(language: Language, type: CommonWord.Type): MutableLiveData<List<CommonWord>?> {
             return when(language) {
-                Language.German -> commonWordsGerman
-                Language.English -> commonWordsEnglish
+                Language.German -> {
+                    if(type == CommonWord.Type.Very) commonWordsVeryGerman else commonWordsSomewhatGerman
+                }
+                Language.English -> {
+                    if(type == CommonWord.Type.Very) commonWordsVeryEnglish else commonWordsSomewhatEnglish
+                }
             }
         }
     }
@@ -152,6 +167,8 @@ class Main : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
         FireStoreListener.getTheStuff()
 
 

@@ -14,6 +14,7 @@ class CharacterHolderPreview(val b: HolderCharacterPreviewBinding, private val i
         b.characterName.text = character.name
         Glide.with(b.root.context).load(character.imgUrl).into(b.characterPortrait)
         setObserver()
+        setBackGroundColorFirstTime()
 
     }
 
@@ -22,6 +23,14 @@ class CharacterHolderPreview(val b: HolderCharacterPreviewBinding, private val i
             DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
                 b.characterName.setTextColor(if(it) b.root.context.resources.getColor(R.color.white) else  b.root.context.resources.getColor(R.color.black))
             }
+
+            DisplayFilter.observeItemColorDark(b.root.context, b.root, listOf(b.characterName))
         }
+    }
+
+    private fun setBackGroundColorFirstTime() {
+        var dark = DisplayFilter.itemColorDark.value!!
+        b.root.setBackgroundColor(if(dark) b.root.context.resources.getColor(R.color.snippets) else b.root.context.resources.getColor(R.color.white))
+        b.characterName.setTextColor(if(dark) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(R.color.black))
     }
 }

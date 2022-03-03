@@ -37,6 +37,13 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/pinnedSnippetContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginTop="2dp"
         android:id="@+id/snippetsRecycler"

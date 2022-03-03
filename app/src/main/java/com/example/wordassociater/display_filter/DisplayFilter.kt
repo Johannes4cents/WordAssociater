@@ -3,10 +3,12 @@ package com.example.wordassociater.display_filter
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.R
+import com.example.wordassociater.firestore.FireFilter
 
 
 class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appcompat.widget.AppCompatImageView(context, attributeSet) {
@@ -18,12 +20,15 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
         filterLiveOptions.value = FilterOption.options
     }
 
-    companion object {
-        val barColorDark = MutableLiveData<Boolean>(true)
-        val wordsShown = MutableLiveData<Boolean>(true)
-        val characterShown = MutableLiveData<Boolean>(true)
-        val dateShown = MutableLiveData<Boolean>(true)
-        val linesShown = MutableLiveData<Boolean>(true)
+
+
+    companion object FilterSettings{
+        val barColorDark = MutableLiveData(true)
+        val itemColorDark = MutableLiveData(true)
+        val wordsShown = MutableLiveData(true)
+        val characterShown = MutableLiveData(true)
+        val dateShown = MutableLiveData(true)
+        val linesShown = MutableLiveData(true)
         val deleteShown = MutableLiveData(true)
         val connectShown = MutableLiveData(true)
         val dramaShown = MutableLiveData(true)
@@ -32,9 +37,19 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
         val titleShown = MutableLiveData(true)
         val contentShown = MutableLiveData(true)
 
+
         fun observeTitleShown(context: Context, view: View) {
             titleShown.observe(context as LifecycleOwner) {
                 view.visibility = if(it) View.VISIBLE else View.INVISIBLE
+            }
+        }
+
+        fun observeItemColorDark(context: Context, view: View, textViewList: List<TextView>) {
+            itemColorDark.observe(context as LifecycleOwner) {
+                view.setBackgroundColor(if(it) view.context.resources.getColor(R.color.snippets) else view.context.resources.getColor(R.color.white))
+                for(view in textViewList) {
+                    view.setTextColor(if(it) view.context.resources.getColor(R.color.white) else view.context.resources.getColor(R.color.black))
+                }
             }
         }
 
@@ -116,20 +131,56 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
         when(option.type) {
             FilterOption.Type.WordsList -> {
                 wordsShown.value = !wordsShown.value!!
+                FireFilter.update("wordsShown", wordsShown.value!!)
             }
-            FilterOption.Type.CharacterList -> characterShown.value = !characterShown.value!!
+            FilterOption.Type.CharacterList -> {
+                characterShown.value = !characterShown.value!!
+                FireFilter.update("characterShown", characterShown.value!!)
+            }
             FilterOption.Type.Date -> {
                 dateShown.value = !dateShown.value!!
+                FireFilter.update("dateShown", dateShown.value!!)
             }
-            FilterOption.Type.Divider -> linesShown.value = !linesShown.value!!
-            FilterOption.Type.BarColorDark -> barColorDark.value = !barColorDark.value!!
-            FilterOption.Type.Delete -> deleteShown.value = !deleteShown.value!!
-            FilterOption.Type.Layer -> layerShown.value = !layerShown.value!!
-            FilterOption.Type.Connect -> connectShown.value = !connectShown.value!!
-            FilterOption.Type.StoryLine -> storyLineShown.value = !storyLineShown.value!!
-            FilterOption.Type.DramaIcon -> dramaShown.value = !dramaShown.value!!
-            FilterOption.Type.Title -> titleShown.value = !titleShown.value!!
-            FilterOption.Type.Content -> contentShown.value = !contentShown.value!!
+            FilterOption.Type.Divider -> {
+                linesShown.value = !linesShown.value!!
+                FireFilter.update("linesShown", linesShown.value!!)
+            }
+            FilterOption.Type.BarColorDark -> {
+                barColorDark.value = !barColorDark.value!!
+                FireFilter.update("barColorDark", barColorDark.value!!)
+            }
+            FilterOption.Type.Delete -> {
+                deleteShown.value = !deleteShown.value!!
+                FireFilter.update("deleteShown", deleteShown.value!!)
+            }
+            FilterOption.Type.Layer -> {
+                layerShown.value = !layerShown.value!!
+                FireFilter.update("layerShown", layerShown.value!!)
+            }
+            FilterOption.Type.Connect -> {
+                connectShown.value = !connectShown.value!!
+                FireFilter.update("connectShown", connectShown.value!!)
+            }
+            FilterOption.Type.StoryLine -> {
+                storyLineShown.value = !storyLineShown.value!!
+                FireFilter.update("storyLineShown", storyLineShown.value!!)
+            }
+            FilterOption.Type.DramaIcon -> {
+                dramaShown.value = !dramaShown.value!!
+                FireFilter.update("dramaShown", dramaShown.value!!)
+            }
+            FilterOption.Type.Title -> {
+                titleShown.value = !titleShown.value!!
+                FireFilter.update("titleShown", titleShown.value!!)
+            }
+            FilterOption.Type.Content -> {
+                contentShown.value = !contentShown.value!!
+                FireFilter.update("contentShown", contentShown.value!!)
+            }
+            FilterOption.Type.ItemColorDark -> {
+                itemColorDark.value = !itemColorDark.value!!
+                FireFilter.update("itemColorDark", itemColorDark.value!!)
+            }
         }
         handleResubmitList(option)
     }

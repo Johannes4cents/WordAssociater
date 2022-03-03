@@ -2,6 +2,8 @@ package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.FireChars
+import com.example.wordassociater.firestore.FireStats
+import com.example.wordassociater.firestore.FireWords
 import com.google.firebase.firestore.Exclude
 
 data class Character(
@@ -20,6 +22,20 @@ data class Character(
 
         var isLeft = true
         enum class Importance(val text: String) {Main("Main"), Side("Side"), Minor("Minor"), Mentioned("Mentioned")}
+
+        @Exclude
+        fun createWord() {
+                val connectId = FireStats.getConnectId()
+                val word = Word(
+                        id = FireStats.getWordId(),
+                        text = name,
+                        imgUrl = this.imgUrl,
+                        connectId = connectId
+                )
+                this.connectId = connectId
+                word.cats.add(6)
+                FireWords.add(word)
+        }
 
         @Exclude
         fun getEvents(): List<Event> {

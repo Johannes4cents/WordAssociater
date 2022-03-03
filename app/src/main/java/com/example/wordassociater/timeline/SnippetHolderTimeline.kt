@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.R
@@ -27,7 +26,7 @@ class SnippetHolderTimeline(val b: HolderSnippetBinding, val onSnippetSelected: 
         setClickListener()
         setBackground()
         setRecycler()
-        handleTextColors()
+        setBackGroundColorFirstTime()
     }
 
     private fun setContent() {
@@ -134,14 +133,14 @@ class SnippetHolderTimeline(val b: HolderSnippetBinding, val onSnippetSelected: 
         DisplayFilter.observeDateShown(b.root.context, b.dateHolder)
         DisplayFilter.observeLayerShown(b.root.context, b.layerButton)
         DisplayFilter.observeStoryLineShown(b.root.context, b.storyLineRecycler)
+        DisplayFilter.observeItemColorDark(b.root.context, b.root,  listOf(b.headerText, b.contentPreview))
     }
 
-    private fun handleTextColors() {
-        DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
-            b.contentPreview.setTextColor(if(it) b.root.resources.getColor(R.color.white) else b.root.resources.getColor(R.color.black))
-            b.headerText.setTextColor(if(it) b.root.resources.getColor(R.color.white) else b.root.resources.getColor(R.color.black))
-            b.root.setBackgroundColor(if(it)b.root.resources.getColor(R.color.snippets) else b.root.resources.getColor(R.color.white))
-        }
+    private fun setBackGroundColorFirstTime() {
+        var dark = DisplayFilter.itemColorDark.value!!
+        b.root.setBackgroundColor(if(dark) b.root.context.resources.getColor(R.color.snippets) else b.root.context.resources.getColor(R.color.white))
+        b.contentPreview.setTextColor(if(dark) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(R.color.black))
+        b.headerText.setTextColor(if(dark) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(R.color.black))
     }
 
 }

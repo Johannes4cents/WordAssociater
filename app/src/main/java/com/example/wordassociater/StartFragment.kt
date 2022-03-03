@@ -15,6 +15,7 @@ import com.example.wordassociater.databinding.FragmentStartBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Sphere
 import com.example.wordassociater.fire_classes.WordCat
+import com.example.wordassociater.firestore.FireWordCats
 import com.example.wordassociater.wordcat.WordCatAdapter
 import com.example.wordassociater.words.WordLinear
 
@@ -38,6 +39,12 @@ class StartFragment: Fragment() {
         AddWordBar.navController = findNavController()
         setRecycler()
         setObserver()
+
+        val item = WordCat(9, "Item")
+        item.type = WordCat.Type.Item
+        item.importance = 5
+        FireWordCats.add(item, context = null)
+
         return b.root
     }
 

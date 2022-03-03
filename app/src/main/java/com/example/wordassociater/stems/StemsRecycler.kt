@@ -29,7 +29,7 @@ class StemsRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(
             val newList = it.toMutableSet()
             newList.remove("stemHeader")
             newList.remove("StemHeader")
-            stemAdapter.submitList(newList.sorted().reversed() + listOf("stemHeader"))
+            stemAdapter.submitList(listOf("stemHeader") + newList.sorted())
             smoothScrollToPosition(stemAdapter.currentList.count() - 1)
         }
     }

@@ -32,6 +32,7 @@ class WordAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val word = currentList[position]
+        word.adapterPosition = position
         if(adapterType == AdapterType.Preview) (holder as WordHolderPreview).onBind(word)
         else {
             if(!word.isHeader) (holder as WordHolderSimple).onBind(word, adapterType, takeWordFunc, rightButtonFunc)

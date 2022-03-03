@@ -32,7 +32,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     private var storyPart: StoryPart? = null
     private val tableRowList = listOf<TableRow>(b.row1, b.row2, b.row3, b.row4)
     var content = ""
-    private var takeContentFunc : ((content: String) -> Unit)? = null
+    private var onTypingFunc : ((content: String) -> Unit)? = null
     private var onEnterFunc: ((content: String) -> Unit)? = null
     private val wordInput = MutableLiveData<List<String>>()
     private var nuwList = MutableLiveData<List<Nuw>?>()
@@ -54,7 +54,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     }
 
     fun setContentFunc(func: (content: String) -> Unit) {
-        takeContentFunc = func
+        onTypingFunc = func
     }
 
     fun setStoryPart(storyPart: StoryPart) {
@@ -109,7 +109,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
                 }
                 else {
                     hideInput()
-                    if(takeContentFunc != null) takeContentFunc?.let { it1 -> it1(content) }
+                    if(onTypingFunc != null) onTypingFunc?.let { takeContFunc -> takeContFunc(content) }
                     clicked = 0
                     firstClick = true
                 }
@@ -150,7 +150,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     fun setTextField(content: String) {
         b.textField.text = content
         b.inputField.setText(content)
-        oldNuws = createNuws()
+        if(nuwInput) oldNuws = createNuws()
     }
 
     fun hideOnEnter() {
@@ -199,7 +199,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         content = b.inputField.text.toString()
         b.inputField.visibility = View.GONE
         b.textField.visibility = View.VISIBLE
-        takeContentFunc?.let { it(content) }
+        onTypingFunc?.let { it(content) }
         Helper.getIMM(b.root.context).hideSoftInputFromWindow(b.inputField.windowToken, 0)
     }
 
@@ -228,11 +228,11 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
 
     private fun generateComboNuws(newWords: MutableList<String>): List<String> {
         val comboNuws = mutableListOf<String>()
-        if(Main.commonWordsGerman.value != null) {
+        if(Main.commonWordsVeryGerman.value != null) {
             for(string in newWords) {
                 val previousString = if(newWords.indexOf(string) != 0) newWords[newWords.indexOf(string) - 1] else ""
-                val cleanStringCurrent = Helper.stripWord(string).capitalize(Locale.ROOT)
-                val cleanStringPrevious = Helper.stripWord(previousString).capitalize(Locale.ROOT)
+                val cleanStringCurrent = Helper.stripWordLeaveWhiteSpace(string)
+                val cleanStringPrevious = Helper.stripWordLeaveWhiteSpace(previousString)
 
                 val previousWordCWCheck = Main.getCommonWordType(Language.German, cleanStringPrevious)
                 val currentWordCWCheck = Main.getCommonWordType(Language.German, cleanStringCurrent)
@@ -255,10 +255,11 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 updateList()
                 if(hideOnEnter) hideInput()
+                
                 if(onEnterFunc != null) {
-                    Log.i("eventProb", "onKeyListenerCalled")
                     onEnterFunc!!(content)
                 }
+
 
 
                 return@OnKeyListener true
@@ -275,9 +276,9 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     private fun setOnFocusChange() {
         Main.outsideEditClicked.observe(context as LifecycleOwner) {
             if(checkOutsideEditClick) {
-                hideInput()
                 if(onEnterFunc != null) onEnterFunc!!(content)
-                if(takeContentFunc != null) takeContentFunc!!(content)
+                if(onTypingFunc != null) onTypingFunc!!(content)
+                hideInput()
                 Log.i("focusTest", "outside Edit Clicked")
             }
         }
@@ -295,7 +296,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         val newNuws = mutableListOf<Nuw>()
         if(nuwInput) {
             for(string in getContentToList(content)) {
-                if(Main.getCommonWord(Language.German, string) == null) {
+                if(Main.getCommonWord(Language.German, string, CommonWord.Type.Very) == null) {
                     val nuw = Nuw.getNuw(string)
                     val word = nuw.checkIfWordExists()
                     if(word != null) {

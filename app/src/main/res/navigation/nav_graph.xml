@@ -42,6 +42,15 @@
         <action
             android:id="@+id/action_ViewPagerFragment_to_storyLinesListFragment"
             app:destination="@id/storyLinesListFragment" />
+        <action
+            android:id="@+id/action_ViewPagerFragment_to_newCharacterFragment"
+            app:destination="@id/newCharacterFragment" />
+        <action
+            android:id="@+id/action_ViewPagerFragment_to_eventDetailedFragment"
+            app:destination="@id/eventDetailedFragment" />
+        <action
+            android:id="@+id/action_ViewPagerFragment_to_locationsDetailedFragment"
+            app:destination="@id/locationsDetailedFragment" />
     </fragment>
     <fragment
         android:id="@+id/readFragment"
@@ -207,4 +216,32 @@
             android:id="@+id/action_storyLinesListFragment_to_ViewPagerFragment"
             app:destination="@id/ViewPagerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/newCharacterFragment"
+        android:name="com.example.wordassociater.character.NewCharacterFragment"
+        android:label="NewCharacterFragment" >
+        <action
+            android:id="@+id/action_newCharacterFragment_to_ViewPagerFragment"
+            app:destination="@id/ViewPagerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventDetailedFragment"
+        android:name="com.example.wordassociater.events.EventDetailedFragment"
+        android:label="EventDetailedFragment" >
+        <action
+            android:id="@+id/action_eventDetailedFragment_to_ViewPagerFragment"
+            app:destination="@id/ViewPagerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationsDetailedFragment"
+        android:name="com.example.wordassociater.locations.LocationsDetailedFragment"
+        android:label="LocationsDetailedFragment" >
+        <action
+            android:id="@+id/action_locationsDetailedFragment_to_ViewPagerFragment"
+            app:destination="@id/ViewPagerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/itemDetailedFragment"
+        android:name="com.example.wordassociater.items.ItemDetailedFragment"
+        android:label="ItemDetailedFragment" />
 </navigation>

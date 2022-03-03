@@ -50,7 +50,7 @@ class WordCatButtonHolder(val b : HolderWordCatBinding, val onCatClicked: (wordC
         }
 
         DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
-            b.descriptionText.setTextColor(if(it) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(R.color.black))
+            b.descriptionText.setTextColor(if(it) b.root.context.resources.getColor(R.color.black) else b.root.context.resources.getColor(R.color.white))
         }
     }
 

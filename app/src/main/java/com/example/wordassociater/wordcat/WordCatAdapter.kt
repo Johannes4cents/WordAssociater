@@ -20,7 +20,6 @@ class WordCatAdapter(val type: Type, private val onCatSelected: (wordCat: WordCa
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(type == Type.BTN) (holder as WordCatButtonHolder).onBind(getItem(position))
-        else if( type == Type.ALLOPTIONS)
         else (holder as WordCatListHolder).onBind(getItem(position))
 
     }

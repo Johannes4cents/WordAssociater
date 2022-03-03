@@ -3,6 +3,8 @@ import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.StartFragment
 import com.example.wordassociater.bars.AddWordBar
+import com.example.wordassociater.display_filter.DisplayFilter
+import com.example.wordassociater.display_filter.FilterSettings
 import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.lists.NoteLists
 import com.example.wordassociater.notes.NotesFragment
@@ -28,7 +30,12 @@ object FireStoreListener {
         getEvents()
         getProse()
         getFams()
+        getFilterOptions()
+        getItems()
     }
+
+
+
 
     private fun getCharacters() {
         FireLists.characterList.addSnapshotListener { docs, _ ->
@@ -98,6 +105,20 @@ object FireStoreListener {
         }
     }
 
+    private fun getItems() {
+        FireLists.itemsList.addSnapshotListener { docs, error ->
+            if(docs != null) {
+                val items = mutableListOf<Item>()
+                for(doc in docs) {
+                    val item = doc.toObject(Item::class.java)
+                    items.add(item)
+                }
+
+                Main.itemList.value = items
+            }
+        }
+    }
+
 
     private fun getWordConnections() {
         FireLists.wordConnectionList.addSnapshotListener { docs, _ ->
@@ -113,16 +134,41 @@ object FireStoreListener {
         }
     }
 
+    private fun getFilterOptions() {
+        FireLists.filterList.addSnapshotListener { docs, error ->
+            if(docs != null) {
+                for(doc in docs) {
+                    val settings = doc.toObject(FilterSettings::class.java)
+                    DisplayFilter.FilterSettings.contentShown.value = settings.contentShown
+                    DisplayFilter.FilterSettings.storyLineShown.value = settings.storyLineShown
+                    DisplayFilter.FilterSettings.layerShown.value = settings.layerShown
+                    DisplayFilter.FilterSettings.titleShown.value = settings.titleShown
+                    DisplayFilter.FilterSettings.contentShown.value = settings.titleShown
+                    DisplayFilter.FilterSettings.barColorDark.value = settings.barColorDark
+                    DisplayFilter.FilterSettings.characterShown.value = settings.characterShown
+                    DisplayFilter.FilterSettings.connectShown.value = settings.connectShown
+                    DisplayFilter.FilterSettings.dateShown.value = settings.dateShown
+                    DisplayFilter.FilterSettings.dramaShown.value = settings.dramaShown
+                    DisplayFilter.FilterSettings.wordsShown.value = settings.wordsShown
+                    DisplayFilter.FilterSettings.deleteShown.value = settings.deleteShown
+                }
+            }
+        }
+    }
+
     private fun getCommonWords() {
         for(language in FireCommonWords.languageList) {
             FireLists.getCommonWordsCollectionRef(language).addSnapshotListener { docs, _ ->
                 if(docs != null) {
-                    val commonWordsList = mutableListOf<CommonWord>()
+                    val commonWordsListVery = mutableListOf<CommonWord>()
+                    val commonWordsListSomewhat = mutableListOf<CommonWord>()
                     for(doc in docs) {
                         val cw = doc.toObject(CommonWord::class.java)
-                        commonWordsList.add(cw)
+                        if(cw.type == CommonWord.Type.Very) commonWordsListVery.add(cw)
+                        else if (cw.type == CommonWord.Type.Somewhat) commonWordsListSomewhat.add(cw)
                     }
-                    Main.getCommonWordsListReference(language).value = commonWordsList
+                    Main.getCommonWordsListReference(language, CommonWord.Type.Very).value = commonWordsListVery
+                    Main.getCommonWordsListReference(language, CommonWord.Type.Somewhat).value = commonWordsListSomewhat
                 }
             }
         }

@@ -24,6 +24,24 @@ class Event(
     var image: Image = Image.Airplane
 
     enum class Image { Airplane, Crown, Explosion, Food, Handshake, Party, Pistol, Shield , Spy}
+    @Exclude
+    fun createWord() {
+        val connectId = FireStats.getConnectId()
+        val word = Word(
+                id = FireStats.getWordId(),
+                text = content,
+                connectId = connectId
+        )
+        word.cats.add(8)
+        this.connectId = connectId
+        wordList.add(word.id)
+        FireWords.add(word)
+    }
+
+    @Exclude
+    fun handleWordConnections() {
+        WordConnection.connect(this)
+    }
 
     @Exclude
     fun getStoryLines(): List<StoryLine> {
@@ -41,6 +59,23 @@ class Event(
         }
 
         return list
+    }
+
+    @Exclude
+    fun getWords(): MutableList<Word> {
+        val words = mutableListOf<Word>()
+        val notFound = mutableListOf<Long>()
+        for(id in wordList) {
+            val found = Main.getWord(id)
+            if(found != null) words.add(found)
+            else notFound.add(id)
+        }
+
+        for(id in notFound) {
+            wordList.remove(id)
+            FireSnippets.update(id, "wordList", wordList)
+        }
+        return words
     }
 
     @Exclude
@@ -94,7 +129,6 @@ class Event(
         }
 
         FireEvents.delete(id)
-
     }
 }
 

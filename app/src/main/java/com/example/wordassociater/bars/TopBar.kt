@@ -29,11 +29,18 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
         showIconSelected = true
     }
 
-    fun showLeftText(text: String) {
-        b.btnLeft.visibility = View.GONE
-        b.leftText.visibility = View.VISIBLE
-        b.leftText.text = text
-
+    fun handleALlButtonsGone() {
+        var allGone = true
+        val buttonList = mutableListOf(b.btn1, b.btn2, b.btn3, b.btn4, b.btn5)
+        for(v in buttonList) {
+            if(v.visibility == View.VISIBLE) {
+                allGone = false
+                break
+            }
+        }
+        if(allGone) {
+            b.btnStandIn.visibility = View.VISIBLE
+        }
     }
 
     fun setLeftBtn(func: () -> Unit) {
@@ -45,20 +52,8 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
 
     fun setLeftBtnIconAndVisibility(icon: Int, visible: Boolean) {
         b.btnLeft.setImageResource(icon)
-        b.btnLeft.visibility = if(visible) View.VISIBLE else View.GONE
-    }
-
-
-    fun setBtn2(func: () -> Unit) {
-        b.btn2.setOnClickListener {
-            selectedView.value = b.btn2
-            func()
-        }
-    }
-
-    fun setBtn2IconAndVisibility(icon: Int, visible: Boolean) {
-        b.btn2.setImageResource(icon)
-        b.btn2.visibility = if(visible) View.VISIBLE else View.GONE
+        b.btnLeft.visibility = if(visible) View.VISIBLE else View.INVISIBLE
+        handleALlButtonsGone()
     }
 
     fun setBtn1(func: () -> Unit) {
@@ -71,7 +66,22 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
     fun setBtn1IconAndVisibility(icon: Int, visible: Boolean) {
         b.btn1.setImageResource(icon)
         b.btn1.visibility = if(visible) View.VISIBLE else View.GONE
+        handleALlButtonsGone()
     }
+
+    fun setBtn2(func: () -> Unit) {
+        b.btn2.setOnClickListener {
+            selectedView.value = b.btn2
+            func()
+        }
+    }
+
+    fun setBtn2IconAndVisibility(icon: Int, visible: Boolean) {
+        b.btn2.setImageResource(icon)
+        b.btn2.visibility = if(visible) View.VISIBLE else View.GONE
+        handleALlButtonsGone()
+    }
+
 
     fun setBtn3(func: () -> Unit) {
         b.btn3.setOnClickListener {
@@ -83,6 +93,7 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
     fun setBtn3IconAndVisibility(icon: Int, visible: Boolean) {
         b.btn3.setImageResource(icon)
         b.btn3.visibility = if(visible) View.VISIBLE else View.GONE
+        handleALlButtonsGone()
     }
 
     fun setBtn4(func: () -> Unit) {
@@ -95,6 +106,7 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
     fun setBtn4IconAndVisibility(icon: Int, visible: Boolean) {
         b.btn4.setImageResource(icon)
         b.btn4.visibility = if(visible) View.VISIBLE else View.GONE
+        handleALlButtonsGone()
     }
 
     fun setBtn5(func: () -> Unit) {
@@ -105,8 +117,9 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
     }
 
     fun setBtn5IconAndVisibility(icon: Int, visible: Boolean) {
-        b.btn4.setImageResource(icon)
-        b.btn4.visibility = if(visible) View.VISIBLE else View.GONE
+        b.btn5.setImageResource(icon)
+        b.btn5.visibility = if(visible) View.VISIBLE else View.GONE
+        handleALlButtonsGone()
     }
 
     fun setRightButton(func: () -> Unit) {
@@ -118,7 +131,7 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
 
     fun setRightBtnIconAndVisibility(icon: Int, visible: Boolean) {
         b.btnRight.setImageResource(icon)
-        b.btnRight.visibility = if(visible) View.VISIBLE else View.GONE
+        b.btnRight.visibility = if(visible) View.VISIBLE else View.INVISIBLE
     }
 
     private fun setObserver() {

@@ -11,7 +11,7 @@ data class WordCat(
         val name: String = "") {
     var color: Color = Color.Blue
     var wordList: MutableList<Long> = mutableListOf()
-    val importance = 5
+    var importance = 6
     var active: Boolean = true
     var type: Type = Type.Other
 
@@ -24,8 +24,8 @@ data class WordCat(
     @Exclude
     var used: Int = 0
 
-    enum class Color {Pink, Blue, Brown, Green, Purple, Grey, Teal, Orange, Red, Character, Location, Undefined, Event}
-    enum class Type {Location, Any, Event, Character, Other}
+    enum class Color {Pink, Blue, Brown, Green, Purple, Grey, Teal, Orange, Red, Character, Location, Undefined, Event, Item, Black, DarkGreen, DarkBlue}
+    enum class Type {Location, Any, Event, Character, Item, Other}
 
     @Exclude
     fun countUsed() {
@@ -38,7 +38,13 @@ data class WordCat(
             val word = Main.getWord(w)
             if(word != null) {
                 word.cats.remove(id)
-                if(word.cats.isEmpty()) word.cats.add(0)
+                if(word.cats.isEmpty()) {
+                    word.cats.add(0)
+                    val any = Main.getWordCat(0)
+                    any!!.wordList.add(word.id)
+                    FireWordCats.update(any.id, "wordList", any.wordList)
+                }
+
                 FireWords.update(word.id, "cats", word.cats)
             }
         }
@@ -60,6 +66,10 @@ data class WordCat(
             Color.Location -> R.drawable.wordcat_bg_location
             Color.Undefined -> R.drawable.wordcat_bg_undefined
             Color.Event -> R.drawable.wordcat_bg_event
+            Color.Item -> R.drawable.wordcat_bg_item
+            Color.Black -> R.drawable.wordcat_bg_black
+            Color.DarkGreen -> R.drawable.wordcat_bg_dark_green
+            Color.DarkBlue -> R.drawable.wordcat_bg_dark_blue
         }
     }
 

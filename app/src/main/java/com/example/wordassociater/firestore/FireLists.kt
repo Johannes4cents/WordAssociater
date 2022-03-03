@@ -35,6 +35,8 @@ object FireLists {
     val locationsList by lazy { db.collection("places") }
     val eventsList by lazy { db.collection("events") }
     val famList by lazy {db.collection("fams")}
+    val filterList by lazy {db.collection("filter")}
+    val itemsList by lazy {db.collection("items")}
 
     var stats: Stats? = Stats()
 
@@ -45,7 +47,6 @@ object FireLists {
     fun addNewFamsToInspect(famCheck: FamCheck) {
         db.collection("famCheck").document("check").set(famCheck)
     }
-
 
     fun getNoteCollectionRef(type: Note.Type): CollectionReference {
         return when(type) {

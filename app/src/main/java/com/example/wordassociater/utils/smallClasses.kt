@@ -88,7 +88,7 @@ enum class Drama {Conflict, Twist, Plan, Motivation, Goal, Problem, Solution, Hu
 
 enum class AdapterType { List, Popup, Preview }
 
-enum class Page {Notes, Chars, Start, Words }
+enum class Page {Notes, Items, Events, Locations, Chars, Start, Words, Nuws }
 
 data class ConnectedWord(val word: Word, var amount: Int) {
 

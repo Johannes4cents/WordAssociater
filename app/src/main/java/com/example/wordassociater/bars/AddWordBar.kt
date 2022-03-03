@@ -116,11 +116,6 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
         }
     }
 
-    private fun setCatIcon() {
-        val wordCats = Main.wordCatsList.value
-        if(wordCats != null && wordCats.count() > 0) selectedWordCat = wordCats[0]
-    }
-
     private fun addWord() {
         if(b.wordInput.text.isNotEmpty() ) {
             newWord.text = Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString())
@@ -176,7 +171,7 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
                 FireLocations.add(location, context)
                 newWord.connectId = connectId
             }
-            else Helper.toast("When you imagine any location. Don't just imagine ANY location", context)
+            else Helper.toast("When you imagine any location - don't just imagine ANY location", context)
 
         }
     }
@@ -208,7 +203,7 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
                 FireChars.add(character, context)
                 newWord.connectId = connectId
             }
-            else Helper.toast("A girl says a name. Any name but any", context)
+            else Helper.toast("A girl says a name. Any name but that one", context)
 
         }
     }

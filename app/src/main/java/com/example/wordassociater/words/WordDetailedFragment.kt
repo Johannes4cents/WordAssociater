@@ -18,6 +18,7 @@ import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.firestore.FireWordCats
 import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.popups.popSelectSphere
 import com.example.wordassociater.popups.popWordCatMultiSelect
 import com.example.wordassociater.snippets.SnippetAdapter
@@ -90,7 +91,7 @@ class WordDetailedFragment: Fragment() {
     }
 
     private fun setClickListener() {
-        b.backButton.setOnClickListener {
+        b.topBar.setLeftBtn {
             findNavController().navigate(R.id.action_wordDetailedFragment_to_ViewPagerFragment)
             if(comingFromList != null) WordsListFragment.selectedWordCat.value = comingFromList
             ViewPagerFragment.comingFrom = Page.Words
@@ -101,24 +102,45 @@ class WordDetailedFragment: Fragment() {
             getFilteredSnippetList()
         }
 
-        b.btnWordConnections.setOnClickListener {
+        b.topBar.setBtn1 {
             WordConnectionsFragment.word = word
             findNavController().navigate(R.id.action_wordDetailedFragment_to_wordConnectionsFragment)
         }
 
-        b.btnHeritage.setOnClickListener {
+        b.topBar.setBtn3 {
             HeritageFragment.word = word
             HeritageFragment.comingFromList = comingFromList
             findNavController().navigate(R.id.action_wordDetailedFragment_to_heritageFragment)
         }
 
-        b.btnSpheres.setOnClickListener {
-            popSelectSphere(b.btnSpheres, selectedSpheres, ::handleSelectedSphere)
+        b.topBar.setBtn4 {
+            popSelectSphere(b.topBar.btn4, selectedSpheres, ::handleSelectedSphere)
         }
+
+        b.topBar.setBtn5 {
+            Pop(b.root.context).confirmationPopUp(b.topBar.btn5, ::onDeleteConfirmed)
+        }
+
+        b.topBar.setBtn5IconAndVisibility(R.drawable.icon_delete, true)
+        b.topBar.setBtn2IconAndVisibility(R.drawable.icon_word, false)
+        b.topBar.setRightBtnIconAndVisibility(R.drawable.icon_word, false)
+
+        b.topBar.setBtn1IconAndVisibility(R.drawable.icon_word_connection, true)
+        b.topBar.setBtn3IconAndVisibility(R.drawable.icon_heritage, true)
+        b.topBar.setBtn4IconAndVisibility(R.drawable.sphere_blue, true)
 
         b.catColor.setOnClickListener {
             popWordCatMultiSelect(b.catColor, selectedCats, ::onWordCatClicked)
             selectedCats.value = makeSelectedWordCatList()
+        }
+    }
+
+    private fun onDeleteConfirmed(confirmation: Boolean) {
+        if(confirmation) {
+            word.delete()
+            findNavController().navigate(R.id.action_wordDetailedFragment_to_ViewPagerFragment)
+            if(comingFromList != null) WordsListFragment.selectedWordCat.value = comingFromList
+            ViewPagerFragment.comingFrom = Page.Words
         }
     }
 

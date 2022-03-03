@@ -1,7 +1,6 @@
 package com.example.wordassociater.words
 
 import android.view.View
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.HolderWordPreviewBinding
@@ -16,6 +15,7 @@ class WordHolderPreview(val b : HolderWordPreviewBinding, private val fromStory:
         this.word = word
         setContent()
         setObserver()
+        setBackGroundColorFirstTime()
     }
 
     private fun setContent() {
@@ -24,12 +24,13 @@ class WordHolderPreview(val b : HolderWordPreviewBinding, private val fromStory:
     }
 
     private fun setObserver() {
-        if(fromStory) {
-            DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
-                b.content.setTextColor(if(it) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(
-                    R.color.black))
-            }
-        }
+        DisplayFilter.observeItemColorDark(b.root.context, b.root, listOf(b.content))
+    }
+
+    private fun setBackGroundColorFirstTime() {
+        var dark = DisplayFilter.itemColorDark.value!!
+        b.root.setBackgroundColor(if(dark) b.root.context.resources.getColor(R.color.snippets) else b.root.context.resources.getColor(R.color.white))
+        b.content.setTextColor(if(dark) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(R.color.black))
     }
 
 

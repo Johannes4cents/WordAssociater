@@ -2,13 +2,13 @@ package com.example.wordassociater.display_filter
 
 import com.example.wordassociater.R
 
-data class FilterOption(val name:String, val type: Type, val forWhat: For, val icon: Int) {
+data class FilterOption(val name:String = "", val type: Type = Type.Title, val forWhat: For = For.Other, val icon: Int = 0) {
     var selected = true
-    enum class Type { BarColorDark, WordsList, CharacterList, Date, Divider, Delete, Layer, Connect, StoryLine, DramaIcon, Title, Content }
+    enum class Type { ItemColorDark ,BarColorDark, WordsList, CharacterList, Date, Divider, Delete, Layer, Connect, StoryLine, DramaIcon, Title, Content }
     enum class For { Bar, Icon, Other, Content }
 
     companion object {
-        val options = createFilter()
+        val options by lazy { createFilter() }
 
         private fun createFilter(): List<FilterOption> {
             val filterList = mutableListOf<FilterOption>()
@@ -36,6 +36,8 @@ data class FilterOption(val name:String, val type: Type, val forWhat: For, val i
             filterList.add(filterStoryLineIcon)
             val filterDramaIcon = FilterOption("Drama Icon", Type.DramaIcon, For.Icon, R.drawable.icon_dramaturgy)
             filterList.add(filterDramaIcon)
+            val filterItemColor = FilterOption("List Item Color", Type.ItemColorDark , For.Other, R.drawable.icon_list_item)
+            filterList.add(filterItemColor)
             return filterList
         }
 

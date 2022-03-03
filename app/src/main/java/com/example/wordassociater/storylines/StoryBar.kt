@@ -49,9 +49,17 @@ class StoryBar(context: Context, attributeSet: AttributeSet): LinearLayout(conte
         selectedWords.value = words.sortedBy { w -> w.text }.sortedBy { w -> w.selected }
     }
 
+    private fun deselectAllWords() {
+        val words = if(selectedWords.value!!.isEmpty()) Main.wordsList.value!!.toMutableList() else selectedWords.value!!
+        for(w in words) {
+            w.selected = false
+        }
+    }
+
     private fun setClickListener() {
 
         b.btnBack.setOnClickListener {
+            deselectAllWords()
             findNavController().navigate(R.id.action_storyLinesListFragment_to_ViewPagerFragment)
         }
         b.btnCharacter.setOnClickListener {

@@ -1,7 +1,6 @@
 package com.example.wordassociater.words
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import com.example.wordassociater.ViewPagerFragment
 import com.example.wordassociater.databinding.FragmentWordsListBinding
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordCat
-import com.example.wordassociater.firestore.FireWordCats
 import com.example.wordassociater.utils.AdapterType
 import com.example.wordassociater.utils.Page
 import com.example.wordassociater.wordcat.WordCatAdapter
@@ -24,11 +22,11 @@ import com.example.wordassociater.wordcat.WordCatAdapter
 class WordsListFragment: Fragment() {
     lateinit var b : FragmentWordsListBinding
 
-
     companion object {
         lateinit var adapter: WordAdapter
         var selectedWordCat = MutableLiveData<WordCat>()
         val currentList = MutableLiveData<List<Word>>()
+        private var savedScrollPosition: Int = 0
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,13 +38,20 @@ class WordsListFragment: Fragment() {
         setObserver()
         setRecycler()
         setFirstList()
-        setClickListener()
+        setTopBar()
         handleSearchBar()
         return b.root
     }
 
-    private fun setClickListener() {
-        b.backBtn.setOnClickListener {
+    private fun setTopBar() {
+        b.topBar.setBtn1IconAndVisibility(R.drawable.icon_word, false)
+        b.topBar.setBtn2IconAndVisibility(R.drawable.icon_word, false)
+        b.topBar.setBtn3IconAndVisibility(R.drawable.icon_word, false)
+        b.topBar.setBtn4IconAndVisibility(R.drawable.icon_word, false)
+        b.topBar.setBtn5IconAndVisibility(R.drawable.icon_word, false)
+
+        b.topBar.setLeftBtn {
+            savedScrollPosition = 0
             ViewPagerFragment.goTopage(Page.Start)
         }
 
@@ -60,46 +65,40 @@ class WordsListFragment: Fragment() {
     }
 
     private fun setFirstList() {
-
         if(selectedWordCat.value == null) {
-            selectedWordCat.value = Main.wordCatsList.value!![1]
+            if(Main.wordCatsList.value!!.isNotEmpty()) selectedWordCat.value = Main.wordCatsList.value!![1]
         }
     }
 
     private fun setRecycler() {
         b.wordCatRecycler.setupRecycler(WordCatAdapter.Type.BTN,::onCatClicked, Main.wordCatsList)
         b.wordCatRecycler.setHeader(false)
-        adapter = WordAdapter(AdapterType.List, ::handleWordSelected, null)
+        adapter = WordAdapter(AdapterType.List, ::onWordSelected, null)
         b.wordRecycler.adapter = adapter
         if(selectedWordCat.value != null)  adapter.submitList(getCatFilteredList(selectedWordCat.value!!)!!.sortedBy { w -> w.text }.reversed().sortedBy { w -> w.used }.reversed())
+        b.wordRecycler.scrollToPosition(savedScrollPosition)
     }
 
     private fun handleDelete(word: Word) {
         word.delete()
     }
 
-    private fun onColorSelected(color: WordCat.Color) {
-        if(selectedWordCat.value != null) {
-            FireWordCats.update(selectedWordCat.value!!.id, "color", color)
-            selectedWordCat.value!!.color = color
-        }
-    }
 
     private fun onCatClicked(wordCat: WordCat) {
         selectedWordCat.value = wordCat
     }
 
-    private fun handleWordSelected(word:Word) {
+    private fun onWordSelected(word:Word) {
         WordDetailedFragment.word = word
         WordDetailedFragment.comingFromList = selectedWordCat.value
+        savedScrollPosition = word.adapterPosition
         findNavController().navigate(R.id.action_ViewPagerFragment_to_wordDetailedFragment)
     }
 
     private fun setObserver() {
         currentList.observe(b.root.context as LifecycleOwner) {
-            Log.i("wordsList", "setObserver called")
             if(it != null) adapter.submitList(it.sortedBy { w -> w.text }.reversed().sortedBy { w -> w.used }.reversed())
-            b.wordRecycler.scrollToPosition(0)
+            b.wordRecycler.scrollToPosition(savedScrollPosition)
             b.counterWords.text = it.count().toString()
         }
 

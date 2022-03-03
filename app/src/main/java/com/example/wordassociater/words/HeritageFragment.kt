@@ -1,6 +1,7 @@
 package com.example.wordassociater.words
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentHeritageBinding
+import com.example.wordassociater.fams.FamRecycler
 import com.example.wordassociater.fire_classes.Fam
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordCat
@@ -20,7 +22,6 @@ import com.example.wordassociater.firestore.FireFams
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.popFamPicker
-import com.example.wordassociater.fams.FamRecycler
 import com.example.wordassociater.utils.CommonWord
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Language
@@ -44,6 +45,8 @@ class HeritageFragment: Fragment() {
         setClickListener()
         setRecycler()
         setObserver()
+
+        Log.i("commonwordstest", "${Main.commonWordsSomewhatGerman.value!!.count()} | ${Main.commonWordsVeryGerman.value!!.count()}")
 
         return b.root
     }
@@ -87,7 +90,7 @@ class HeritageFragment: Fragment() {
         for(fam in famLiveList.value!!) {
             if(!oldWord.famList.contains(fam.id)) {
                 word.famList.remove(fam.id)
-                FireFams.delete(fam.id)
+                fam.delete()
             }
         }
     }
@@ -116,27 +119,32 @@ class HeritageFragment: Fragment() {
 
     private fun onFamHeaderClicked() {
         val newFam = Fam(id = FireStats.getFamNumber())
+        newFam.firstOpen = true
         famLiveList.value = listOf(newFam) + word.getFams()
         b.famRecycler.adapter?.notifyDataSetChanged()
     }
 
     private fun onFamEntered(fam: Fam) {
         if(fam.text != "" && fam.text != " " && fam.checkIfWord() == null) {
+            Log.i("famProb", "inside checkedIfWord is 0")
             fam.text = Helper.stripWordLeaveWhiteSpace(fam.text)
             fam.word = word.id
-            fam.firstOpen = true
             word.famList.add(fam.id)
             FireFams.add(fam)
             b.famRecycler.adapter?.notifyDataSetChanged()
         }
-        else if(word.checkIfFamExists(fam.text) != null) {
+        else if(fam.checkIfWord() != null) {
+            val newList = famLiveList.value!!.toMutableList()
+            newList.remove(fam)
+            famLiveList.value = newList
             Helper.toast("That already is it's own Word (${word.text} (${word.id}))", requireContext())
+            //b.famRecycler.adapter?.notifyDataSetChanged()
         }
     }
 
     private fun onMakeCommonWord(fam: Fam, type: CommonWord.Type) {
         val commonWord = CommonWord(Helper.stripWordLeaveWhiteSpace(fam.text), Language.German, type)
-        if(Main.getCommonWord(Language.German, fam.text) == null ) FireCommonWords.add(commonWord)
+        if(Main.getCommonWord(Language.German, fam.text, type) == null ) FireCommonWords.add(commonWord)
         else Helper.toast("Already a common Word", b.root.context)
         fam.commonWord = type
     }
@@ -150,7 +158,9 @@ class HeritageFragment: Fragment() {
             FireFams.update(fam.id, "word", fam.word)
         }
         else {
+
             Helper.toast("That is already it's own Word", requireContext())
+
         }
     }
 
@@ -164,6 +174,7 @@ class HeritageFragment: Fragment() {
     }
 
     private fun onStemEntered(text: String) {
+        Log.i("stemProb", "text is $text")
         val strippedWord = Helper.stripWord(text).capitalize(Locale.ROOT)
         if(strippedWord != " " && text != "" && !word.stems.contains(strippedWord) && text != "stemHeader" && text != "StemHeader") {
             word.stems.add(strippedWord)

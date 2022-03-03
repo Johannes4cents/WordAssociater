@@ -26,10 +26,9 @@ data class Fam(
 
 
     @Exclude
-    fun checkIfCommon(): CommonWord? {
-        val cWord = Main.getCommonWord(Language.German, text)
-        if(cWord != null) commonWord = cWord.type
-        return cWord
+    fun checkIfCommon() {
+        commonWord = Main.getCommonWordType(Language.German, text)
+
     }
 
     @Exclude
@@ -47,9 +46,13 @@ data class Fam(
         val word = Main.getWord(word)
         word!!.famList.remove(id)
         if(main) {
-            val newMainFam = Main.getFam(word.famList[0])
-            newMainFam!!.main = true
-            FireFams.update(newMainFam.id, "main", newMainFam.main)
+            if(word.famList.isNotEmpty()) {
+                val newMainFam = Main.getFam(word.famList[0])
+                newMainFam!!.main = true
+                word.text = newMainFam.text
+                FireFams.update(newMainFam.id, "main", newMainFam.main)
+                FireFams.update(newMainFam.id, "text", word.text)
+            }
         }
         FireWords.update(word.id, "famList", word.famList)
         FireFams.delete(id)

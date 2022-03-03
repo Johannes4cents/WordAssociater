@@ -1,6 +1,8 @@
 package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.R
+import com.example.wordassociater.firestore.FireStats
+import com.example.wordassociater.firestore.FireWords
 import com.google.firebase.firestore.Exclude
 
 data class Location(
@@ -14,6 +16,20 @@ data class Location(
     var wordList: MutableList<Long> = mutableListOf()
 
     enum class Image { House, Car, Forrest, City, Lab, Island, Street, Factory, Apartment}
+
+    @Exclude
+    fun createWord() {
+        val connectId = FireStats.getConnectId()
+        val word = Word(
+                id = FireStats.getWordId(),
+                text = name,
+                connectId = connectId
+        )
+        word.cats.add(7)
+        this.connectId = connectId
+        wordList.add(word.id)
+        FireWords.add(word)
+    }
 
     @Exclude
     fun getImage(): Int {

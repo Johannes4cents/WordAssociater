@@ -1,6 +1,5 @@
 package com.example.wordassociater.wordcat
 
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.R
@@ -17,23 +16,41 @@ class WordCatListHolder(
     fun onBind(wordCat: WordCat) {
         this.wordCat = wordCat
         setContent()
+        when (type) {
+            WordCatAdapter.Type.List -> setContentList()
+            WordCatAdapter.Type.SINGLEPICK -> setContentSinglePick()
+            WordCatAdapter.Type.ALLOPTIONS -> setContentAllOptions()
+        }
         setClickListener()
-        Log.i("wordCat", "isHeader? ${wordCat.isHeader}")
+    }
+
+    private fun setContentSinglePick() {
+        b.checkBox.visibility = View.GONE
+        b.deleteBtn.visibility = View.GONE
+    }
+
+    private fun setContentAllOptions() {
+        b.deleteBtn.setOnClickListener {
+            wordCat.delete()
+        }
+
+        if(wordCat.type != WordCat.Type.Other) b.deleteBtn.visibility = View.GONE
+    }
+
+    private fun setContentList() {
+        b.deleteBtn.visibility = View.GONE
     }
 
     private fun setContent() {
         b.plusSign.setImageResource(wordCat.getBg())
         b.catName.text = wordCat.name
-        b.checkBox.setImageResource(if(wordCat.isSelected) R.drawable.checked_box else R.drawable.checkbox_unchecked)
-
-        if(type == WordCatAdapter.Type.SINGLEPICK) b.checkBox.visibility = View.GONE
-
+        b.checkBox.setImageResource(if (wordCat.isSelected) R.drawable.checked_box else R.drawable.checkbox_unchecked)
     }
 
     private fun setClickListener() {
         b.root.setOnClickListener {
-            if(!wordCat.isHeader) onCatClicked(wordCat)
+            onCatClicked(wordCat)
         }
     }
 
-}
+    }

@@ -132,6 +132,7 @@ fun popCreateEvent(from: View, storyLineList : List<Long>) {
                 sl.eventList.add(event.id)
                 FireStoryLines.update(sl.id, "eventList", sl.eventList)
             }
+            event.createWord()
             FireEvents.add(event)
             pop.dismiss()
         }

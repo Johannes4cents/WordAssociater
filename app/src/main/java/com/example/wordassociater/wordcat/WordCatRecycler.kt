@@ -51,7 +51,7 @@ class WordCatRecycler(context: Context, attributeSet: AttributeSet): RecyclerVie
 
     private fun setObserver(liveList: MutableLiveData<List<WordCat>?>) {
         liveList.observe(context as LifecycleOwner) {
-            val sortedList = it?.sortedBy { wc -> wc.name }?.sortedBy { wc -> wc.importance }
+            val sortedList = it?.sortedBy { wc -> wc.name }?.sortedBy { wc -> wc.importance }?.reversed()
             val header = WordCat(0, "Manage")
             header.isHeader = true
             if(it != null) {

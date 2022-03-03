@@ -100,7 +100,7 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
 
 
     private fun setWord() {
-        b.wordText.text = getShortenedWord(word!!.getFamStrings().random(), b.wordText)
+        b.wordText.text = if(word!!.getFamStrings().isNotEmpty()) getShortenedWord(word.getFamStrings().random(), b.wordText) else "word '${word.text}' has no fams | ${word.id}"
         b.catIcon.setImageResource(Main.getWordCat(word.cats[0])!!.getBg())
         
     }

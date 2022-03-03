@@ -33,6 +33,9 @@ data class Word(
     var selected : Boolean = false
 
     @Exclude
+    var adapterPosition = 0
+
+    @Exclude
     fun getCatsList(): List<WordCat> {
         val catsList = mutableListOf<WordCat>()
         for(id in cats) {
