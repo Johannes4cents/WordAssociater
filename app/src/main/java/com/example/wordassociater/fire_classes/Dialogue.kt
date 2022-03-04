@@ -2,7 +2,6 @@ package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.FireBubbles
-import com.example.wordassociater.firestore.FireChars
 import com.example.wordassociater.firestore.FireDialogue
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.utils.Date
@@ -81,8 +80,6 @@ data class Dialogue(
         }
 
         for(c in getCharacter()) {
-            c.dialogueList.remove(id)
-            FireChars.update(c.id, "dialogueList", c.dialogueList)
         }
 
         for(b in getBubbles()) {

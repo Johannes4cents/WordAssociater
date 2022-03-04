@@ -1,0 +1,46 @@
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/snippets"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+
+        android:orientation="horizontal"
+        android:minHeight="70dp"
+        android:gravity="center"
+        android:id="@+id/characterDescriptionLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/partImage"
+            android:padding="5dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/icon_character" />
+        <TextView
+            android:id="@+id/partName"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            tools:text="Christopher  Trevisani"
+            />
+
+        <ImageView
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:id="@+id/buttonSelected"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/arrow_right"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

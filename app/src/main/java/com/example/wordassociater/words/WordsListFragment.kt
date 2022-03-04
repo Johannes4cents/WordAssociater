@@ -1,6 +1,7 @@
 package com.example.wordassociater.words
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +12,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.ViewPagerFragment
+import com.example.wordassociater.viewpager.ViewPagerMainFragment
 import com.example.wordassociater.databinding.FragmentWordsListBinding
+import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordCat
-import com.example.wordassociater.utils.AdapterType
 import com.example.wordassociater.utils.Page
 import com.example.wordassociater.wordcat.WordCatAdapter
 
@@ -23,7 +24,6 @@ class WordsListFragment: Fragment() {
     lateinit var b : FragmentWordsListBinding
 
     companion object {
-        lateinit var adapter: WordAdapter
         var selectedWordCat = MutableLiveData<WordCat>()
         val currentList = MutableLiveData<List<Word>>()
         private var savedScrollPosition: Int = 0
@@ -32,12 +32,11 @@ class WordsListFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         Main.inFragment = Frags.WORDLIST
         b = FragmentWordsListBinding.inflate(inflater)
-        setObserver()
         setRecycler()
-        setFirstList()
+        setObserver()
         setTopBar()
         handleSearchBar()
         return b.root
@@ -52,30 +51,33 @@ class WordsListFragment: Fragment() {
 
         b.topBar.setLeftBtn {
             savedScrollPosition = 0
-            ViewPagerFragment.goTopage(Page.Start)
+            Main.inFragment = Frags.START
+            ViewPagerMainFragment.goTopage(Page.Start)
         }
-
     }
 
     private fun handleSearchBar() {
-        b.searchBar.getWords {
-            if(it.isNotEmpty()) adapter.submitList(it)
-            else adapter.submitList(currentList.value)
+        b.searchBar.setGravityToCenter()
+        b.searchBar.setHint("Search")
+        b.searchBar.getWords(currentList.value!!) {
+            if(it.isNotEmpty()) b.wordRecycler.setLiveList(it)
+            else b.wordRecycler.setLiveList(currentList.value!!)
         }
     }
 
     private fun setFirstList() {
         if(selectedWordCat.value == null) {
+            Log.i("wordCatProb", "selectedWordCat = ${selectedWordCat.value}")
             if(Main.wordCatsList.value!!.isNotEmpty()) selectedWordCat.value = Main.wordCatsList.value!![1]
         }
     }
 
     private fun setRecycler() {
-        b.wordCatRecycler.setupRecycler(WordCatAdapter.Type.BTN,::onCatClicked, Main.wordCatsList)
+        b.wordCatRecycler.setupRecycler(WordCatAdapter.Type.BTNALL,::onCatClicked, Main.wordCatsList)
         b.wordCatRecycler.setHeader(false)
-        adapter = WordAdapter(AdapterType.List, ::onWordSelected, null)
-        b.wordRecycler.adapter = adapter
-        if(selectedWordCat.value != null)  adapter.submitList(getCatFilteredList(selectedWordCat.value!!)!!.sortedBy { w -> w.text }.reversed().sortedBy { w -> w.used }.reversed())
+        b.wordRecycler.initRecycler(WordRecycler.Mode.List, null, ::onWordSelected)
+        setFirstList()
+        b.wordRecycler.setLiveList(getCatFilteredList(selectedWordCat.value!!.id)!!.sortedBy { w -> w.text }.reversed().sortedBy { w -> w.used }.reversed())
         b.wordRecycler.scrollToPosition(savedScrollPosition)
     }
 
@@ -97,19 +99,21 @@ class WordsListFragment: Fragment() {
 
     private fun setObserver() {
         currentList.observe(b.root.context as LifecycleOwner) {
-            if(it != null) adapter.submitList(it.sortedBy { w -> w.text }.reversed().sortedBy { w -> w.used }.reversed())
             b.wordRecycler.scrollToPosition(savedScrollPosition)
-            b.counterWords.text = it.count().toString()
         }
 
         selectedWordCat.observe(context as LifecycleOwner) {
-            currentList.value = getCatFilteredList(it)
+            currentList.value = getCatFilteredList(it.id)
+            getCatFilteredList(it.id)?.let { wordList -> b.wordRecycler.setLiveList(wordList) }
 
         }
+
+        DisplayFilter.observeBarColorDark(requireContext(), b.wordCatRecycler)
+        DisplayFilter.observeBarColorDark(requireContext(), b.root)
     }
 
-    private fun getCatFilteredList(wordCat: WordCat): List<Word>? {
-        return Main.wordsList.value?.filter { w -> w.cats.contains(wordCat.id) }
+    private fun getCatFilteredList(id: Long): List<Word>? {
+        return Main.wordsList.value?.filter { w -> w.cats.contains(id) }
     }
 
 

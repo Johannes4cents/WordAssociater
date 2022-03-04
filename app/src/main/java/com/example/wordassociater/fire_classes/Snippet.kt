@@ -1,12 +1,9 @@
 package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.Main
-import com.example.wordassociater.firestore.FireChars
-import com.example.wordassociater.firestore.FireSnippets
-import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.firestore.*
 import com.example.wordassociater.utils.Date
 import com.example.wordassociater.utils.Drama
-import com.example.wordassociater.utils.StoryPart
 import com.google.firebase.firestore.Exclude
 
 data class Snippet(override var content: String = "",
@@ -18,11 +15,17 @@ data class Snippet(override var content: String = "",
                    override var characterList: MutableList<Long> = mutableListOf(22),
                    override var nuwList: MutableList<Long> = mutableListOf(),
                    override var storyLineList: MutableList<Long> = mutableListOf(),
+                   override var locationList: MutableList<Long> = mutableListOf(),
+                   override var itemList: MutableList<Long> = mutableListOf(),
                    override var date: Date = Date(0,"May",1000),
-                   var eventList: MutableList<Long> = mutableListOf(),
+                   override var eventList: MutableList<Long> = mutableListOf(),
                    var drama: Drama = Drama.None,
                    override var type: Type = Type.Snippet
-): StoryPart(id, content, wordList, characterList, nuwList, storyLineList, date, type) {
+): StoryPart(id, content, wordList, characterList, nuwList, storyLineList, itemList, locationList, eventList, date, type) {
+
+    @Exclude
+    override var sortingOrder: Int = id.toInt()
+
     @Exclude
     var recyclerHeader = false
 
@@ -30,38 +33,7 @@ data class Snippet(override var content: String = "",
     var onSnippetClicked : ((snippet:Snippet) -> Unit) ? = null
 
     @Exclude
-    fun getCharacters(): List<Character> {
-        val chars = mutableListOf<Character>()
-        val notFoundList = mutableListOf<Long>()
-        for(id in characterList) {
-            val char = Main.characterList.value?.find { c -> c.id == id }
-            if(char != null) chars.add(char)
-            else notFoundList.add(id)
-        }
-
-        for(id in notFoundList) {
-            characterList.remove(id)
-            FireSnippets.update(id, "characterList", characterList)
-        }
-        return chars
-    }
-
-    fun getStoryLines(): List<StoryLine> {
-        val list = mutableListOf<StoryLine>()
-        val toRemoveList = mutableListOf<Long>()
-        for(id in storyLineList) {
-            val sl = Main.getStoryLine(id)
-            if(sl != null) {
-                list.add(sl)
-            } else toRemoveList.add(id)
-        }
-
-        for(id in toRemoveList) {
-            storyLineList.remove(id)
-            FireSnippets.update(this.id, "storyLineList", storyLineList)
-        }
-        return list
-    }
+    var pinned = false
 
     @Exclude
     fun getNuws(): List<Nuw> {
@@ -81,20 +53,11 @@ data class Snippet(override var content: String = "",
     }
 
     @Exclude
-    fun getWords(): MutableList<Word> {
-        val words = mutableListOf<Word>()
-        val notFound = mutableListOf<Long>()
-        for(id in wordList) {
-            val found = Main.getWord(id)
-            if(found != null) words.add(found)
-            else notFound.add(id)
+    fun updateContent(content: String) {
+        if(this.content != content) {
+            this.content = content
+            FireSnippets.update(id, "content", content)
         }
-
-        for(id in notFound) {
-            wordList.remove(id)
-            FireSnippets.update(id, "wordList", wordList)
-        }
-        return words
     }
 
     @Exclude
@@ -134,11 +97,24 @@ data class Snippet(override var content: String = "",
         }
 
         for(storyLine in getStoryLines()) {
-            storyLine.snippetList.remove(id)
+            storyLine.snippetsList.remove(id)
 
         }
 
+        for(l in getLocations()) {
+            l.snippetsList.remove(id)
+            FireLocations.update(l.id, "snippetsList", l.snippetsList)
+        }
 
+        for(e in getEvents()) {
+            e.snippetsList.remove(id)
+            FireEvents.update(e.id, "snippetsList", e.snippetsList)
+        }
+
+        for(i in getItems()) {
+            i.snippetsList.remove(id)
+            FireItems.update(i.id, "snippetsList", i.snippetsList)
+        }
 
         FireSnippets.delete(id)
     }
@@ -150,11 +126,16 @@ data class Snippet(override var content: String = "",
         newSnippet.drama = drama
         newSnippet.characterList = characterList.toMutableList()
         newSnippet.recyclerHeader = recyclerHeader
+        newSnippet.storyLineList = storyLineList
+        newSnippet.eventList = eventList
+        newSnippet.itemList = itemList
+        newSnippet.locationList = locationList
         newSnippet.id = 999999999999
         newSnippet.content = content
         newSnippet.nuwList = nuwList.toMutableList()
         newSnippet.wordList = wordList.toMutableList()
 
+        oldStoryPart = newSnippet
         return newSnippet
     }
 

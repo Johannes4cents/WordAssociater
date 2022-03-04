@@ -7,13 +7,12 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.R
-import com.example.wordassociater.character.CharacterAdapter
+import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.HolderSnippetBinding
 import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.StoryLine
 import com.example.wordassociater.firestore.FireSnippets
-import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.snippets.ConnectSnippetsFragment
 import com.example.wordassociater.snippets.SnippetFragment
 import com.example.wordassociater.utils.Date
@@ -64,20 +63,6 @@ class SnippetHolderTimeline(val b: HolderSnippetBinding, val onSnippetSelected: 
     }
 
     private fun setClickListener() {
-        b.btnDelete.setOnClickListener {
-            Pop(b.btnDelete.context).confirmationPopUp(b.btnDelete, ::deleteSnippet)
-        }
-        b.connectBtn.setOnClickListener {
-            when (SnippetFragment.selectedSnippet) {
-                null -> {
-                }
-                snippet -> {
-                }
-                else -> {
-                    connectSnippets(SnippetFragment.selectedSnippet!!, snippet)
-                }
-            }
-        }
 
         b.root.setOnClickListener {
             onSnippetSelected(snippet)
@@ -105,30 +90,24 @@ class SnippetHolderTimeline(val b: HolderSnippetBinding, val onSnippetSelected: 
     }
 
     private fun setRecycler() {
-        val adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW, fromStory = true)
-        b.characterRecycler.adapter = adapter
-        val notAnyChar = snippet.getCharacters().filter { c -> c.id != 22L }
-        adapter.submitList(notAnyChar)
-        if(snippet.characterList.isNotEmpty()) b.characterRecycler.visibility = View.VISIBLE
+        b.characterRecycler.initRecycler(CharacterRecycler.Mode.Preview,null,null)
+        b.characterRecycler.setCharacterLiveData(snippet.getCharacters())
+
+        b.characterRecycler.visibility = if(snippet.characterList.isNotEmpty()) View.VISIBLE else View.GONE
 
         val liveList = MutableLiveData<List<StoryLine>>()
         b.storyLineRecycler.initRecycler(liveList, true)
         liveList.value = snippet.getStoryLines()
 
         b.wordsRecycler.visibility = if(snippet.wordList.isEmpty()) View.GONE else View.VISIBLE
-        b.wordsRecycler.initRecycler(MutableLiveData(), fromStory = true)
-        val notAnyWord = snippet.getWords().filter { w -> w.id != 0L }
-        b.wordsRecycler.submitList(notAnyWord)
     }
 
     private fun setObserver() {
-        DisplayFilter.observeConnectShown(b.root.context, b.connectBtn)
         DisplayFilter.observeLinesShown(b.root.context, listOf(b.lineSmall, b.lineBig))
         DisplayFilter.observeDateShown(b.root.context, b.dateHolder)
         DisplayFilter.observeContentShown(b.root.context, b.contentPreview)
         DisplayFilter.observeTitleShown(b.root.context, b.headerText)
         DisplayFilter.observeCharacterShown(b.root.context, b.characterRecycler)
-        DisplayFilter.observeDeleteShown(b.root.context, b.btnDelete)
         DisplayFilter.observeWordsShown(b.root.context, b.wordsRecycler)
         DisplayFilter.observeDateShown(b.root.context, b.dateHolder)
         DisplayFilter.observeLayerShown(b.root.context, b.layerButton)

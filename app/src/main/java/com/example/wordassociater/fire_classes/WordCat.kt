@@ -5,13 +5,15 @@ import com.example.wordassociater.R
 import com.example.wordassociater.firestore.FireWordCats
 import com.example.wordassociater.firestore.FireWords
 import com.google.firebase.firestore.Exclude
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 data class WordCat(
         val id: Long = 0,
-        val name: String = "") {
+        var name: String = "", ) {
     var color: Color = Color.Blue
     var wordList: MutableList<Long> = mutableListOf()
-    var importance = 6
     var active: Boolean = true
     var type: Type = Type.Other
 
@@ -34,21 +36,26 @@ data class WordCat(
 
     @Exclude
     fun delete() {
-        for(w in wordList) {
-            val word = Main.getWord(w)
-            if(word != null) {
-                word.cats.remove(id)
-                if(word.cats.isEmpty()) {
-                    word.cats.add(0)
-                    val any = Main.getWordCat(0)
-                    any!!.wordList.add(word.id)
-                    FireWordCats.update(any.id, "wordList", any.wordList)
-                }
+        CoroutineScope(Dispatchers.IO).launch {
+            for(w in wordList) {
+                val word = Main.getWord(w)
+                if(word != null) {
+                    word.cats.remove(id)
+                    if(word.cats.isEmpty()) {
 
-                FireWords.update(word.id, "cats", word.cats)
+                            word.cats.add(0)
+                            val any = Main.getWordCat(0)
+                            any!!.wordList.add(word.id)
+                            FireWordCats.update(any.id, "wordList", any.wordList)
+
+
+                    }
+                    FireWords.update(word.id, "cats", word.cats)
+
+                }
             }
+            FireWordCats.delete(id)
         }
-        FireWordCats.delete(id)
     }
     @Exclude
     fun getBg(): Int {

@@ -58,7 +58,7 @@ fun popCreateEvent(from: View, storyLineList : List<Long>) {
     b.eventNameInput.setOnEnterFunc {
         if(it != "" && it != " ") {
             nameEntered = true
-            event.content = it
+            event.name = it
         }
     }
 

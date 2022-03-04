@@ -14,9 +14,15 @@ fun popWordCatMultiSelect(from: View, liveList: MutableLiveData<List<WordCat>>, 
     val b = PopWordCatMultiSelectBinding.inflate(LayoutInflater.from(from.context), null, false)
     val pop = Helper.getPopUp(b.root, from, null,null)
 
+
+
     val adapter = WordCatAdapter(WordCatAdapter.Type.List, onWordCatClicked)
     b.wordCatRecycler.adapter = adapter
     adapter.submitList(Main.wordCatsList.value!!)
+
+    b.btnNewCat.setOnClickListener {
+        popNewWordCat(b.btnNewCat)
+    }
 
     liveList.observe(from.context as LifecycleOwner) {
         adapter.submitList(it)
@@ -25,16 +31,20 @@ fun popWordCatMultiSelect(from: View, liveList: MutableLiveData<List<WordCat>>, 
 
 }
 
-fun popWordCatAllOptions(from: View, liveList: MutableLiveData<List<WordCat>>, onWordCatClicked: (wordCat: WordCat) -> Unit) {
+
+fun popWordCatAllOptions(from: View, liveList: MutableLiveData<List<WordCat>>, onWordCatClicked: (wordCat: WordCat) -> Unit, onDeleteClicked: ((wordCat: WordCat) -> Unit)? = null) {
     val b = PopWordCatMultiSelectBinding.inflate(LayoutInflater.from(from.context), null, false)
     val pop = Helper.getPopUp(b.root, from, null,null)
 
-    val adapter = WordCatAdapter(WordCatAdapter.Type.ALLOPTIONS, onWordCatClicked)
+    val adapter = WordCatAdapter(WordCatAdapter.Type.ALLOPTIONS, onWordCatClicked, null, onDeleteClicked)
     b.wordCatRecycler.adapter = adapter
-    adapter.submitList(Main.wordCatsList.value!!)
+
+    b.btnNewCat.setOnClickListener {
+        popNewWordCat(from)
+    }
 
     liveList.observe(from.context as LifecycleOwner) {
-        adapter.submitList(it)
+        adapter.submitList(it.sortedBy { wc -> wc.id }.reversed())
         adapter.notifyDataSetChanged()
     }
 

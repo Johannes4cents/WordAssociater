@@ -11,7 +11,6 @@ import android.widget.LinearLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.BarSearchBinding
 import com.example.wordassociater.display_filter.DisplayFilter
@@ -41,8 +40,10 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
         b.searchInput.gravity = Gravity.CENTER
     }
 
+
     fun setTextColorToWhite() {
         b.searchInput.setTextColor(b.root.resources.getColor(R.color.white))
+        b.searchInput.setHintTextColor(b.root.resources.getColor(R.color.white))
         b.searchInput.setHintTextColor(b.root.resources.getColor(R.color.white))
     }
 
@@ -78,11 +79,10 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
         searchWords.value = strippedWords
     }
 
-    fun getWords( takeWordsFunc: (wordsList: List<Word>) -> Unit) {
-        val allWords = Main.wordsList.value!!.toMutableList()
+    fun getWords(wordList: List<Word>,  takeWordsFunc: (wordsList: List<Word>) -> Unit) {
         searchWords.observe(context as LifecycleOwner) {
             val foundWords = mutableListOf<Word>()
-            for(word in allWords) {
+            for(word in wordList) {
                 for(string in it) {
                     if(Helper.stripWord(word.text).startsWith(string)) foundWords.add(word)
                 }
@@ -90,7 +90,7 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
 
             if(it.count() == 1 && it[0].length > 2 && foundWords.isEmpty()) {
                 val header = Word(id = 0)
-                header.isHeader = true
+                header.isAHeader = true
                 header.text = it[0].capitalize(Locale.ROOT)
                 takeWordsFunc(listOf(header) + foundWords)
 
@@ -99,11 +99,10 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
         }
     }
 
-    fun getSnippets( takeSnippetsFunc: (snippetList: List<Snippet>) -> Unit ) {
-        val allSnippets = Main.snippetList.value!!.toMutableList()
+    fun getSnippets( snippetList: List<Snippet>, takeSnippetsFunc: (snippetList: List<Snippet>) -> Unit ) {
         searchWords.observe(context as LifecycleOwner) {
             val foundSnippets = mutableListOf<Snippet>()
-            for(snippet in allSnippets) {
+            for(snippet in snippetList) {
                 val strainContentWords = Helper.contentToWordList(snippet.content)
                 for(string in it) {
                     // Search Content

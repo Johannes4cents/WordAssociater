@@ -11,17 +11,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.ViewPagerFragment
+import com.example.wordassociater.viewpager.ViewPagerMainFragment
 import com.example.wordassociater.bars.AddStuffBar
-import com.example.wordassociater.character.CharacterAdapter
+import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.FragmentDialogueEditBinding
-import com.example.wordassociater.fire_classes.Bubble
-import com.example.wordassociater.fire_classes.Dialogue
-import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.fire_classes.WordConnection
-import com.example.wordassociater.firestore.*
+import com.example.wordassociater.fire_classes.*
+import com.example.wordassociater.firestore.FireBubbles
+import com.example.wordassociater.firestore.FireDialogue
+import com.example.wordassociater.firestore.FireStats
+import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.popSearchWord
-import com.example.wordassociater.utils.*
+import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.utils.ListHelper
+import com.example.wordassociater.utils.Page
+import com.example.wordassociater.utils.SwipeToDeleteCallback
 import com.example.wordassociater.words.WordAdapter
 import com.example.wordassociater.words.WordLinear
 
@@ -31,7 +34,6 @@ class EditDialogueFragment: Fragment() {
     companion object {
         var oldDialogue = Dialogue()
         var dialogue = Dialogue(id = FireStats.getStoryPartId())
-        val characterAdapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
         lateinit var bubbleAdapter: BubbleAdapter
         var bubbleList = MutableLiveData<List<Bubble>?>()
     }
@@ -86,13 +88,6 @@ class EditDialogueFragment: Fragment() {
 
     private fun handleCharacterDeselected() {
         for(charId in oldDialogue.characterList) {
-            if(!dialogue.characterList.contains(charId)) {
-                val character = Main.getCharacter(charId)
-                if(character != null) {
-                    character.dialogueList.remove(dialogue.id)
-                    FireChars.update(character.id, "dialogueList", character.dialogueList)
-                }
-            }
         }
     }
 
@@ -100,7 +95,7 @@ class EditDialogueFragment: Fragment() {
         b.backBtn.setOnClickListener {
             dialogue = Dialogue()
             AddStuffBar.selectedCharacters.clear()
-            ViewPagerFragment.comingFrom = Page.Start
+            ViewPagerMainFragment.comingFrom = Page.Start
             findNavController().navigate(R.id.action_editDialogueFragment_to_startFragment)
         }
 
@@ -139,10 +134,6 @@ class EditDialogueFragment: Fragment() {
             }
             for(c in dialogue.characterList) {
                 val char = Main.getCharacter(c)!!
-                if(!char.dialogueList.contains(dialogue.id)) {
-                    char.dialogueList.add(dialogue.id)
-                    FireChars.update(c,"dialogueList", char.dialogueList)
-                }
             }
             for(w in dialogue.wordList) {
                 val word = Main.getWord(w)
@@ -186,20 +177,15 @@ class EditDialogueFragment: Fragment() {
 
     private fun setRecycler() {
         bubbleAdapter = BubbleAdapter(BubbleAdapter.Mode.WRITE,::handleBubble, dialogue.getCharacter())
-        b.characterRecycler.adapter = characterAdapter
         b.bubbleRecycler.adapter = bubbleAdapter
 
         val callback: ItemTouchHelper.Callback = SwipeToDeleteCallback(bubbleAdapter)
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(b.bubbleRecycler)
 
-
-        characterAdapter.submitList(dialogue.getCharacter())
-
-        wordAdapter = WordAdapter(AdapterType.Preview, ::takeWordFunc, null)
-        b.wordRecycler.adapter = wordAdapter
-        wordAdapter.submitList(dialogue.getWords())
-        setWordList()
+        val charLiveList = MutableLiveData<List<Character>>()
+        b.characterRecycler.initRecycler(CharacterRecycler.Mode.Preview, charLiveList, null)
+        charLiveList.value = dialogue.getCharacter()
 
 
     }

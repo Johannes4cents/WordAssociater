@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.ViewPagerFragment
+import com.example.wordassociater.viewpager.ViewPagerMainFragment
 import com.example.wordassociater.databinding.FragmentWordDetailedBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Sphere
@@ -20,7 +20,6 @@ import com.example.wordassociater.firestore.FireWordCats
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.popups.Pop
 import com.example.wordassociater.popups.popSelectSphere
-import com.example.wordassociater.popups.popWordCatMultiSelect
 import com.example.wordassociater.snippets.SnippetAdapter
 import com.example.wordassociater.utils.Page
 
@@ -94,7 +93,7 @@ class WordDetailedFragment: Fragment() {
         b.topBar.setLeftBtn {
             findNavController().navigate(R.id.action_wordDetailedFragment_to_ViewPagerFragment)
             if(comingFromList != null) WordsListFragment.selectedWordCat.value = comingFromList
-            ViewPagerFragment.comingFrom = Page.Words
+            ViewPagerMainFragment.comingFrom = Page.Words
         }
 
         b.buttonSnippets.setOnClickListener {
@@ -117,20 +116,19 @@ class WordDetailedFragment: Fragment() {
             popSelectSphere(b.topBar.btn4, selectedSpheres, ::handleSelectedSphere)
         }
 
-        b.topBar.setBtn5 {
+        b.topBar.setRightButton {
             Pop(b.root.context).confirmationPopUp(b.topBar.btn5, ::onDeleteConfirmed)
         }
 
-        b.topBar.setBtn5IconAndVisibility(R.drawable.icon_delete, true)
+        b.topBar.setBtn5IconAndVisibility(R.drawable.icon_delete, false)
         b.topBar.setBtn2IconAndVisibility(R.drawable.icon_word, false)
-        b.topBar.setRightBtnIconAndVisibility(R.drawable.icon_word, false)
+        b.topBar.setRightBtnIconAndVisibility(R.drawable.icon_delete, true)
 
         b.topBar.setBtn1IconAndVisibility(R.drawable.icon_word_connection, true)
         b.topBar.setBtn3IconAndVisibility(R.drawable.icon_heritage, true)
         b.topBar.setBtn4IconAndVisibility(R.drawable.sphere_blue, true)
 
         b.catColor.setOnClickListener {
-            popWordCatMultiSelect(b.catColor, selectedCats, ::onWordCatClicked)
             selectedCats.value = makeSelectedWordCatList()
         }
     }
@@ -140,7 +138,7 @@ class WordDetailedFragment: Fragment() {
             word.delete()
             findNavController().navigate(R.id.action_wordDetailedFragment_to_ViewPagerFragment)
             if(comingFromList != null) WordsListFragment.selectedWordCat.value = comingFromList
-            ViewPagerFragment.comingFrom = Page.Words
+            ViewPagerMainFragment.comingFrom = Page.Words
         }
     }
 
@@ -174,9 +172,7 @@ class WordDetailedFragment: Fragment() {
             val snippetsList = mutableListOf<Snippet>()
             for(snippet in Main.snippetList.value!!) {
                 var contains = false
-                Log.i("wordProb", "snippet is: ${snippet.content} | id is ${snippet.id}")
                 for(w in snippet.getWords()) {
-                    Log.i("wordProb", "word is: ${w.text} | type is ${w.getCatsList()[0]}")
                     if(word.id == w.id) contains = true ; break
                 }
                 if(contains) snippetsList.add(snippet)

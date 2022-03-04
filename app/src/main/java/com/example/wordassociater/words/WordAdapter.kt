@@ -9,23 +9,25 @@ import com.example.wordassociater.databinding.HeaderSearchWordBinding
 import com.example.wordassociater.databinding.HolderWordPreviewBinding
 import com.example.wordassociater.databinding.HolderWordSimpleBinding
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.utils.AdapterType
 
 class WordAdapter(
-        private val adapterType: AdapterType,
-        private val takeWordFunc: (word: Word) -> Unit,
-        private val rightButtonFunc: ((word:Word) -> Unit)?,
+        private val mode: WordRecycler.Mode,
+        private val takeWordFunc: ((word: Word) -> Unit)?,
         private val onHeaderClicked: ((text: String) -> Unit)? = null,
-        private val fromStory: Boolean = false)
+        )
     : ListAdapter<Word, RecyclerView.ViewHolder>(WordDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if(viewType == 1) {
-            if(adapterType == AdapterType.Preview) WordHolderPreview(HolderWordPreviewBinding.inflate(LayoutInflater.from(parent.context)),fromStory)
-            else WordHolderSimple(HolderWordSimpleBinding.inflate(LayoutInflater.from(parent.context)), fromStory)
-        }
-        else {
-            SearchWordsHeader(HeaderSearchWordBinding.inflate(LayoutInflater.from(parent.context)), onHeaderClicked)
+        val previewHolder = WordHolderPreview(HolderWordPreviewBinding.inflate(LayoutInflater.from(parent.context)))
+        val listHolder = WordHolderList(HolderWordSimpleBinding.inflate(LayoutInflater.from(parent.context)), takeWordFunc!!)
+        val popupHolder = WordHolderPopup(HolderWordSimpleBinding.inflate(LayoutInflater.from(parent.context)), takeWordFunc)
+        val header = SearchWordsHeader(HeaderSearchWordBinding.inflate(LayoutInflater.from(parent.context)), onHeaderClicked)
+        return when(mode) {
+            WordRecycler.Mode.Preview -> previewHolder
+            WordRecycler.Mode.Popup -> {
+                if(viewType == 1) popupHolder else header
+            }
+            WordRecycler.Mode.List -> listHolder
         }
 
     }
@@ -33,16 +35,18 @@ class WordAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val word = currentList[position]
         word.adapterPosition = position
-        if(adapterType == AdapterType.Preview) (holder as WordHolderPreview).onBind(word)
-        else {
-            if(!word.isHeader) (holder as WordHolderSimple).onBind(word, adapterType, takeWordFunc, rightButtonFunc)
-            else (holder as SearchWordsHeader).onBind(word)
+        when(mode) {
+            WordRecycler.Mode.Preview -> (holder as WordHolderPreview).onBind(word)
+            WordRecycler.Mode.Popup -> {
+                if(word.isAHeader) (holder as SearchWordsHeader).onBind(word) else (holder as WordHolderPopup).onBind(word)
+            }
+            WordRecycler.Mode.List -> (holder as WordHolderList).onBind(word)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         val word = getItem(position)
-        return if(word.isHeader) 2 else 1
+        return if(word.isAHeader) 2 else 1
     }
 }
 

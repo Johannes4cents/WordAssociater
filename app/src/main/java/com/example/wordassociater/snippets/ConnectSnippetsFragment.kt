@@ -10,9 +10,8 @@ import com.bumptech.glide.Glide
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.character.CharacterAdapter
+import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.FragmentConnectSnippetsBinding
-import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.firestore.FireStats
@@ -24,7 +23,6 @@ class ConnectSnippetsFragment: Fragment() {
     companion object {
         lateinit var snippetOne : Snippet
         lateinit var snippetTwo : Snippet
-        lateinit var adapter: CharacterAdapter
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -100,11 +98,8 @@ class ConnectSnippetsFragment: Fragment() {
     }
 
     private fun handleRecycler() {
-        adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
-        b.characterRecycler.adapter = adapter
-        if(newSnippet.characterList.isNotEmpty()) {
-            adapter.submitList(Character.getCharactersById(newSnippet.characterList))
-        }
+        b.characterRecycler.initRecycler(CharacterRecycler.Mode.Preview, null,null)
+        b.characterRecycler.setCharacterLiveData(newSnippet.getCharacters())
     }
 
     private fun saveSnippet() {

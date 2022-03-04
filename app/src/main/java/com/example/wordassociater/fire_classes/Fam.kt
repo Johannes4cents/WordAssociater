@@ -1,5 +1,6 @@
 package com.example.wordassociater.fire_classes
 
+import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.firestore.FireFams
@@ -54,6 +55,7 @@ data class Fam(
                 FireFams.update(newMainFam.id, "text", word.text)
             }
         }
+        Log.i("lagProb", "Fam delete called")
         FireWords.update(word.id, "famList", word.famList)
         FireFams.delete(id)
     }

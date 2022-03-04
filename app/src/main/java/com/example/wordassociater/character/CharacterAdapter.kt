@@ -7,18 +7,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderCharacterBinding
+import com.example.wordassociater.databinding.HolderCharacterPopupBinding
 import com.example.wordassociater.databinding.HolderCharacterPreviewBinding
 import com.example.wordassociater.fire_classes.Character
+import com.example.wordassociater.utils.LiveClass
 
 
 class CharacterAdapter(
-        var mode: Mode,
-        val characterList : List<Character>? = null,
-        val selectFunc: ((char: Character) -> Unit)? = null,
+        var mode: CharacterRecycler.Mode,
+        private val selectFunc: ((char: LiveClass) -> Unit)?,
         val fromStory: Boolean = false
 )
     : ListAdapter<Character, RecyclerView.ViewHolder>(CharacterDiff()) {
-    public enum class Mode { MAIN, LIST, PREVIEW, UPDATE, CONNECTSNIPPETS}
 
     companion object {
         var selectedCharacterList = mutableListOf<Character>()
@@ -27,14 +27,23 @@ class CharacterAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if(mode != Mode.PREVIEW) CharacterHolder(HolderCharacterBinding.inflate(LayoutInflater.from(parent.context)))
-        else CharacterHolderPreview(HolderCharacterPreviewBinding.inflate(LayoutInflater.from(parent.context)), fromStory)
+        val listHolder = CharacterHolderList(HolderCharacterBinding.inflate(LayoutInflater.from(parent.context)))
+        val prevewHolder = CharacterHolderPreview(HolderCharacterPreviewBinding.inflate(LayoutInflater.from(parent.context)))
+        val popupHolder = CharacterHolderPopUp(HolderCharacterPopupBinding.inflate(LayoutInflater.from(parent.context)))
+        return when(mode) {
+            CharacterRecycler.Mode.Preview -> prevewHolder
+            CharacterRecycler.Mode.Popup -> popupHolder
+            CharacterRecycler.Mode.List -> listHolder
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val character = currentList[position]
-        if(mode != Mode.PREVIEW) (holder as CharacterHolder).onBind(character, this, selectFunc)
-        else (holder as CharacterHolderPreview).onBind(character)
+        when(mode) {
+            CharacterRecycler.Mode.Preview -> (holder as CharacterHolderPreview).onBind(character)
+            CharacterRecycler.Mode.Popup -> (holder as CharacterHolderPopUp).onBind(character, selectFunc!!)
+            CharacterRecycler.Mode.List -> (holder as CharacterHolderList).onBind(character, selectFunc!!)
+        }
     }
 }
 
@@ -44,6 +53,6 @@ class CharacterDiff: DiffUtil.ItemCallback<Character>() {
     }
 
     override fun areContentsTheSame(oldItem: Character, newItem: Character): Boolean {
-        return oldItem == newItem
+        return (oldItem.selected == newItem.selected)
     }
 }

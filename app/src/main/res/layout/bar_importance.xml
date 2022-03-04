@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal"
+    android:background="@color/snippets"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:padding="10dp"
+        android:id="@+id/main"
+        android:layout_weight="1"
+        android:src="@drawable/importance_main"
+        android:layout_width="0dp"
+        android:layout_height="40dp"/>
+
+    <ImageView
+        android:padding="10dp"
+        android:id="@+id/side"
+        android:layout_weight="1"
+        android:src="@drawable/importance_side"
+        android:layout_width="0dp"
+        android:layout_height="40dp"/>
+
+    <ImageView
+        android:padding="10dp"
+        android:id="@+id/mentioned"
+        android:layout_weight="1"
+        android:src="@drawable/importance_mentioned"
+        android:layout_width="0dp"
+        android:layout_height="40dp"/>
+
+        <LinearLayout
+            android:id="@+id/btnNewPart"
+            android:gravity="center"
+            android:background="@drawable/background_btn_new_snippet_part"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="40dp">
+            <TextView
+                android:layout_marginStart="8dp"
+                android:gravity="center"
+                android:id="@+id/newPartText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="New" />
+
+            <ImageView
+                android:padding="5dp"
+                android:id="@+id/newPartImage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_character" />
+        </LinearLayout>
+
+
+
+
+
+</LinearLayout>

@@ -13,7 +13,6 @@ import com.example.wordassociater.databinding.PopupConfirmDeletionBinding
 
 class Pop(val context: Context) {
     private val popWindow = PopupWindow(context)
-    lateinit var charMode : CharacterAdapter.Mode
 
     companion object {
         lateinit var characterAdapter: CharacterAdapter

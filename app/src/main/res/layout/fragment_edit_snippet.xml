@@ -11,14 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/characterRecycler"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    <com.example.wordassociater.bars.SnippetPartsBar
+        android:id="@+id/snippetPartsBar"
         android:layout_width="match_parent"
         android:layout_height="40dp"/>
 
-    <com.example.wordassociater.words.WordPreviewRecycler
+    <com.example.wordassociater.character.CharacterRecycler
+        android:background="@color/snippetsLite"
+        android:id="@+id/characterRecycler"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+
+    <com.example.wordassociater.words.WordRecycler
         android:id="@+id/wordPreviewRecycler"
         android:layout_width="match_parent"
         android:layout_height="30dp"/>

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.fire_classes.Character
+import com.example.wordassociater.fire_classes.StoryPart
 import com.example.wordassociater.fire_classes.Word
 
 object ListHelper {

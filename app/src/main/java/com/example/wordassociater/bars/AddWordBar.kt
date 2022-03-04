@@ -130,6 +130,7 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
                         val connectId = FireStats.getConnectId()
                         handleNewCharacter(connectId, newWord)
                         handleNewLocation(connectId, newWord)
+                        handleNewItem(connectId, newWord)
                         handleNewEvent(connectId, newWord)
 
                         handleWordLinear(newWord)
@@ -163,7 +164,7 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
         if(selectedWordCat.type == WordCat.Type.Location) {
             if(b.wordInput.text.toString() != "Any" && b.wordInput.text.toString() != "any") {
                 val location = Location(
-                        id =  FireStats.getLocationId(),
+                        id =  FireStats.getSnippetPartId(),
                         name = Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString()),
                         connectId = connectId)
 
@@ -176,12 +177,29 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
         }
     }
 
+    private fun handleNewItem(connectId: Long, newWord: Word) {
+        if(selectedWordCat.type == WordCat.Type.Item) {
+            if(b.wordInput.text.toString() != "Any" && b.wordInput.text.toString() != "any") {
+                val item = Item(
+                        id =  FireStats.getSnippetPartId(),
+                        name = Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString()),
+                        connectId = connectId)
+
+                item.wordsList = Word.convertToIdList(WordLinear.selectedWords)
+                FireItems.add(item, context)
+                newWord.connectId = connectId
+            }
+            else Helper.toast("If I give you any amount of money, wont you choose any item?", context)
+
+        }
+    }
+
     private fun handleNewEvent(connectId: Long, newWord: Word) {
         if(selectedWordCat.type == WordCat.Type.Event) {
             if(Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString()) != "Any") {
                 val event = Event(
-                        id =  FireStats.getLocationId(),
-                        content = Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString()),
+                        id =  FireStats.getSnippetPartId(),
+                        name = Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString()),
                         connectId = connectId)
 
                 event.wordList = Word.convertToIdList(WordLinear.selectedWords)
@@ -197,7 +215,7 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
         if(selectedWordCat.type == WordCat.Type.Character) {
             if(b.wordInput.text.toString() != "Any" && b.wordInput.text.toString() != "any") {
                 val character = Character(
-                        id =  FireStats.getCharId(),
+                        id =  FireStats.getSnippetPartId(),
                         name = b.wordInput.text.toString(),
                         connectId = connectId)
                 FireChars.add(character, context)

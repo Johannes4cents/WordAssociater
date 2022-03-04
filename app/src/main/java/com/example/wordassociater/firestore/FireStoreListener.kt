@@ -13,6 +13,9 @@ import com.example.wordassociater.utils.CommonWord
 object FireStoreListener {
 
     fun getTheStuff() {
+        getWordCatsOnce()
+        getSpheresOneTime()
+
         getCharacters()
         getNotes()
         getStats()
@@ -21,7 +24,6 @@ object FireStoreListener {
         getDialogues()
         getBubbles()
         getSpheres()
-        getSpheresOneTime()
         getWordConnections()
         getWordCats()
         getNuws()
@@ -56,6 +58,7 @@ object FireStoreListener {
             if(docs != null) {
                 val famList = mutableListOf<Fam>()
                 for(doc in docs) {
+
                     val fam = doc.toObject(Fam::class.java)
                     famList.add(fam)
                 }
@@ -69,6 +72,7 @@ object FireStoreListener {
             if(docs != null) {
                 val proseList = mutableListOf<Prose>()
                 for(doc in docs) {
+
                     val prose = doc.toObject(Prose::class.java)
                     proseList.add(prose)
                 }
@@ -82,6 +86,7 @@ object FireStoreListener {
             if(docs != null) {
                 val eventList = mutableListOf<Event>()
                 for(doc in docs) {
+                    Log.i("lagProb", "listener - getEvents")
                     val event = doc.toObject(Event::class.java)
                     eventList.add(event)
                 }
@@ -119,6 +124,18 @@ object FireStoreListener {
         }
     }
 
+    private fun getLocations() {
+        FireLists.locationsList.addSnapshotListener { docs, error ->
+            if(docs != null) {
+                val locations = mutableListOf<Location>()
+                for(doc in docs) {
+                    val location = doc.toObject(Location:: class.java)
+                    locations.add(location)
+                }
+                Main.locationList.value = locations
+            }
+        }
+    }
 
     private fun getWordConnections() {
         FireLists.wordConnectionList.addSnapshotListener { docs, _ ->
@@ -139,18 +156,17 @@ object FireStoreListener {
             if(docs != null) {
                 for(doc in docs) {
                     val settings = doc.toObject(FilterSettings::class.java)
-                    DisplayFilter.FilterSettings.contentShown.value = settings.contentShown
-                    DisplayFilter.FilterSettings.storyLineShown.value = settings.storyLineShown
-                    DisplayFilter.FilterSettings.layerShown.value = settings.layerShown
-                    DisplayFilter.FilterSettings.titleShown.value = settings.titleShown
-                    DisplayFilter.FilterSettings.contentShown.value = settings.titleShown
-                    DisplayFilter.FilterSettings.barColorDark.value = settings.barColorDark
-                    DisplayFilter.FilterSettings.characterShown.value = settings.characterShown
-                    DisplayFilter.FilterSettings.connectShown.value = settings.connectShown
-                    DisplayFilter.FilterSettings.dateShown.value = settings.dateShown
-                    DisplayFilter.FilterSettings.dramaShown.value = settings.dramaShown
-                    DisplayFilter.FilterSettings.wordsShown.value = settings.wordsShown
-                    DisplayFilter.FilterSettings.deleteShown.value = settings.deleteShown
+                    DisplayFilter.contentShown.value = settings.contentShown
+                    DisplayFilter.storyLineShown.value = settings.storyLineShown
+                    DisplayFilter.layerShown.value = settings.layerShown
+                    DisplayFilter.titleShown.value = settings.titleShown
+                    DisplayFilter.contentShown.value = settings.titleShown
+                    DisplayFilter.barColorDark.value = settings.barColorDark
+                    DisplayFilter.characterShown.value = settings.characterShown
+                    DisplayFilter.dateShown.value = settings.dateShown
+                    DisplayFilter.dramaShown.value = settings.dramaShown
+                    DisplayFilter.wordsShown.value = settings.wordsShown
+                    DisplayFilter.linesShown.value = settings.linesShown
                 }
             }
         }
@@ -278,6 +294,7 @@ object FireStoreListener {
     private fun getDialogues() {
         FireLists.dialogueList.addSnapshotListener { docs, error ->
             if(docs != null) {
+
                 val dialogueList = mutableListOf<Dialogue>()
                 for(doc in docs) {
                     val dialogue = doc.toObject(Dialogue::class.java)
@@ -294,6 +311,7 @@ object FireStoreListener {
                 val wordsList = mutableListOf<Word>()
                 for(doc in docs) {
                     val word = doc.toObject(Word::class.java)
+
                     wordsList.add(word)
                 }
                 Main.wordsList.value = wordsList
@@ -305,15 +323,29 @@ object FireStoreListener {
         FireLists.wordCatList.addSnapshotListener { docs, error ->
             if(docs != null) {
                 val wordCatList = mutableListOf<WordCat>()
-                val activeWordCats = mutableListOf<WordCat>()
                 for(doc in docs) {
+                    val wordCat = doc.toObject(WordCat::class.java)
+                    Log.i("wordCatProb", "getWordCats - wordCat is = $wordCat")
+                    wordCat.countUsed()
+                    wordCatList.add(wordCat)
+                    FireWordCats.add(wordCat, null)
+                }
+                Main.wordCatsList.value = wordCatList
+            }
+        }
+    }
+
+    private fun getWordCatsOnce() {
+        FireLists.wordCatList.get().addOnSuccessListener { docs ->
+            if(docs != null) {
+                val wordCatList = mutableListOf<WordCat>()
+                for(doc in docs) {
+                    Log.i("lagProb", "listener - get")
                     val wordCat = doc.toObject(WordCat::class.java)
                     wordCat.countUsed()
                     wordCatList.add(wordCat)
-                    if(wordCat.active) activeWordCats.add(wordCat)
                 }
-                Main.wordCatsList.value = wordCatList
-                Main.activeWordCats.value = activeWordCats
+                StartFragment.selectedWordCats.value = wordCatList
             }
         }
     }

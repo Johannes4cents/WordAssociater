@@ -43,7 +43,14 @@ class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout
                 WordLinear.wordList = WordLinear.selectedWords.toMutableList()
                 handleCharacterRemoval()
                 for(i in 1..wordAmount) {
-                    getWord(Main.activeWordCats.value!!.random())?.let { it1 -> WordLinear.wordList.add(it1) }
+                    val activeWordCats = Main.wordCatsList.value!!.filter { wc -> wc.active }
+                    if(activeWordCats.isNotEmpty()) {
+                        getWord(activeWordCats.random())?.let { it1 -> WordLinear.wordList.add(it1) }
+                    }
+                    else {
+                        Helper.toast("select at least one wordCat to choose from", context)
+                    }
+
                 }
                 WordLinear.wordListTrigger.postValue(Unit)
             }

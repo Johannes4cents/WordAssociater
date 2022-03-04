@@ -3,7 +3,6 @@ package com.example.wordassociater.fire_classes
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.FireWordConnections
 import com.example.wordassociater.firestore.FireWords
-import com.example.wordassociater.utils.StoryPart
 import com.google.firebase.firestore.Exclude
 
 data class WordConnection(
@@ -39,7 +38,7 @@ data class WordConnection(
         }
 
         fun connect(storyPart: StoryPart) {
-            val allWords = storyPart.getWordsAsStory()
+            val allWords = storyPart.getWords()
             var connectionsList = mutableListOf<WordConnection>()
 
             // check to include already established connections when updating a storyPart

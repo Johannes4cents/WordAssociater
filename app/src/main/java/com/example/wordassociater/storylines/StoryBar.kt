@@ -17,7 +17,7 @@ import com.example.wordassociater.popups.popCharacterSelector
 import com.example.wordassociater.popups.popSearchWord
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.ListHelper
-import com.example.wordassociater.utils.StoryPart
+import com.example.wordassociater.fire_classes.StoryPart
 
 class StoryBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = BarStoryBinding.inflate(LayoutInflater.from(context), this, true)

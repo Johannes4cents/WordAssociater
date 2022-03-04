@@ -45,8 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
     </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    <com.example.wordassociater.character.CharacterRecycler
         android:id="@+id/characterRecycler"
         android:minHeight="50dp"
         android:layout_width="match_parent"

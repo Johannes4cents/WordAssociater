@@ -1,7 +1,6 @@
 package com.example.wordassociater.fire_classes
 
 data class Stats(
-        var charNumber: Long = 0,
         var noteNumber: Long = 0,
         var wordNumber: Long = 0,
         var bubbleNumber: Long = 0,
@@ -13,6 +12,6 @@ data class Stats(
         var proseNumber: Long = 0,
         var connectId: Long = 0,
         var storyLineNumber: Long = 0,
-        var locationNumber: Long = 0,
-        var famNumber : Long = 1
+        var famNumber : Long = 1,
+        var snippetPartId: Long = 0
 )

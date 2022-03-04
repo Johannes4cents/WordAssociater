@@ -137,7 +137,7 @@ class HeritageFragment: Fragment() {
             val newList = famLiveList.value!!.toMutableList()
             newList.remove(fam)
             famLiveList.value = newList
-            Helper.toast("That already is it's own Word (${word.text} (${word.id}))", requireContext())
+            Helper.toast("That already is it's own Word (${fam.checkIfWord()!!.text} (${fam.checkIfWord()!!.id}))", requireContext())
             //b.famRecycler.adapter?.notifyDataSetChanged()
         }
     }

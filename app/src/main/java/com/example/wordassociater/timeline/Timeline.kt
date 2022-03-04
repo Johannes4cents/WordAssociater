@@ -10,11 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.TimelineBinding
 import com.example.wordassociater.display_filter.DisplayFilter
-import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.fire_classes.StoryLine
-import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.utils.StoryPart
+import com.example.wordassociater.fire_classes.*
 
 class Timeline(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = TimelineBinding.inflate(LayoutInflater.from(context), this, true)
@@ -58,9 +54,6 @@ class Timeline(context: Context, attributeSet: AttributeSet): LinearLayout(conte
     }
 
     private fun setStartAndEnd(storyParts: MutableList<StoryPart>): List<StoryPart> {
-//        val firstStory = storyParts.removeFirst()
-//        val markerStart = TimelineMarker(context, null, firstStory)
-//        b.startLinear.addView(markerStart)
 
         if(storyParts.isNotEmpty()) {
             val lastStory = storyParts.removeLast()

@@ -6,51 +6,64 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.ViewPagerFragment
-import com.example.wordassociater.databinding.FragmentCharacterListBinding
-import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.utils.Page
+import com.example.wordassociater.databinding.FragmentSnippetPartListsBinding
+import com.example.wordassociater.databinding.HolderSnippetPartListBinding
+import com.example.wordassociater.live_recycler.LiveRecycler
+import com.example.wordassociater.utils.LiveClass
 
 class CharacterListFragment: Fragment() {
-    lateinit var b: FragmentCharacterListBinding
-    lateinit var characterAdapter: CharacterAdapter
+    lateinit var b: FragmentSnippetPartListsBinding
+    private val livePartsList = MutableLiveData<List<LiveClass>>()
 
-    override fun onCreateView(
+            override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         Main.inFragment = Frags.CHARACTERLIST
-        b = FragmentCharacterListBinding.inflate(layoutInflater)
-        handleRecycler()
-        return b.root
+        b = FragmentSnippetPartListsBinding.inflate(layoutInflater)
+                setLiveRecycler()
+                setObserver()
+                setClickListener()
+                return b.root
     }
 
-    private fun handleRecycler() {
-        characterAdapter = CharacterAdapter(CharacterAdapter.Mode.LIST,null, ::handleCharacterSelected)
-        b.characterListRecycler.adapter = characterAdapter
-        getCharacter()
-        setClickListener()
+    private fun setLiveRecycler() {
+        val listHolder = CharacterHolderList(HolderSnippetPartListBinding.inflate(LayoutInflater.from(context)))
+        b.liveRecycler.initRecycler(LiveRecycler.Mode.List, ::onCharacterSelected, livePartsList, listHolder)
     }
 
-    private fun getCharacter() {
+    private fun setObserver() {
         Main.characterList.observe(context as LifecycleOwner) {
-            characterAdapter.submitList(it?.sortedBy { c -> c.name })
+            val liveClassList = mutableListOf<LiveClass>()
+            for(char in it) {
+                liveClassList.add(char)
+            }
+            livePartsList.value = liveClassList
         }
+
     }
 
     private fun setClickListener() {
-        b.topBar.setLeftBtn {
-            ViewPagerFragment.goTopage(Page.Start)
+        b.importanceBar.setMainFunc {
+
+        }
+
+        b.importanceBar.setSideFunc {
+
+        }
+
+        b.importanceBar.setMentionedFunc {
+
         }
     }
 
-    private fun handleCharacterSelected(character: Character) {
-        CharacterFragment.character = character
+    private fun onCharacterSelected(character: LiveClass) {
         findNavController().navigate(R.id.action_ViewPagerFragment_to_characterFragment)
     }
 

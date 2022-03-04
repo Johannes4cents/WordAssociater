@@ -12,7 +12,7 @@ import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.firestore.FireEvents
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.utils.Date
-import com.example.wordassociater.utils.StoryPart
+import com.example.wordassociater.fire_classes.StoryPart
 
 class DateHolder(context: Context, attributeSet: AttributeSet): ConstraintLayout(context, attributeSet) {
     private val b = DateBinding.inflate(LayoutInflater.from(context), this, true)

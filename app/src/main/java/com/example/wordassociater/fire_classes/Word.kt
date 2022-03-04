@@ -3,13 +3,14 @@ package com.example.wordassociater.fire_classes
 import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.*
+import com.example.wordassociater.utils.LiveClass
 import com.google.firebase.firestore.Exclude
 import java.util.*
 
 data class Word(
         var text: String = "",
         var cats: MutableList<Long> = mutableListOf(0),
-        var id: Long = 0,
+        override var id: Long = 0,
         var used: Int = 0,
         var snippetsList: MutableList<Long> = mutableListOf(),
         var dialogueList: MutableList<Long> = mutableListOf(),
@@ -21,16 +22,19 @@ data class Word(
         var spheres: MutableList<Long> = mutableListOf(2),
         var wordConnectionsList: MutableList<Long> = mutableListOf(),
         var stems: MutableList<String> = mutableListOf()
-)
+): LiveClass
 {
     @Exclude
-    var isHeader = false
+    override var sortingOrder: Int = text.toInt()
+
+    @Exclude
+    override var isAHeader = false
 
     @Exclude
     var isPicked = false
 
     @Exclude
-    var selected : Boolean = false
+    override var selected : Boolean = false
 
     @Exclude
     var adapterPosition = 0
@@ -71,11 +75,6 @@ data class Word(
             }
             else toRemoveIds.add(id)
         }
-
-        for(id in toRemoveIds) {
-            famList.remove(id)
-            FireWords.update(this.id, "famList", famList)
-        }
         return fams
     }
 
@@ -98,6 +97,8 @@ data class Word(
     fun checkIfFamExists(name: String): Fam? {
         return getFams().find { f -> f.text.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT) == name.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT) }
     }
+
+
 
     fun getEvents(): List<Event> {
         val events = mutableListOf<Event>()

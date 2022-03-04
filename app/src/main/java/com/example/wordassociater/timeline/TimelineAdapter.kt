@@ -13,7 +13,7 @@ import com.example.wordassociater.databinding.HolderSnippetBinding
 import com.example.wordassociater.fire_classes.Event
 import com.example.wordassociater.fire_classes.Prose
 import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.utils.StoryPart
+import com.example.wordassociater.fire_classes.StoryPart
 
 class TimelineAdapter(val onSnippetSelected: (snippet : Snippet) -> Unit): ListAdapter<StoryPart, RecyclerView.ViewHolder>(StoryPartDiff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

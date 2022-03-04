@@ -18,7 +18,7 @@ class EventHolderTimeline(val b: HolderEventBinding): RecyclerView.ViewHolder(b.
     }
 
     fun setContent() {
-        b.eventName.text = event.content
+        b.eventName.text = event.name
         b.eventDescription.text = event.description
         b.date.setDateHolder(event.date, event)
         setObserver()

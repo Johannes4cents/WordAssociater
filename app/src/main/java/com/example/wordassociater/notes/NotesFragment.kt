@@ -12,7 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.wordassociater.R
-import com.example.wordassociater.ViewPagerFragment
+import com.example.wordassociater.viewpager.ViewPagerMainFragment
 import com.example.wordassociater.databinding.FragmentNotesBinding
 import com.example.wordassociater.fire_classes.Note
 import com.example.wordassociater.firestore.FireNotes
@@ -50,7 +50,7 @@ class NotesFragment: Fragment() {
 
     private fun setClickListener() {
         b.backBtn.setOnClickListener {
-            ViewPagerFragment.goTopage(Page.Start)
+            ViewPagerMainFragment.goTopage(Page.Start)
         }
 
         b.saveBtn.setOnClickListener {

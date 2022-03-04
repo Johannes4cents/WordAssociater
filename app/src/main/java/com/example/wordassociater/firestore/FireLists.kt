@@ -32,7 +32,7 @@ object FireLists {
     val wordConnectionList by lazy { db.collection("wordConnections") }
     val wordsList by lazy { db.collection("words") }
     val storyLineList by lazy { db.collection("storyLines") }
-    val locationsList by lazy { db.collection("places") }
+    val locationsList by lazy { db.collection("locations") }
     val eventsList by lazy { db.collection("events") }
     val famList by lazy {db.collection("fams")}
     val filterList by lazy {db.collection("filter")}

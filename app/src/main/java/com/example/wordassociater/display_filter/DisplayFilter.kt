@@ -29,8 +29,6 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
         val characterShown = MutableLiveData(true)
         val dateShown = MutableLiveData(true)
         val linesShown = MutableLiveData(true)
-        val deleteShown = MutableLiveData(true)
-        val connectShown = MutableLiveData(true)
         val dramaShown = MutableLiveData(true)
         val layerShown = MutableLiveData(true)
         val storyLineShown = MutableLiveData(true)
@@ -59,11 +57,6 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
             }
         }
 
-        fun observeConnectShown(context: Context, view: View) {
-            connectShown.observe(context as LifecycleOwner) {
-                view.visibility = if(it) View.VISIBLE else View.GONE
-            }
-        }
         fun observeDramaShown(context: Context, view: View) {
            dramaShown.observe(context as LifecycleOwner) {
                 view.visibility = if(it) View.VISIBLE else View.GONE
@@ -76,12 +69,6 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
         }
         fun observeStoryLineShown(context: Context, view: View) {
             storyLineShown.observe(context as LifecycleOwner) {
-                view.visibility = if(it) View.VISIBLE else View.GONE
-            }
-        }
-
-        fun observeDeleteShown(context: Context, view: View) {
-            deleteShown.observe(context as LifecycleOwner) {
                 view.visibility = if(it) View.VISIBLE else View.GONE
             }
         }
@@ -149,17 +136,9 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
                 barColorDark.value = !barColorDark.value!!
                 FireFilter.update("barColorDark", barColorDark.value!!)
             }
-            FilterOption.Type.Delete -> {
-                deleteShown.value = !deleteShown.value!!
-                FireFilter.update("deleteShown", deleteShown.value!!)
-            }
             FilterOption.Type.Layer -> {
                 layerShown.value = !layerShown.value!!
                 FireFilter.update("layerShown", layerShown.value!!)
-            }
-            FilterOption.Type.Connect -> {
-                connectShown.value = !connectShown.value!!
-                FireFilter.update("connectShown", connectShown.value!!)
             }
             FilterOption.Type.StoryLine -> {
                 storyLineShown.value = !storyLineShown.value!!

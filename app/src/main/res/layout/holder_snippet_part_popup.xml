@@ -1,0 +1,46 @@
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/snippets"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:id="@+id/characterDescriptionLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/partImage"
+            android:padding="2dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_character" />
+        <TextView
+            android:layout_weight="1"
+            android:minWidth="180dp"
+            android:id="@+id/characterName"
+            android:gravity="center"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Christopher  Trevisani"
+            />
+
+        <ImageView
+            android:padding="5dp"
+            android:layout_gravity="center"
+            android:id="@+id/checkbox"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/checkbox_unchecked"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

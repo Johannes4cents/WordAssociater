@@ -22,11 +22,10 @@
             android:padding="10dp"
             android:src="@drawable/back_icon"
             />
-        <androidx.recyclerview.widget.RecyclerView
+        <com.example.wordassociater.character.CharacterRecycler
             android:id="@+id/characterRecycler"
             android:orientation="horizontal"
             android:layout_weight="1"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="0dp"
 
             android:layout_height="match_parent"/>
@@ -55,7 +54,7 @@
             android:src="@drawable/icon_word"
             />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.example.wordassociater.words.WordRecycler
             android:id="@+id/wordRecycler"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

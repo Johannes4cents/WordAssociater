@@ -1,84 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:orientation="vertical"
-    android:layout_marginTop="8dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/snippets"
     android:layout_width="match_parent"
+    android:gravity="center"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/story_bar"
+    <com.example.wordassociater.snippet_parts.DetailedNavigatorBar
+        android:id="@+id/navigation"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="40dp"/>
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/backButton"
-            android:src="@drawable/back_icon" />
-    </LinearLayout>
+    <View
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/darker_gray" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:minHeight="70dp"
+    <com.example.wordassociater.storylines.StoryLineRecycler
+        android:id="@+id/storyLineRecycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/characterPortrait"
-            android:padding="10dp"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/icon_character" />
+        android:layout_height="40dp"/>
 
-
-
-        <ImageView
-            android:layout_weight="1"
-            android:padding="20dp"
-            android:id="@+id/buttonSnippets"
-            android:layout_width="100dp"
-            android:layout_height="70dp"
-            android:src="@drawable/icon_snippets"
-            />
-
-        <ImageView
-            android:layout_weight="1"
-            android:padding="20dp"
-            android:id="@+id/buttonDialogues"
-            android:layout_width="100dp"
-            android:layout_height="70dp"
-            android:src="@drawable/icon_dialogue"
-            />
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:id="@+id/specificCharacterRecycler"
+    <com.example.wordassociater.timeline.Timeline
+        android:id="@+id/timeLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/characterDescriptionLinear"
         android:orientation="vertical"
         android:gravity="top|center"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
-            android:gravity="center"
-            android:textSize="20sp"
-            android:fontFamily="@font/roboto_bold"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textCharacterName"
-            android:text="Character Name"
-            />
 
-        <View
-            android:layout_width="300dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="4dp"
-            android:background="@android:color/darker_gray" />
+
+
     </LinearLayout>
 </LinearLayout>

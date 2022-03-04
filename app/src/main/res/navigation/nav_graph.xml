@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/ViewPagerFragment"
-        android:name="com.example.wordassociater.ViewPagerFragment"
+        android:name="com.example.wordassociater.viewpager.ViewPagerMainFragment"
         android:label="ViewPagerFragment">
         <action
             android:id="@+id/action_startFragment_to_readFragment"
@@ -42,9 +42,6 @@
         <action
             android:id="@+id/action_ViewPagerFragment_to_storyLinesListFragment"
             app:destination="@id/storyLinesListFragment" />
-        <action
-            android:id="@+id/action_ViewPagerFragment_to_newCharacterFragment"
-            app:destination="@id/newCharacterFragment" />
         <action
             android:id="@+id/action_ViewPagerFragment_to_eventDetailedFragment"
             app:destination="@id/eventDetailedFragment" />
@@ -214,14 +211,6 @@
         android:label="StoryLinesListFragment" >
         <action
             android:id="@+id/action_storyLinesListFragment_to_ViewPagerFragment"
-            app:destination="@id/ViewPagerFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/newCharacterFragment"
-        android:name="com.example.wordassociater.character.NewCharacterFragment"
-        android:label="NewCharacterFragment" >
-        <action
-            android:id="@+id/action_newCharacterFragment_to_ViewPagerFragment"
             app:destination="@id/ViewPagerFragment" />
     </fragment>
     <fragment

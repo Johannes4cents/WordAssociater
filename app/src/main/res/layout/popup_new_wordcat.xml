@@ -81,7 +81,7 @@
                 android:layout_height="40dp"/>
         </TableRow>
 
-        <TableRow android:id="@+id/row3"
+        <TableRow android:id="@+id/row4"
             android:layout_marginTop="4dp"
             >
             <ImageView

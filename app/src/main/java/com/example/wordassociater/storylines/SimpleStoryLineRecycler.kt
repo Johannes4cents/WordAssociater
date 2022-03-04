@@ -18,7 +18,7 @@ class SimpleStoryLineRecycler(context: Context, attributeSet: AttributeSet): Rec
         adapter = simpleAdapter
 
         liveList.observe(context as LifecycleOwner) {
-            simpleAdapter.submitList(it.sortedBy { sl -> sl.snippetList.count() })
+            simpleAdapter.submitList(it.sortedBy { sl -> sl.snippetsList.count() })
         }
     }
 }

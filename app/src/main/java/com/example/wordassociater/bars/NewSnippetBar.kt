@@ -25,7 +25,7 @@ import com.example.wordassociater.popups.popDramaTypeSelection
 import com.example.wordassociater.popups.popSelectStoryLine
 import com.example.wordassociater.utils.Drama
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.utils.StoryPart
+import com.example.wordassociater.fire_classes.StoryPart
 import com.example.wordassociater.words.WordLinear
 
 class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {

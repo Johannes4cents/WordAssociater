@@ -8,12 +8,13 @@ data class StoryLine(
         var name: String = ""
 ) {
     var wordsList: MutableList<Word> = mutableListOf()
-    var snippetList: MutableList<Long> = mutableListOf()
+    var snippetsList: MutableList<Long> = mutableListOf()
     var eventList: MutableList<Long> = mutableListOf()
     var icon: Icon = Icon.Planet
     var description: String = ""
 
     enum class Icon { Knife, Planet, Bones, Heart, Fire, Eye, Friends, Letter, Money, Hospital, Science, Computer}
+    enum class Type {Story, Location, }
     @Exclude
     var isHeader = false
     @Exclude

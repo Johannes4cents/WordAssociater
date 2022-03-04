@@ -22,6 +22,7 @@ import com.example.wordassociater.R
 import com.example.wordassociater.databinding.InputFieldWordsBinding
 import com.example.wordassociater.fire_classes.Nuw
 import com.example.wordassociater.fire_classes.Snippet
+import com.example.wordassociater.fire_classes.StoryPart
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.*
 import java.util.*
@@ -34,7 +35,6 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     var content = ""
     private var onTypingFunc : ((content: String) -> Unit)? = null
     private var onEnterFunc: ((content: String) -> Unit)? = null
-    private val wordInput = MutableLiveData<List<String>>()
     private var nuwList = MutableLiveData<List<Nuw>?>()
     private var inputEnabled = true
     private var nuwsOpen = false
@@ -171,10 +171,6 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         nuwList.value = createNuws()
     }
 
-    fun getNuws(takeNuwsFunc: (nuwsList: List<Nuw>?) -> Unit) {
-        takeNuwsFunc(nuwList.value)
-    }
-
     fun resetField() {
         b.inputField.setText("")
         b.textField.text = ""
@@ -193,22 +189,30 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         Helper.takeFocus(b.inputField, context)
     }
 
-    private fun hideInput() {
+    fun hideInput() {
         b.textField.text = b.inputField.text
         b.inputField.setText(b.textField.text)
         content = b.inputField.text.toString()
         b.inputField.visibility = View.GONE
         b.textField.visibility = View.VISIBLE
         onTypingFunc?.let { it(content) }
+        onEnterFunc?.let { it(content) }
         Helper.getIMM(b.root.context).hideSoftInputFromWindow(b.inputField.windowToken, 0)
     }
 
+    var oldListLength = 0
+    var newListLength = 0
     private fun updateList() {
-        wordInput.value = getContentToList(b.inputField.text.toString())
+        val contentList = getContentToList(b.inputField.text.toString())
+        newListLength = contentList.count()
         b.textField.text = b.inputField.text
         content = b.inputField.text.toString()
-        if(nuwInput) {
-            nuwList.value = createNuws()
+        if(newListLength != oldListLength) {
+            if(nuwInput) {
+                Log.i("tameNuwsTest", "contentList is $contentList")
+                nuwList.value = createNuws()
+            }
+            oldListLength = newListLength
         }
     }
 
@@ -217,7 +221,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         val strippedWords = mutableListOf<String>()
 
         for(w in newWords) {
-            if(w.isNotEmpty()) strippedWords.add(Helper.stripWord(w).capitalize(Locale.ROOT))
+            if(w.isNotEmpty()) strippedWords.add(Helper.stripWordLeaveWhiteSpace(w))
         }
 
         //generate ComboNuws
@@ -305,7 +309,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
                     }
 
                     if(storyPart != null) {
-                        for(w in storyPart!!.getWordsAsStory()) {
+                        for(w in storyPart!!.getWords()) {
                             if(Helper.stripWordLeaveWhiteSpace(w.text) == nuw.text || w.getFamStrings().contains(nuw.text)) {
                                 nuw.isUsed = true
                             }
@@ -329,6 +333,7 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     }
 
     fun saveNuws() {
+        Log.i("lagProb", "WordsInput - saveNuws called ")
         if(nuwList.value != null) {
             for(nuw in nuwList.value!!) {
                 val existingNuw = Main.getNuw(nuw.text)

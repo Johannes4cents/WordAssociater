@@ -6,8 +6,6 @@ object FilterSettings {
     var characterShown = (true)
     var dateShown = (true)
     var linesShown = (true)
-    var deleteShown = (true)
-    var connectShown = (true)
     var dramaShown = (true)
     var layerShown = (true)
     var storyLineShown = (true)

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:background="@color/snippets"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+
+    <ImageView
+        android:padding="5dp"
+        android:id="@+id/btnDescription"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:src="@drawable/icon_description" />
+
+
+    <ImageView
+        android:id="@+id/btnTimeLine"
+        android:padding="10dp"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:src="@drawable/icon_timeline_unselected" />
+
+</LinearLayout>
+

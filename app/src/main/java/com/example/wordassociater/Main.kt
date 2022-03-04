@@ -3,6 +3,7 @@ package com.example.wordassociater
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -10,31 +11,33 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.firestore.FireStoreListener
-import com.example.wordassociater.firestore.FireWordCats
 import com.example.wordassociater.utils.CommonWord
 import com.example.wordassociater.utils.Language
-import com.example.wordassociater.utils.StoryPart
 
 
 class Main : AppCompatActivity() {
 
     companion object {
+
+
         var inFragment = Frags.START
-        var characterList = MutableLiveData<List<Character>?>(mutableListOf())
+        var characterList = MutableLiveData<List<Character>>(mutableListOf())
         var snippetList = MutableLiveData<List<Snippet>?>(mutableListOf())
         var notesList = MutableLiveData<List<Note>?>(mutableListOf())
         var bubbleList = MutableLiveData<List<Bubble>?>(mutableListOf())
         var dialogueList = MutableLiveData<List<Dialogue>?>(mutableListOf())
         val sphereList = MutableLiveData<List<Sphere>?>(mutableListOf())
         val wordsList = MutableLiveData<List<Word>?>(mutableListOf())
-        val wordCatsList = MutableLiveData<List<WordCat>?>(mutableListOf())
+        val wordCatsList = MutableLiveData<List<WordCat>>(mutableListOf())
         val nuwsList = MutableLiveData<List<Nuw>?>(mutableListOf())
         val activeWordCats = MutableLiveData<List<WordCat>?>(mutableListOf())
         val storyLineList = MutableLiveData<List<StoryLine>?>(mutableListOf())
         val proseList = MutableLiveData<List<Prose>?>(mutableListOf())
         val eventList = MutableLiveData<List<Event>?>(mutableListOf())
         val famList = MutableLiveData<List<Fam>?>(mutableListOf())
-        val itemList = MutableLiveData<List<Item>?>(mutableListOf())
+        val itemList = MutableLiveData<List<Item>>(mutableListOf())
+        val locationList = MutableLiveData<List<Location>>(mutableListOf())
+
 
         //commonWOrds
         val commonWordsVeryGerman = MutableLiveData<List<CommonWord>?>()
@@ -66,8 +69,16 @@ class Main : AppCompatActivity() {
             return proseList.value!!.find { p -> p.id == id}
         }
 
+        fun getCharacterByConnectId(connectId: Long): Character? {
+            return characterList.value?.find { c -> c.connectId == connectId }
+        }
+
         fun getItem(id:Long): Item? {
             return itemList.value!!.find { i -> i.id == id }
+        }
+
+        fun getLocation(id: Long): Location?  {
+            return locationList.value!!.find { l -> l.id == id }
         }
 
         fun getFam(id:Long): Fam? {
@@ -91,7 +102,11 @@ class Main : AppCompatActivity() {
         }
         
         fun getWordCat(id:Long): WordCat? {
-            return wordCatsList.value?.find { wordCat -> wordCat.id == id }
+            val wordCat = wordCatsList.value?.find { wordCat -> wordCat.id == id }
+            Log.i("wordCatProb","wordCatsList .value is ${wordCatsList.value}")
+            Log.i("wordCatProb", "wordcat: $wordCat  id searched is = $id")
+            return wordCat
+
         }
 
         fun getCharacter(id: Long): Character? {
@@ -99,7 +114,7 @@ class Main : AppCompatActivity() {
         }
 
         fun getStoryPart(id: Long): StoryPart? {
-            val parts = (snippetList.value!! + proseList.value!!+ eventList.value!!).toList()
+            val parts = (snippetList.value!! + eventList.value!!).toList()
             return parts.find { sp -> sp.id == id }
         }
 
@@ -196,4 +211,4 @@ class Main : AppCompatActivity() {
 }
 
 
-enum class Frags { START, READ, WRITE, SNIPPET, CHARACTERLIST, CHARACTER, CONNECTSNIPPETS, EDITSNIPPETS, WORDLIST, WORDDETAILED}
+enum class Frags { START, SNIPPETLIST, WRITE, SNIPPET, CHARACTERLIST, CHARACTER, CONNECTSNIPPETS, EDITSNIPPETS, WORDLIST, WORDDETAILED, NOTES, ITEMS, LOCATIONS, EVENTS, NUWSLIST}

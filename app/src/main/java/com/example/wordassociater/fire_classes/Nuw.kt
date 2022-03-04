@@ -3,7 +3,6 @@ package com.example.wordassociater.fire_classes
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireWords
-import com.example.wordassociater.utils.FamCheck
 import com.example.wordassociater.utils.Helper
 import com.google.firebase.firestore.Exclude
 
@@ -46,10 +45,10 @@ data class Nuw(
 
         fun checkIfWordExists(): Word? {
                 var foundWord: Word? = null
-                for(w in Main.wordsList.value!!) {
+                for(w in Main.wordsList.value!!.toMutableList()) {
                         // check fams
-                        for(fam in w.getFams()) {
-                                if(fam.text == Helper.stripWordLeaveWhiteSpace(text)) {
+                        for (fam in w.getFams()) {
+                                if (fam.text == Helper.stripWordLeaveWhiteSpace(text)) {
                                         foundWord = w
                                 }
                         }
@@ -59,7 +58,7 @@ data class Nuw(
                                         val fam = Fam(FireStats.getFamNumber(), text)
                                         w.famList.add(fam.id)
                                         FireWords.update(w.id, "famList", w.famList)
-                                        FamCheck.addFamCheck(stem, w.text)
+//                                        FamCheck.addFamCheck(stem, w.text)
                                         foundWord = w
                                         break
                                 }

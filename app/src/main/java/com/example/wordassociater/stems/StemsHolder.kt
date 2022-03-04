@@ -26,7 +26,7 @@ class StemsHolder(
                 }
             }
             "" -> {
-                b.stemText.setContentFunc(onStemAdded)
+                b.stemText.setOnEnterFunc(onStemAdded)
                 b.stemText.showInputField()
                 b.holderLinear.visibility = View.VISIBLE
                 b.headerLinear.visibility = View.GONE

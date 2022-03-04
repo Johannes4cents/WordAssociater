@@ -6,21 +6,26 @@ import android.view.MotionEvent
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wordassociater.ViewPagerFragment
+import com.example.wordassociater.viewpager.ViewPagerMainFragment
 import com.example.wordassociater.fire_classes.WordCat
 
 
 class WordCatRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(context, attributeSet) {
     private lateinit var wordCatAdapter: WordCatAdapter
     private var headerActive = true
+    private lateinit var type: WordCatAdapter.Type
 
-    fun setupRecycler(type: WordCatAdapter.Type, onWordCatSelected: (wordCat: WordCat) -> Unit, liveList: MutableLiveData<List<WordCat>?>) {
-        wordCatAdapter = WordCatAdapter(type, onWordCatSelected)
+    fun setupRecycler(
+        type: WordCatAdapter.Type,
+        onWordCatSelected: (wordCat: WordCat) -> Unit,
+        liveList: MutableLiveData<List<WordCat>>,
+        onHeaderClicked: (() -> Unit)? = null) {
+        this.type = type
+        wordCatAdapter = WordCatAdapter(type, onWordCatSelected, onHeaderClicked)
         adapter = wordCatAdapter
         setObserver(liveList)
         configureOnTouchListener()
         isNestedScrollingEnabled = true
-
     }
 
     fun setHeader(headerActive: Boolean) {
@@ -34,11 +39,11 @@ class WordCatRecycler(context: Context, attributeSet: AttributeSet): RecyclerVie
                 when (e.action) {
                     MotionEvent.ACTION_DOWN -> lastX = e.x.toInt()
                     MotionEvent.ACTION_MOVE -> {
-                        ViewPagerFragment.viewPager.isUserInputEnabled = false
+                        ViewPagerMainFragment.viewPager.isUserInputEnabled = false
                     }
                     MotionEvent.ACTION_UP -> {
                         lastX = 0
-                        ViewPagerFragment.viewPager.isUserInputEnabled = true
+                        ViewPagerMainFragment.viewPager.isUserInputEnabled = true
                     }
                 }
                 return false
@@ -49,9 +54,15 @@ class WordCatRecycler(context: Context, attributeSet: AttributeSet): RecyclerVie
     }
 
 
-    private fun setObserver(liveList: MutableLiveData<List<WordCat>?>) {
+    private fun setObserver(liveList: MutableLiveData<List<WordCat>>) {
         liveList.observe(context as LifecycleOwner) {
-            val sortedList = it?.sortedBy { wc -> wc.name }?.sortedBy { wc -> wc.importance }?.reversed()
+            val sortedList = if(type == WordCatAdapter.Type.BTN) {
+                it?.filter { wc -> wc.active }?.sortedBy { wc -> wc.name }
+                    ?.sortedBy { wc -> wc.id }?.reversed() }
+                else {
+                    it?.sortedBy { wc -> wc.name }
+                        ?.sortedBy { wc -> wc.id }?.reversed()
+                }
             val header = WordCat(0, "Manage")
             header.isHeader = true
             if(it != null) {
@@ -65,4 +76,5 @@ class WordCatRecycler(context: Context, attributeSet: AttributeSet): RecyclerVie
             wordCatAdapter.notifyDataSetChanged()
         }
     }
+
 }

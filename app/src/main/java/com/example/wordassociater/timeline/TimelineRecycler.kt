@@ -8,12 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.Main
-import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.fire_classes.StoryLine
-import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.utils.Date
-import com.example.wordassociater.utils.StoryPart
 
 class TimelineRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(context, attributeSet) {
     private var liveStoryLines: MutableLiveData<List<StoryLine>>? = null
@@ -75,7 +71,7 @@ class TimelineRecycler(context: Context, attributeSet: AttributeSet): RecyclerVi
 
     private fun getHeaderList(list: List<StoryPart>): List<StoryPart> {
         var submitList = list.sortedBy { sp -> sp.date.day }.sortedBy { sp -> sp.date.month }.sortedBy { sp -> sp.date.year }
-        val header = StoryPart(id = 0, "", mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), Date(), StoryPart.Type.Header)
+        val header = StoryPart(id = 0, "", mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf() , mutableListOf() ,Date(), StoryPart.Type.Header)
         header.isStoryPartHeader = true
 
         //check if at least 1 storyLine is selected
@@ -92,7 +88,7 @@ class TimelineRecycler(context: Context, attributeSet: AttributeSet): RecyclerVi
     }
 
     private fun getAllStoryParts(): List<StoryPart> {
-        return (Main.snippetList.value!! + Main.proseList.value!!+ Main.eventList.value!!).toList()
+        return (Main.snippetList.value!! + Main.eventList.value!!).toList()
     }
 
     private fun modifyStoryPart(storyPart: StoryPart) {

@@ -8,7 +8,7 @@ import com.example.wordassociater.databinding.HolderCharacterPreviewBinding
 import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Character
 
-class CharacterHolderPreview(val b: HolderCharacterPreviewBinding, private val inStory: Boolean = false): RecyclerView.ViewHolder(b.root) {
+class CharacterHolderPreview(val b: HolderCharacterPreviewBinding): RecyclerView.ViewHolder(b.root) {
     lateinit var character: Character
     fun onBind(character: Character) {
         b.characterName.text = character.name
@@ -19,13 +19,10 @@ class CharacterHolderPreview(val b: HolderCharacterPreviewBinding, private val i
     }
 
     private fun setObserver() {
-        if(inStory) {
-            DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
-                b.characterName.setTextColor(if(it) b.root.context.resources.getColor(R.color.white) else  b.root.context.resources.getColor(R.color.black))
-            }
-
-            DisplayFilter.observeItemColorDark(b.root.context, b.root, listOf(b.characterName))
+        DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
+            b.characterName.setTextColor(if(it) b.root.context.resources.getColor(R.color.white) else  b.root.context.resources.getColor(R.color.black))
         }
+        DisplayFilter.observeItemColorDark(b.root.context, b.root, listOf(b.characterName))
     }
 
     private fun setBackGroundColorFirstTime() {

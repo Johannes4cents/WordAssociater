@@ -12,7 +12,7 @@ import com.example.wordassociater.utils.Helper
 
 fun popSelectSphere(view: View, sphereList: MutableLiveData<List<Sphere>?>, handleSphereSelected: (sphere: Sphere) -> Unit) {
     val b = PopSelectSphereBinding.inflate(LayoutInflater.from(view.context), null, false)
-    val pop = Helper.getPopUp(b.root, view, 600, 400)
+    val pop = Helper.getPopUp(b.root, view)
 
     fun setOnClickListener() {
         b.btnBack.setOnClickListener {

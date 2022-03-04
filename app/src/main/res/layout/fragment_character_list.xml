@@ -10,9 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.example.wordassociater.character.CharacterRecycler
         android:id="@+id/characterListRecycler"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>

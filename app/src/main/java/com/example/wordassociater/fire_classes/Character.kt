@@ -2,95 +2,36 @@ package com.example.wordassociater.fire_classes
 
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.FireChars
-import com.example.wordassociater.firestore.FireStats
-import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.firestore.FireSnippets
+import com.example.wordassociater.utils.LiveClass
 import com.google.firebase.firestore.Exclude
 
 data class Character(
-        val name: String = "", val imgUrl : String = "",
-        val snippetsList: MutableList<Long> = mutableListOf(),
-        val eventList: MutableList<Long> = mutableListOf(),
-        val proseList: MutableList<Long> = mutableListOf(),
-        var id: Long = 0,
-        var connectId: Long = 0,
-        var importance: Importance = Importance.Side,
-        var dialogueList: MutableList<Long> = mutableListOf()) {
+        override var id: Long = 0,
+        override var name: String = "",
+        override var connectId: Long = 0,
+        override var imgUrl : String = "",
+        var importance: SnippetPart.Importance = SnippetPart.Importance.Main,
+        ): SnippetPart, LiveClass {
+
+        override var snippetsList: MutableList<Long> = mutableListOf()
+        override var eventList: MutableList<Long> = mutableListOf()
+        override var wordsList: MutableList<Long> = mutableListOf()
+        override var image: Long = 21
+
+
         @Exclude
-        var selected = false
+        override var selected = false
+        override var sortingOrder: Int = id.toInt()
+
         @Exclude
-        var isHeader = false
+        override var isAHeader = false
 
         var isLeft = true
-        enum class Importance(val text: String) {Main("Main"), Side("Side"), Minor("Minor"), Mentioned("Mentioned")}
-
-        @Exclude
-        fun createWord() {
-                val connectId = FireStats.getConnectId()
-                val word = Word(
-                        id = FireStats.getWordId(),
-                        text = name,
-                        imgUrl = this.imgUrl,
-                        connectId = connectId
-                )
-                this.connectId = connectId
-                word.cats.add(6)
-                FireWords.add(word)
-        }
-
-        @Exclude
-        fun getEvents(): List<Event> {
-                val list = mutableListOf<Event>()
-                val toRemoveList = mutableListOf<Long>()
-                for(id in eventList) {
-                        val event = Main.getEvent(id)
-                        if(event != null) list.add(event)
-                        else toRemoveList.add(id)
-                }
-
-                for(id in toRemoveList) {
-                        eventList.remove(id)
-                        FireChars.update(this.id, "eventList", eventList)
-                }
-                return list
-        }
-
-        @Exclude
-        fun getSnippets(): List<Snippet> {
-                val list = mutableListOf<Snippet>()
-                val toRemoveList = mutableListOf<Long>()
-                for(id in eventList) {
-                        val snippet = Main.getSnippet(id)
-                        if(snippet != null) list.add(snippet)
-                        else toRemoveList.add(id)
-                }
-
-                for(id in toRemoveList) {
-                        snippetsList.remove(id)
-                        FireChars.update(this.id, "snippetsList", eventList)
-                }
-                return list
-        }
-
-        @Exclude
-        fun getProse(): List<Prose> {
-                val list = mutableListOf<Prose>()
-                val toRemoveList = mutableListOf<Long>()
-                for(id in eventList) {
-                        val prose = Main.getProse(id)
-                        if(prose != null) list.add(prose)
-                        else toRemoveList.add(id)
-                }
-
-                for(id in toRemoveList) {
-                        proseList.remove(id)
-                        FireChars.update(this.id, "proseList", proseList)
-                }
-                return list
-        }
 
 
         companion object {
-                val any = Character(id= 22, name="Any", imgUrl = "https://imgur.com/ZYRfiqy.png")
+                val any = Character(id= 0, name="Any", imgUrl = "")
                 fun getIdList(charList: List<Character>): MutableList<Long> {
                         val idList = mutableListOf<Long>()
                         for(c in charList) {
@@ -99,14 +40,28 @@ data class Character(
                         return idList
                 }
 
-                fun getCharactersById(idList : List<Long>): List<Character> {
-                        val charList = mutableListOf<Character>()
-                        for(long in idList) {
-                                val char = Main.getCharacter(long)
-                                if(char != null) charList.add(char)
+        }
+
+        override fun delete() {
+                for(s in snippetsList) {
+                        val snippet = Main.getSnippet(s)
+                        if(snippet != null) {
+                                snippet.characterList.remove(this.id)
+                                FireSnippets.update(snippet.id, "characterList", snippet.characterList)
                         }
-                        return charList
                 }
+
+                for(e in eventList) {
+                        val event = Main.getEvent(e)
+                        if(event != null) {
+                                event.characterList.remove(this.id)
+                                FireChars.update(event.id, "characterList", event.characterList)
+                        }
+                }
+
+                val word = Main.wordsList.value!!.find { w -> w.connectId == connectId }
+                word?.delete()
+                FireChars.delete(this.id)
         }
 }
 

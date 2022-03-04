@@ -1,12 +1,13 @@
 package com.example.wordassociater.dialogue
 
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wordassociater.character.CharacterAdapter
+import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.HolderDialogueBinding
 import com.example.wordassociater.fire_classes.Bubble
+import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Dialogue
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.utils.AdapterType
 import com.example.wordassociater.words.WordAdapter
 
 class DialogueHolder(
@@ -16,14 +17,12 @@ class DialogueHolder(
     lateinit var dialogue: Dialogue
     lateinit var bubbleAdapter: BubbleAdapter
     lateinit var wordAdapter: WordAdapter
-    lateinit var characterAdapter: CharacterAdapter
     fun onBind(dialogue: Dialogue) {
         this.dialogue = dialogue
 
 
         setContent()
         setBubbleRecycler()
-        setWordRecycler()
         setCharacterRecycler()
 
         setClickListener()
@@ -40,16 +39,11 @@ class DialogueHolder(
         bubbleAdapter.submitList(dialogue.getBubbles())
     }
 
-    private fun setWordRecycler() {
-        wordAdapter = WordAdapter(AdapterType.Preview, ::onWordSelected, null)
-        b.wordRecycler.adapter = wordAdapter
-        wordAdapter.submitList(dialogue.getWords())
-    }
 
     private fun setCharacterRecycler() {
-        characterAdapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
-        b.characterRecycler.adapter = characterAdapter
-        characterAdapter.submitList(dialogue.getCharacter())
+        val liveChars = MutableLiveData<List<Character>>()
+        b.characterRecycler.initRecycler(CharacterRecycler.Mode.Preview, liveChars, null)
+        liveChars.value = dialogue.getCharacter()
     }
 
     private fun setClickListener() {

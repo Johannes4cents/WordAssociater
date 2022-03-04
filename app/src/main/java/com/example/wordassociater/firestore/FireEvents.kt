@@ -8,7 +8,7 @@ object FireEvents {
     fun add(event: Event, context: Context? = null) {
         FireLists.eventsList.document(event.id.toString()).set(event).addOnSuccessListener {
             if(context != null) {
-                Helper.toast("Event: ${event.content} added", context)
+                Helper.toast("Event: ${event.name} added", context)
             }
         }
     }

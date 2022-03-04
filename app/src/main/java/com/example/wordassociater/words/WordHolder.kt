@@ -2,6 +2,7 @@ package com.example.wordassociater.words
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -14,7 +15,7 @@ import com.example.wordassociater.databinding.HolderWordBinding
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.ListHelper
 
-class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null ): ConstraintLayout(context, attrs) {
+class WordHolder(context: Context, attrs: AttributeSet?, val word: Word): ConstraintLayout(context, attrs) {
     val b = HolderWordBinding.inflate(LayoutInflater.from(context), this, true)
     var char = false
 
@@ -29,7 +30,7 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
     }
 
     private fun checkIfCharacter() {
-        for(cat in word!!.cats) {
+        for(cat in word.cats) {
             if(Main.getWordCat(cat)?.name == "Character") {
                 char = true
                 break
@@ -38,13 +39,13 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
     }
 
     private fun highLightSelected() {
-        b.selectLinear.setBackgroundColor(if(word!!.selected) b.selectLinear.resources.getColor(R.color.lightYellow) else b.root.resources.getColor(R.color.snippets))
+        b.selectLinear.setBackgroundColor(if(word.selected) b.selectLinear.resources.getColor(R.color.lightYellow) else b.root.resources.getColor(R.color.snippets))
         b.wordText.setTextColor(if(word.selected) b.root.resources.getColor(R.color.black) else b.root.resources.getColor(R.color.white))
     }
 
     private fun setClickListener() {
         b.root.setOnClickListener {
-            word?.selected = !word?.selected!!
+            word.selected = !word.selected
             if(word.selected) {
                 WordLinear.selectedWords.add(word)
                 selectCharacter()
@@ -63,14 +64,12 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
 
     private fun selectCharacter() {
         if(char) {
-            val character = Main.characterList.value?.find { c ->
-                c.connectId == word!!.connectId
-            }
+            val character = Main.getCharacterByConnectId(word.connectId)
             if(character != null) {
                 val listAlreadyThere = ListHelper.checkIfCharacterSelected(NewSnippetBar.selectedCharacterList.value!!)
                 val charList = if(!listAlreadyThere) Main.characterList.value!!.toMutableList() else NewSnippetBar.selectedCharacterList.value!!.toMutableList()
                 for(c in charList) {
-                    if(c.id == character.id)c.selected = !c.selected
+                    if(c.id == character.id) c.selected = !c.selected
                 }
                 NewSnippetBar.selectedCharacterList.value = charList
             }
@@ -80,7 +79,7 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
     private fun deselectCharacter() {
         if(char) {
             val character = NewSnippetBar.selectedCharacterList.value?.find { c ->
-                c.connectId == word!!.connectId
+                c.connectId == word.connectId
             }
             if(character != null) {
                 val listAlreadyThere = ListHelper.checkIfCharacterSelected(NewSnippetBar.selectedCharacterList.value!!)
@@ -95,12 +94,13 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
     }
 
     private fun setConnectIcon() {
-        b.connectIcon.visibility = if(word!!.wordConnectionsList.count() > 0) View.VISIBLE else View.GONE
+        b.connectIcon.visibility = if(word.wordConnectionsList.count() > 0) View.VISIBLE else View.GONE
     }
 
 
     private fun setWord() {
-        b.wordText.text = if(word!!.getFamStrings().isNotEmpty()) getShortenedWord(word.getFamStrings().random(), b.wordText) else "word '${word.text}' has no fams | ${word.id}"
+        b.wordText.text = if(word.getFamStrings().isNotEmpty()) getShortenedWord(word.getFamStrings().random(), b.wordText) else "word '${word.text}' has no fams | ${word.id}"
+        Log.i("wordCatProb", "word is $word")
         b.catIcon.setImageResource(Main.getWordCat(word.cats[0])!!.getBg())
         
     }
@@ -108,7 +108,7 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word? = null 
     private fun setPortrait() {
         if(char) {
             val character = Main.characterList.value?.find { char ->
-                char.name.equals(word!!.text, ignoreCase = true)
+                char.name.equals(word.text, ignoreCase = true)
             }
             if(character != null) {
                 b.characterPortrait.visibility = View.VISIBLE

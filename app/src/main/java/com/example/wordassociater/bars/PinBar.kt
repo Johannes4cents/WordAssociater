@@ -9,15 +9,18 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.example.wordassociater.R
-import com.example.wordassociater.ViewPagerFragment
+import com.example.wordassociater.viewpager.ViewPagerMainFragment
+import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.BarPinBinding
 import com.example.wordassociater.databinding.HolderSnippetBinding
 import com.example.wordassociater.display_filter.DisplayFilter
+import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.StoryLine
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.snippets.EditSnippetFragment
 import com.example.wordassociater.utils.Page
+import com.example.wordassociater.words.WordRecycler
 
 class PinBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     enum class Mode { Connect, Path, None}
@@ -26,12 +29,13 @@ class PinBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
     lateinit var snippetBinding: HolderSnippetBinding
     lateinit var navController: NavController
     var navDestination: Int = 0
-    private val attachedSnippet = MutableLiveData<Snippet?>()
+    val attachedSnippet = MutableLiveData<Snippet?>()
 
     init {
         hideButtonsOnUnpin()
         setObserver()
         setClickListener()
+        checkFilterOnStart()
     }
 
     fun takeBindingAndNavController(snippetBinding: HolderSnippetBinding, navController: NavController, destination: Int) {
@@ -69,6 +73,12 @@ class PinBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
 
     }
 
+    private fun checkFilterOnStart() {
+        if(::snippetBinding.isInitialized) {
+            snippetBinding.root.setBackgroundColor(if(DisplayFilter.barColorDark.value!!) context.resources.getColor(R.color.snippets) else context.resources.getColor(R.color.snippets))
+        }
+    }
+
     private fun setObserver() {
         DisplayFilter.barColorDark.observe(context as LifecycleOwner) {
             b.root.setBackgroundColor(if(it) b.root.context.resources.getColor(R.color.snippetsLite) else b.root.context.resources.getColor(R.color.white))
@@ -84,6 +94,12 @@ class PinBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
                 b.btnPin.setImageResource(R.drawable.icon_pin_unselected)
                 hideButtonsOnUnpin()
                 hideSnippetBinding()
+            }
+        }
+
+        DisplayFilter.barColorDark.observe(context as LifecycleOwner) {
+            if(::snippetBinding.isInitialized) {
+                snippetBinding.root.setBackgroundColor(if(it) context.resources.getColor(R.color.snippets) else context.resources.getColor(R.color.snippets))
             }
         }
     }
@@ -120,7 +136,7 @@ class PinBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
         }
 
         b.btnLeft.setOnClickListener {
-            ViewPagerFragment.comingFrom = Page.Start
+            ViewPagerMainFragment.comingFrom = Page.Start
             navController.navigate(R.id.action_snippetFragment_to_startFragment)
         }
 
@@ -132,21 +148,45 @@ class PinBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
         navController.navigate(navDestination)
     }
 
+
     private fun setSnippetBinding(snippet: Snippet) {
         val wordLiveList = MutableLiveData<List<Word>>()
         val liveStoryList = MutableLiveData<List<StoryLine>>()
+        val liveCharacters = MutableLiveData<List<Character>>()
+
+        snippetBinding.root.visibility = View.VISIBLE
+
+        // set date & header & content
         snippetBinding.dateHolder.setDateHolder(snippet.date, snippet)
         snippetBinding.headerText.text = snippet.header
-        snippetBinding.wordsRecycler.initRecycler(wordLiveList)
-        wordLiveList.value = snippet.getWords()
         snippetBinding.contentPreview.text = snippet.content
+
+        // set word Recycler
+        snippetBinding.wordsRecycler.initRecycler(WordRecycler.Mode.Preview, null, null)
+        snippetBinding.wordsRecycler.setLiveList(attachedSnippet.value!!.getFullWordsList())
+        snippetBinding.wordsRecycler.visibility = View.VISIBLE
+        wordLiveList.value = snippet.getWords()
+
+        // set char recycler
+        snippetBinding.characterRecycler.initRecycler(CharacterRecycler.Mode.Preview, null, null)
+        snippetBinding.characterRecycler.setCharacterLiveData(attachedSnippet.value!!.getFullCharacterList())
+        snippetBinding.characterRecycler.visibility = View.VISIBLE
+
+        // set storyline recycler
         snippetBinding.storyLineRecycler.initRecycler(liveStoryList)
-        snippetBinding.storyLineRecycler.setBackgroundColor(b.root.context.resources.getColor(R.color.lightYellow))
         liveStoryList.value = snippet.getStoryLines()
-        snippetBinding.root.visibility = View.VISIBLE
+
+        //observe darkColorBar
+        DisplayFilter.observeBarColorDark(snippetBinding.root.context, snippetBinding.root)
+
+        // get color on Startup
+        val darkBar = DisplayFilter.barColorDark.value!!
+        snippetBinding.root.setBackgroundColor(if(darkBar) context.resources.getColor(R.color.snippets) else context.resources.getColor(R.color.white))
+
         snippetBinding.lineBig.setBackgroundColor(snippetBinding.root.context.resources.getColor(R.color.black))
 
         snippetBinding.root.setOnClickListener {
+            attachedSnippet.value!!.pinned = false
             attachedSnippet.value = null
         }
     }

@@ -11,11 +11,15 @@ import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.bars.AddWordBar
 import com.example.wordassociater.bars.NewSnippetBar
 import com.example.wordassociater.character.CharacterAdapter
+import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.FragmentStartBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Sphere
 import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.firestore.FireWordCats
+import com.example.wordassociater.popups.Pop
+import com.example.wordassociater.popups.popWordCatAllOptions
+import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.wordcat.WordCatAdapter
 import com.example.wordassociater.words.WordLinear
 
@@ -23,7 +27,9 @@ class StartFragment: Fragment() {
     lateinit var b : FragmentStartBinding
     lateinit var adapter: CharacterAdapter
 
+
     companion object {
+        val selectedWordCats = MutableLiveData<List<WordCat>>()
         val selectedSphereList = MutableLiveData<List<Sphere>>()
     }
 
@@ -33,6 +39,7 @@ class StartFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Main.inFragment = Frags.START
         b = FragmentStartBinding.inflate(inflater)
         b.contentBar.navController = findNavController()
         b.addStuffBar.navController = findNavController()
@@ -40,27 +47,42 @@ class StartFragment: Fragment() {
         setRecycler()
         setObserver()
 
-        val item = WordCat(9, "Item")
-        item.type = WordCat.Type.Item
-        item.importance = 5
-        FireWordCats.add(item, context = null)
 
         return b.root
     }
 
 
     private fun setRecycler() {
-        adapter = CharacterAdapter(CharacterAdapter.Mode.PREVIEW)
-        b.charPreviewRecycler.adapter = adapter
+        b.charPreviewRecycler.initRecycler(CharacterRecycler.Mode.Preview, NewSnippetBar.selectedCharacterList, null)
         b.connectedWordRecycler.initRecycler(WordLinear.selectedWordsLive)
-        b.wordCatRecycler.setupRecycler(WordCatAdapter.Type.BTN, ::onWordCatClicked, Main.activeWordCats)
-
+        b.wordCatRecycler.setupRecycler(WordCatAdapter.Type.BTN, ::onWordCatClicked,  selectedWordCats, ::onWordCatHeaderClicked)
     }
 
     private fun onWordCatClicked(wordCat: WordCat) {
         val word = WordLinear.getWord(wordCat)
         if(word != null) WordLinear.wordList.add(word)
         WordLinear.wordListTrigger.value = Unit
+    }
+
+    private fun onWordCatDeleteClicked(wordCat: WordCat) {
+        Pop(b.root.context).confirmationPopUp(b.root) { confirmation ->
+            if(confirmation) {
+                wordCat.delete()
+                val newList = selectedWordCats.value!!.toMutableList()
+                newList.remove(wordCat)
+                selectedWordCats.value = newList
+            }
+        }
+    }
+
+    private fun onWordCatHeaderClicked() {
+        popWordCatAllOptions(b.wordCatRecycler, selectedWordCats, ::onHeaderWordCatSelected, ::onWordCatDeleteClicked)
+    }
+
+    private fun onHeaderWordCatSelected(wordCat: WordCat) {
+        wordCat.active = !wordCat.active
+        FireWordCats.update(wordCat.id, "active", wordCat.active)
+        selectedWordCats.value = Helper.getResubmitList(wordCat, selectedWordCats.value!!)
     }
 
     private fun setObserver() {

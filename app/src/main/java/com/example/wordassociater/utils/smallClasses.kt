@@ -1,59 +1,8 @@
 package com.example.wordassociater.utils
 
-import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.firestore.FireLists
-import com.google.firebase.firestore.Exclude
-
-open class StoryPart(
-        open var id : Long,
-        open var content: String,
-        open var wordList: MutableList<Long>,
-        open var characterList: MutableList<Long>,
-        open var nuwList: MutableList<Long>,
-        open var storyLineList: MutableList<Long>,
-        open var date: Date,
-        open var type: Type
-        ) {
-    enum class Type { Snippet, Event, Prose, Header }
-    @Exclude
-    var isStoryPartHeader = false
-
-    @Exclude
-    var index = 0
-
-    @Exclude
-    fun getWordsAsStory(): MutableList<Word> {
-        val words = mutableListOf<Word>()
-        val notFound = mutableListOf<Long>()
-        for(id in wordList) {
-            val found = Main.getWord(id)
-            if(found != null) words.add(found)
-            else notFound.add(id)
-        }
-        return words
-    }
-
-
-    companion object {
-        fun getIdList(wordsList: MutableList<StoryPart>): List<Long> {
-            var idList = mutableListOf<Long>()
-            for(w in wordsList) {
-                idList.add(w.id)
-            }
-            return idList
-        }
-        fun getListFromIds(wordsList: List<Long>): List<StoryPart> {
-            var storyParts = mutableListOf<StoryPart>()
-            for(id in wordsList) {
-                val sp = Main.getStoryPart(id)
-                if(sp != null) storyParts.add(sp)
-            }
-            return storyParts
-        }
-    }
-}
 
 
 class CommonWord(val text: String = "",val language: Language = Language.German, val type: Type = Type.Very ) {
@@ -82,13 +31,125 @@ class FamCheck(val stem: String = "", val newFam: String = "") {
 
 }
 
+class Image(override var id: Long, val name: Name, var src: Int, val type: Type): LiveClass {
+    enum class Name {
+        Laptop, YoungGirl, YoungWoman, OldWoman, OldMan, YoungMan,
+        YoungBoy, Fire, Friends, Heart, Hospital, Bones, Computer,
+        Eye, Money, Planet, Science, Letter, Knife, House, Car, Forrest, City, Lab, Island, Street, Factory, Apartment ,
+        Airplane, Crown, Explosion, Food, Handshake, Party, Pistol, Shield, Spy, Conflict, Twist, Plan, Motivation, Problem, Solution,
+        Clothes, Toy, Drugs, Key, Present, Phone }
+    enum class Type { Event, Location, Character, Item, StoryLine }
+
+    override var sortingOrder: Int = 0
+
+    override var isAHeader: Boolean = false
+
+    override var selected: Boolean = false
+
+    override var image: Long = 0L
+
+    fun getImage(): Int {
+        return when(name) {
+            Name.Laptop -> R.drawable.item_laptop
+            Name.YoungGirl -> R.drawable.character_young_girl
+            Name.YoungWoman -> R.drawable.character_young_woman
+            Name.OldWoman -> R.drawable.character_old_woman
+            Name.OldMan -> R.drawable.character_old_man
+            Name.YoungMan -> R.drawable.character_young_man
+            Name.YoungBoy -> R.drawable.character_young_boy
+            Name.Fire -> R.drawable.storyline_fire
+            Name.Friends -> R.drawable.storyline_friends
+            Name.Heart -> R.drawable.storyline_heart
+            Name.Hospital -> R.drawable.storyline_hospital
+            Name.Bones -> R.drawable.storyline_bones
+            Name.Computer -> R.drawable.storyline_computer
+            Name.Eye -> R.drawable.storyline_eye
+            Name.Money -> R.drawable.storyline_money
+            Name.Planet -> R.drawable.storyline_planet
+            Name.Science -> R.drawable.storyline_science
+            Name.Letter -> R.drawable.storyline_letter
+            Name.Knife -> R.drawable.storyline_knife
+            Name.House -> R.drawable.location_house
+            Name.Car -> R.drawable.location_car
+            Name.Forrest -> R.drawable.location_forrest
+            Name.City -> R.drawable.location_city
+            Name.Lab -> R.drawable.location_lab
+            Name.Island -> R.drawable.location_island
+            Name.Street -> R.drawable.location_street
+            Name.Factory -> R.drawable.location_factory
+            Name.Apartment -> R.drawable.location_apartment
+            Name.Airplane -> R.drawable.event_airplane
+            Name.Crown -> R.drawable.event_crown
+            Name.Explosion -> R.drawable.event_explosion
+            Name.Food -> R.drawable.event_food
+            Name.Handshake -> R.drawable.event_handshake
+            Name.Party -> R.drawable.event_party
+            Name.Pistol -> R.drawable.event_pistol
+            Name.Shield -> R.drawable.event_shield
+            Name.Spy -> R.drawable.event_spy
+            Name.Conflict -> R.drawable.storryline_conflict
+            Name.Twist -> R.drawable.storyline_twist
+            Name.Plan -> R.drawable.storyline_plan
+            Name.Motivation -> R.drawable.storyline_motivation
+            Name.Problem -> R.drawable.storyline_problem
+            Name.Solution -> R.drawable.storyline_solution
+            Name.Clothes -> R.drawable.item_clothes
+            Name.Toy -> R.drawable.item_toy
+            Name.Drugs -> R.drawable.item_drugs
+            Name.Key -> R.drawable.item_key
+            Name.Present -> R.drawable.item_present
+            Name.Phone -> R.drawable.item_cellphone
+        }
+    }
+
+    companion object {
+        private val imageList = listOf<Image>(
+                Image(1, Name.Laptop, 0, Type.Item), Image(20, Name.YoungGirl, 0, Type.Character),Image(39, Name.YoungWoman, 0, Type.Character),
+                Image(2, Name.OldWoman, 0, Type.Character),Image(21, Name.OldMan, 0, Type.Character),
+                Image(3, Name.YoungMan, 0, Type.Character),Image(22, Name.YoungBoy, 0, Type.Character),Image(40, Name. Fire, 0, Type.StoryLine),
+                Image(4, Name.Friends, 0, Type.StoryLine),Image(23, Name.Heart, 0, Type.StoryLine),
+                Image(5, Name.Hospital, 0, Type.StoryLine),Image(24, Name.Bones, 0, Type.StoryLine),Image(41, Name.Computer, 0, Type.StoryLine),
+                Image(6, Name.Eye, 0, Type.StoryLine),Image(25, Name.Money, 0, Type.StoryLine),Image(50, Name.Money, 0, Type.Item),
+                Image(51, Name.Hospital, 0, Type.Location), Image(52, Name.Knife, 0, Type.Item),
+                Image(7, Name.Planet, 0, Type.StoryLine),Image(26, Name.Science, 0, Type.StoryLine),Image(42, Name.Letter, 0, Type. StoryLine),
+                Image(8, Name.Knife, 0, Type.StoryLine),Image(27, Name.Airplane, 0, Type.Location),
+                Image(9, Name.House, 0, Type.Location),Image(28, Name.Crown, 0, Type.Event),Image(43, Name.Conflict, 0, Type.StoryLine),
+                Image(53, Name.Crown, 0, Type.Item),Image(54, Name.Conflict, 0, Type.Event),
+                Image(10, Name.Car, 0, Type.Location),Image(29, Name.Explosion, 0, Type.Event), Image(55, Name.Food, 0, Type.Item),
+                Image(11, Name.Forrest, 0, Type.Location),Image(30, Name.Food, 0, Type.Event),Image(44, Name.Twist, 0, Type.StoryLine),
+                Image(12, Name.City, 0, Type.Location),Image(31, Name.Handshake, 0, Type.Event),
+                Image(13, Name.Lab, 0, Type.Location),Image(32, Name.Party, 0, Type.Event),Image(45, Name.Plan, 0, Type.StoryLine),
+                Image(14, Name.Island, 0, Type.Location),Image(33, Name.Pistol, 0, Type.Event), Image(56, Name.Pistol, 0, Type.Item),
+                Image(15, Name.Street, 0, Type.Location),Image(34, Name.Shield, 0, Type.Event),Image(46, Name.Motivation, 0, Type.StoryLine),
+                Image(16, Name.Factory, 0, Type.Location),Image(35, Name.Spy, 0, Type.StoryLine), Image(34, Name.Shield, 0, Type.StoryLine),
+                Image(17, Name.Apartment, 0, Type.Location),Image(36, Name.Key, 0, Type.Item),Image(47, Name.Problem, 0, Type.StoryLine),
+                Image(18, Name.Solution, 0, Type.StoryLine),Image(37, Name.Drugs, 0, Type.Item),Image(48, Name.Present, 0, Type.Item),
+                Image(19, Name.Clothes, 0, Type.Item),Image(38, Name.Toy, 0, Type.Item),Image(49, Name.Phone, 0, Type.Item),
+                Image(35, Name.Spy, 0, Type.Character),
+        )
+
+        fun getImage(id: Long): Image {
+            return imageList.find { i -> i.id == id }!!
+        }
+
+    }
+}
+
+interface LiveClass {
+    var sortingOrder: Int
+    var id: Long
+    var isAHeader: Boolean
+    var selected : Boolean
+    var image: Long
+}
+
 enum class Language {German, English}
 
 enum class Drama {Conflict, Twist, Plan, Motivation, Goal, Problem, Solution, Hurdle, None, Comedy}
 
 enum class AdapterType { List, Popup, Preview }
 
-enum class Page {Notes, Items, Events, Locations, Chars, Start, Words, Nuws }
+enum class Page {Notes, SnippetParts, Start, Words, Nuws }
 
 data class ConnectedWord(val word: Word, var amount: Int) {
 

@@ -17,6 +17,7 @@ import com.example.wordassociater.fire_classes.Snippet
 
 class SnippetFragment: Fragment() {
     lateinit var b: FragmentSnippetsBinding
+    private var currentSnippetList = listOf<Snippet>()
 
     companion object {
         lateinit var navController: NavController
@@ -25,6 +26,7 @@ class SnippetFragment: Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setSnippetListToAll()
         b = FragmentSnippetsBinding.inflate(inflater)
         Main.inFragment = Frags.SNIPPET
         navController = findNavController()
@@ -35,6 +37,10 @@ class SnippetFragment: Fragment() {
         handleLayerButton()
         attachSnippetBinding()
         return b.root
+    }
+
+    private fun setSnippetListToAll() {
+        currentSnippetList = Main.snippetList.value!!
     }
 
     private fun attachSnippetBinding() {
@@ -60,15 +66,17 @@ class SnippetFragment: Fragment() {
         b.searchSnippetsInput.setHint("Search")
         b.searchSnippetsInput.setTextColorToWhite()
         b.searchSnippetsInput.setGravityToCenter()
-        b.searchSnippetsInput.getSnippets {
+        b.searchSnippetsInput.getSnippets(currentSnippetList) {
             if(it.isEmpty()) snippetAdapter.submitList(Main.snippetList.value?.sortedBy { s -> s.id }?.reversed())
             else snippetAdapter.submitList(it.sortedBy { s -> s.id }.reversed())
         }
     }
 
     private fun snippetClickedFunc(snippet: Snippet) {
+        snippet.pinned = true
         b.snippetsRecycler.smoothScrollToPosition(0)
         b.pinBar.attachSnippet(snippet)
+        snippetAdapter.submitList(currentSnippetList.filter { s -> !s.pinned }.sortedBy { s -> s.id }.reversed())
     }
 
     private fun setClickListener() {
@@ -80,6 +88,12 @@ class SnippetFragment: Fragment() {
             if(it != null) {
             snippetAdapter.submitList(it.sortedBy { s -> s.id }.reversed()) }
             b.snippetsRecycler.smoothScrollToPosition(0)
+        }
+
+        b.pinBar.attachedSnippet.observe(context as LifecycleOwner) {
+            if(it == null) {
+                snippetAdapter.submitList(if(currentSnippetList.isEmpty())Main.snippetList.value!! else currentSnippetList)
+            }
         }
 
 

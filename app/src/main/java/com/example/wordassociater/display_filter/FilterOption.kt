@@ -4,7 +4,7 @@ import com.example.wordassociater.R
 
 data class FilterOption(val name:String = "", val type: Type = Type.Title, val forWhat: For = For.Other, val icon: Int = 0) {
     var selected = true
-    enum class Type { ItemColorDark ,BarColorDark, WordsList, CharacterList, Date, Divider, Delete, Layer, Connect, StoryLine, DramaIcon, Title, Content }
+    enum class Type { ItemColorDark , BarColorDark, WordsList, CharacterList, Date, Divider,Layer, StoryLine, DramaIcon, Title, Content }
     enum class For { Bar, Icon, Other, Content }
 
     companion object {
@@ -26,12 +26,8 @@ data class FilterOption(val name:String = "", val type: Type = Type.Title, val f
             filterList.add(filterDate)
             val filterBarColorDark = FilterOption("Bars Color : Dark", Type.BarColorDark, For.Other, R.drawable.icon_dialogue)
             filterList.add(filterBarColorDark)
-            val filterConnectIcon = FilterOption("Connect Icon", Type.Connect, For.Icon, R.drawable.connect)
-            filterList.add(filterConnectIcon)
             val filterLayerIcon = FilterOption("Layer Icon", Type.Layer, For.Icon, R.drawable.button_strain_layer)
             filterList.add(filterLayerIcon)
-            val filterDeleteIcon = FilterOption("Delete Icon", Type.Delete, For.Icon, R.drawable.icon_delete)
-            filterList.add(filterDeleteIcon)
             val filterStoryLineIcon = FilterOption("Storylines", Type.StoryLine, For.Bar, R.drawable.icon_story)
             filterList.add(filterStoryLineIcon)
             val filterDramaIcon = FilterOption("Drama Icon", Type.DramaIcon, For.Icon, R.drawable.icon_dramaturgy)

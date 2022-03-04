@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/rootLinear"
     android:orientation="vertical"
     android:layout_marginTop="4dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,12 +19,6 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/connectBtn"
-            android:layout_marginStart="4dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/connect" />
 
         <TextView
             android:gravity="center"
@@ -37,7 +32,7 @@
             android:text="2"/>
 
 
-        <com.example.wordassociater.words.WordPreviewRecycler
+        <com.example.wordassociater.words.WordRecycler
             android:layout_weight="1"
             android:id="@+id/wordsRecycler"
             android:layout_width="0dp"
@@ -52,7 +47,7 @@
 
 
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.example.wordassociater.character.CharacterRecycler
         android:visibility="gone"
         android:id="@+id/characterRecycler"
         android:orientation="horizontal"
@@ -65,14 +60,6 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/btnDelete"
-            android:padding="5dp"
-            android:layout_marginStart="4dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/icon_delete" />
 
         <TextView
             android:layout_weight="1"

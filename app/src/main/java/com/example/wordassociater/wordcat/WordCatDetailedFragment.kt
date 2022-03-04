@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
-import com.example.wordassociater.Main
 import com.example.wordassociater.databinding.FragmentWordCatDetailedBinding
 import com.example.wordassociater.fire_classes.WordCat
 
 class WordCatDetailedFragment: Fragment() {
     lateinit var b : FragmentWordCatDetailedBinding
     private val selectedWordCat = MutableLiveData<WordCat>()
+    private val selectedWordCatList = MutableLiveData<List<WordCat>>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         b = FragmentWordCatDetailedBinding.inflate(inflater)
-        b.wordCatRecycler.setupRecycler(WordCatAdapter.Type.BTN, ::onWordCatSelected, Main.wordCatsList)
+        b.wordCatRecycler.setupRecycler(WordCatAdapter.Type.BTN, ::onWordCatSelected, selectedWordCatList)
         setObserver()
         return b.root
     }

@@ -5,7 +5,7 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.R
-import com.example.wordassociater.character.CharacterPopUpAdapter
+import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.PopupCharacterRecyclerBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.utils.Helper
@@ -20,7 +20,7 @@ fun popCharacterSelector(
     val b = PopupCharacterRecyclerBinding.inflate(LayoutInflater.from(from.context), null, false)
     var pop = Helper.getPopUp(b.root, from, fromMiddle = fromMiddle)
 
-    val adapter = CharacterPopUpAdapter(characterClickedFunc)
+    b.characterRecycler.initRecycler(CharacterRecycler.Mode.Popup, characterList, characterClickedFunc)
     var allSelected = false
 
     characterList.observe(b.root.context as LifecycleOwner) {
@@ -29,16 +29,7 @@ fun popCharacterSelector(
         }
         else b.btnSelectALl.setImageResource(R.drawable.storyline_selected)
     }
-    fun setRecycler() {
-        b.characterRecycler.adapter = adapter
 
-        characterList.observe(b.root.context as LifecycleOwner) {
-            var submitList = it.filter { c -> c.id != 22L }
-            if(showAny) submitList = submitList + listOf(Character.any)
-            adapter.submitList(submitList)
-            adapter.notifyDataSetChanged()
-        }
-    }
     fun selectAll() {
         val newList = characterList.value!!.toMutableList()
         for(c in newList) {
@@ -48,7 +39,6 @@ fun popCharacterSelector(
         characterList.value = newList
         b.btnSelectALl.setImageResource(R.drawable.storyline_selected)
         allSelected = true
-        adapter.notifyDataSetChanged()
     }
 
     fun deselectAll() {
@@ -60,7 +50,6 @@ fun popCharacterSelector(
         characterList.value = newList
         b.btnSelectALl.setImageResource(R.drawable.storyline_unselected)
         allSelected = false
-        adapter.notifyDataSetChanged()
     }
 
     fun setClickListener() {
@@ -78,8 +67,6 @@ fun popCharacterSelector(
         }
     }
 
-
-    setRecycler()
     setClickListener()
 
 
