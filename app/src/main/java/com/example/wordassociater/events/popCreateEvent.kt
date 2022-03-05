@@ -13,6 +13,7 @@ import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireStoryLines
 import com.example.wordassociater.utils.Date
 import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.utils.Image
 
 fun popCreateEvent(from: View, storyLineList : List<Long>) {
     val b = PopupEventBinding.inflate(LayoutInflater.from(from.context), null, false)
@@ -64,55 +65,55 @@ fun popCreateEvent(from: View, storyLineList : List<Long>) {
 
     b.airplane.setOnClickListener {
         selectedImage.value = it
-        event.image = Event.Image.Airplane
+        event.image = Image.getImageByName(Image.Name.Airplane).id
         iconPicked = true
      }
 
     b.crown.setOnClickListener {
         selectedImage.value = it
-        event.image = Event.Image.Crown
+        event.image = Image.getImageByName(Image.Name.Crown).id
         iconPicked = true
     }
 
     b.explosion.setOnClickListener {
         selectedImage.value = it
-        event.image = Event.Image.Explosion
+        event.image = Image.getImageByName(Image.Name.Explosion).id
         iconPicked = true
     }
 
     b.food.setOnClickListener {
         selectedImage.value = it
-        event.image = Event.Image.Food
+        event.image = Image.getImageByName(Image.Name.Food).id
         iconPicked = true
     }
 
     b.handshake.setOnClickListener {
         selectedImage.value = it
-        event.image = Event.Image.Handshake
+        event.image = Image.getImageByName(Image.Name.Handshake).id
         iconPicked = true
     }
 
     b.party.setOnClickListener {
         selectedImage.value = it
-        event.image = Event.Image.Party
+        event.image = Image.getImageByName(Image.Name.Party).id
         iconPicked = true
     }
 
     b.shield.setOnClickListener {
         selectedImage.value = it
-        event.image = Event.Image.Shield
+        event.image = Image.getImageByName(Image.Name.Shield).id
         iconPicked = true
     }
 
     b.spy.setOnClickListener {
         selectedImage.value = it
-        event.image = Event.Image.Spy
+        event.image = Image.getImageByName(Image.Name.Spy).id
         iconPicked = true
     }
 
     b.pistol.setOnClickListener {
         selectedImage.value = it
-        event.image = Event.Image.Pistol
+        event.image = Image.getImageByName(Image.Name.Pistol).id
         iconPicked = true
     }
 

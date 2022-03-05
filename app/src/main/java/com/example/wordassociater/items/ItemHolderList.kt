@@ -6,7 +6,7 @@ import com.example.wordassociater.fire_classes.Item
 import com.example.wordassociater.live_recycler.LiveHolder
 import com.example.wordassociater.utils.LiveClass
 
-class ItemListHolder(val b: HolderSnippetPartListBinding): RecyclerView.ViewHolder(b.root), LiveHolder {
+class ItemHolderList(val b: HolderSnippetPartListBinding): RecyclerView.ViewHolder(b.root), LiveHolder {
     override lateinit var item: LiveClass
 
     override fun onBind(item: LiveClass, takeItemFunc: (item: LiveClass) -> Unit) {

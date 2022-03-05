@@ -9,13 +9,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.example.wordassociater.Main
-import com.example.wordassociater.R
 import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.BarNewSnippetBinding
-import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.fire_classes.StoryLine
-import com.example.wordassociater.fire_classes.WordConnection
+import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.firestore.FireChars
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.firestore.FireStats
@@ -25,7 +21,7 @@ import com.example.wordassociater.popups.popDramaTypeSelection
 import com.example.wordassociater.popups.popSelectStoryLine
 import com.example.wordassociater.utils.Drama
 import com.example.wordassociater.utils.Helper
-import com.example.wordassociater.fire_classes.StoryPart
+import com.example.wordassociater.utils.LiveClass
 import com.example.wordassociater.words.WordLinear
 
 class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
@@ -58,7 +54,8 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
         if(!characterSelected) selectedCharacterList.value = Main.characterList.value!!.toList()
     }
 
-    private fun onCharacterSelected(character: Character) {
+    private fun onCharacterSelected(character: LiveClass) {
+        character as Character
         character.selected = !character.selected
         val newList = Helper.getResubmitList(character, selectedCharacterList.value!!)
         selectedCharacterList.value = newList
@@ -114,18 +111,6 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
         }
 
         isDrama.observe(context as LifecycleOwner) {
-            b.btnDrama.setImageResource(when(it) {
-                Drama.Conflict -> R.drawable.icon_conflict
-                Drama.Twist -> R.drawable.icon_twist
-                Drama.Plan -> R.drawable.icon_plan
-                Drama.Motivation -> R.drawable.icon_motivation
-                Drama.Goal -> R.drawable.icon_goal
-                Drama.Problem -> R.drawable.icon_problem
-                Drama.Solution -> R.drawable.icon_solution
-                Drama.Hurdle -> R.drawable.icon_hurdle
-                Drama.None -> R.drawable.icon_dramaturgy
-                Drama.Comedy -> R.drawable.icon_comedy
-            })
         }
     }
 

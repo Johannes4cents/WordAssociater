@@ -1,5 +1,6 @@
 package com.example.wordassociater.fire_classes
 
+import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.FireEvents
 import com.example.wordassociater.firestore.FireSnippets
@@ -20,13 +21,23 @@ data class Item(
     override var isAHeader: Boolean = false
 
     override var eventList: MutableList<Long> = mutableListOf()
+    override var description: String = ""
+    override var storyLineList: MutableList<Long> = mutableListOf()
     override var snippetsList: MutableList<Long> = mutableListOf()
-    override var wordsList: MutableList<Long> = mutableListOf()
+    override var wordList: MutableList<Long> = mutableListOf()
 
     override var sortingOrder: Int = id.toInt()
 
-
-
+    @Exclude
+    override val liveStoryLines = MutableLiveData<List<StoryLine>>()
+    @Exclude
+    override val liveSnippets = MutableLiveData<List<Snippet>>()
+    @Exclude
+    override val liveWords = MutableLiveData<List<Word>>()
+    @Exclude
+    override val liveEvents = MutableLiveData<List<Event>>()
+    @Exclude
+    override lateinit var oldSnippetPart : SnippetPart
 
 
     override fun delete() {
@@ -48,5 +59,19 @@ data class Item(
 
         val word = Main.wordsList.value!!.find { w -> w.connectId == connectId }
         word?.delete()
+    }
+
+    @Exclude
+    override fun copyMe(): Item {
+        val newItem = Item()
+        newItem.storyLineList = storyLineList.toMutableList()
+        newItem.eventList = eventList.toMutableList()
+        newItem.id = 999999999999
+        newItem.description = description
+        newItem.wordList = wordList.toMutableList()
+        newItem.snippetsList = snippetsList.toMutableList()
+        newItem.connectId = connectId
+        oldSnippetPart = newItem
+        return newItem
     }
 }

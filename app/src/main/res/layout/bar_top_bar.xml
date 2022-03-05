@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -69,8 +70,6 @@
             android:id="@+id/btnStandIn"
             android:layout_width="0dp"
             android:layout_height="45dp" />
-
-
     </LinearLayout>
 
 

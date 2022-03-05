@@ -11,7 +11,6 @@ import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.databinding.FragmentSnippetPartListsBinding
 import com.example.wordassociater.databinding.HolderSnippetPartListBinding
-import com.example.wordassociater.items.ItemListHolder
 import com.example.wordassociater.live_recycler.LiveRecycler
 import com.example.wordassociater.utils.LiveClass
 
@@ -33,12 +32,12 @@ class LocationsListFragment: Fragment() {
     }
 
     private fun setLiveRecycler() {
-        val listHolder = ItemListHolder(HolderSnippetPartListBinding.inflate(LayoutInflater.from(context)))
-        b.liveRecycler.initRecycler(LiveRecycler.Mode.List, ::onItemSelected, livePartsList, listHolder)
+        val listHolder = LocationHolderList(HolderSnippetPartListBinding.inflate(LayoutInflater.from(context), null, false))
+        b.liveRecycler.initRecycler(LiveRecycler.Mode.List, LiveRecycler.Type.Location, ::onItemSelected, livePartsList)
     }
 
     private fun setObserver() {
-        Main.itemList.observe(context as LifecycleOwner) {
+        Main.locationList.observe(context as LifecycleOwner) {
             val liveClassList = mutableListOf<LiveClass>()
             for(item in it) {
                 liveClassList.add(item)

@@ -84,20 +84,6 @@ object Helper {
         return newList
     }
 
-    fun getDramaImage(type: Drama): Int {
-        return when(type) {
-            Drama.Conflict -> R.drawable.icon_conflict
-            Drama.Twist -> R.drawable.icon_twist
-            Drama.Plan -> R.drawable.icon_plan
-            Drama.Motivation -> R.drawable.icon_motivation
-            Drama.Goal -> R.drawable.icon_goal
-            Drama.Problem -> R.drawable.icon_problem
-            Drama.Solution -> R.drawable.icon_solution
-            Drama.Hurdle -> R.drawable.icon_hurdle
-            Drama.None -> R.drawable.icon_dramaturgy
-            Drama.Comedy -> R.drawable.icon_comedy
-        }
-    }
 
     fun getPopUp(layout: View, fromWhere: View, width: Int? = null, height: Int? = null, offsetX: Int? = null, offsetY : Int? = null, fromMiddle: Boolean = false): PopupWindow {
         val popWindow = PopupWindow(fromWhere.context)

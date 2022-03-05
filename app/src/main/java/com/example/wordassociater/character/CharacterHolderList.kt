@@ -25,8 +25,8 @@ class CharacterHolderList(val b: HolderSnippetPartListBinding): RecyclerView.Vie
     }
 
     private fun setContent() {
-        b.characterName.text = character.name
-        if(character.imgUrl != "") Glide.with(b.characterPortrait).load(character.imgUrl).into(b.characterPortrait)
+        b.partName.text = character.name
+        if(character.imgUrl != "") Glide.with(b.partImage).load(character.imgUrl).into(b.partImage)
 
         setClickListener()
     }
@@ -38,17 +38,17 @@ class CharacterHolderList(val b: HolderSnippetPartListBinding): RecyclerView.Vie
 
     private fun setObserver() {
         DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
-            b.characterName.setTextColor(if(it) b.root.context.resources.getColor(R.color.white) else  b.root.context.resources.getColor(
+            b.partName.setTextColor(if(it) b.root.context.resources.getColor(R.color.white) else  b.root.context.resources.getColor(
                 R.color.black))
         }
-        DisplayFilter.observeItemColorDark(b.root.context, b.root, listOf(b.characterName))
+        DisplayFilter.observeItemColorDark(b.root.context, b.root, listOf(b.partName))
     }
 
     private fun setBackGroundColorFirstTime() {
         var dark = DisplayFilter.itemColorDark.value!!
         b.root.setBackgroundColor(if(dark) b.root.context.resources.getColor(R.color.snippets) else b.root.context.resources.getColor(
             R.color.white))
-        b.characterName.setTextColor(if(dark) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(
+        b.partName.setTextColor(if(dark) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(
             R.color.black))
     }
 

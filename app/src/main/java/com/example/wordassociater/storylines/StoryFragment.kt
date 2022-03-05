@@ -1,7 +1,6 @@
 package com.example.wordassociater.storylines
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +33,7 @@ class StoryFragment: Fragment() {
 
     private fun setContent() {
         selectedStoryLines.value = Main.storyLineList.value!!.toList()
-        b.storyLineRecycler.initRecycler(selectedStoryLines, ::onStoryLineClicked, ::onHeaderClicked)
+        b.storyLineRecycler.initRecycler(StoryLine.Type.Story, selectedStoryLines, ::onStoryLineClicked, ::onHeaderClicked)
         b.timelineRecycler.initTimeline(
                 selectedStoryLines, b.storyBar.selectedWords, b.storyBar.selectedCharacter,
                 b.storyBar.selectedTypes, ::onSnippetClicked)

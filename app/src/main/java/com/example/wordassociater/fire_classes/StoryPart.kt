@@ -31,6 +31,10 @@ open class StoryPart(
     @Exclude override var isAHeader: Boolean = false
 
     @Exclude
+    override var image: Long = 0
+
+
+    @Exclude
     override var sortingOrder: Int = id.toInt()
 
     @Exclude
@@ -46,7 +50,7 @@ open class StoryPart(
     val liveCharacter = MutableLiveData<List<Character>>()
 
     @Exclude
-    val liveStoryLines = MutableLiveData<List<StoryLine>>()
+    val liveSelectedStoryLines = MutableLiveData<List<StoryLine>>()
 
     @Exclude
     val liveItems = MutableLiveData<List<Item>>()
@@ -128,7 +132,11 @@ open class StoryPart(
             }
 
             // update the Snippets ItemList
-            FireSnippets.update(this.id, "itemList", itemList)
+            when(this) {
+                is Snippet -> FireSnippets.update(this.id, "itemList", itemList)
+                is Event -> FireEvents.update(this.id, "itemList", itemList)
+            }
+
         }
     }
 
@@ -199,19 +207,26 @@ open class StoryPart(
             }
 
             // update the Snippets LocationList
-            FireSnippets.update(this.id, "locationList", locationList)
+            when(this) {
+                is Snippet -> FireSnippets.update(this.id, "locationList", locationList)
+                is Event -> FireEvents.update(this.id, "locationList", locationList)
+            }
+
         }
     }
 
     @Exclude
-    fun getWords(): MutableList<Word> {
+    open fun getWords(): MutableList<Word> {
         val words = mutableListOf<Word>()
-
+        for(id in wordList) {
+            val word = Main.getWord(id)
+            if(word != null) words.add(word)
+        }
         return words
     }
 
     @Exclude
-    fun getFullWordsList() : List<Word> {
+    open fun getFullWordsList() : List<Word> {
         Log.i("lagProb", "getFullWordsList called")
         val allWords = Main.wordsList.value!!.toMutableList()
         for(w in allWords) {
@@ -222,7 +237,7 @@ open class StoryPart(
     }
 
     @Exclude
-    fun takeWord(word:Word) {
+    open fun takeWord(word:Word) {
         if(getWords().contains(word)) {
             wordList.remove(word.id)
         }
@@ -231,7 +246,7 @@ open class StoryPart(
     }
 
     @Exclude
-    fun updateWords() {
+    open fun updateWords() {
         Log.i("updateTest", "oldStoryPart.wordList != wordList = ${oldStoryPart.wordList != wordList}")
         if(oldStoryPart.wordList != wordList) {
             // update newly added words snippetLists
@@ -276,7 +291,11 @@ open class StoryPart(
             }
 
             // update the Snippets WordList
-            FireSnippets.update(this.id, "wordList", wordList)
+            when(this) {
+                is Snippet -> FireSnippets.update(this.id, "wordList", wordList)
+                is Event -> FireEvents.update(this.id, "wordList", wordList)
+            }
+
         }
     }
 
@@ -348,12 +367,16 @@ open class StoryPart(
             }
 
             // update the Snippets CharacterList
-            FireSnippets.update(this.id, "characterList", characterList)
+            when(this) {
+                is Snippet -> FireSnippets.update(this.id, "characterList", characterList)
+                is Event -> FireSnippets.update(this.id, "characterList", characterList)
+            }
+
         }
     }
 
     @Exclude
-    fun getStoryLines(): List<StoryLine> {
+    open fun getStoryLines(): List<StoryLine> {
         val list = mutableListOf<StoryLine>()
         for(id in storyLineList) {
             val sl = Main.getStoryLine(id)
@@ -363,24 +386,24 @@ open class StoryPart(
     }
 
     @Exclude
-    fun getFullStoryLineList(): List<StoryLine> {
+    open fun getFullStoryLineList(): List<StoryLine> {
         val allStoryLines = Main.storyLineList.value!!.toMutableList()
         for(sl in allStoryLines) {
             sl.selected = getStoryLines().contains(sl)
         }
-        liveStoryLines.value = allStoryLines
+        liveSelectedStoryLines.value = allStoryLines
         return allStoryLines
     }
 
     @Exclude
-    fun takeStoryLine(storyLine: StoryLine) {
+    open fun takeStoryLine(storyLine: StoryLine) {
         if(getStoryLines().contains(storyLine)) storyLineList.remove(storyLine.id)
         else storyLineList.add(storyLine.id)
         getFullStoryLineList()
     }
 
     @Exclude
-    fun updateStoryLines() {
+    open fun updateStoryLines() {
         Log.i("updateTest", "oldStoryPart.storyLineList != storyLineList = ${oldStoryPart.storyLineList != storyLineList}")
         if(oldStoryPart.storyLineList != storyLineList) {
             // update newly added storyLines snippetLists
@@ -418,7 +441,10 @@ open class StoryPart(
                 }
             }
             // update the Snippets StoryLineList
-            FireSnippets.update(this.id, "storyLineList", storyLineList)
+            when(this) {
+                is Snippet -> FireSnippets.update(this.id, "storyLineList", storyLineList)
+                is Event -> FireEvents.update(this.id, "storyLineList", storyLineList)
+            }
         }
     }
 
@@ -435,7 +461,7 @@ open class StoryPart(
     }
 
     @Exclude
-    fun getFullEventList(): List<Event> {
+    open fun getFullEventList(): List<Event> {
         val allEvents = Main.eventList.value!!.toMutableList()
         for(sl in allEvents) {
             sl.selected = getEvents().contains(sl)
@@ -445,14 +471,14 @@ open class StoryPart(
     }
 
     @Exclude
-    fun takeEvent(event: Event) {
+    open fun takeEvent(event: Event) {
         if(getEvents().contains(event)) eventList.remove(event.id)
         else eventList.add(event.id)
         getFullEventList()
     }
 
     @Exclude
-    fun updateEvents() {
+    open fun updateEvents() {
         Log.i("updateTest", "oldStoryPart.eventList != eventList = ${oldStoryPart.eventList != eventList}")
         if(oldStoryPart.eventList != eventList) {
             // update newly added events snippetLists
@@ -491,7 +517,10 @@ open class StoryPart(
             }
 
             // update the Snippets EventList
-            FireSnippets.update(this.id, "eventList", eventList)
+            when(this) {
+                is Snippet -> FireSnippets.update(this.id, "eventList", eventList)
+                is Event -> FireEvents.update(this.id, "eventList", eventList)
+            }
         }
     }
 }

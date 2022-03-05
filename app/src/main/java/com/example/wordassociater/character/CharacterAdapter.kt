@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wordassociater.databinding.HolderCharacterBinding
-import com.example.wordassociater.databinding.HolderCharacterPopupBinding
-import com.example.wordassociater.databinding.HolderCharacterPreviewBinding
+import com.example.wordassociater.databinding.HolderSnippetPartListBinding
+import com.example.wordassociater.databinding.HolderSnippetPartPopupBinding
+import com.example.wordassociater.databinding.HolderSnippetPartPreviewBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.utils.LiveClass
 
@@ -27,9 +27,9 @@ class CharacterAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val listHolder = CharacterHolderList(HolderCharacterBinding.inflate(LayoutInflater.from(parent.context)))
-        val prevewHolder = CharacterHolderPreview(HolderCharacterPreviewBinding.inflate(LayoutInflater.from(parent.context)))
-        val popupHolder = CharacterHolderPopUp(HolderCharacterPopupBinding.inflate(LayoutInflater.from(parent.context)))
+        val listHolder = CharacterHolderList(HolderSnippetPartListBinding.inflate(LayoutInflater.from(parent.context)))
+        val prevewHolder = CharacterHolderPreview(HolderSnippetPartPreviewBinding.inflate(LayoutInflater.from(parent.context)))
+        val popupHolder = CharacterHolderPopUp(HolderSnippetPartPopupBinding.inflate(LayoutInflater.from(parent.context)))
         return when(mode) {
             CharacterRecycler.Mode.Preview -> prevewHolder
             CharacterRecycler.Mode.Popup -> popupHolder

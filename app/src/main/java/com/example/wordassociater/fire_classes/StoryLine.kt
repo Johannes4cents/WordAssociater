@@ -5,7 +5,8 @@ import com.google.firebase.firestore.Exclude
 
 data class StoryLine(
         var id: Long = 0,
-        var name: String = ""
+        var name: String = "",
+        var type: Type = Type.Story
 ) {
     var wordsList: MutableList<Word> = mutableListOf()
     var snippetsList: MutableList<Long> = mutableListOf()
@@ -14,7 +15,7 @@ data class StoryLine(
     var description: String = ""
 
     enum class Icon { Knife, Planet, Bones, Heart, Fire, Eye, Friends, Letter, Money, Hospital, Science, Computer}
-    enum class Type {Story, Location, }
+    enum class Type {Story, Location, Event, Character, Item}
     @Exclude
     var isHeader = false
     @Exclude

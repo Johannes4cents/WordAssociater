@@ -62,13 +62,14 @@ class ViewPagerSnippetPartsFragment: Fragment() {
 
     private fun setTopBar() {
         // set Icons
-        b.topBar.setRightBtnIconAndVisibility(R.drawable.back_icon, true)
         b.topBar.setLeftBtnIconAndVisibility(R.drawable.icon_word, false)
         b.topBar.setBtn5IconAndVisibility(R.drawable.icon_word, false)
         b.topBar.setBtn1IconAndVisibility(R.drawable.icon_item, true)
         b.topBar.setBtn2IconAndVisibility(R.drawable.event_icon, true)
         b.topBar.setBtn3IconAndVisibility(R.drawable.icon_location, true)
-        b.topBar.setBtn3IconAndVisibility(R.drawable.icon_character, true)
+        b.topBar.setBtn4IconAndVisibility(R.drawable.icon_character, true)
+        b.topBar.setRightBtnIconAndVisibility(R.drawable.back_icon_mirrored, true)
+        b.topBar.btnLeft.visibility = View.GONE
 
         // set OnClick
         b.topBar.setBtn1 {

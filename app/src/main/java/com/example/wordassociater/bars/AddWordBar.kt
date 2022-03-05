@@ -185,7 +185,7 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
                         name = Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString()),
                         connectId = connectId)
 
-                item.wordsList = Word.convertToIdList(WordLinear.selectedWords)
+                item.wordList = Word.convertToIdList(WordLinear.selectedWords)
                 FireItems.add(item, context)
                 newWord.connectId = connectId
             }

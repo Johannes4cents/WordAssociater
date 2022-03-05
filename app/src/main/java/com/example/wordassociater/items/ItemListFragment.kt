@@ -1,6 +1,7 @@
 package com.example.wordassociater.items
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,8 +33,9 @@ class ItemListFragment: Fragment() {
     }
 
     private fun setLiveRecycler() {
-        val listHolder = ItemListHolder(HolderSnippetPartListBinding.inflate(LayoutInflater.from(context)))
-        b.liveRecycler.initRecycler(LiveRecycler.Mode.List, ::onItemSelected, livePartsList, listHolder)
+        val listHolder = ItemHolderList(HolderSnippetPartListBinding.inflate(LayoutInflater.from(context), null, false))
+        Log.i("HolderProb", "listHolder is $listHolder")
+        b.liveRecycler.initRecycler(LiveRecycler.Mode.List, LiveRecycler.Type.Item, ::onItemSelected, livePartsList)
     }
 
     private fun setObserver() {

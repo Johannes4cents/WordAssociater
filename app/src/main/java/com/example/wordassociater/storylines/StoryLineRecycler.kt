@@ -30,15 +30,16 @@ class StoryLineRecycler(context: Context, attributeSet: AttributeSet): RecyclerV
 
     private fun setObserver() {
         storyLineLiveList.observe(context as LifecycleOwner) {
+            val filteredList = it
             if(horizontal) {
                 val header = StoryLine()
                 header.isHeader = true
-                if(it != null ) storyLineAdapter.submitList(it + listOf(header))
+                if(it != null ) storyLineAdapter.submitList(filteredList + listOf(header))
                 else storyLineAdapter.submitList(listOf(header))
                 storyLineAdapter.notifyDataSetChanged()
             }
             else {
-                storyLineAdapter.submitList(it)
+                storyLineAdapter.submitList(filteredList)
                 storyLineAdapter.notifyDataSetChanged()
             }
 

@@ -25,7 +25,11 @@ data class Word(
 ): LiveClass
 {
     @Exclude
-    override var sortingOrder: Int = text.toInt()
+    override var image: Long = 0L
+
+
+    @Exclude
+    override var sortingOrder: Int = used
 
     @Exclude
     override var isAHeader = false

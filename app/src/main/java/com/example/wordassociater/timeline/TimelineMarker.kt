@@ -23,7 +23,7 @@ class TimelineMarker(context: Context, attributeSet: AttributeSet?, val storyPar
                 b.storyPartLine.setBackgroundColor(b.root.context.resources.getColor(R.color.green))
             }
             is Event -> {
-                b.eventImage.setImageResource(storyPart.getImage())
+                b.eventImage.setImageResource(storyPart.getImage().getDrawable())
             }
 
         }

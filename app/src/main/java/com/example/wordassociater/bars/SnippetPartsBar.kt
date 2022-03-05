@@ -11,6 +11,7 @@ import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.StoryPart
 import com.example.wordassociater.popups.popCharacterSelector
+import com.example.wordassociater.utils.LiveClass
 
 class SnippetPartsBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = BarSnippetPartsBinding.inflate(LayoutInflater.from(context), this, true)
@@ -49,7 +50,8 @@ class SnippetPartsBar(context: Context, attributeSet: AttributeSet): LinearLayou
         }
     }
 
-    private fun onCharacterSelected(character: Character) {
+    private fun onCharacterSelected(character: LiveClass) {
+        character as Character
         storyPart.takeCharacter(character)
     }
 

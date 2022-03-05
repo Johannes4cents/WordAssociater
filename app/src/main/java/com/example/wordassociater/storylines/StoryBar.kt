@@ -12,12 +12,13 @@ import com.example.wordassociater.R
 import com.example.wordassociater.databinding.BarStoryBinding
 import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Character
+import com.example.wordassociater.fire_classes.StoryPart
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.popups.popCharacterSelector
 import com.example.wordassociater.popups.popSearchWord
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.ListHelper
-import com.example.wordassociater.fire_classes.StoryPart
+import com.example.wordassociater.utils.LiveClass
 
 class StoryBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = BarStoryBinding.inflate(LayoutInflater.from(context), this, true)
@@ -90,7 +91,8 @@ class StoryBar(context: Context, attributeSet: AttributeSet): LinearLayout(conte
         //setWordList()
     }
 
-    private fun onCharacterSelected(char: Character) {
+    private fun onCharacterSelected(char: LiveClass) {
+        char as Character
         char.selected = !char.selected
         val newList = Helper.getResubmitList(char, selectedCharacter.value!!)
         selectedCharacter.value = newList!!.sortedBy { w -> w.name }.sortedBy { w -> w.selected }

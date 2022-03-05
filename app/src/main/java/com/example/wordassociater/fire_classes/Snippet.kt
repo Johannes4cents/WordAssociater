@@ -25,6 +25,8 @@ data class Snippet(override var content: String = "",
 
     @Exclude
     override var sortingOrder: Int = id.toInt()
+    @Exclude
+    override var image: Long = 0L
 
     @Exclude
     var recyclerHeader = false
@@ -126,10 +128,10 @@ data class Snippet(override var content: String = "",
         newSnippet.drama = drama
         newSnippet.characterList = characterList.toMutableList()
         newSnippet.recyclerHeader = recyclerHeader
-        newSnippet.storyLineList = storyLineList
-        newSnippet.eventList = eventList
-        newSnippet.itemList = itemList
-        newSnippet.locationList = locationList
+        newSnippet.storyLineList = storyLineList.toMutableList()
+        newSnippet.eventList = eventList.toMutableList()
+        newSnippet.itemList = itemList.toMutableList()
+        newSnippet.locationList = locationList.toMutableList()
         newSnippet.id = 999999999999
         newSnippet.content = content
         newSnippet.nuwList = nuwList.toMutableList()

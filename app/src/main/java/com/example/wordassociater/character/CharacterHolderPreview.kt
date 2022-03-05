@@ -4,11 +4,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wordassociater.R
-import com.example.wordassociater.databinding.HolderCharacterPreviewBinding
+import com.example.wordassociater.databinding.HolderSnippetPartPreviewBinding
 import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Character
 
-class CharacterHolderPreview(val b: HolderCharacterPreviewBinding): RecyclerView.ViewHolder(b.root) {
+class CharacterHolderPreview(val b: HolderSnippetPartPreviewBinding): RecyclerView.ViewHolder(b.root) {
     lateinit var character: Character
     fun onBind(character: Character) {
         b.characterName.text = character.name

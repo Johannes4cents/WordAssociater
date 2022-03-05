@@ -12,7 +12,6 @@ import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentSnippetPartListsBinding
-import com.example.wordassociater.databinding.HolderSnippetPartListBinding
 import com.example.wordassociater.live_recycler.LiveRecycler
 import com.example.wordassociater.utils.LiveClass
 
@@ -34,8 +33,7 @@ class CharacterListFragment: Fragment() {
     }
 
     private fun setLiveRecycler() {
-        val listHolder = CharacterHolderList(HolderSnippetPartListBinding.inflate(LayoutInflater.from(context)))
-        b.liveRecycler.initRecycler(LiveRecycler.Mode.List, ::onCharacterSelected, livePartsList, listHolder)
+        b.liveRecycler.initRecycler(LiveRecycler.Mode.List, LiveRecycler.Type.Character, ::onCharacterSelected, livePartsList)
     }
 
     private fun setObserver() {

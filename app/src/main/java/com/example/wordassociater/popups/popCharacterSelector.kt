@@ -9,11 +9,12 @@ import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.PopupCharacterRecyclerBinding
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.utils.LiveClass
 
 fun popCharacterSelector(
         from: View,
         characterList: MutableLiveData<List<Character>>,
-        characterClickedFunc: (character : Character) -> Unit,
+        characterClickedFunc: (character : LiveClass) -> Unit,
         fromMiddle: Boolean = false,
         showAny: Boolean = false) {
 

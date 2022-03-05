@@ -13,6 +13,8 @@ import com.example.wordassociater.display_filter.DisplayFilter
 
 class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = BarTopBarBinding.inflate(LayoutInflater.from(context), this, true)
+    val btnLeft = b.btnLeft
+    val btnRight = b.btnRight
     val btn1 = b.btn1
     val btn2 = b.btn2
     val btn3 = b.btn3
@@ -29,7 +31,7 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
         showIconSelected = true
     }
 
-    fun handleALlButtonsGone() {
+    private fun handleALlButtonsGone() {
         var allGone = true
         val buttonList = mutableListOf(b.btn1, b.btn2, b.btn3, b.btn4, b.btn5)
         for(v in buttonList) {

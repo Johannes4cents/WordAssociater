@@ -5,23 +5,61 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.wordassociater.R
-import com.example.wordassociater.databinding.FragmentEventsListBinding
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import com.example.wordassociater.Frags
+import com.example.wordassociater.Main
+import com.example.wordassociater.databinding.FragmentSnippetPartListsBinding
+import com.example.wordassociater.live_recycler.LiveRecycler
+import com.example.wordassociater.utils.LiveClass
 
 class EventsListFragment: Fragment() {
-    lateinit var b : FragmentEventsListBinding
+    lateinit var b: FragmentSnippetPartListsBinding
+    private val livePartsList = MutableLiveData<List<LiveClass>>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        b = FragmentEventsListBinding.inflate(inflater)
-        setTopBar()
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View {
+        Main.inFragment = Frags.CHARACTERLIST
+        b = FragmentSnippetPartListsBinding.inflate(layoutInflater)
+        setLiveRecycler()
+        setObserver()
+        setClickListener()
         return b.root
     }
 
-    private fun setTopBar() {
-        b.topBar.setLeftBtnIconAndVisibility(R.drawable.icon_word, false)
-        b.topBar.setRightBtnIconAndVisibility(R.drawable.back_icon, true)
-        b.topBar.setRightButton {
+    private fun setLiveRecycler() {
+        b.liveRecycler.initRecycler(LiveRecycler.Mode.List, LiveRecycler.Type.Event, ::onItemSelected, livePartsList)
+    }
+
+    private fun setObserver() {
+        Main.itemList.observe(context as LifecycleOwner) {
+            val liveClassList = mutableListOf<LiveClass>()
+            for(item in it) {
+                liveClassList.add(item)
+            }
+            livePartsList.value = liveClassList
+        }
+    }
+
+    private fun setClickListener() {
+        b.importanceBar.setMainFunc {
+
+        }
+
+        b.importanceBar.setSideFunc {
+
+        }
+
+        b.importanceBar.setMentionedFunc {
 
         }
     }
+
+    private fun onItemSelected(item: LiveClass) {
+        //findNavController().navigate()
+    }
+
 }

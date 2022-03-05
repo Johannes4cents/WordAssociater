@@ -91,7 +91,7 @@ class EditSnippetFragment: Fragment() {
         }
 
         b.topBar.setBtn5 {
-            popSelectStoryLine(b.topBar.btn5, ::onStoryLineSelected, snippet.liveStoryLines, fromMiddle = false)
+            popSelectStoryLine(b.topBar.btn5, ::onStoryLineSelected, snippet.liveSelectedStoryLines, fromMiddle = false)
         }
     }
 

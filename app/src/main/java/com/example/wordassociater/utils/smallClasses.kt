@@ -31,7 +31,7 @@ class FamCheck(val stem: String = "", val newFam: String = "") {
 
 }
 
-class Image(override var id: Long, val name: Name, var src: Int, val type: Type): LiveClass {
+data class Image(override var id: Long, val name: Name, var src: Int, val type: Type): LiveClass {
     enum class Name {
         Laptop, YoungGirl, YoungWoman, OldWoman, OldMan, YoungMan,
         YoungBoy, Fire, Friends, Heart, Hospital, Bones, Computer,
@@ -48,7 +48,7 @@ class Image(override var id: Long, val name: Name, var src: Int, val type: Type)
 
     override var image: Long = 0L
 
-    fun getImage(): Int {
+    fun getDrawable(): Int {
         return when(name) {
             Name.Laptop -> R.drawable.item_laptop
             Name.YoungGirl -> R.drawable.character_young_girl
@@ -128,8 +128,12 @@ class Image(override var id: Long, val name: Name, var src: Int, val type: Type)
                 Image(35, Name.Spy, 0, Type.Character),
         )
 
-        fun getImage(id: Long): Image {
+        fun getDrawable(id: Long): Image {
             return imageList.find { i -> i.id == id }!!
+        }
+
+        fun getImageByName(name: Image.Name): Image {
+            return imageList.find { i  -> i.name == name }!!
         }
 
     }

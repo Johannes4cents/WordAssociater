@@ -3,6 +3,7 @@ package com.example.wordassociater.live_recycler
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
@@ -10,20 +11,36 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wordassociater.character.CharacterHolderList
+import com.example.wordassociater.character.CharacterHolderPopUp
+import com.example.wordassociater.character.CharacterHolderPreview
+import com.example.wordassociater.databinding.HolderSnippetPartListBinding
+import com.example.wordassociater.databinding.HolderSnippetPartPopupBinding
+import com.example.wordassociater.databinding.HolderSnippetPartPreviewBinding
+import com.example.wordassociater.events.EventHolderList
+import com.example.wordassociater.events.EventHolderPopUp
+import com.example.wordassociater.events.EventHolderPreview
+import com.example.wordassociater.items.ItemHolderList
+import com.example.wordassociater.items.ItemHolderPopUp
+import com.example.wordassociater.items.ItemHolderPreview
+import com.example.wordassociater.locations.LocationHolderList
+import com.example.wordassociater.locations.LocationHolderPopup
+import com.example.wordassociater.locations.LocationHolderPreview
 import com.example.wordassociater.utils.LiveClass
 
 
 class LiveRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(context, attributeSet) {
     enum class Mode { Popup, List, Preview }
+    enum class Type { Character, Item, Event, Location }
 
     fun initRecycler(
             mode: Mode,
+            type: Type,
             onItemClicked: (item: LiveClass) -> Unit,
             liveList: MutableLiveData<List<LiveClass>>,
-            holder: RecyclerView.ViewHolder,
             onHeaderClicked: (() -> Unit)? = null) {
 
-        val liveAdapter = LiveAdapter(onItemClicked, holder, onHeaderClicked)
+        val liveAdapter = LiveAdapter(mode, type, onItemClicked, onHeaderClicked)
         layoutManager = if(mode == Mode.Popup) LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false) else LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         adapter = liveAdapter
         liveList.observe(context as LifecycleOwner) {
@@ -38,14 +55,34 @@ class LiveRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(c
 }
 
 class LiveAdapter(
+        private val mode: LiveRecycler.Mode,
+        private val type: LiveRecycler.Type,
         private val onItemClicked: (item: LiveClass) -> Unit,
-        private val holder: RecyclerView.ViewHolder,
         private val onHeaderClicked: (() -> Unit)? = null,
 
 
 ) : ListAdapter<LiveClass, RecyclerView.ViewHolder>(LiveDiff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return holder
+        return when(mode) {
+            LiveRecycler.Mode.Popup -> when(type) {
+                LiveRecycler.Type.Character -> CharacterHolderPopUp(HolderSnippetPartPopupBinding.inflate(LayoutInflater.from(parent.context)))
+                LiveRecycler.Type.Item -> ItemHolderPopUp(HolderSnippetPartPopupBinding.inflate(LayoutInflater.from(parent.context)))
+                LiveRecycler.Type.Event -> EventHolderPopUp(HolderSnippetPartPopupBinding.inflate(LayoutInflater.from(parent.context)))
+                LiveRecycler.Type.Location -> LocationHolderPopup(HolderSnippetPartPopupBinding.inflate(LayoutInflater.from(parent.context)))
+            }
+            LiveRecycler.Mode.List -> when(type) {
+                LiveRecycler.Type.Character -> CharacterHolderList(HolderSnippetPartListBinding.inflate(LayoutInflater.from(parent.context)))
+                LiveRecycler.Type.Item -> ItemHolderList(HolderSnippetPartListBinding.inflate(LayoutInflater.from(parent.context)))
+                LiveRecycler.Type.Event -> EventHolderList(HolderSnippetPartListBinding.inflate(LayoutInflater.from(parent.context)))
+                LiveRecycler.Type.Location -> LocationHolderList(HolderSnippetPartListBinding.inflate(LayoutInflater.from(parent.context)))
+            }
+            LiveRecycler.Mode.Preview -> when(type) {
+                LiveRecycler.Type.Character -> CharacterHolderPreview(HolderSnippetPartPreviewBinding.inflate(LayoutInflater.from(parent.context)))
+                LiveRecycler.Type.Item -> ItemHolderPreview(HolderSnippetPartPreviewBinding.inflate(LayoutInflater.from(parent.context)))
+                LiveRecycler.Type.Event -> EventHolderPreview(HolderSnippetPartPreviewBinding.inflate(LayoutInflater.from(parent.context)))
+                LiveRecycler.Type.Location -> LocationHolderPreview(HolderSnippetPartPreviewBinding.inflate(LayoutInflater.from(parent.context)))
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
