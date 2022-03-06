@@ -163,18 +163,11 @@ class PinBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
 
         // set word Recycler
         snippetBinding.wordsRecycler.initRecycler(LiveRecycler.Mode.Preview,LiveRecycler.Type.Word ,null, snippet.liveWords, null)
-
         snippetBinding.wordsRecycler.visibility = View.VISIBLE
         wordLiveList.value = snippet.getWords()
 
-        // set char recycler
-        snippetBinding.characterRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.Character, null, snippet.liveCharacter)
-        snippetBinding.characterRecycler.visibility = View.VISIBLE
-        snippet.getFullCharacterList()
-
-        // set storyline recycler
-        snippetBinding.storyLineRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.StoryLine, null, snippet.liveSelectedStoryLines)
-        snippet.getFullStoryLineList()
+        // set previewBar
+        snippetBinding.previewBar.initBar(snippet)
 
         //observe darkColorBar
         DisplayFilter.observeBarColorDark(snippetBinding.root.context, snippetBinding.root)

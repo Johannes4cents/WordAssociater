@@ -1,7 +1,6 @@
 package com.example.wordassociater.words
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,8 +44,6 @@ class HeritageFragment: Fragment() {
         setClickListener()
         setRecycler()
         setObserver()
-
-        Log.i("commonwordstest", "${Main.commonWordsSomewhatGerman.value!!.count()} | ${Main.commonWordsVeryGerman.value!!.count()}")
 
         return b.root
     }
@@ -126,7 +123,6 @@ class HeritageFragment: Fragment() {
 
     private fun onFamEntered(fam: Fam) {
         if(fam.text != "" && fam.text != " " && fam.checkIfWord() == null) {
-            Log.i("famProb", "inside checkedIfWord is 0")
             fam.text = Helper.stripWordLeaveWhiteSpace(fam.text)
             fam.word = word.id
             word.famList.add(fam.id)
@@ -174,7 +170,6 @@ class HeritageFragment: Fragment() {
     }
 
     private fun onStemEntered(text: String) {
-        Log.i("stemProb", "text is $text")
         val strippedWord = Helper.stripWord(text).capitalize(Locale.ROOT)
         if(strippedWord != " " && text != "" && !word.stems.contains(strippedWord) && text != "stemHeader" && text != "StemHeader") {
             word.stems.add(strippedWord)

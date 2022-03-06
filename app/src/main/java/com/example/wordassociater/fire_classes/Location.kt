@@ -46,7 +46,7 @@ data class Location(
     override val liveWordsSearch = MutableLiveData<List<Word>>()
 
     @get:Exclude
-    override val liveStoryLinesOnly = MutableLiveData<List<StoryLine>>()
+    override val liveMyStoryLines = MutableLiveData<List<StoryLine>>()
 
     @get:Exclude
     override var oldSnippetPart : SnippetPart? = null

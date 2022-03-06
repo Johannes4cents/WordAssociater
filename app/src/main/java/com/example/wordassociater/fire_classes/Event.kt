@@ -1,6 +1,5 @@
 package com.example.wordassociater.fire_classes
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.*
@@ -23,6 +22,7 @@ import com.google.firebase.firestore.Exclude
          override var connectId: Long = 0
 ): StoryPart(id,name, wordList, characterList, nuwList, storyLineList, itemList, locationList, eventList, date, type), SnippetPart {
 
+     override var image: Long = 1L
      override var importance: SnippetPart.Importance = SnippetPart.Importance.Main
      override var description: String = ""
      override var imgUrl: String = ""
@@ -36,14 +36,16 @@ import com.google.firebase.firestore.Exclude
      override val liveStoryLines = MutableLiveData<List<LiveClass>>()
 
      @get:Exclude
-     override val liveStoryLinesOnly = MutableLiveData<List<StoryLine>>()
+     override val liveMyStoryLines = MutableLiveData<List<StoryLine>>()
 
-     @Exclude
+     @get:Exclude
      override var oldSnippetPart : SnippetPart? = null
 
 
      @Exclude
      override var sortingOrder: Int = id.toInt()
+
+     @Exclude
      override fun getWords(): MutableList<Word> {
          val words = mutableListOf<Word>()
          for(id in wordList) {
@@ -53,8 +55,8 @@ import com.google.firebase.firestore.Exclude
          return words
      }
 
+     @Exclude
      override fun getFullWordsList(): List<Word> {
-         Log.i("lagProb", "getFullWordsList called")
          val allWords = Main.wordsList.value!!.toMutableList()
          for(w in allWords) {
              w.selected = getWords().contains(w)
@@ -64,6 +66,7 @@ import com.google.firebase.firestore.Exclude
          return allWords
      }
 
+     @Exclude
      override fun takeWord(word: Word) {
          if(getWords().contains(word)) {
              wordList.remove(word.id)
@@ -72,8 +75,8 @@ import com.google.firebase.firestore.Exclude
          getFullWordsList()
      }
 
+     @Exclude
      override fun updateWords() {
-         Log.i("updateTest", "oldStoryPart.wordList != wordList = ${oldStoryPart!!.wordList != wordList}")
          if(oldStoryPart!!.wordList != wordList) {
              // update newly added words snippetLists
              for(id in wordList) {
@@ -99,6 +102,7 @@ import com.google.firebase.firestore.Exclude
          }
      }
 
+     @Exclude
      override fun getStoryLines(): List<StoryLine> {
          val list = mutableListOf<StoryLine>()
          for(id in storyLineList) {
@@ -108,7 +112,8 @@ import com.google.firebase.firestore.Exclude
          return list
      }
 
-     override fun getFullStoryLineList(): List<StoryLine> {
+    @Exclude
+     override fun getMyStoryLineList(): List<StoryLine> {
          val storyLines = Main.storyLineList.value!!.toMutableList()
          for(sl in storyLines) {
              sl.selected = storyLineList.contains(sl.id)
@@ -117,6 +122,7 @@ import com.google.firebase.firestore.Exclude
          return storyLines
      }
 
+     @Exclude
      fun getSelectedStoryLineList(): List<StoryLine> {
          val allStoryLines = Main.storyLineList.value!!.toMutableList()
          for(sl in allStoryLines) {
@@ -126,14 +132,15 @@ import com.google.firebase.firestore.Exclude
          return allStoryLines
      }
 
+     @Exclude
      override fun takeStoryLine(storyLine: StoryLine) {
          if(getStoryLines().contains(storyLine)) storyLineList.remove(storyLine.id)
          else storyLineList.add(storyLine.id)
          getSelectedStoryLineList()
      }
 
+     @Exclude
      override fun updateStoryLines() {
-         Log.i("updateTest", "oldStoryPart.storyLineList != storyLineList = ${oldStoryPart!!.storyLineList != storyLineList}")
          if(oldStoryPart!!.storyLineList != storyLineList) {
              // update newly added storyLines snippetLists
              for(id in storyLineList) {
@@ -156,6 +163,7 @@ import com.google.firebase.firestore.Exclude
          }
      }
 
+     @Exclude
      override fun getFullEventList(): List<Event> {
          val allEvents = Main.eventList.value!!.toMutableList()
          for(sl in allEvents) {
@@ -165,14 +173,15 @@ import com.google.firebase.firestore.Exclude
          return allEvents
      }
 
+     @Exclude
      override fun takeEvent(event: Event) {
          if(getEvents().contains(event)) eventList.remove(event.id)
          else eventList.add(event.id)
          getFullEventList()
      }
 
+     @Exclude
      override fun updateEvents() {
-         Log.i("updateTest", "oldStoryPart.eventList != eventList = ${oldStoryPart!!.eventList != eventList}")
          if(oldStoryPart!!.eventList != eventList) {
              // update newly added events snippetLists
              for(id in eventList) {
@@ -196,7 +205,7 @@ import com.google.firebase.firestore.Exclude
          }
      }
 
-     override var image: Long = 1L
+
 
     @Exclude
     fun handleWordConnections() {
@@ -209,7 +218,6 @@ import com.google.firebase.firestore.Exclude
             val sl = Main.getStoryLine(sl)
             if(sl != null) {
                 sl.eventList.remove(id)
-                Log.i("eventProb", "sl is ${sl.id} and its Found")
                 FireStoryLines.update(sl.id, "eventList", sl.eventList)
             }
         }

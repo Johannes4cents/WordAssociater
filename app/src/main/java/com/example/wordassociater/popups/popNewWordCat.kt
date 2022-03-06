@@ -98,11 +98,11 @@ fun popNewWordCat(from: View) {
         selectedColor.value = it
     }
 
-    b.inputField.setHintInTextField("Enter WordCat name")
     b.inputField.setInputHint("New WordCat?")
     b.inputField.setCenterGravity()
     b.inputField.setTextColorToWhite()
     b.inputField.hideOnEnter()
+    b.inputField.setHintInTextField("Enter WordCat name")
     b.inputField.setOnEnterFunc {
         val catNames = mutableListOf<String>()
         for(wc in Main.wordCatsList.value!!) {

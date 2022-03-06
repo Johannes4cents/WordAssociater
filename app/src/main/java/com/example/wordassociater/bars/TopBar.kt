@@ -71,6 +71,14 @@ class TopBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
         handleALlButtonsGone()
     }
 
+    fun setRightBtnGone() {
+        b.btnRight.visibility = View.GONE
+    }
+
+    fun setLeftBtnGone() {
+        b.btnLeft.visibility = View.GONE
+    }
+
     fun setBtn2(func: () -> Unit) {
         b.btn2.setOnClickListener {
             selectedView.value = b.btn2

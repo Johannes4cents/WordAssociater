@@ -27,7 +27,7 @@ class EventHolderTimeline(val b: HolderEventBinding): RecyclerView.ViewHolder(b.
 
     fun setClickListener() {
         b.btnDelete.setOnClickListener {
-            Log.i("eventProb", "deleteButtonClicked")
+
             popConfirmation(b.btnDelete, ::onDeletionConfirmed)
         }
 

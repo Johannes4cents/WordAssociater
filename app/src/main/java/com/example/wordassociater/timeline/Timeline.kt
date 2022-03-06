@@ -2,7 +2,6 @@ package com.example.wordassociater.timeline
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.lifecycle.LifecycleOwner
@@ -46,7 +45,7 @@ class Timeline(context: Context, attributeSet: AttributeSet): LinearLayout(conte
             }
         }
 
-        Log.i("timeLineProb", "b.startLinear.childCount ${b.startLinear.childCount}")
+
     }
 
     private fun scrollTimeLineFunc(index: Int) {

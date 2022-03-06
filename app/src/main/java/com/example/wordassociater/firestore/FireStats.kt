@@ -17,7 +17,6 @@ object FireStats {
     }
 
     fun getNuwId(): Long {
-        Log.i("lagProb", "")
         val number = FireLists.stats!!.nuwNumber + 1
         FireLists.fireStats.update("nuwNumber", number)
         return number

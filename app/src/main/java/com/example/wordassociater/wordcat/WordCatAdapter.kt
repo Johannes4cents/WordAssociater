@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderWordCatBinding
 import com.example.wordassociater.databinding.HolderWordCatListBinding
 import com.example.wordassociater.fire_classes.WordCat
+import com.example.wordassociater.utils.LiveClass
 
 class WordCatAdapter(
     val type: Type,
@@ -18,13 +19,13 @@ class WordCatAdapter(
     enum class Type { BTN, BTNALL, List, SINGLEPICK, ALLOPTIONS }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val btnHolder = WordCatButtonHolder(HolderWordCatBinding.inflate(LayoutInflater.from(parent.context)), onCatSelected, onHeaderClicked)
-        val listHolder = WordCatListHolder(type, HolderWordCatListBinding.inflate(LayoutInflater.from(parent.context)), onCatSelected, onDeleteClicked)
+        val listHolder = WordCatHolderList(HolderWordCatListBinding.inflate(LayoutInflater.from(parent.context)))
         return if(type == Type.BTN || type == Type.BTNALL) btnHolder else listHolder
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(type == Type.BTN ||type == Type.BTNALL) (holder as WordCatButtonHolder).onBind(getItem(position))
-        else (holder as WordCatListHolder).onBind(getItem(position))
+        else (holder as WordCatHolderList).onBind(getItem(position), onCatSelected as (item:LiveClass) -> Unit)
 
     }
 }

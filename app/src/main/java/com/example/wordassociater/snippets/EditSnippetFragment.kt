@@ -1,7 +1,6 @@
 package com.example.wordassociater.snippets
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,13 +32,19 @@ class EditSnippetFragment: Fragment() {
     ): View {
         b = FragmentEditSnippetBinding.inflate(inflater)
 
+        handleLiveLists()
         setTopBar()
         setClickListener()
         setWordsInput()
         setRecycler()
         setSnippetPartsBar()
+        setPreviewBar()
 
         return b.root
+    }
+
+    private fun setPreviewBar() {
+        b.previewBar.initBar(snippet)
     }
 
     private fun handleLiveLists() {
@@ -102,7 +107,6 @@ class EditSnippetFragment: Fragment() {
             if(word != null) {
                 onWordSelected(word)
                 b.snippetInput.updateNuwsList()
-
             }
             else {
                 Helper.toast("Word ${nuw.text} not found. this should not happen", b.root.context)
@@ -123,7 +127,6 @@ class EditSnippetFragment: Fragment() {
     }
 
     private fun onWordSelected(word: Word) {
-        Log.i("lagProb", "EditSnippet/onWordSelected called")
         snippet.takeWord(word)
     }
 
@@ -157,7 +160,6 @@ class EditSnippetFragment: Fragment() {
 
 
     private fun setRecycler() {
-        b.characterRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.Character, null, snippet.liveCharacter )
         b.wordPreviewRecycler.initRecycler(WordRecycler.Mode.Preview, null, null , null)
         b.wordPreviewRecycler.setLiveList(snippet.getWords())
 

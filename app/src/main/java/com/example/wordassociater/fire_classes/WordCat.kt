@@ -1,5 +1,6 @@
 package com.example.wordassociater.fire_classes
 
+import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.firestore.FireWordCats
@@ -21,7 +22,6 @@ data class WordCat(
     @Exclude
     override var sortingOrder: Int = 1
 
-
     @Exclude
     override var isAHeader = false
 
@@ -30,6 +30,12 @@ data class WordCat(
 
     @Exclude
     override var image: Long = 0
+
+    @get:Exclude
+    val liveWords = MutableLiveData<List<LiveClass>>()
+
+    @get:Exclude
+    val myWords = MutableLiveData<List<LiveClass>>()
 
 
     @Exclude
@@ -44,6 +50,45 @@ data class WordCat(
     }
 
     @Exclude
+    fun getWords(): List<Word> {
+        val words = mutableListOf<Word>()
+        for(id in wordList) {
+            val word = Main.getWord(id)
+            if(word != null) {
+                words.add(word)
+            }
+        }
+        myWords.value = words
+        return words
+    }
+
+    @Exclude
+    fun getAllWords(): List<Word> {
+        val allWords = Main.wordsList.value!!
+        for(w in allWords) {
+            w.selected = wordList.contains(w.id)
+        }
+        liveWords.value = allWords
+        return allWords
+    }
+
+    @Exclude
+    fun takeWord(word: Word) {
+        if(wordList.contains(word.id)) {
+            wordList.remove(word.id)
+            word.cats.remove(id)
+        }
+        else {
+            wordList.add(word.id)
+            word.cats.add(id)
+        }
+
+        FireWords.update(word.id, "cats", word.cats)
+        FireWordCats.update(id, "wordList", wordList)
+        getAllWords()
+    }
+
+    @Exclude
     fun delete() {
         CoroutineScope(Dispatchers.IO).launch {
             for(w in wordList) {
@@ -51,7 +96,6 @@ data class WordCat(
                 if(word != null) {
                     word.cats.remove(id)
                     if(word.cats.isEmpty()) {
-
                             word.cats.add(0)
                             val any = Main.getWordCat(0)
                             any!!.wordList.add(word.id)

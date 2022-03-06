@@ -6,30 +6,28 @@ import android.view.MotionEvent
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wordassociater.viewpager.ViewPagerMainFragment
 import com.example.wordassociater.fire_classes.WordCat
+import com.example.wordassociater.viewpager.ViewPagerMainFragment
 
 
 class WordCatRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(context, attributeSet) {
     private lateinit var wordCatAdapter: WordCatAdapter
-    private var headerActive = true
+    private var headerActive: Boolean = true
     private lateinit var type: WordCatAdapter.Type
 
     fun setupRecycler(
         type: WordCatAdapter.Type,
         onWordCatSelected: (wordCat: WordCat) -> Unit,
         liveList: MutableLiveData<List<WordCat>>,
-        onHeaderClicked: (() -> Unit)? = null) {
+        onHeaderClicked: (() -> Unit)? = null,
+        headerActive: Boolean = true) {
         this.type = type
+        this.headerActive = headerActive
         wordCatAdapter = WordCatAdapter(type, onWordCatSelected, onHeaderClicked)
         adapter = wordCatAdapter
         setObserver(liveList)
         configureOnTouchListener()
         isNestedScrollingEnabled = true
-    }
-
-    fun setHeader(headerActive: Boolean) {
-        this.headerActive = headerActive
     }
 
     private fun configureOnTouchListener() {

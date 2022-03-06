@@ -12,35 +12,25 @@ data class Snippet(override var content: String = "",
                    var header: String = "",
                    var connectedSnippetsList: MutableList<Long> = mutableListOf(),
                    var layer: Int = 1,
-                   override var characterList: MutableList<Long> = mutableListOf(22),
+                   override var characterList: MutableList<Long> = mutableListOf(0),
                    override var nuwList: MutableList<Long> = mutableListOf(),
-                   override var storyLineList: MutableList<Long> = mutableListOf(),
-                   override var locationList: MutableList<Long> = mutableListOf(),
-                   override var itemList: MutableList<Long> = mutableListOf(),
+                   override var storyLineList: MutableList<Long> = mutableListOf(0),
+                   override var locationList: MutableList<Long> = mutableListOf(0),
+                   override var itemList: MutableList<Long> = mutableListOf(0),
                    override var date: Date = Date(0,"May",1000),
-                   override var eventList: MutableList<Long> = mutableListOf(),
+                   override var eventList: MutableList<Long> = mutableListOf(0),
                    var drama: Drama = Drama.None,
                    override var type: Type = Type.Snippet
 ): StoryPart(id, content, wordList, characterList, nuwList, storyLineList, itemList, locationList, eventList, date, type) {
 
-    @Exclude
     override var name: String = header
-
-    @Exclude
     override var sortingOrder: Int = id.toInt()
-
-    @Exclude
     override var image: Long = 0L
 
-    @Exclude
+    @get:Exclude
     var recyclerHeader = false
 
-    @Exclude
-    var onSnippetClicked : ((snippet:Snippet) -> Unit) ? = null
-
-
-
-    @Exclude
+    @get:Exclude
     var pinned = false
 
     @Exclude

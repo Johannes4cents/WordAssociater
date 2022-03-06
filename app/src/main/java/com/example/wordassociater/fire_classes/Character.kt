@@ -33,8 +33,8 @@ data class Character(
         @get:Exclude
         override val liveWordsSearch = MutableLiveData<List<Word>>()
         @get:Exclude
-        override val liveStoryLinesOnly = MutableLiveData<List<StoryLine>>()
-        @Exclude
+        override val liveMyStoryLines = MutableLiveData<List<StoryLine>>()
+        @get:Exclude
         override var oldSnippetPart : SnippetPart? = null
         @Exclude
         override var selected = false

@@ -1,7 +1,6 @@
 package com.example.wordassociater.firestore
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import com.example.wordassociater.fire_classes.Snippet
 
@@ -11,7 +10,6 @@ object FireSnippets {
     }
 
     fun add(newSnippet: Snippet, context: Context?) {
-        Log.i("saveProb", "snippet is $newSnippet")
         FireLists.snippetsList.document(newSnippet.id.toString()).set(newSnippet).addOnSuccessListener {
             if(context != null ) Toast.makeText(context, "Snippet saved", Toast.LENGTH_SHORT).show()
 

@@ -3,7 +3,6 @@ package com.example.wordassociater
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -112,8 +111,6 @@ class Main : AppCompatActivity() {
         
         fun getWordCat(id:Long): WordCat? {
             val wordCat = wordCatsList.value?.find { wordCat -> wordCat.id == id }
-            Log.i("wordCatProb","wordCatsList .value is ${wordCatsList.value}")
-            Log.i("wordCatProb", "wordcat: $wordCat  id searched is = $id")
             return wordCat
 
         }

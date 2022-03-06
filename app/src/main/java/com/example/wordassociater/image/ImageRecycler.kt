@@ -20,6 +20,7 @@ class ImageRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(
                     Image.Type.Character -> imageList.filter { i -> i.type == Image.Type.Character }
                     Image.Type.Item -> imageList.filter { i -> i.type == Image.Type.Item }
                     Image.Type.StoryLine -> imageList.filter { i -> i.type == Image.Type.StoryLine }
+                    Image.Type.Other -> imageList.filter { i -> i.type == Image.Type.Other }
                 }
         )
 

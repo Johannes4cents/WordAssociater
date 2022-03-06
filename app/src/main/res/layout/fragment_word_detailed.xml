@@ -23,7 +23,7 @@
 
         <ImageView
             android:layout_marginStart="8dp"
-            android:id="@+id/catColor"
+            android:id="@+id/btn_word_cat"
             android:padding="10dp"
             android:src="@drawable/wordcat_bg_red"
             android:layout_width="40dp"

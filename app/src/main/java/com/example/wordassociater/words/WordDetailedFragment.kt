@@ -1,7 +1,6 @@
 package com.example.wordassociater.words
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,18 +14,19 @@ import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Sphere
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordCat
-import com.example.wordassociater.firestore.FireWordCats
 import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.live_recycler.LiveRecycler
 import com.example.wordassociater.popups.popConfirmation
+import com.example.wordassociater.popups.popLiveClass
 import com.example.wordassociater.popups.popSelectSphere
 import com.example.wordassociater.snippets.SnippetAdapter
+import com.example.wordassociater.utils.LiveClass
 import com.example.wordassociater.utils.Page
 import com.example.wordassociater.viewpager.ViewPagerMainFragment
 
 class WordDetailedFragment: Fragment() {
     lateinit var b: FragmentWordDetailedBinding
     private val selectedSpheres = MutableLiveData<List<Sphere>?>()
-    private val selectedCats = MutableLiveData<List<WordCat>>()
 
     companion object {
         lateinit var word: Word
@@ -47,19 +47,7 @@ class WordDetailedFragment: Fragment() {
         pickFirstWordCatColor()
         getSpheresList()
         selectSpheresInList()
-        if(word.cats.isNotEmpty()) b.catColor.setImageResource(Main.getWordCat(word.cats[0])!!.getBg())
-    }
-
-    private fun makeSelectedWordCatList(): List<WordCat> {
-        val wordCatList = Main.wordCatsList.value!!.toMutableList()
-        for(w in wordCatList) {
-            w.selected = word.cats.contains(w.id)
-        }
-        for(w in wordCatList) {
-            Log.i("wordCat", "isSelected = ${w.selected}")
-        }
-        return wordCatList
-
+        if(word.cats.isNotEmpty()) b.btnWordCat.setImageResource(Main.getWordCat(word.cats[0])!!.getBg())
     }
 
     private fun getSpheresList() {
@@ -82,10 +70,10 @@ class WordDetailedFragment: Fragment() {
 
     private fun pickFirstWordCatColor() {
         if(word.cats.isNotEmpty()) {
-            b.catColor.setImageResource(Main.getWordCat(word.cats[0])!!.getBg())
+            b.btnWordCat.setImageResource(Main.getWordCat(word.cats[0])!!.getBg())
         }
         else {
-            b.catColor.setImageResource(R.drawable.wordcat_bg_none)
+            b.btnWordCat.setImageResource(R.drawable.wordcat_bg_none)
         }
     }
 
@@ -116,20 +104,24 @@ class WordDetailedFragment: Fragment() {
             popSelectSphere(b.topBar.btn4, selectedSpheres, ::handleSelectedSphere)
         }
 
-        b.topBar.setRightButton {
+        b.topBar.setBtn5 {
             popConfirmation(b.topBar.btn5, ::onDeleteConfirmed)
         }
 
-        b.topBar.setBtn5IconAndVisibility(R.drawable.icon_delete, false)
+        b.topBar.setBtn5IconAndVisibility(R.drawable.icon_delete, true)
         b.topBar.setBtn2IconAndVisibility(R.drawable.icon_word, false)
-        b.topBar.setRightBtnIconAndVisibility(R.drawable.icon_delete, true)
 
         b.topBar.setBtn1IconAndVisibility(R.drawable.icon_word_connection, true)
         b.topBar.setBtn3IconAndVisibility(R.drawable.icon_heritage, true)
         b.topBar.setBtn4IconAndVisibility(R.drawable.sphere_blue, true)
+        b.topBar.setRightBtnGone()
 
-        b.catColor.setOnClickListener {
-            selectedCats.value = makeSelectedWordCatList()
+        b.topBar.setRightBtnIconAndVisibility(R.drawable.icon_question_mark, false)
+
+
+        b.btnWordCat.setOnClickListener {
+            popLiveClass(LiveRecycler.Type.WordCat, b.btnWordCat, word.liveWordCats, ::onWordCatClicked)
+            word.getFullCatsList()
         }
     }
 
@@ -142,14 +134,8 @@ class WordDetailedFragment: Fragment() {
         }
     }
 
-    private fun onWordCatClicked(wordCat: WordCat) {
-        wordCat.selected = !wordCat.selected
-        if(!wordCat.selected) word.cats.remove(wordCat.id)
-        else word.cats.add(wordCat.id)
-
-        FireWordCats.update(word.id, "cats", word.cats)
-        selectedCats.value = makeSelectedWordCatList()
-        pickFirstWordCatColor()
+    private fun onWordCatClicked(wordCat: LiveClass) {
+        word.takeWordCat(wordCat as WordCat)
     }
 
     private fun handleSelectedSphere(sphere: Sphere) {

@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@color/snippets"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <com.example.wordassociater.live_recycler.LiveRecycler
         android:id="@+id/storyLinePreview"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="30dp"/>
 
     <com.example.wordassociater.live_recycler.LiveRecycler
-        android:id="@+id/CharacterPreview"
+        android:id="@+id/characterPreview"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="30dp"/>
 
     <com.example.wordassociater.live_recycler.LiveRecycler
-        android:id="@+id/LocationPreview"
+        android:id="@+id/locationPreview"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="30dp"/>
 
     <com.example.wordassociater.live_recycler.LiveRecycler
-        android:id="@+id/ItemPreview"
+        android:id="@+id/itemPreview"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -35,6 +40,7 @@
 
     <com.example.wordassociater.live_recycler.LiveRecycler
         android:id="@+id/eventPreview"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="horizontal"
         android:layout_width="match_parent"

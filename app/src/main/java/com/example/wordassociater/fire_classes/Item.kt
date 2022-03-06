@@ -41,9 +41,9 @@ data class Item(
     @get:Exclude
     override val liveWordsSearch = MutableLiveData<List<Word>>()
     @get:Exclude
-    override val liveStoryLinesOnly = MutableLiveData<List<StoryLine>>()
+    override val liveMyStoryLines = MutableLiveData<List<StoryLine>>()
 
-    @Exclude
+    @get:Exclude
     override var oldSnippetPart : SnippetPart? = null
 
 
@@ -80,5 +80,9 @@ data class Item(
         newItem.connectId = connectId
         oldSnippetPart = newItem
         return newItem
+    }
+
+    companion object {
+        val any = Item(id= 0, name="Any", imgUrl = "")
     }
 }

@@ -2,7 +2,6 @@ package com.example.wordassociater.timeline
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -141,7 +140,6 @@ class TimelineRecycler(context: Context, attributeSet: AttributeSet): RecyclerVi
                 var markedForRemoval = true
                 for(word in selectedWords!!.value!!) {
                     if(word.selected && sp.wordList.contains(word.id)) {
-                        Log.i("filterProb", "selected Word is ${word.text}")
                         markedForRemoval = false
                         break
                     }

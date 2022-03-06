@@ -93,7 +93,6 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
                 val header = Word(id = 999999999)
                 header.isAHeader = true
                 header.text = it[0].capitalize(Locale.ROOT)
-                Log.i("searchHeader", "inside if header clause")
                 takeWordsFunc(listOf(header) + foundWords)
 
 

@@ -23,12 +23,10 @@ class NoteAdapter(val takeNoteFunc: (note: Note) -> Unit): ListAdapter<Note, Rec
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-        Log.i("swipeFunc", "item swiped")
         return false
     }
 
     override fun onItemDismiss(position: Int) {
-        Log.i("swipeFunc", "NotesAdapter / onItemDismiss")
         val note = currentList[position]
         note.archived = true
         FireNotes.update(note, "archived", true)

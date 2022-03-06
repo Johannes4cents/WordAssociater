@@ -2,6 +2,7 @@ package com.example.wordassociater.bars
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -20,6 +21,7 @@ import com.example.wordassociater.words.WordLinear
 
 class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = BarNewSnippetBinding.inflate(LayoutInflater.from(context), this, true)
+    lateinit var previewBar: PreviewBar
 
     companion object {
         var newSnippet = Snippet(id = FireStats.getStoryPartId())
@@ -32,10 +34,22 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
         setClickListener()
         setObserver()
         setInputField()
+        setPreviewBar()
     }
 
     private fun setInputField() {
         b.snippetInput.disableOutSideEditClickCheck()
+    }
+
+    fun takePreviewBar(previewBar: PreviewBar) {
+       this.previewBar = previewBar
+    }
+
+    fun setPreviewBar() {
+        if(::previewBar.isInitialized) {
+            Log.i("previewBar", "previewBar init ")
+            previewBar.initBar(newSnippet, useFilter = false)
+        }
     }
 
     private fun setClickListener() {
@@ -100,7 +114,6 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
         AddStuffBar.snippetInputOpen.observe(context as LifecycleOwner) {
             if(it == true) {
                 b.snippetInput.visibility = View.VISIBLE
-                b.snippetInput.showInputField()
             }
             else {
                 closeSnippetInput()
@@ -112,6 +125,7 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
         b.snippetInput.resetField()
         newSnippet = Snippet(id = FireStats.getStoryPartId())
         Helper.getIMM(context).hideSoftInputFromWindow(b.snippetInput.windowToken, 0)
+        setPreviewBar()
     }
 
     fun saveSnippet() {

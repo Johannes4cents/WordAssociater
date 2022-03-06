@@ -30,18 +30,15 @@ open class StoryPart(
     @Exclude override var selected: Boolean = false
     @Exclude override var isAHeader: Boolean = false
 
-    @Exclude
+
     override var image: Long = 0
-
-
-    @Exclude
     override var sortingOrder: Int = id.toInt()
     override var name: String = ""
 
-    @Exclude
+    @get:Exclude
     var oldStoryPart: StoryPart? = null
 
-    @Exclude
+    @get:Exclude
     var isStoryPartHeader = false
 
     @get:Exclude
@@ -98,7 +95,6 @@ open class StoryPart(
 
     @Exclude
     fun updateItems() {
-        Log.i("updateTest", "oldStoryPart.itemList != itemList = ${oldStoryPart!!.itemList != itemList}")
         if(oldStoryPart!!.itemList != itemList) {
             // update newly added items snippetLists
             for(id in itemList) {
@@ -231,7 +227,6 @@ open class StoryPart(
 
     @Exclude
     open fun getFullWordsList() : List<Word> {
-        Log.i("lagProb", "getFullWordsList called")
         val allWords = Main.wordsList.value!!.toMutableList()
         for(w in allWords) {
             w.selected = getWords().contains(w)
@@ -333,7 +328,7 @@ open class StoryPart(
 
     @Exclude
     fun updateCharacter() {
-        Log.i("updateTest", "oldStoryPart.characterList != characterList = ${oldStoryPart!!.characterList != characterList}")
+
         if(oldStoryPart!!.characterList != characterList) {
             // update newly added characters snippetLists
             for(id in characterList) {
@@ -395,7 +390,7 @@ open class StoryPart(
         for(sl in allStoryLines) {
             sl.selected = getStoryLines().contains(sl)
         }
-        liveSelectedStoryLines.value = allStoryLines
+        liveSelectedStoryLines.value = allStoryLines.filter { sl -> sl.type != StoryLine.Type.SnippetPart }
         return allStoryLines
     }
 
@@ -483,7 +478,6 @@ open class StoryPart(
 
     @Exclude
     open fun updateEvents() {
-        Log.i("updateTest", "oldStoryPart.eventList != eventList = ${oldStoryPart!!.eventList != eventList}")
         if(oldStoryPart!!.eventList != eventList) {
             // update newly added events snippetLists
             for(id in eventList) {

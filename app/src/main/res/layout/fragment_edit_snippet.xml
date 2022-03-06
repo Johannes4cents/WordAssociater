@@ -16,12 +16,10 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"/>
 
-    <com.example.wordassociater.live_recycler.LiveRecycler
-        android:background="@color/snippetsLite"
-        android:id="@+id/characterRecycler"
-        android:orientation="horizontal"
+    <com.example.wordassociater.bars.PreviewBar
+        android:id="@+id/previewBar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"/>
+        android:layout_height="wrap_content"/>
 
     <com.example.wordassociater.words.WordRecycler
         android:id="@+id/wordPreviewRecycler"

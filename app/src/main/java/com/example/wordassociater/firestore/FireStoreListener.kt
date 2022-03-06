@@ -1,5 +1,4 @@
 package com.example.wordassociater.firestore
-import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.StartFragment
 import com.example.wordassociater.bars.AddWordBar
@@ -84,7 +83,6 @@ object FireStoreListener {
             if(docs != null) {
                 val eventList = mutableListOf<Event>()
                 for(doc in docs) {
-                    Log.i("lagProb", "listener - getEvents")
                     val event = doc.toObject(Event::class.java)
                     eventList.add(event)
                 }
@@ -239,7 +237,6 @@ object FireStoreListener {
             val newSnippetList = mutableListOf<Snippet>()
             if(docs != null) {
                 for(doc in docs) {
-                    Log.i("snippetProb", "$doc" )
                     val snippet = doc.toObject(Snippet::class.java)
                     newSnippetList.add(snippet)
                 }
@@ -298,7 +295,6 @@ object FireStoreListener {
                 val wordCatList = mutableListOf<WordCat>()
                 for(doc in docs) {
                     val wordCat = doc.toObject(WordCat::class.java)
-                    Log.i("wordCatProb", "getWordCats - wordCat is = $wordCat")
                     wordCat.countUsed()
                     wordCatList.add(wordCat)
                     FireWordCats.add(wordCat, null)
@@ -313,7 +309,6 @@ object FireStoreListener {
             if(docs != null) {
                 val wordCatList = mutableListOf<WordCat>()
                 for(doc in docs) {
-                    Log.i("lagProb", "listener - get")
                     val wordCat = doc.toObject(WordCat::class.java)
                     wordCat.countUsed()
                     wordCatList.add(wordCat)

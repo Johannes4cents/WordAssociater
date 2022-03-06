@@ -17,19 +17,53 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"/>
 
-    <com.example.wordassociater.wordcat.WordCatRecycler
-        android:background="@color/snippets"
-        android:id="@+id/wordCatRecycler"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:layout_height="wrap_content">
+        <com.example.wordassociater.wordcat.WordCatRecycler
+            android:layout_weight="1"
+            android:background="@color/snippets"
+            android:id="@+id/wordCatRecycler"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="50dp"/>
+
+        <LinearLayout
+            android:id="@+id/btnNewCat"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+            <ImageView
+                android:src="@drawable/wordcat_bgs_new"
+                android:padding="5dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
+            <TextView
+                android:textColor="@color/white"
+                android:fontFamily="@font/roboto_bold"
+                android:textSize="12sp"
+                android:text="New"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 
     <com.example.wordassociater.words.WordRecycler
         android:id="@+id/wordRecycler"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.example.wordassociater.live_recycler.LiveRecycler
+        android:visibility="gone"
+        android:id="@+id/multiSelectWordsRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

@@ -22,6 +22,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <com.example.wordassociater.bars.PreviewBar
+                android:id="@+id/previewBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <com.example.wordassociater.words.WordLinear
                 android:id="@+id/wordLinear"
                 android:layout_width="match_parent"

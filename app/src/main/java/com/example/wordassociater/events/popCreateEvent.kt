@@ -28,8 +28,6 @@ fun popCreateEvent(from: View, storyLineList : List<Long>) {
         }
     }
 
-    Log.i("filterProb", "storyLineList is $storyLineList")
-
     val date = Date()
     val event = Event(
             id = FireStats.getStoryPartId(),

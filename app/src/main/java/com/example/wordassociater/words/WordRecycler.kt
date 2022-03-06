@@ -17,7 +17,7 @@ class WordRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(c
     fun initRecycler(mode: Mode, liveList: MutableLiveData<List<Word>>?, onWordSelected: ((word: Word) -> Unit)?, onHeaderClicked: ((wordText: String) -> Unit )?) {
         this.mode = mode
         this.liveList = liveList ?: MutableLiveData<List<Word>>()
-        wordAdapter = WordAdapter(mode, onWordSelected)
+        wordAdapter = WordAdapter(mode, onWordSelected, onHeaderClicked)
         layoutManager = if(mode == Mode.Preview) LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false) else LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         adapter = wordAdapter
         setObserver()

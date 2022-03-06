@@ -1,6 +1,5 @@
 package com.example.wordassociater.timeline
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -37,7 +36,6 @@ class TimelineAdapter(val onSnippetSelected: (snippet : Snippet) -> Unit): ListA
             StoryPart.Type.Prose -> 3
         }
         if(storyPart.isStoryPartHeader) typeNumber = 5
-        Log.i("filterProb", "storyPart is ${storyPart.content}")
         return typeNumber
     }
 
@@ -53,7 +51,6 @@ class TimelineAdapter(val onSnippetSelected: (snippet : Snippet) -> Unit): ListA
                 (holder as EventHolderTimeline).onBind(storyPart)
             }
             else -> {
-                Log.i("timeLineProb", "storyPart is ${storyPart.name}")
             }
         }
 

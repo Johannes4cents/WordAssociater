@@ -1,6 +1,5 @@
 package com.example.wordassociater.fire_classes
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
@@ -86,7 +85,6 @@ data class StoryLine(
 
     @Exclude
     fun getFullWordsList() : List<Word> {
-        Log.i("lagProb", "getFullWordsList called")
         val allWords = Main.wordsList.value!!.toMutableList()
         for(w in allWords) {
             w.selected = getWords().contains(w)

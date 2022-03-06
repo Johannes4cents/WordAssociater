@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import com.example.wordassociater.Main
 import com.example.wordassociater.databinding.WordLinearBinding
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordCat
@@ -36,12 +35,15 @@ class WordLinear(context: Context, attributeSet: AttributeSet): LinearLayout(con
             var randomWord : Word? = null
             while(tries < 200 && (
                             randomWord == null || wordList.contains(randomWord) || !Helper.checkIfWordInRightSphere(randomWord))) {
-                val catWords = Main.wordsList.value?.filter { w -> w.cats.contains(wordCat.id) }
-                if(catWords?.isNotEmpty() == true) randomWord = catWords.random()
+                val catWords = wordCat.getWords()
+                if(catWords.isNotEmpty()) randomWord = catWords.random()
+                //Log.i("rollProb", "in getWords during 200 tries - randomWord is ${randomWord?.text}")
                 tries++
             }
             if(randomWord != null && !Helper.checkIfWordInRightSphere(randomWord)) randomWord = null
-            if(WordLinear.wordList.contains(randomWord)) randomWord = null
+            //Log.i("rollProb", "in getWords after spheres Check - randomWord is ${randomWord?.text}")
+            if(wordList.contains(randomWord)) randomWord = null
+            //Log.i("rollProb", "in getWords after wordlist.contains check - randomWord is ${randomWord?.text}")
             return randomWord
         }
 

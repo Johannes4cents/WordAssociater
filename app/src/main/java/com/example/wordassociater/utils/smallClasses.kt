@@ -37,8 +37,8 @@ data class Image(override var id: Long, val imageName: Name, var src: Int, val t
         YoungBoy, Fire, Friends, Heart, Hospital, Bones, Computer,
         Eye, Money, Planet, Science, Letter, Knife, House, Car, Forrest, City, Lab, Island, Street, Factory, Apartment ,
         Airplane, Crown, Explosion, Food, Handshake, Party, Pistol, Shield, Spy, Conflict, Twist, Plan, Motivation, Problem, Solution,
-        Clothes, Toy, Drugs, Key, Present, Phone }
-    enum class Type { Event, Location, Character, Item, StoryLine }
+        Clothes, Toy, Drugs, Key, Present, Phone, NotFound }
+    enum class Type { Event, Location, Character, Item, StoryLine, Other }
 
     override var sortingOrder: Int = 0
 
@@ -101,11 +101,13 @@ data class Image(override var id: Long, val imageName: Name, var src: Int, val t
             Name.Key -> R.drawable.item_key
             Name.Present -> R.drawable.item_present
             Name.Phone -> R.drawable.item_cellphone
+            Name.NotFound -> R.drawable.icon_question_mark
         }
     }
 
     companion object {
         val imageList = listOf<Image>(
+                Image(0, Name.NotFound, 0, Type.Other) ,
                 Image(1, Name.Laptop, 0, Type.Item), Image(20, Name.YoungGirl, 0, Type.Character),Image(39, Name.YoungWoman, 0, Type.Character),
                 Image(2, Name.OldWoman, 0, Type.Character),Image(21, Name.OldMan, 0, Type.Character),
                 Image(3, Name.YoungMan, 0, Type.Character),Image(22, Name.YoungBoy, 0, Type.Character),Image(40, Name. Fire, 0, Type.StoryLine),

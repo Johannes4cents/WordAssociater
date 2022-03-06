@@ -28,7 +28,6 @@ class SnippetHolder(val b: HolderSnippetBinding,
         b.contentPreview.text = snippet.content
         b.dateHolder.setDateHolder(snippet.date, snippet)
         b.headerText.text = snippet.header
-        b.storyLineRecycler.visibility = if(snippet.storyLineList.isNotEmpty()) View.VISIBLE else View.GONE
         setObserver()
 
     }
@@ -40,17 +39,9 @@ class SnippetHolder(val b: HolderSnippetBinding,
         else {
             b.root.setBackgroundColor(b.root.resources.getColor(R.color.white))
         }
-
-    }
-
-    private fun deleteSnippet(confirmation: Boolean) {
-        if(confirmation) {
-            snippet.delete()
-        }
     }
 
     private fun setClickListener() {
-
         b.root.setOnClickListener {
             clickSnippetFunc(snippet)
         }
@@ -78,19 +69,10 @@ class SnippetHolder(val b: HolderSnippetBinding,
     }
 
     private fun setRecycler() {
-        if(snippet.characterList.isNotEmpty()) b.characterRecycler.visibility = View.VISIBLE else b.characterRecycler.visibility = View.GONE
-
-        b.storyLineRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.StoryLine, null, snippet.liveSelectedStoryLines)
-        snippet.getFullStoryLineList()
-
-
+        b.previewBar.initBar(snippet)
         b.wordsRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.Word, null, snippet.liveWords)
         snippet.getFullWordsList()
         b.wordsRecycler.visibility = if(snippet.wordList.isEmpty()) View.GONE else View.VISIBLE
-
-        b.characterRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.Character,null, snippet.liveCharacter)
-
-        snippet.getFullCharacterList()
     }
 
     private fun setObserver() {
@@ -98,11 +80,9 @@ class SnippetHolder(val b: HolderSnippetBinding,
         DisplayFilter.observeDateShown(b.root.context, b.dateHolder)
         DisplayFilter.observeContentShown(b.root.context, b.contentPreview)
         DisplayFilter.observeTitleShown(b.root.context, b.headerText)
-        DisplayFilter.observeCharacterShown(b.root.context, b.characterRecycler)
         DisplayFilter.observeWordsShown(b.root.context, b.wordsRecycler)
         DisplayFilter.observeDateShown(b.root.context, b.dateHolder)
         DisplayFilter.observeLayerShown(b.root.context, b.layerButton)
-        DisplayFilter.observeStoryLineShown(b.root.context, b.storyLineRecycler)
         DisplayFilter.observeItemColorDark(b.root.context, b.root,  listOf(b.headerText, b.contentPreview))
     }
 

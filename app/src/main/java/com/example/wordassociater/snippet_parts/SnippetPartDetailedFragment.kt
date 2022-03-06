@@ -64,8 +64,8 @@ class SnippetPartDetailedFragment: Fragment() {
     }
 
     private fun setStoryLineRecycler() {
-        b.storyLineRecycler.initRecycler(snippetPart.liveStoryLinesOnly, ::onStoryLineSelected, ::onHeaderSelected, true, mode = StoryLineRecycler.Mode.SnippetPart)
-        snippetPart.getFullStoryLineList()
+        b.storyLineRecycler.initRecycler(snippetPart.liveMyStoryLines, ::onStoryLineSelected, ::onHeaderSelected, true, mode = StoryLineRecycler.Mode.SnippetPart)
+        snippetPart.getMyStoryLineList()
     }
 
 

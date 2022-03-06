@@ -11,7 +11,7 @@ import com.example.wordassociater.utils.LiveClass
 
 fun popLiveClass(type: LiveRecycler.Type, from: View, liveList: MutableLiveData<List<LiveClass>>, onItemClicked: (item: LiveClass) -> Unit, fromMiddle: Boolean = false) {
     val b = PopLiveClassBinding.inflate(LayoutInflater.from(from.context), null, false)
-    Helper.getPopUp(b.root, from, fromMiddle = fromMiddle)
+    val pop= Helper.getPopUp(b.root, from, fromMiddle = fromMiddle)
     b.liveRecycler.initRecycler(LiveRecycler.Mode.Popup, type, onItemClicked, liveList)
 
     b.iconType.setImageResource(
@@ -22,6 +22,9 @@ fun popLiveClass(type: LiveRecycler.Type, from: View, liveList: MutableLiveData<
                 LiveRecycler.Type.Location -> R.drawable.icon_location
                 LiveRecycler.Type.StoryLine -> R.drawable.icon_story
                 LiveRecycler.Type.Word -> R.drawable.icon_word
+                LiveRecycler.Type.WordCat -> R.drawable.wordcat_bg_black
             }
     )
+
+    b.btnBack.setOnClickListener { pop.dismiss() }
 }

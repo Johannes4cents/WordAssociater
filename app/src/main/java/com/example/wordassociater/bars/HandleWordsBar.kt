@@ -10,10 +10,10 @@ import com.example.wordassociater.R
 import com.example.wordassociater.StartFragment
 import com.example.wordassociater.databinding.BarWordsButtonsBinding
 import com.example.wordassociater.fire_classes.Sphere
+import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.popups.popSelectSphere
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.words.WordLinear
-import com.example.wordassociater.words.WordLinear.Companion.getWord
 
 class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
 
@@ -37,20 +37,57 @@ class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout
         }
 
         b.btnRollDice.setOnClickListener {
-            if(Main.wordsList.value!!.isNotEmpty()) {
-                val activeWordCats = Main.wordCatsList.value!!.filter { wc -> wc.active }
-                WordLinear.wordList = WordLinear.selectedWords.toMutableList()
-                for(i in 1..6) {
-                    if(activeWordCats.isNotEmpty()) {
-                        getWord(activeWordCats.random())?.let { it1 -> WordLinear.wordList.add(it1) }
-                    }
-                    else {
-                        Helper.toast("select at least one wordCat to choose from", context)
-                    }
+            rollDice()
+        }
+    }
 
+    private fun rollDice() {
+        if(Main.wordsList.value!!.isNotEmpty()) {
+            WordLinear.wordList = WordLinear.selectedWords.toMutableList()
+            val activeSpecialCats = Main.wordCatsList.value!!.filter { wc -> wc.active && wc.type != WordCat.Type.Other && wc.type != WordCat.Type.Any }
+            val activeWordCats = Main.wordCatsList.value!!.filter { wc -> wc.active && wc.type == WordCat.Type.Other }
+            val anyWords = Main.getWordCat(0)!!
+            var wordsDispersed = 0
+            var tries = 0
+            var specialAdded = false
+            var activeWordsCatsAmount = 0
+
+            while(wordsDispersed < 6 && tries < 200) {
+                if(!specialAdded) {
+                    val word = WordLinear.getWord(activeSpecialCats.random())
+                    if(word != null) {
+                        WordLinear.wordList.add(word)
+                        specialAdded = true
+                        wordsDispersed++
+                    }
                 }
-                WordLinear.wordListTrigger.postValue(Unit)
+                if(activeWordsCatsAmount < 3)  {
+                    val word = WordLinear.getWord(activeWordCats.random())
+                    if(word != null) {
+                        WordLinear.wordList.add(word);
+                        activeWordsCatsAmount++
+                        wordsDispersed++
+                    }
+                }
+                else  {
+                    val word = WordLinear.getWord(anyWords)
+                    if(word != null) {
+                        WordLinear.wordList.add(word)
+                        wordsDispersed++
+                    }
+                }
+                tries++
             }
+            tries = 0
+            while(wordsDispersed < 6 && tries < 200) {
+                val word = WordLinear.getWord(anyWords)
+                if(word != null) {
+                    WordLinear.wordList.add(word)
+                    wordsDispersed++
+                }
+                tries++
+            }
+            WordLinear.wordListTrigger.postValue(Unit)
         }
     }
 

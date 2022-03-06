@@ -5,7 +5,6 @@ import android.graphics.Typeface
 import android.text.InputFilter
 import android.text.InputType
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -210,7 +209,6 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         content = b.inputField.text.toString()
         if(newListLength != oldListLength) {
             if(nuwInput) {
-                Log.i("tameNuwsTest", "contentList is $contentList")
                 nuwList.value = createNuws()
             }
             oldListLength = newListLength
@@ -284,7 +282,6 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
                 if(onEnterFunc != null) onEnterFunc!!(content)
                 if(onTypingFunc != null) onTypingFunc!!(content)
                 hideInput()
-                Log.i("focusTest", "outside Edit Clicked")
             }
         }
     }
@@ -334,7 +331,6 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     }
 
     fun saveNuws() {
-        Log.i("lagProb", "WordsInput - saveNuws called ")
         if(nuwList.value != null) {
             for(nuw in nuwList.value!!) {
                 val existingNuw = Main.getNuw(nuw.text)

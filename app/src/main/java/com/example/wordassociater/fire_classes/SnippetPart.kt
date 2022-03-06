@@ -1,6 +1,5 @@
 package com.example.wordassociater.fire_classes
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.*
@@ -26,12 +25,19 @@ interface SnippetPart {
     @Exclude
     fun delete()
 
+    @get:Exclude
     val liveWordsSearch: MutableLiveData<List<Word>>
-    val liveStoryLinesOnly: MutableLiveData<List<StoryLine>>
+    @get:Exclude
+    val liveMyStoryLines: MutableLiveData<List<StoryLine>>
+    @get:Exclude
     val liveStoryLines: MutableLiveData<List<LiveClass>>
+    @get:Exclude
     val liveSnippets: MutableLiveData<List<LiveClass>>
+    @get:Exclude
     val liveWords: MutableLiveData<List<LiveClass>>
+    @get:Exclude
     val liveEvents: MutableLiveData<List<LiveClass>>
+    @get:Exclude
     val oldSnippetPart: SnippetPart?
 
     @Exclude
@@ -54,7 +60,6 @@ interface SnippetPart {
 
     @Exclude
     fun getFullWordsList() : List<Word> {
-        Log.i("lagProb", "getFullWordsList called")
         val allWords = Main.wordsList.value!!.toMutableList()
         for(w in allWords) {
             w.selected = getWords().contains(w)
@@ -75,7 +80,6 @@ interface SnippetPart {
 
     @Exclude
     fun updateWords() {
-        Log.i("updateTest", "oldStoryPart.wordList != wordList = ${oldSnippetPart!!.wordList != wordList}")
         if(oldSnippetPart?.wordList != wordList) {
             // update newly added words snippetLists
             for(id in wordList) {
@@ -151,7 +155,6 @@ interface SnippetPart {
 
     @Exclude
     fun updateEvents() {
-        Log.i("updateTest", "oldStoryPart.eventList != eventList = ${oldSnippetPart!!.eventList != eventList}")
         if(oldSnippetPart!!.eventList != eventList) {
             // update newly added events snippetLists
             for(id in eventList) {
@@ -221,48 +224,72 @@ interface SnippetPart {
     }
 
     @Exclude
+    fun addStoryLine(storyLine: StoryLine) {
+        if(!storyLineList.contains(storyLine.id)) {
+            storyLineList.add(storyLine.id)
+            when(this) {
+                is Character -> FireChars.update(id, "storyLineList", storyLineList)
+                is Location -> FireChars.update(id, "storyLineList", storyLineList)
+                is Event -> FireChars.update(id, "storyLineList", storyLineList)
+                is Item -> FireChars.update(id, "storyLineList", storyLineList)
+            }
+        }
+    }
+
+    @Exclude
+    fun removeStoryLine(storyLine: StoryLine) {
+
+    }
+
+    @Exclude
     fun getStoryLines(): List<StoryLine> {
         val list = mutableListOf<StoryLine>()
         for(id in storyLineList) {
             val sl = Main.getStoryLine(id)
             if(sl != null) list.add(sl)
         }
-        liveStoryLinesOnly.value = list
+        liveMyStoryLines.value = list
         return list
     }
 
     @Exclude
     fun selectStoryLine(storyLine: StoryLine) {
-        val list = liveStoryLines.value!!.toMutableList()
+        val list = liveMyStoryLines.value!!.toMutableList()
         list.remove(storyLine)
         storyLine.selected = !storyLine.selected
         list.add(storyLine)
-        liveStoryLines.value = list
+        liveMyStoryLines.value = list
     }
 
     @Exclude
     fun takeStoryLine(storyLine: StoryLine) {
         if(getStoryLines().contains(storyLine)) storyLineList.remove(storyLine.id)
         else storyLineList.add(storyLine.id)
-        getFullStoryLineList()
+        getMyStoryLineList()
     }
 
     @Exclude
-    fun getFullStoryLineList(): List<StoryLine> {
+    fun getMyStoryLineList(): List<StoryLine> {
         val storyLines = Main.storyLineList.value!!.toMutableList()
-        val snippetsStoryLines = mutableListOf<StoryLine>()
+        val myStoryLines = mutableListOf<StoryLine>()
+        for(sl in storyLines) {
+            if(storyLineList.contains(sl.id)) myStoryLines.add(sl)
+        }
+        liveMyStoryLines.value = myStoryLines
+        return myStoryLines
+    }
+
+    @Exclude
+    fun getAllStoryLines() {
+        val storyLines = Main.storyLineList.value!!.toMutableList()
         for(sl in storyLines) {
             sl.selected = storyLineList.contains(sl.id)
-            if(sl.selected) snippetsStoryLines.add(sl)
         }
         liveStoryLines.value = storyLines
-        liveStoryLinesOnly.value = snippetsStoryLines
-        return storyLines
     }
 
     @Exclude
     fun updateStoryLines() {
-        Log.i("updateTest", "oldStoryPart.storyLineList != storyLineList = ${oldSnippetPart!!.storyLineList != storyLineList}")
         when(this) {
             is Character -> FireChars.update(this.id, "storyLineList", storyLineList)
             is Event -> FireEvents.update(this.id, "storyLineList", storyLineList)
@@ -301,29 +328,54 @@ interface SnippetPart {
         )
         this.connectId = connectId
 
+        word.image = image
+        word.imgUrl = imgUrl
+
         // Fam
         val fam = Fam(id= FireStats.getFamNumber(), name)
         word.famList.add(fam.id)
+        FireFams.add(fam)
         when(this) {
             is Character -> {
                 FireChars.update(id, "connectId", connectId)
+
                 word.cats.add(1)
                 word.type = Word.Type.Character
+
+                val wordCat = Main.getWordCat(1)!!
+                wordCat.wordList.add(word.id)
+                FireWordCats.update(wordCat.id, "wordList", wordCat.wordList)
             }
             is Location -> {
                 FireLocations.update(id, "connectId", connectId)
+
                 word.cats.add(2)
                 word.type = Word.Type.Location
-            }
-            is Event -> {
-                FireEvents.update(id, "connectId", connectId)
-                word.cats.add(3)
-                word.type = Word.Type.Event
+
+                val wordCat = Main.getWordCat(2)!!
+                wordCat.wordList.add(word.id)
+                FireWordCats.update(wordCat.id, "wordList", wordCat.wordList)
+
             }
             is Item -> {
                 FireItems.update(id, "connectId", connectId)
-                word.cats.add(4)
+
+                word.cats.add(3)
                 word.type = Word.Type.Item
+
+                val wordCat = Main.getWordCat(3)!!
+                wordCat.wordList.add(word.id)
+                FireWordCats.update(wordCat.id, "wordList", wordCat.wordList)
+            }
+            is Event -> {
+                FireEvents.update(id, "connectId", connectId)
+
+                word.cats.add(4)
+                word.type = Word.Type.Event
+
+                val wordCat = Main.getWordCat(4)!!
+                wordCat.wordList.add(word.id)
+                FireWordCats.update(wordCat.id, "wordList", wordCat.wordList)
             }
         }
         FireWords.add(word)

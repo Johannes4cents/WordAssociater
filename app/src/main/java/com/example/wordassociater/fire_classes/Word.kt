@@ -1,10 +1,11 @@
 package com.example.wordassociater.fire_classes
 
 import android.content.Context
-import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.*
 import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.utils.Image
 import com.example.wordassociater.utils.LiveClass
 import com.google.firebase.firestore.Exclude
 import java.util.*
@@ -23,15 +24,17 @@ data class Word(
         var spheres: MutableList<Long> = mutableListOf(2),
         var wordConnectionsList: MutableList<Long> = mutableListOf(),
         var stems: MutableList<String> = mutableListOf(),
-        var type: Type = Type.Other
+        var type: Type = Type.Other,
 ): LiveClass
 {
     enum class Type { Character, Item, Location, Event, Other }
 
+    @get:Exclude
+    val liveWordCats= MutableLiveData<List<LiveClass>>()
+
     @Exclude
     override var name: String = text
 
-    @Exclude
     override var image: Long = 0L
 
     @Exclude
@@ -61,6 +64,37 @@ data class Word(
     }
 
     @Exclude
+    fun getFullCatsList() {
+        if(connectId == 0L) {
+            val catsList = Main.wordCatsList.value!!.toMutableList().filter { wc ->
+                wc.id != 0L && wc.id != 1L && wc.id != 2L && wc.id != 3L && wc.id != 4L}
+            for(cat in catsList) {
+                cat.selected = cats.contains(cat.id)
+            }
+            liveWordCats.value = catsList
+        }
+    }
+
+    @Exclude
+    fun takeWordCat(wordCat: WordCat) {
+        if(cats.contains(wordCat.id)) {
+            cats.remove(wordCat.id)
+            val wc = Main.getWordCat(wordCat.id)!!
+            wc.wordList.remove(id)
+            FireWordCats.update(wc.id, "wordList", wc.wordList)
+        }
+        else {
+            cats.add(wordCat.id)
+            val wc = Main.getWordCat(wordCat.id)!!
+            wc.wordList.add(id)
+            FireWordCats.update(wc.id, "wordList", wc.wordList)
+        }
+
+        FireWords.update(id, "cats", cats)
+        getFullCatsList()
+    }
+
+    @Exclude
     fun getStoryLines(): List<StoryLine> {
         val list = mutableListOf<StoryLine>()
         for(id in storyLineList) {
@@ -68,6 +102,11 @@ data class Word(
             if(storyLine != null) list.add(storyLine)
         }
         return  list
+    }
+
+    @Exclude
+    fun getImage(): Image {
+        return Image.getDrawable(image)
     }
 
     @Exclude
@@ -142,7 +181,6 @@ data class Word(
         val toRemoveIds = mutableListOf<Long>()
         for(id in wordConnectionsList) {
             val wc = Main.getWordConnection(id)
-            Log.i("deselectTest", "word.getWordTwoConnections | wc found is: $wc")
             if(wc != null) wcs.add(wc)
             else toRemoveIds.add(id)
         }

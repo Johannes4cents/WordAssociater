@@ -1,6 +1,5 @@
 package com.example.wordassociater.words
 
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderConnectedWordBinding
 import com.example.wordassociater.fire_classes.Word
@@ -13,7 +12,6 @@ class ConnectedWordHolder(
 
     lateinit var connectedWord: ConnectedWord
     fun onBind(connectedWord: ConnectedWord) {
-        Log.i("connectedW", "ConnectedWordHolderOnBind callen connectedWord is $connectedWord")
         this.connectedWord = connectedWord
         setClickListener()
         setContent()

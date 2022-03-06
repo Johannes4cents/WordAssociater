@@ -6,7 +6,6 @@ import com.bumptech.glide.Glide
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.HolderSnippetPartListBinding
 import com.example.wordassociater.display_filter.DisplayFilter
-import com.example.wordassociater.fire_classes.Event
 import com.example.wordassociater.fire_classes.Location
 import com.example.wordassociater.live_recycler.LiveHolder
 import com.example.wordassociater.utils.LiveClass
@@ -28,7 +27,7 @@ class LocationHolderList(val b: HolderSnippetPartListBinding): RecyclerView.View
     private fun setContent() {
         b.partName.text = (item as Location).name
         if((item as Location).imgUrl != "") Glide.with(b.partImage).load((item as Location).imgUrl).into(b.partImage)
-        else b.partImage.setImageResource((item as Event).getImage().getDrawable())
+        else b.partImage.setImageResource((item as Location).getImage().getDrawable())
 
     }
 

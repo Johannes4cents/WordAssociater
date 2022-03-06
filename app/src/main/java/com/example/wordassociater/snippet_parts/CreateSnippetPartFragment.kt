@@ -1,7 +1,6 @@
 package com.example.wordassociater.snippet_parts
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +13,11 @@ import com.example.wordassociater.firestore.*
 import com.example.wordassociater.live_recycler.LiveRecycler
 import com.example.wordassociater.popups.popLiveClass
 import com.example.wordassociater.popups.popSearchWord
-import com.example.wordassociater.popups.popSelectStoryLine
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Image
 import com.example.wordassociater.utils.LiveClass
 import com.example.wordassociater.utils.Page
 import com.example.wordassociater.viewpager.ViewPagerMainFragment
-import com.example.wordassociater.words.WordRecycler
 
 class CreateSnippetPartFragment: Fragment() {
     lateinit var b: FragmentCreateSnippetPartBinding
@@ -139,7 +136,7 @@ class CreateSnippetPartFragment: Fragment() {
         }
 
         b.topBar.setBtn5 {
-            newSnippetPart.getFullStoryLineList()
+            newSnippetPart.getMyStoryLineList()
             popLiveClass(LiveRecycler.Type.StoryLine, b.topBar.btn5, newSnippetPart.liveStoryLines, ::onStoryLineSelected)
         }
 
@@ -147,7 +144,15 @@ class CreateSnippetPartFragment: Fragment() {
 
 
     private fun onHeaderClicked(wordText: String) {
-        Log.i("searchHeader", "onHeaderClicked")
+        val newWord = Word(id = FireStats.getWordId(), text = wordText)
+        val newFam = Fam(id = FireStats.getFamNumber(), wordText)
+        newFam.word = newWord.id
+        newFam.main = true
+        newWord.famList.add(newFam.id)
+
+        FireFams.add(newFam)
+        FireWords.add(newWord, context, newSnippetPart)
+
     }
 
     private fun onStoryLineSelected(storyLine: LiveClass) {
@@ -168,7 +173,7 @@ class CreateSnippetPartFragment: Fragment() {
         b.imageRecycler.initRecycler(getImageType(newSnippetPart), Image.imageList, ::onImageSelected)
         b.wordPreviewRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.Word, null, newSnippetPart.liveWords)
         b.storyLineRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.StoryLine, null, newSnippetPart.liveStoryLines)
-        newSnippetPart.getFullStoryLineList()
+        newSnippetPart.getMyStoryLineList()
     }
 
     private fun onImageSelected(image: LiveClass) {

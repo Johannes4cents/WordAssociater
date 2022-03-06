@@ -1,6 +1,5 @@
 package com.example.wordassociater.utils
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.fire_classes.Character
@@ -13,7 +12,6 @@ object ListHelper {
         for(w in wordList) {
             w.selected = selectedWordList.contains(w)
         }
-        Log.i("wordList", "selectedWordList is $selectedWordList")
 
         val newList = selectedWordList + wordList.sortedBy { w -> w.text }.sortedBy { w -> w.selected }.toMutableList()
         var anyList = newList.toMutableList()

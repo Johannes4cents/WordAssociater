@@ -9,25 +9,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.wordassociater.live_recycler.LiveRecycler
-        android:id="@+id/storyLineRecycler"
+    <com.example.wordassociater.bars.PreviewBar
+        android:id="@+id/previewBar"
         android:layout_width="match_parent"
-        android:layout_height="30dp"/>
-
-    <com.example.wordassociater.live_recycler.LiveRecycler
-        android:id="@+id/eventRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"/>
-
-    <com.example.wordassociater.live_recycler.LiveRecycler
-        android:id="@+id/itemRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"/>
-
-    <com.example.wordassociater.live_recycler.LiveRecycler
-        android:id="@+id/locationRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"/>
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:orientation="horizontal"

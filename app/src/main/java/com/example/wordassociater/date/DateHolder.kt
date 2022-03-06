@@ -2,17 +2,16 @@ package com.example.wordassociater.date
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.wordassociater.databinding.DateBinding
 import com.example.wordassociater.fire_classes.Event
 import com.example.wordassociater.fire_classes.Snippet
+import com.example.wordassociater.fire_classes.StoryPart
 import com.example.wordassociater.firestore.FireEvents
 import com.example.wordassociater.firestore.FireSnippets
 import com.example.wordassociater.utils.Date
-import com.example.wordassociater.fire_classes.StoryPart
 
 class DateHolder(context: Context, attributeSet: AttributeSet): ConstraintLayout(context, attributeSet) {
     private val b = DateBinding.inflate(LayoutInflater.from(context), this, true)
@@ -39,7 +38,6 @@ class DateHolder(context: Context, attributeSet: AttributeSet): ConstraintLayout
     }
 
     private fun setContent() {
-        Log.i("dateProb", "inSetContent of Date year is ${date.year}")
         if(date.year < 1800) {
             b.dateLinear.visibility = View.GONE
             b.timeLineIcon.visibility = View.VISIBLE

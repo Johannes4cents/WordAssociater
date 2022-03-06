@@ -2,7 +2,6 @@ package com.example.wordassociater.words
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -21,18 +20,49 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word): Constr
 
     init {
         setConnectIcon()
-        checkIfCharacter()
+        handleImages()
         setClickListener()
         setWord()
-        setPortrait()
         highLightSelected()
     }
 
-    private fun checkIfCharacter() {
-        for(cat in word.cats) {
-            if(Main.getWordCat(cat)?.name == "Character") {
-                char = true
-                break
+    private fun handleImages() {
+        when(word.type) {
+            Word.Type.Character -> {
+                val character = Main.getCharacterByConnectId(word.connectId)
+                if(character != null) {
+                    b.characterPortrait.visibility = View.VISIBLE
+                    if(character.imgUrl != "") Glide.with(context).load(character.imgUrl).into(b.characterPortrait)
+                    else b.characterPortrait.setImageResource(word.getImage().getDrawable())
+                }
+            }
+            Word.Type.Item -> {
+                val item = Main.getItemByConnectId(word.connectId)
+                if(item != null) {
+                    b.characterPortrait.visibility = View.VISIBLE
+                    if(item.imgUrl != "") Glide.with(context).load(item.imgUrl).into(b.characterPortrait)
+                    else b.characterPortrait.setImageResource(word.getImage().getDrawable())
+                }
+            }
+            Word.Type.Location -> {
+                val location = Main.getLocationByConnectId(word.connectId)
+                if(location != null) {
+                    b.characterPortrait.visibility = View.VISIBLE
+                    if(location.imgUrl != "") Glide.with(context).load(location.imgUrl).into(b.characterPortrait)
+                    else b.characterPortrait.setImageResource(word.getImage().getDrawable())
+                }
+
+            }
+            Word.Type.Event ->  {
+                val event = Main.getEventByConnectId(word.connectId)
+                if(event != null) {
+                    b.characterPortrait.visibility = View.VISIBLE
+                    if(event.imgUrl != "") Glide.with(context).load(event.imgUrl).into(b.characterPortrait)
+                    else b.characterPortrait.setImageResource(word.getImage().getDrawable())
+                }
+
+            }
+            Word.Type.Other ->  {
             }
         }
     }
@@ -90,23 +120,8 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word): Constr
 
     private fun setWord() {
         b.wordText.text = if(word.getFamStrings().isNotEmpty()) getShortenedWord(word.getFamStrings().random(), b.wordText) else "word '${word.text}' has no fams | ${word.id}"
-        Log.i("wordCatProb", "word is $word")
-        b.catIcon.setImageResource(Main.getWordCat(word.cats[0])!!.getBg())
-        
+        b.catIcon.setImageResource(if(word.cats.count() > 1) Main.getWordCat(word.cats[1])!!.getBg() else Main.getWordCat(word.cats[0])!!.getBg())
     }
-
-    private fun setPortrait() {
-        if(char) {
-            val character = Main.characterList.value?.find { char ->
-                char.name.equals(word.text, ignoreCase = true)
-            }
-            if(character != null) {
-                b.characterPortrait.visibility = View.VISIBLE
-                Glide.with(context).load(character.imgUrl).into(b.characterPortrait)
-            }
-        }
-    }
-
 
 }
 
