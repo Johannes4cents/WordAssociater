@@ -33,7 +33,7 @@ class WordHolderList(
             b.wordCatIcon.setImageResource(R.drawable.wordcat_bg_none)
         }
 
-        b.stemCount.text = (item as Word).stems.count().toString()
+        b.stemCount.text = (item as Word).stemList.count().toString()
         b.idField.text = item.id.toString()
         b.usedOrConnectionsField.text = (item as Word).used.toString()
     }

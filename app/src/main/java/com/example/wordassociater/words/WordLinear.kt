@@ -37,13 +37,11 @@ class WordLinear(context: Context, attributeSet: AttributeSet): LinearLayout(con
                             randomWord == null || wordList.contains(randomWord) || !Helper.checkIfWordInRightSphere(randomWord))) {
                 val catWords = wordCat.getWords()
                 if(catWords.isNotEmpty()) randomWord = catWords.random()
-                //Log.i("rollProb", "in getWords during 200 tries - randomWord is ${randomWord?.text}")
                 tries++
             }
             if(randomWord != null && !Helper.checkIfWordInRightSphere(randomWord)) randomWord = null
-            //Log.i("rollProb", "in getWords after spheres Check - randomWord is ${randomWord?.text}")
+
             if(wordList.contains(randomWord)) randomWord = null
-            //Log.i("rollProb", "in getWords after wordlist.contains check - randomWord is ${randomWord?.text}")
             return randomWord
         }
 

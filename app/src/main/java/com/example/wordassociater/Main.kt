@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.fire_classes.*
 import com.example.wordassociater.firestore.FireStoreListener
 import com.example.wordassociater.utils.CommonWord
+import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Language
 
 
@@ -33,6 +34,7 @@ class Main : AppCompatActivity() {
         val famList = MutableLiveData<List<Fam>?>(mutableListOf())
         val itemList = MutableLiveData<List<Item>>(mutableListOf())
         val locationList = MutableLiveData<List<Location>>(mutableListOf())
+        val stemList = MutableLiveData<List<Stem>>(mutableListOf())
 
 
         //commonWOrds
@@ -91,6 +93,20 @@ class Main : AppCompatActivity() {
 
         fun getFam(id:Long): Fam? {
             return famList.value!!.find { f -> f.id == id }
+        }
+
+        fun getFamByString(text: String): Fam? {
+            val strippedText = Helper.stripWord(text)
+            return famList.value!!.find { f -> Helper.stripWord(f.text) == strippedText }
+        }
+
+        fun getStem(id:Long): Stem? {
+            return stemList.value!!.find { s -> s.id == id }
+        }
+
+        fun getStemByString(text: String): Stem? {
+            val strippedText = Helper.stripWord(text)
+            return stemList.value!!.find { s -> Helper.stripWord(s.name) == strippedText }
         }
 
         fun getStoryLine(id: Long): StoryLine? {

@@ -13,5 +13,6 @@ data class Stats(
         var connectId: Long = 0,
         var storyLineNumber: Long = 0,
         var famNumber : Long = 1,
-        var snippetPartId: Long = 0
+        var snippetPartId: Long = 0,
+        var stemId: Long = 0
 )

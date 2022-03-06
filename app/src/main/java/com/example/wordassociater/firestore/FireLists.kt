@@ -21,8 +21,6 @@ object FireLists {
     private val commonWordsEnglish by lazy { db.collection("commonWords").document("commonWordsCollections").collection("english") }
 
     val fireStats by lazy { db.collection("stats").document("stats") }
-    val bubbleList by lazy { db.collection("bubbles") }
-    val dialogueList by lazy { db.collection("dialogue") }
     val characterList by lazy { db.collection("character") }
     val snippetsList by lazy { db.collection("snippets") }
     val spheresList by lazy { db.collection("spheres") }
@@ -37,6 +35,7 @@ object FireLists {
     val famList by lazy {db.collection("fams")}
     val filterList by lazy {db.collection("filter")}
     val itemsList by lazy {db.collection("items")}
+    val stemList by lazy { db.collection("stems") }
 
     var stats: Stats? = Stats()
 

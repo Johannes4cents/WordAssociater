@@ -24,6 +24,7 @@ import com.example.wordassociater.items.ItemHolderPreview
 import com.example.wordassociater.locations.LocationHolderList
 import com.example.wordassociater.locations.LocationHolderPopup
 import com.example.wordassociater.locations.LocationHolderPreview
+import com.example.wordassociater.stems.StemsHolder
 import com.example.wordassociater.storylines.StoryLineHolderList
 import com.example.wordassociater.storylines.StoryLineHolderPreview
 import com.example.wordassociater.utils.LiveClass
@@ -35,7 +36,7 @@ import com.example.wordassociater.words.WordHolderPreview
 
 class LiveRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(context, attributeSet) {
     enum class Mode { Popup, List, Preview }
-    enum class Type { Character, Item, Event, Location, StoryLine, Word, WordCat }
+    enum class Type { Character, Item, Event, Location, StoryLine, Word, WordCat, Stem }
 
     fun initRecycler(
             mode: Mode,
@@ -83,6 +84,7 @@ class LiveAdapter(
                 LiveRecycler.Type.StoryLine -> StoryLineHolderList(HolderStorylineBinding.inflate(LayoutInflater.from(parent.context)))
                 LiveRecycler.Type.Word -> WordHolderPopup(HolderWordPopupBinding.inflate(LayoutInflater.from(parent.context)))
                 LiveRecycler.Type.WordCat -> WordCatHolderList(HolderWordCatListBinding.inflate(LayoutInflater.from(parent.context)))
+                LiveRecycler.Type.Stem -> StemsHolder(HolderStemBinding.inflate(LayoutInflater.from(parent.context)))
             }
             LiveRecycler.Mode.List -> when(type) {
                 LiveRecycler.Type.Character -> CharacterHolderList(HolderSnippetPartListBinding.inflate(LayoutInflater.from(parent.context)))
@@ -92,6 +94,7 @@ class LiveAdapter(
                 LiveRecycler.Type.StoryLine -> StoryLineHolderList(HolderStorylineBinding.inflate(LayoutInflater.from(parent.context)))
                 LiveRecycler.Type.Word -> WordHolderList(HolderWordListBinding.inflate(LayoutInflater.from(parent.context)))
                 LiveRecycler.Type.WordCat -> WordCatHolderList(HolderWordCatListBinding.inflate(LayoutInflater.from(parent.context)))
+                LiveRecycler.Type.Stem -> StemsHolder(HolderStemBinding.inflate(LayoutInflater.from(parent.context)))
             }
             LiveRecycler.Mode.Preview -> when(type) {
                 LiveRecycler.Type.Character -> CharacterHolderPreview(HolderSnippetPartPreviewBinding.inflate(LayoutInflater.from(parent.context)))
@@ -101,6 +104,7 @@ class LiveAdapter(
                 LiveRecycler.Type.StoryLine -> StoryLineHolderPreview(HolderStorylineSimpleBinding.inflate(LayoutInflater.from(parent.context)))
                 LiveRecycler.Type.Word -> WordHolderPreview(HolderWordPreviewBinding.inflate(LayoutInflater.from(parent.context)))
                 LiveRecycler.Type.WordCat -> WordCatHolderList(HolderWordCatListBinding.inflate(LayoutInflater.from(parent.context)))
+                LiveRecycler.Type.Stem -> StemsHolder(HolderStemBinding.inflate(LayoutInflater.from(parent.context)))
             }
         }
     }

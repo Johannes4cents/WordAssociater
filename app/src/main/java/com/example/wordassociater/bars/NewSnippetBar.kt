@@ -2,7 +2,6 @@ package com.example.wordassociater.bars
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -47,7 +46,6 @@ class NewSnippetBar(context: Context, attributeSet: AttributeSet): LinearLayout(
 
     fun setPreviewBar() {
         if(::previewBar.isInitialized) {
-            Log.i("previewBar", "previewBar init ")
             previewBar.initBar(newSnippet, useFilter = false)
         }
     }

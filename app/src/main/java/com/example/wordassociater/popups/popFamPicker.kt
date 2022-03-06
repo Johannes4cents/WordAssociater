@@ -31,6 +31,6 @@ fun popFamPicker(from: View, word: Word, onFamPicked: (fam: Fam) -> Unit, famLis
     fun blankUpgrade(fam: Fam) {
 
     }
-    b.famRecycler.initRecycler(FamRecycler.Type.Popup, word, liveList, ::blankFunc, ::interceptedOnFamClicked,::blankUpgrade, ::blankCommonWord)
+    b.famRecycler.initRecycler(FamRecycler.Type.Popup, liveList, ::interceptedOnFamClicked,::blankUpgrade, ::blankCommonWord)
     liveList.value = famList
 }

@@ -1,6 +1,7 @@
 package com.example.wordassociater
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,6 +57,7 @@ class StartFragment: Fragment() {
     }
 
     private fun onWordCatClicked(wordCat: WordCat) {
+        Log.i("WordCatProb", "StartFragment - onCatClicked | wordCat is $wordCat")
         val word = WordLinear.getWord(wordCat)
         if(word != null) WordLinear.wordList.add(word)
         WordLinear.wordListTrigger.value = Unit

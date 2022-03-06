@@ -1,24 +1,35 @@
 package com.example.wordassociater.fire_classes
 
-import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.firestore.FireFams
 import com.example.wordassociater.firestore.FireWords
 import com.example.wordassociater.utils.CommonWord
 import com.example.wordassociater.utils.Language
+import com.example.wordassociater.utils.LiveClass
 import com.google.firebase.firestore.Exclude
 
 data class Fam(
-        val id: Long = 0,
+        override var id: Long = 0,
         var text: String = "",
-        ) {
+        ): LiveClass {
     var wordClass: Class = Class.Noun
     var commonWord: CommonWord.Type = CommonWord.Type.Uncommon
     var alreadyWord: Boolean = false
     var word : Long = 0
     var main: Boolean = false
     var firstOpen = false
+
+    @Exclude
+    override var sortingOrder: Int = 0
+    @Exclude
+    override var name: String = text
+    @Exclude
+    override var isAHeader: Boolean = false
+    @Exclude
+    override var selected: Boolean = false
+    @Exclude
+    override var image: Long = 0L
 
     enum class Class(val image: Int) { Verb(R.drawable.word_class_verb), Adjective(R.drawable.word_class_adjective), Noun(R.drawable.word_class_noun) }
     @Exclude
@@ -67,4 +78,12 @@ data class Fam(
             Class.Noun -> R.drawable.word_class_noun
         }
     }
+
+    companion object {
+        fun checkIfAlreadyExists(fam: String): Fam? {
+            return Main.getFamByString(fam)
+        }
+    }
+
+
 }

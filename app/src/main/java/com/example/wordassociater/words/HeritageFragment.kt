@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
@@ -14,42 +12,36 @@ import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentHeritageBinding
 import com.example.wordassociater.fams.FamRecycler
 import com.example.wordassociater.fire_classes.Fam
+import com.example.wordassociater.fire_classes.Stem
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.firestore.FireCommonWords
 import com.example.wordassociater.firestore.FireFams
 import com.example.wordassociater.firestore.FireStats
-import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.live_recycler.LiveRecycler
+import com.example.wordassociater.popups.popConfirmation
 import com.example.wordassociater.popups.popFamPicker
+import com.example.wordassociater.popups.popNewStemOrFam
 import com.example.wordassociater.utils.CommonWord
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Language
-import java.util.*
+import com.example.wordassociater.utils.LiveClass
 
 class HeritageFragment: Fragment() {
     lateinit var b : FragmentHeritageBinding
 
-    private val famLiveList = MutableLiveData<List<Fam>>(listOf())
-    private val stemsLiveList = MutableLiveData<List<String>>(listOf())
     companion object {
-        lateinit var oldWord: Word
         lateinit var word: Word
         lateinit var comingFrom: Frags
         var comingFromList : WordCat? = null
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         b = FragmentHeritageBinding.inflate(inflater)
-        setOldWord()
         setContent()
         setClickListener()
         setRecycler()
-        setObserver()
-
+        word.copyMe()
         return b.root
-    }
-
-    private fun setOldWord() {
-        oldWord = word.copyMe()
     }
 
     private fun setContent() {
@@ -69,27 +61,39 @@ class HeritageFragment: Fragment() {
 
         b.topBar.setRightButton {
             updateWord()
-            stemsLiveList.value = mutableListOf()
-            famLiveList.value = mutableListOf()
             findNavController().navigate(R.id.action_heritageFragment_to_wordDetailedFragment)
         }
 
         b.topBar.setLeftBtn {
-            checkFamsOnBack()
-            stemsLiveList.value = mutableListOf()
-            famLiveList.value = mutableListOf()
+            resetListsOnBack()
             findNavController().navigate(R.id.action_heritageFragment_to_wordDetailedFragment)
+        }
+
+        b.btnAddFam.setOnClickListener {
+            popNewStemOrFam(b.btnAddFam, ::onNewFamAdded, false)
+        }
+
+        b.btnAddStems.setOnClickListener {
+            popNewStemOrFam(b.btnAddStems, ::onNewStemAdded, true)
         }
 
     }
 
-    private fun checkFamsOnBack() {
-        for(fam in famLiveList.value!!) {
-            if(!oldWord.famList.contains(fam.id)) {
-                word.famList.remove(fam.id)
-                fam.delete()
-            }
-        }
+    private fun resetListsOnBack() {
+        word.famList = word.oldWord.famList.toMutableList()
+        word.stemList = word.oldWord.stemList.toMutableList()
+    }
+
+    private fun onNewFamAdded(fam: LiveClass) {
+        (fam as Fam)
+        fam.word = word.id
+        word.takeFam(fam)
+    }
+
+    private fun onNewStemAdded(stem: LiveClass) {
+        stem as Stem
+        stem.word = word.id
+        word.takeStem(stem)
     }
 
     private fun onFamPickedForNewName(fam: Fam) {
@@ -106,35 +110,29 @@ class HeritageFragment: Fragment() {
     }
 
     private fun setRecycler() {
-        famLiveList.value = word.getFams()
-        b.famRecycler.initRecycler(FamRecycler.Type.List, word, famLiveList, ::onFamHeaderClicked, ::onFamEntered, ::onCreateNewWord, ::onMakeCommonWord)
+        b.famRecycler.initRecycler(FamRecycler.Type.List, word.liveFams, ::onFamClicked, ::onCreateNewWord, ::onMakeCommonWord)
+        word.getFams()
 
-        stemsLiveList.value = word.stems
-        b.stemsRecycler.initRecycler(word, stemsLiveList, ::onStemHeaderClicked, ::onStemEntered)
-
+        b.stemRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.Stem, ::onStemClicked, word.liveStems)
+        word.getStemsList()
     }
 
-    private fun onFamHeaderClicked() {
-        val newFam = Fam(id = FireStats.getFamNumber())
-        newFam.firstOpen = true
-        famLiveList.value = listOf(newFam) + word.getFams()
-        b.famRecycler.adapter?.notifyDataSetChanged()
-    }
-
-    private fun onFamEntered(fam: Fam) {
-        if(fam.text != "" && fam.text != " " && fam.checkIfWord() == null) {
-            fam.text = Helper.stripWordLeaveWhiteSpace(fam.text)
-            fam.word = word.id
-            word.famList.add(fam.id)
-            FireFams.add(fam)
-            b.famRecycler.adapter?.notifyDataSetChanged()
+    private fun onFamClicked(fam: Fam) {
+        popConfirmation(b.btnAddFam) {
+            if(it) {
+                (fam as Fam).delete()
+                word.takeFam(fam)
+            }
         }
-        else if(fam.checkIfWord() != null) {
-            val newList = famLiveList.value!!.toMutableList()
-            newList.remove(fam)
-            famLiveList.value = newList
-            Helper.toast("That already is it's own Word (${fam.checkIfWord()!!.text} (${fam.checkIfWord()!!.id}))", requireContext())
-            //b.famRecycler.adapter?.notifyDataSetChanged()
+    }
+
+
+    private fun onStemClicked(stem: LiveClass) {
+        popConfirmation(b.btnAddStems) {
+            if(it) {
+                (stem as Stem).delete()
+                word.takeStem(stem)
+            }
         }
     }
 
@@ -160,42 +158,10 @@ class HeritageFragment: Fragment() {
         }
     }
 
-    private fun onStemHeaderClicked() {
-        word.stems.remove("stemHeader")
-        word.stems.remove("StemHeader")
-        word.stems.remove("")
-        word.stems.remove(" ")
-        stemsLiveList.value = word.stems + listOf("")
-        b.stemsRecycler.adapter?.notifyDataSetChanged()
-    }
-
-    private fun onStemEntered(text: String) {
-        val strippedWord = Helper.stripWord(text).capitalize(Locale.ROOT)
-        if(strippedWord != " " && text != "" && !word.stems.contains(strippedWord) && text != "stemHeader" && text != "StemHeader") {
-            word.stems.add(strippedWord)
-            stemsLiveList.value = word.stems
-            b.stemsRecycler.adapter?.notifyDataSetChanged()
-        }
-    }
 
     private fun updateWord() {
-        FireWords.update(word.id, "stems", word.stems)
-        FireWords.update(word.id, "text", word.text)
-        FireWords.update(word.id, "famList", word.famList)
+        word.updateFams()
+        word.updateStems()
     }
-
-    private fun setObserver() {
-        Main.famList.observe(requireContext() as LifecycleOwner) {
-            val famList = mutableListOf<Fam>()
-            if (it != null) {
-                for(fam in it) {
-                    if(fam.word == word.id) famList.add(fam)
-                }
-            }
-            famLiveList.value = famList
-        }
-    }
-
-
 
 }

@@ -32,7 +32,11 @@ object FireStoreListener {
         getFilterOptions()
         getItems()
         getLocations()
+        getStems()
+
     }
+
+
 
     private fun getCharacters() {
         FireLists.characterList.addSnapshotListener { docs, _ ->
@@ -87,6 +91,19 @@ object FireStoreListener {
                     eventList.add(event)
                 }
                 Main.eventList.value = eventList
+            }
+        }
+    }
+
+    private fun getStems() {
+        FireLists.stemList.addSnapshotListener { docs, error ->
+            if(docs != null) {
+                val stemList = mutableListOf<Stem>()
+                for(doc in docs) {
+                    val stem = doc.toObject(Stem::class.java)
+                    stemList.add(stem)
+                }
+                Main.stemList.value = stemList
             }
         }
     }

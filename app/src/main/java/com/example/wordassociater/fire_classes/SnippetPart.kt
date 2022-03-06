@@ -338,7 +338,6 @@ interface SnippetPart {
         when(this) {
             is Character -> {
                 FireChars.update(id, "connectId", connectId)
-
                 word.cats.add(1)
                 word.type = Word.Type.Character
 
@@ -348,7 +347,6 @@ interface SnippetPart {
             }
             is Location -> {
                 FireLocations.update(id, "connectId", connectId)
-
                 word.cats.add(2)
                 word.type = Word.Type.Location
 

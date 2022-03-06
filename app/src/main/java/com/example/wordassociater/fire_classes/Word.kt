@@ -1,6 +1,7 @@
 package com.example.wordassociater.fire_classes
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.*
@@ -8,7 +9,6 @@ import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.Image
 import com.example.wordassociater.utils.LiveClass
 import com.google.firebase.firestore.Exclude
-import java.util.*
 
 data class Word(
         var text: String = "",
@@ -24,13 +24,20 @@ data class Word(
         var spheres: MutableList<Long> = mutableListOf(2),
         var wordConnectionsList: MutableList<Long> = mutableListOf(),
         var stems: MutableList<String> = mutableListOf(),
+        var stemList: MutableList<Long> = mutableListOf(),
         var type: Type = Type.Other,
 ): LiveClass
 {
     enum class Type { Character, Item, Location, Event, Other }
 
     @get:Exclude
-    val liveWordCats= MutableLiveData<List<LiveClass>>()
+    val liveWordCats= MutableLiveData<List<LiveClass>>(mutableListOf())
+
+    @get:Exclude
+    val liveFams = MutableLiveData<List<Fam>>(mutableListOf())
+
+    @get:Exclude
+    val liveStems = MutableLiveData<List<LiveClass>>(mutableListOf())
 
     @Exclude
     override var name: String = text
@@ -42,6 +49,9 @@ data class Word(
 
     @Exclude
     override var isAHeader = false
+
+    @Exclude
+    lateinit var oldWord: Word
 
     @Exclude
     var isPicked = false
@@ -73,6 +83,57 @@ data class Word(
             }
             liveWordCats.value = catsList
         }
+    }
+
+    @Exclude
+    fun getStemsList(): List<Stem> {
+        val stems = mutableListOf<Stem>()
+        for(id in stemList) {
+            val stem = Main.getStem(id)
+
+            if(stem != null) {
+                stem.selected = true
+                stems.add(stem)
+            }
+        }
+        Log.i("stemsProb", "stems are $stems")
+        liveStems.value = stems
+
+        return stems
+    }
+
+    @Exclude
+    fun takeStem(stem: Stem) {
+        val stems = liveStems.value!!.toMutableList()
+        Log.i("stemProb", "stems are $stems")
+        if(stems.contains(stem)) {
+            stem.selected = true
+            stemList.remove(stem.id)
+            stems.remove(stem)
+        }
+        else {
+            stem.selected = true
+            stemList.add(stem.id)
+            stems.add(stem)
+        }
+        Log.i("stemProb", "stems after take are $stems")
+        liveStems.value = stems
+    }
+
+    @Exclude
+    fun takeFam(fam: Fam) {
+        val fams = liveFams.value!!.toMutableList()
+        if(fams.contains(fam)) {
+            famList.remove(fam.id)
+            fams.remove(fam)
+            fam.selected = false
+        }
+        else {
+            fam.selected = true
+            famList.add(fam.id)
+            fams.add(fam)
+        }
+        liveFams.value = fams
     }
 
     @Exclude
@@ -126,50 +187,31 @@ data class Word(
     @Exclude
     fun getFams(): List<Fam> {
         val fams = mutableListOf<Fam>()
-        val toRemoveIds = mutableListOf<Long>()
         for(id in famList) {
             val fam = Main.getFam(id)
             if(fam != null) {
                 fams.add(fam)
             }
-            else toRemoveIds.add(id)
         }
+        liveFams.value = fams
         return fams
     }
 
     @Exclude
     fun getSnippets(): List<Snippet> {
         val snippets = mutableListOf<Snippet>()
-        val toRemoveIds = mutableListOf<Long>()
         for(l in snippetsList) {
             var snippet = Main.getSnippet(l)
             if(snippet != null) snippets.add(snippet)
-            else toRemoveIds.add(l)
-        }
-        for(id in toRemoveIds) {
-            snippetsList.remove(id)
-            FireWords.update(this.id, "snippetsList", snippetsList)
         }
         return snippets
     }
 
-    fun checkIfFamExists(name: String): Fam? {
-        return getFams().find { f -> f.text.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT) == name.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT) }
-    }
-
-
-
     fun getEvents(): List<Event> {
         val events = mutableListOf<Event>()
-        val toRemoveIds = mutableListOf<Long>()
         for(l in eventList) {
             var event = Main.getEvent(l)
             if(event != null) events.add(event)
-            else toRemoveIds.add(l)
-        }
-        for(id in toRemoveIds) {
-            eventList.remove(id)
-            FireEvents.update(this.id, "eventList", eventList)
         }
         return events
     }
@@ -178,11 +220,9 @@ data class Word(
     @Exclude
     fun getWordConnections(): List<WordConnection> {
         val wcs = mutableListOf<WordConnection>()
-        val toRemoveIds = mutableListOf<Long>()
         for(id in wordConnectionsList) {
             val wc = Main.getWordConnection(id)
             if(wc != null) wcs.add(wc)
-            else toRemoveIds.add(id)
         }
         return wcs
     }
@@ -238,7 +278,54 @@ data class Word(
             fam.delete()
         }
 
+        for(stem in getStemsList()) {
+            stem.delete()
+        }
+
         FireWords.delete(id)
+
+    }
+
+    fun updateStems() {
+        if(oldWord.stemList != stemList) {
+            //remove no used Stems
+            for(stem in oldWord.stemList) {
+                if(!stemList.contains(stem)) {
+                    val s = Main.getStem(stem)
+                    if(s != null) s.delete()
+                }
+            }
+
+            for(stem in liveStems.value!!) {
+                if(!oldWord.stemList.contains(stem.id)) {
+                    if(!stemList.contains(stem.id)) stemList.add(stem.id)
+                    FireStems.add(stem as Stem)
+                }
+            }
+
+            FireWords.update(id, "stemList", stemList)
+        }
+    }
+
+    fun updateFams() {
+        if(oldWord.famList != famList) {
+            for(famId in oldWord.stemList) {
+                if(!famList.contains(famId)){
+                    Log.i("famProb", "famId is $famId")
+                    val fam = Main.getFam(famId)
+                    if(fam != null) fam.delete()
+                }
+            }
+
+            for(fam in liveFams.value!!) {
+                if(!oldWord.famList.contains(fam.id)) {
+                    FireFams.add(fam)
+                    if(!famList.contains(fam.id)) famList.add(fam.id)
+                }
+            }
+        }
+
+        FireWords.update(id, "famList", famList)
 
     }
 
@@ -256,6 +343,8 @@ data class Word(
         copy.spheres = spheres.toMutableList()
         copy.wordConnectionsList = wordConnectionsList.toMutableList()
         copy.stems = stems.toMutableList()
+        copy.stemList = stemList.toMutableList()
+        oldWord = copy
         return copy
     }
 

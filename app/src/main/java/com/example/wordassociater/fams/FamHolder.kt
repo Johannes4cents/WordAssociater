@@ -7,25 +7,22 @@ import com.example.wordassociater.databinding.HolderFamBinding
 import com.example.wordassociater.fire_classes.Fam
 import com.example.wordassociater.firestore.FireFams
 import com.example.wordassociater.utils.CommonWord
-import com.example.wordassociater.utils.Helper
 
 class FamHolder(
         val b: HolderFamBinding,
-        private val onHeaderClicked: () -> Unit,
-        private val onFamAdded: (fam: Fam) -> Unit,
+        private val onFamClicked: (fam: Fam) -> Unit,
         private val onUpgradeFam: (fam: Fam) -> Unit,
         private val onMakeCommonWord: (fam: Fam, type: CommonWord.Type) -> Unit,
 ): RecyclerView.ViewHolder(b.root) {
     lateinit var type: FamRecycler.Type
     lateinit var fam : Fam
+
     fun onBind(type: FamRecycler.Type, fam: Fam) {
         this.type = type
         this.fam = fam
-        when {
-            fam.isHeader -> setHeader()
-            type == FamRecycler.Type.Popup -> setPopUp()
-            else -> setFam()
-        }
+        b.famText.text = fam.text
+        if (type == FamRecycler.Type.Popup) setPopUp()
+        else setFam()
     }
 
     private fun setPopUp() {
@@ -33,33 +30,19 @@ class FamHolder(
         b.makeSomewhatCommonWord.visibility = View.GONE
         b.btnClass.visibility = View.GONE
         b.btnUpgrade.visibility = View.GONE
-        b.famText.setTextField(fam.text)
-        b.famText.enableInput(false)
 
 
         b.root.setOnClickListener {
-            onFamAdded(fam)
-        }
-    }
-
-    private fun setHeader() {
-        b.holderLinear.visibility = View.GONE
-        if(type != FamRecycler.Type.Popup) b.headerLinear.visibility = View.VISIBLE
-        b.root.setOnClickListener {
-            onHeaderClicked()
+            onFamClicked(fam)
         }
     }
 
     private fun setFam() {
-        setContent()
         setClickListener()
         setIcons()
 
     }
 
-    private fun setContent() {
-        setInputField()
-    }
 
     private fun setIcons() {
         b.btnClass.setImageResource(fam.getClassImage())
@@ -82,38 +65,8 @@ class FamHolder(
         b.btnClass.setImageResource(fam.wordClass.image)
     }
 
-    private fun setInputField() {
-
-        b.famText.disableNuwInput()
-        b.famText.setTextField(fam.text)
-        b.famText.setCenterGravity()
-
-        if(type == FamRecycler.Type.List) {
-            b.famText.enableTwiceClickSafety()
-            b.famText.hideOnEnter()
-
-            if(fam.firstOpen) {
-                fam.firstOpen = false
-                b.famText.showInputField()
-            }
-
-            b.famText.setOnEnterFunc {
-                fam.text = Helper.stripWordLeaveWhiteSpace(it)
-                onFamAdded(fam)
-            }
-        }
-        if(type == FamRecycler.Type.Popup) {
-            b.famText.enableInput(false)
-
-        }
-
-    }
 
     private fun setClickListener() {
-        b.root.setOnClickListener {
-            fam.text = Helper.stripWordLeaveWhiteSpace(b.famText.content)
-            onFamAdded(fam)
-        }
         b.btnClass.setOnClickListener {
             popWordClasses(b.btnClass, fam, ::onClassPicked)
         }

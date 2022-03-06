@@ -23,6 +23,7 @@ fun popLiveClass(type: LiveRecycler.Type, from: View, liveList: MutableLiveData<
                 LiveRecycler.Type.StoryLine -> R.drawable.icon_story
                 LiveRecycler.Type.Word -> R.drawable.icon_word
                 LiveRecycler.Type.WordCat -> R.drawable.wordcat_bg_black
+                LiveRecycler.Type.Stem -> R.drawable.icon_stem
             }
     )
 

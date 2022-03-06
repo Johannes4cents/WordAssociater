@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/snippets"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -10,18 +11,18 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="30dp">
 
-        <com.example.wordassociater.utils.WordsInputField
+        <TextView
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
             android:id="@+id/stemText"
-            android:gravity="center"
-            tools:text="Auferstehen"
-            android:fontFamily="@font/roboto_bold"
-            android:textColor="@color/black"
             android:textSize="16sp"
-            android:layout_width="80dp"
-            android:layout_height="45dp"
-            android:src="@drawable/icon_plus" />
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/white"
+            tools:text = "AStemWhat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <View
             android:layout_gravity="center"
@@ -30,22 +31,6 @@
             android:layout_width="2dp"
             android:layout_height="match_parent"
             android:background="@android:color/darker_gray"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/headerLinear"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:padding="5dp"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:src="@drawable/icon_plus" />
-
     </LinearLayout>
 
 </LinearLayout>

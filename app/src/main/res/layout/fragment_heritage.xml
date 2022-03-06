@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="8dp"
+
+    android:background="@color/snippets"
     android:gravity="center|top"
     android:orientation="vertical">
     <com.example.wordassociater.bars.TopBar
@@ -28,7 +29,7 @@
             android:fontFamily="@font/roboto_bold"
             android:gravity="center"
             android:text="Word Text"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -40,17 +41,31 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <ImageView
+            android:src="@drawable/icon_stem"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/white"
             android:text="Stems:"
             android:textSize="20sp" />
 
-        <com.example.wordassociater.stems.StemsRecycler
-            android:id="@+id/stemsRecycler"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"/>
+        <com.example.wordassociater.live_recycler.LiveRecycler
+            android:layout_weight="1"
+            android:id="@+id/stemRecycler"
+            android:layout_width="0dp"
+            android:layout_height="30dp"/>
+
+        <ImageView
+            android:padding="2dp"
+            android:id="@+id/btnAddStems"
+            android:src="@drawable/icon_plus"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
     </LinearLayout>
 
     <View
@@ -66,13 +81,58 @@
         android:gravity="center|top"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textSynonyms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_bold"
-            android:text="Familiars:"
-            android:textSize="20sp" />
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/icon_fam"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
+
+            <TextView
+                android:id="@+id/textSynonyms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:layout_marginEnd="30dp"
+                android:textColor="@color/white"
+                android:text="Familiars:"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/headerLinear"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <ImageView
+                android:id="@+id/btnAddFam"
+                android:padding="8dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/icon_plus" />
+
+            <View
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+        </LinearLayout>
 
         <com.example.wordassociater.fams.FamRecycler
             android:id="@+id/famRecycler"

@@ -60,11 +60,6 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
             }
         }
 
-        fun observeDramaShown(context: Context, view: View) {
-           dramaShown.observe(context as LifecycleOwner) {
-                view.visibility = if(it) View.VISIBLE else View.GONE
-            }
-        }
         fun observeLayerShown(context: Context, view: View) {
             layerShown.observe(context as LifecycleOwner) {
                 view.visibility = if(it) View.VISIBLE else View.GONE
@@ -132,8 +127,32 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
     private fun setClickListener() {
         setOnClickListener {
             popDisplayFilter(this, filterLiveOptions, ::onOptionSelected)
+            filterLiveOptions.value = setSelectedOnStart(FilterOption.options)
         }
     }
+
+    private fun setSelectedOnStart(list: List<FilterOption>): List<FilterOption> {
+        for (option in list) {
+            option.selected =
+                    when (option.type) {
+                        FilterOption.Type.ItemColorDark -> itemColorDark.value!!
+                        FilterOption.Type.BarColorDark -> barColorDark.value!!
+                        FilterOption.Type.WordsList -> wordsShown.value!!
+                        FilterOption.Type.CharacterList -> characterShown.value!!
+                        FilterOption.Type.Date -> dateShown.value!!
+                        FilterOption.Type.Divider -> linesShown.value!!
+                        FilterOption.Type.Layer -> layerShown.value!!
+                        FilterOption.Type.StoryLine -> storyLineShown.value!!
+                        FilterOption.Type.Title -> titleShown.value!!
+                        FilterOption.Type.Content -> contentShown.value!!
+                        FilterOption.Type.LocationList -> locationsShown.value!!
+                        FilterOption.Type.EventList -> eventsShown.value!!
+                        FilterOption.Type.ItemList -> itemsShown.value!!
+                    }
+        }
+        return list
+    }
+
 
     private fun onOptionSelected(option: FilterOption) {
         when(option.type) {
@@ -164,10 +183,6 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
             FilterOption.Type.StoryLine -> {
                 storyLineShown.value = !storyLineShown.value!!
                 FireFilter.update("storyLineShown", storyLineShown.value!!)
-            }
-            FilterOption.Type.DramaIcon -> {
-                dramaShown.value = !dramaShown.value!!
-                FireFilter.update("dramaShown", dramaShown.value!!)
             }
             FilterOption.Type.Title -> {
                 titleShown.value = !titleShown.value!!

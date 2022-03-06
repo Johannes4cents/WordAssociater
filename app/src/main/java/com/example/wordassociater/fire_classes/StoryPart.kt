@@ -1,6 +1,5 @@
 package com.example.wordassociater.fire_classes
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.FireChars
@@ -169,7 +168,6 @@ open class StoryPart(
 
     @Exclude
     fun updateLocation() {
-        Log.i("updateTest", "oldStoryPart.locationList != locationList = ${oldStoryPart!!.locationList != locationList}")
         if(oldStoryPart!!.locationList != locationList) {
             // update newly added locations snippetLists
             for(id in locationList) {
@@ -246,7 +244,6 @@ open class StoryPart(
 
     @Exclude
     open fun updateWords() {
-        Log.i("updateTest", "oldStoryPart.wordList != wordList = ${oldStoryPart!!.wordList != wordList}")
         if(oldStoryPart!!.wordList != wordList) {
             // update newly added words snippetLists
             for(id in wordList) {
@@ -403,7 +400,6 @@ open class StoryPart(
 
     @Exclude
     open fun updateStoryLines() {
-        Log.i("updateTest", "oldStoryPart.storyLineList != storyLineList = ${oldStoryPart!!.storyLineList != storyLineList}")
         if(oldStoryPart!!.storyLineList != storyLineList) {
             // update newly added storyLines snippetLists
             for(id in storyLineList) {

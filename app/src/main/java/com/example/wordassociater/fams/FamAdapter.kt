@@ -2,47 +2,27 @@ package com.example.wordassociater.fams
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wordassociater.Main
 import com.example.wordassociater.databinding.HolderFamBinding
 import com.example.wordassociater.fire_classes.Fam
-import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.utils.CommonWord
-import com.example.wordassociater.utils.ItemTouchHelperAdapter
 
 class FamAdapter(
         private val type: FamRecycler.Type,
-        private val famLiveList: MutableLiveData<List<Fam>>,
-        private val word: Word,
-        private val onHeaderClicked: () -> Unit,
-        private val takeFamFunc: (fam: Fam) -> Unit,
+        private val onFamClicked: (fam: Fam) -> Unit,
         private val onUpgradeFam: (fam: Fam) -> Unit,
         private val onMakeCommonWord: (fam: Fam, type: CommonWord.Type) -> Unit,
-): ListAdapter<Fam, RecyclerView.ViewHolder>(FamDiff()), ItemTouchHelperAdapter {
+): ListAdapter<Fam, RecyclerView.ViewHolder>(FamDiff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return FamHolder(HolderFamBinding.inflate(LayoutInflater.from(parent.context)), onHeaderClicked, takeFamFunc, onUpgradeFam, onMakeCommonWord)
+        return FamHolder(HolderFamBinding.inflate(LayoutInflater.from(parent.context)), onFamClicked, onUpgradeFam, onMakeCommonWord)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as FamHolder).onBind(type, getItem(position))
     }
 
-    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-        return true
-    }
-
-    override fun onItemDismiss(position: Int) {
-        val item = getItem(position)
-        if(Main.getWord(item.word)!!.famList.count() > 1) {
-            item.delete()
-            famLiveList.value = word.getFams()
-        }
-
-    }
-}
 
 class FamDiff: DiffUtil.ItemCallback<Fam>() {
     override fun areItemsTheSame(oldItem: Fam, newItem: Fam): Boolean {
@@ -52,5 +32,6 @@ class FamDiff: DiffUtil.ItemCallback<Fam>() {
     override fun areContentsTheSame(oldItem: Fam, newItem: Fam): Boolean {
         return oldItem == newItem
     }
+}
 
 }
