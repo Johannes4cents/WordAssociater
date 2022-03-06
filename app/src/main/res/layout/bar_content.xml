@@ -17,31 +17,11 @@
 
     <ImageView
         android:layout_weight="1"
-        android:id="@+id/btnSubPlots"
-        android:padding="10dp"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_subplot" />
-
-    <ImageView
-        android:layout_weight="1"
         android:id="@+id/btnSnippets"
         android:padding="10dp"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:src="@drawable/btn_snippets"
         />
-
-    <ImageView
-        android:id="@+id/btnDialogue"
-        android:layout_weight="1"
-        android:padding="10dp"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:src="@drawable/icon_dialogue"
-        />
-
 
 </LinearLayout>

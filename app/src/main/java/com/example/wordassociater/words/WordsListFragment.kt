@@ -12,12 +12,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.viewpager.ViewPagerMainFragment
 import com.example.wordassociater.databinding.FragmentWordsListBinding
 import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.utils.Page
+import com.example.wordassociater.viewpager.ViewPagerMainFragment
 import com.example.wordassociater.wordcat.WordCatAdapter
 
 class WordsListFragment: Fragment() {
@@ -75,7 +75,9 @@ class WordsListFragment: Fragment() {
     private fun setRecycler() {
         b.wordCatRecycler.setupRecycler(WordCatAdapter.Type.BTNALL,::onCatClicked, Main.wordCatsList)
         b.wordCatRecycler.setHeader(false)
-        b.wordRecycler.initRecycler(WordRecycler.Mode.List, null, ::onWordSelected)
+        b.wordRecycler.initRecycler(WordRecycler.Mode.List, null, ::onWordSelected, ::onHeaderClicked)
+
+
         setFirstList()
         b.wordRecycler.setLiveList(getCatFilteredList(selectedWordCat.value!!.id)!!.sortedBy { w -> w.text }.reversed().sortedBy { w -> w.used }.reversed())
         b.wordRecycler.scrollToPosition(savedScrollPosition)
@@ -83,6 +85,10 @@ class WordsListFragment: Fragment() {
 
     private fun handleDelete(word: Word) {
         word.delete()
+    }
+
+    private fun onHeaderClicked(wordText: String) {
+
     }
 
 

@@ -7,13 +7,15 @@ import com.example.wordassociater.R
 import com.example.wordassociater.databinding.HolderSnippetPartPopupBinding
 import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Character
+import com.example.wordassociater.live_recycler.LiveHolder
+import com.example.wordassociater.utils.LiveClass
 
-class CharacterHolderPopUp(val b: HolderSnippetPartPopupBinding): RecyclerView.ViewHolder(b.root) {
-    lateinit var character: Character
-    lateinit var takeCharacterFunc: (char: Character) -> Unit
-    fun onBind(character: Character, takeCharacterFunc:( (char: Character) -> Unit)) {
-        this.character = character
-        this.takeCharacterFunc = takeCharacterFunc
+class CharacterHolderPopUp(val b: HolderSnippetPartPopupBinding): RecyclerView.ViewHolder(b.root), LiveHolder {
+    override lateinit var item: LiveClass
+    var takeCharacterFunc: ((char: Character) -> Unit)? = null
+    override fun onBind(item: LiveClass, takeItemFunc:((item: LiveClass) -> Unit)?) {
+        this.item = item
+        this.takeCharacterFunc = takeItemFunc
         setContent()
         setClickListener()
         setObserver()
@@ -22,32 +24,32 @@ class CharacterHolderPopUp(val b: HolderSnippetPartPopupBinding): RecyclerView.V
     }
 
     private fun setContent() {
-        Glide.with(b.root).load(character.imgUrl).into(b.partImage)
-        b.characterName.text = character.name
+        Glide.with(b.root).load((item as Character).imgUrl).into(b.partImage)
+        b.partName.text = (item as Character).name
 
         b.checkbox.setImageResource(
-                if(character.selected) R.drawable.checked_box else R.drawable.checkbox_unchecked
+                if(item.selected) R.drawable.checked_box else R.drawable.checkbox_unchecked
         )
 
     }
 
     private fun setClickListener() {
         b.root.setOnClickListener {
-            takeCharacterFunc(character)
+            takeCharacterFunc!!((item as Character))
         }
     }
 
     private fun setObserver() {
-            DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
-                b.characterName.setTextColor(if(it) b.root.context.resources.getColor(R.color.white) else  b.root.context.resources.getColor(R.color.black))
-            }
-            DisplayFilter.observeItemColorDark(b.root.context, b.root, listOf(b.characterName))
+        DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
+            b.partName.setTextColor(if(it) b.root.context.resources.getColor(R.color.white) else  b.root.context.resources.getColor(R.color.black))
+        }
+        DisplayFilter.observeItemColorDark(b.root.context, b.root, listOf(b.partName))
     }
 
     private fun setBackGroundColorFirstTime() {
         var dark = DisplayFilter.itemColorDark.value!!
         b.root.setBackgroundColor(if(dark) b.root.context.resources.getColor(R.color.snippets) else b.root.context.resources.getColor(R.color.white))
-        b.characterName.setTextColor(if(dark) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(R.color.black))
+        b.partName.setTextColor(if(dark) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(R.color.black))
     }
 
 

@@ -9,8 +9,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.wordassociater.storylines.SimpleStoryLineRecycler
+    <com.example.wordassociater.live_recycler.LiveRecycler
         android:id="@+id/storyLineRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+
+    <com.example.wordassociater.live_recycler.LiveRecycler
+        android:id="@+id/eventRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+
+    <com.example.wordassociater.live_recycler.LiveRecycler
+        android:id="@+id/itemRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+
+    <com.example.wordassociater.live_recycler.LiveRecycler
+        android:id="@+id/locationRecycler"
         android:layout_width="match_parent"
         android:layout_height="30dp"/>
 
@@ -32,7 +47,7 @@
             android:text="2"/>
 
 
-        <com.example.wordassociater.words.WordRecycler
+        <com.example.wordassociater.live_recycler.LiveRecycler
             android:layout_weight="1"
             android:id="@+id/wordsRecycler"
             android:layout_width="0dp"
@@ -47,7 +62,7 @@
 
 
 
-    <com.example.wordassociater.character.CharacterRecycler
+    <com.example.wordassociater.live_recycler.LiveRecycler
         android:visibility="gone"
         android:id="@+id/characterRecycler"
         android:orientation="horizontal"

@@ -10,23 +10,8 @@
         android:name="com.example.wordassociater.viewpager.ViewPagerMainFragment"
         android:label="ViewPagerFragment">
         <action
-            android:id="@+id/action_startFragment_to_readFragment"
-            app:destination="@id/readFragment" />
-        <action
-            android:id="@+id/action_startFragment_to_writeFragment"
-            app:destination="@id/writeFragment" />
-        <action
             android:id="@+id/action_startFragment_to_snippetFragment"
             app:destination="@id/snippetFragment" />
-        <action
-            android:id="@+id/action_startFragment_to_storyFragment"
-            app:destination="@id/storyFragment" />
-        <action
-            android:id="@+id/action_startFragment_to_dialogueListFragment"
-            app:destination="@id/dialogueListFragment" />
-        <action
-            android:id="@+id/action_startFragment_to_editDialogueFragment"
-            app:destination="@id/editDialogueFragment" />
         <action
             android:id="@+id/action_ViewPagerFragment_to_wordDetailedFragment"
             app:destination="@id/wordDetailedFragment" />
@@ -43,36 +28,11 @@
             android:id="@+id/action_ViewPagerFragment_to_storyLinesListFragment"
             app:destination="@id/storyLinesListFragment" />
         <action
-            android:id="@+id/action_ViewPagerFragment_to_eventDetailedFragment"
-            app:destination="@id/eventDetailedFragment" />
+            android:id="@+id/action_ViewPagerFragment_to_snippetPartDetailedFragment"
+            app:destination="@id/snippetPartDetailedFragment" />
         <action
-            android:id="@+id/action_ViewPagerFragment_to_locationsDetailedFragment"
-            app:destination="@id/locationsDetailedFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/readFragment"
-        android:name="com.example.wordassociater.strains.StrainListFragment"
-        android:label="ReadFragment">
-        <action
-            android:id="@+id/action_readFragment_to_startFragment"
-            app:destination="@id/ViewPagerFragment" />
-        <action
-            android:id="@+id/action_readFragment_to_writeFragment"
-            app:destination="@id/writeFragment" />
-        <action
-            android:id="@+id/action_readFragment_to_connectStrainsFragment2"
-            app:destination="@id/connectStrainsFragment2" />
-    </fragment>
-    <fragment
-        android:id="@+id/writeFragment"
-        android:name="com.example.wordassociater.strains.StrainEditFragment"
-        android:label="WriteFragment" >
-        <action
-            android:id="@+id/action_writeFragment_to_startFragment"
-            app:destination="@id/ViewPagerFragment" />
-        <action
-            android:id="@+id/action_writeFragment_to_readFragment"
-            app:destination="@id/readFragment" />
+            android:id="@+id/action_ViewPagerFragment_to_createSnippetPartFragment"
+            app:destination="@id/createSnippetPartFragment" />
     </fragment>
     <fragment
         android:id="@+id/snippetFragment"
@@ -105,14 +65,6 @@
             app:destination="@id/snippetFragment" />
         <action
             android:id="@+id/action_connectSnippetsFragment_to_startFragment"
-            app:destination="@id/ViewPagerFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/storyFragment"
-        android:name="com.example.wordassociater.story.StoryFragment"
-        android:label="StoryFragment" >
-        <action
-            android:id="@+id/action_storyFragment_to_startFragment"
             app:destination="@id/ViewPagerFragment" />
     </fragment>
     <fragment
@@ -149,36 +101,6 @@
             app:destination="@id/editNoteFragment" />
     </fragment>
     <fragment
-        android:id="@+id/connectStrainsFragment2"
-        android:name="com.example.wordassociater.strains.ConnectStrainsFragment"
-        android:label="ConnectStrainsFragment" >
-        <action
-            android:id="@+id/action_connectStrainsFragment2_to_readFragment"
-            app:destination="@id/readFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/dialogueListFragment"
-        android:name="com.example.wordassociater.dialogue.DialogueListFragment"
-        android:label="DialogueListFragment" >
-        <action
-            android:id="@+id/action_dialogueListFragment_to_startFragment"
-            app:destination="@id/ViewPagerFragment" />
-        <action
-            android:id="@+id/action_dialogueListFragment_to_editDialogueFragment"
-            app:destination="@id/editDialogueFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/editDialogueFragment"
-        android:name="com.example.wordassociater.dialogue.EditDialogueFragment"
-        android:label="EditDialogueFragment" >
-        <action
-            android:id="@+id/action_editDialogueFragment_to_startFragment"
-            app:destination="@id/ViewPagerFragment" />
-        <action
-            android:id="@+id/action_editDialogueFragment_to_dialogueListFragment"
-            app:destination="@id/dialogueListFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/editNoteFragment"
         android:name="com.example.wordassociater.notes.EditNoteFragment"
         android:label="EditNoteFragment" >
@@ -208,29 +130,25 @@
     <fragment
         android:id="@+id/storyLinesListFragment"
         android:name="com.example.wordassociater.storylines.StoryFragment"
-        android:label="StoryLinesListFragment" >
+        android:label="StoryLinesListFragment">
         <action
             android:id="@+id/action_storyLinesListFragment_to_ViewPagerFragment"
             app:destination="@id/ViewPagerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/eventDetailedFragment"
-        android:name="com.example.wordassociater.events.EventDetailedFragment"
-        android:label="EventDetailedFragment" >
+        android:id="@+id/snippetPartDetailedFragment"
+        android:name="com.example.wordassociater.snippet_parts.SnippetPartDetailedFragment"
+        android:label="SnippetPartDetailedFragment" >
         <action
-            android:id="@+id/action_eventDetailedFragment_to_ViewPagerFragment"
+            android:id="@+id/action_snippetPartDetailedFragment_to_ViewPagerFragment"
             app:destination="@id/ViewPagerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/locationsDetailedFragment"
-        android:name="com.example.wordassociater.locations.LocationsDetailedFragment"
-        android:label="LocationsDetailedFragment" >
+        android:id="@+id/createSnippetPartFragment"
+        android:name="com.example.wordassociater.snippet_parts.CreateSnippetPartFragment"
+        android:label="CreateSnippetPartFragment" >
         <action
-            android:id="@+id/action_locationsDetailedFragment_to_ViewPagerFragment"
+            android:id="@+id/action_createSnippetPartFragment_to_ViewPagerFragment"
             app:destination="@id/ViewPagerFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/itemDetailedFragment"
-        android:name="com.example.wordassociater.items.ItemDetailedFragment"
-        android:label="ItemDetailedFragment" />
 </navigation>

@@ -24,7 +24,11 @@ data class Snippet(override var content: String = "",
 ): StoryPart(id, content, wordList, characterList, nuwList, storyLineList, itemList, locationList, eventList, date, type) {
 
     @Exclude
+    override var name: String = header
+
+    @Exclude
     override var sortingOrder: Int = id.toInt()
+
     @Exclude
     override var image: Long = 0L
 
@@ -33,6 +37,8 @@ data class Snippet(override var content: String = "",
 
     @Exclude
     var onSnippetClicked : ((snippet:Snippet) -> Unit) ? = null
+
+
 
     @Exclude
     var pinned = false
@@ -119,6 +125,34 @@ data class Snippet(override var content: String = "",
         }
 
         FireSnippets.delete(id)
+    }
+
+    @Exclude
+    fun handleSnippetPartsForSave() {
+        for (char in getCharacters()) {
+            char.snippetsList.add(id)
+            FireChars.update(char.id, "snippetsList", char.snippetsList)
+        }
+
+        for (location in getLocations()) {
+            location.snippetsList.add(id)
+            FireLocations.update(location.id, "snippetsList", location.snippetsList)
+        }
+
+        for (item in getItems()) {
+            item.snippetsList.add(id)
+            FireItems.update(item.id, "snippetsList", item.snippetsList)
+        }
+
+        for (event in getEvents()) {
+            event.snippetsList.add(id)
+            FireEvents.update(event.id, "snippetsList", event.snippetsList)
+        }
+
+        for (storyLine in getStoryLines()) {
+            storyLine.snippetsList.add(id)
+            FireStoryLines.update(storyLine.id, "snippetsList", storyLine.snippetsList)
+        }
     }
 
     @Exclude

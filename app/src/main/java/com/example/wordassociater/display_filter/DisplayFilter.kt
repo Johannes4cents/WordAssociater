@@ -34,6 +34,9 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
         val storyLineShown = MutableLiveData(true)
         val titleShown = MutableLiveData(true)
         val contentShown = MutableLiveData(true)
+        val eventsShown = MutableLiveData(true)
+        val itemsShown = MutableLiveData(true)
+        val locationsShown = MutableLiveData(true)
 
 
         fun observeTitleShown(context: Context, view: View) {
@@ -82,6 +85,24 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
         fun observeCharacterShown(context: Context, characterRecycler: RecyclerView) {
             characterShown.observe(context as LifecycleOwner) {
                 characterRecycler.visibility = if(it) View.VISIBLE else View.GONE
+            }
+        }
+
+        fun observeEventsShown(context: Context, eventRecycler: RecyclerView) {
+            eventsShown.observe(context as LifecycleOwner) {
+                eventRecycler.visibility = if(it) View.VISIBLE else View.GONE
+            }
+        }
+
+        fun observeItemsShown(context: Context, itemRecycler: RecyclerView) {
+            itemsShown.observe(context as LifecycleOwner) {
+                itemRecycler.visibility = if(it) View.VISIBLE else View.GONE
+            }
+        }
+
+        fun observeLocationsShown(context: Context, locationRecycler: RecyclerView) {
+            locationsShown.observe(context as LifecycleOwner) {
+                locationRecycler.visibility = if(it) View.VISIBLE else View.GONE
             }
         }
 
@@ -159,6 +180,18 @@ class DisplayFilter(context: Context, attributeSet: AttributeSet): androidx.appc
             FilterOption.Type.ItemColorDark -> {
                 itemColorDark.value = !itemColorDark.value!!
                 FireFilter.update("itemColorDark", itemColorDark.value!!)
+            }
+            FilterOption.Type.LocationList -> {
+                locationsShown.value = !locationsShown.value!!
+                FireFilter.update("locationsShown", locationsShown.value!!)
+            }
+            FilterOption.Type.EventList -> {
+                eventsShown.value = !eventsShown.value!!
+                FireFilter.update("eventsShown", eventsShown.value!!)
+            }
+            FilterOption.Type.ItemList -> {
+                itemsShown.value = !itemsShown.value!!
+                FireFilter.update("itemsShown", itemsShown.value!!)
             }
         }
         handleResubmitList(option)

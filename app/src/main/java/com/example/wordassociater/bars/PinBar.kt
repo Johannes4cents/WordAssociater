@@ -9,8 +9,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.example.wordassociater.R
-import com.example.wordassociater.viewpager.ViewPagerMainFragment
-import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.BarPinBinding
 import com.example.wordassociater.databinding.HolderSnippetBinding
 import com.example.wordassociater.display_filter.DisplayFilter
@@ -18,9 +16,10 @@ import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.StoryLine
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.live_recycler.LiveRecycler
 import com.example.wordassociater.snippets.EditSnippetFragment
 import com.example.wordassociater.utils.Page
-import com.example.wordassociater.words.WordRecycler
+import com.example.wordassociater.viewpager.ViewPagerMainFragment
 
 class PinBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     enum class Mode { Connect, Path, None}
@@ -150,6 +149,7 @@ class PinBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
 
 
     private fun setSnippetBinding(snippet: Snippet) {
+
         val wordLiveList = MutableLiveData<List<Word>>()
         val liveStoryList = MutableLiveData<List<StoryLine>>()
         val liveCharacters = MutableLiveData<List<Character>>()
@@ -162,19 +162,19 @@ class PinBar(context: Context, attributeSet: AttributeSet): LinearLayout(context
         snippetBinding.contentPreview.text = snippet.content
 
         // set word Recycler
-        snippetBinding.wordsRecycler.initRecycler(WordRecycler.Mode.Preview, null, null)
-        snippetBinding.wordsRecycler.setLiveList(attachedSnippet.value!!.getFullWordsList())
+        snippetBinding.wordsRecycler.initRecycler(LiveRecycler.Mode.Preview,LiveRecycler.Type.Word ,null, snippet.liveWords, null)
+
         snippetBinding.wordsRecycler.visibility = View.VISIBLE
         wordLiveList.value = snippet.getWords()
 
         // set char recycler
-        snippetBinding.characterRecycler.initRecycler(CharacterRecycler.Mode.Preview, null, null)
-        snippetBinding.characterRecycler.setCharacterLiveData(attachedSnippet.value!!.getFullCharacterList())
+        snippetBinding.characterRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.Character, null, snippet.liveCharacter)
         snippetBinding.characterRecycler.visibility = View.VISIBLE
+        snippet.getFullCharacterList()
 
         // set storyline recycler
-        snippetBinding.storyLineRecycler.initRecycler(liveStoryList)
-        liveStoryList.value = snippet.getStoryLines()
+        snippetBinding.storyLineRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.StoryLine, null, snippet.liveSelectedStoryLines)
+        snippet.getFullStoryLineList()
 
         //observe darkColorBar
         DisplayFilter.observeBarColorDark(snippetBinding.root.context, snippetBinding.root)

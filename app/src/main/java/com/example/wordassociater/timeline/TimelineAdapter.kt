@@ -8,24 +8,21 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HeaderTimelineBinding
 import com.example.wordassociater.databinding.HolderEventBinding
-import com.example.wordassociater.databinding.HolderProseBinding
 import com.example.wordassociater.databinding.HolderSnippetBinding
 import com.example.wordassociater.fire_classes.Event
-import com.example.wordassociater.fire_classes.Prose
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.StoryPart
+import com.example.wordassociater.snippets.SnippetHolder
 
 class TimelineAdapter(val onSnippetSelected: (snippet : Snippet) -> Unit): ListAdapter<StoryPart, RecyclerView.ViewHolder>(StoryPartDiff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val snippetHolder = SnippetHolderTimeline(HolderSnippetBinding.inflate(LayoutInflater.from(parent.context)), onSnippetSelected)
-        val proseHolder = ProseHolderTimeline(HolderProseBinding.inflate(LayoutInflater.from(parent.context)))
+        val snippetHolder = SnippetHolder(HolderSnippetBinding.inflate(LayoutInflater.from(parent.context)), onSnippetSelected)
         val eventHolder = EventHolderTimeline(HolderEventBinding.inflate(LayoutInflater.from(parent.context)))
         val header = TimelineHeader(HeaderTimelineBinding.inflate(LayoutInflater.from(parent.context)))
 
         return when(viewType) {
             1 -> snippetHolder
             2 -> eventHolder
-            4 -> proseHolder
             5 -> header
             else -> header
         }
@@ -36,8 +33,8 @@ class TimelineAdapter(val onSnippetSelected: (snippet : Snippet) -> Unit): ListA
         var typeNumber = when(storyPart.type) {
             StoryPart.Type.Snippet -> 1
             StoryPart.Type.Event -> 2
-            StoryPart.Type.Prose -> 4
             StoryPart.Type.Header -> 5
+            StoryPart.Type.Prose -> 3
         }
         if(storyPart.isStoryPartHeader) typeNumber = 5
         Log.i("filterProb", "storyPart is ${storyPart.content}")
@@ -49,13 +46,15 @@ class TimelineAdapter(val onSnippetSelected: (snippet : Snippet) -> Unit): ListA
         when(storyPart.type) {
             StoryPart.Type.Snippet -> {
                 (storyPart as Snippet)
-                (holder as SnippetHolderTimeline).onBind(storyPart)
+                (holder as SnippetHolder).onBind(storyPart)
             }
             StoryPart.Type.Event -> {
                 storyPart as Event
                 (holder as EventHolderTimeline).onBind(storyPart)
             }
-            StoryPart.Type.Prose -> (storyPart as Prose)
+            else -> {
+                Log.i("timeLineProb", "storyPart is ${storyPart.name}")
+            }
         }
 
         if(holder is TimelineHeader) {

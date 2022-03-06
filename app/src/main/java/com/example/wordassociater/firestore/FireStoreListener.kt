@@ -21,8 +21,6 @@ object FireStoreListener {
         getStats()
         getSnippets()
         getWords()
-        getDialogues()
-        getBubbles()
         getSpheres()
         getWordConnections()
         getWordCats()
@@ -34,10 +32,8 @@ object FireStoreListener {
         getFams()
         getFilterOptions()
         getItems()
+        getLocations()
     }
-
-
-
 
     private fun getCharacters() {
         FireLists.characterList.addSnapshotListener { docs, _ ->
@@ -80,6 +76,8 @@ object FireStoreListener {
             }
         }
     }
+
+
 
     private fun getEvents() {
         FireLists.eventsList.addSnapshotListener { docs, error ->
@@ -167,6 +165,9 @@ object FireStoreListener {
                     DisplayFilter.dramaShown.value = settings.dramaShown
                     DisplayFilter.wordsShown.value = settings.wordsShown
                     DisplayFilter.linesShown.value = settings.linesShown
+                    DisplayFilter.eventsShown.value = settings.eventsShown
+                    DisplayFilter.locationsShown.value = settings.locationsShown
+                    DisplayFilter.itemsShown.value = settings.itemsShown
                 }
             }
         }
@@ -238,7 +239,7 @@ object FireStoreListener {
             val newSnippetList = mutableListOf<Snippet>()
             if(docs != null) {
                 for(doc in docs) {
-                    Log.i("snippet", "$doc" )
+                    Log.i("snippetProb", "$doc" )
                     val snippet = doc.toObject(Snippet::class.java)
                     newSnippetList.add(snippet)
                 }
@@ -278,40 +279,12 @@ object FireStoreListener {
         }
     }
 
-    private fun getBubbles() {
-        FireLists.bubbleList.addSnapshotListener { docs, error ->
-            if(docs != null) {
-                val bubbleList = mutableListOf<Bubble>()
-                for(doc in docs) {
-                    val bubble = doc.toObject(Bubble::class.java)
-                    bubbleList.add(bubble)
-                }
-                Main.bubbleList.value = bubbleList
-            }
-        }
-    }
-
-    private fun getDialogues() {
-        FireLists.dialogueList.addSnapshotListener { docs, error ->
-            if(docs != null) {
-
-                val dialogueList = mutableListOf<Dialogue>()
-                for(doc in docs) {
-                    val dialogue = doc.toObject(Dialogue::class.java)
-                    dialogueList.add(dialogue)
-                }
-                Main.dialogueList.value = dialogueList
-            }
-        }
-    }
-
     private fun getWords() {
         FireLists.wordsList.addSnapshotListener { docs, _ ->
             if(docs != null) {
                 val wordsList = mutableListOf<Word>()
                 for(doc in docs) {
                     val word = doc.toObject(Word::class.java)
-
                     wordsList.add(word)
                 }
                 Main.wordsList.value = wordsList

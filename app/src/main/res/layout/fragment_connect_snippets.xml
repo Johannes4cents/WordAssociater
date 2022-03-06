@@ -42,7 +42,7 @@
 
     </LinearLayout>
 
-    <com.example.wordassociater.character.CharacterRecycler
+    <com.example.wordassociater.live_recycler.LiveRecycler
         android:id="@+id/characterRecycler"
         android:orientation="horizontal"
         android:layout_width="match_parent"

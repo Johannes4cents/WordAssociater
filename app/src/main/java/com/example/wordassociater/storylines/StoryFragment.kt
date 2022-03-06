@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentStoryBinding
+import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.StoryLine
 import com.example.wordassociater.popups.popCreateStoryLine
@@ -33,9 +34,9 @@ class StoryFragment: Fragment() {
 
     private fun setContent() {
         selectedStoryLines.value = Main.storyLineList.value!!.toList()
-        b.storyLineRecycler.initRecycler(StoryLine.Type.Story, selectedStoryLines, ::onStoryLineClicked, ::onHeaderClicked)
+        b.storyLineRecycler.initRecycler(selectedStoryLines, ::onStoryLineClicked, ::onHeaderClicked)
         b.timelineRecycler.initTimeline(
-                selectedStoryLines, b.storyBar.selectedWords, b.storyBar.selectedCharacter,
+                selectedStoryLines, b.storyBar.selectedWords, b.storyBar.selectedCharacter as MutableLiveData<List<Character>>,
                 b.storyBar.selectedTypes, ::onSnippetClicked)
     }
 
@@ -64,7 +65,7 @@ class StoryFragment: Fragment() {
     }
 
     private fun onHeaderClicked() {
-        popCreateStoryLine(b.storyLineRecycler)
+        popCreateStoryLine(b.storyLineRecycler, StoryLine.Type.Story)
     }
 
     private fun selectAll() {

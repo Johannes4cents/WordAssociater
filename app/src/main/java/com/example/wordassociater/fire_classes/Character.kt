@@ -12,7 +12,7 @@ data class Character(
         override var name: String = "",
         override var connectId: Long = 0,
         override var imgUrl : String = "",
-        var importance: SnippetPart.Importance = SnippetPart.Importance.Main,
+        override var importance: SnippetPart.Importance = SnippetPart.Importance.Main,
         ): SnippetPart, LiveClass {
         override var description: String = ""
 
@@ -22,19 +22,20 @@ data class Character(
         override var wordList: MutableList<Long> = mutableListOf()
         override var image: Long = 21
 
+        @get:Exclude
+        override val liveSnippets = MutableLiveData<List<LiveClass>>()
+        @get:Exclude
+        override val liveWords = MutableLiveData<List<LiveClass>>()
+        @get:Exclude
+        override val liveEvents = MutableLiveData<List<LiveClass>>()
+        @get:Exclude
+        override val liveStoryLines = MutableLiveData<List<LiveClass>>()
+        @get:Exclude
+        override val liveWordsSearch = MutableLiveData<List<Word>>()
+        @get:Exclude
+        override val liveStoryLinesOnly = MutableLiveData<List<StoryLine>>()
         @Exclude
-        override val liveSnippets = MutableLiveData<List<Snippet>>()
-        @Exclude
-        override val liveWords = MutableLiveData<List<Word>>()
-        @Exclude
-        override val liveEvents = MutableLiveData<List<Event>>()
-        @Exclude
-        override val liveStoryLines = MutableLiveData<List<StoryLine>>()
-
-        @Exclude
-        override lateinit var oldSnippetPart : SnippetPart
-
-
+        override var oldSnippetPart : SnippetPart? = null
         @Exclude
         override var selected = false
         override var sortingOrder: Int = id.toInt()

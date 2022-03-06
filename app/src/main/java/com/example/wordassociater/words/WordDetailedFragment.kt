@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.viewpager.ViewPagerMainFragment
 import com.example.wordassociater.databinding.FragmentWordDetailedBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.fire_classes.Sphere
@@ -18,10 +17,11 @@ import com.example.wordassociater.fire_classes.Word
 import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.firestore.FireWordCats
 import com.example.wordassociater.firestore.FireWords
-import com.example.wordassociater.popups.Pop
+import com.example.wordassociater.popups.popConfirmation
 import com.example.wordassociater.popups.popSelectSphere
 import com.example.wordassociater.snippets.SnippetAdapter
 import com.example.wordassociater.utils.Page
+import com.example.wordassociater.viewpager.ViewPagerMainFragment
 
 class WordDetailedFragment: Fragment() {
     lateinit var b: FragmentWordDetailedBinding
@@ -53,10 +53,10 @@ class WordDetailedFragment: Fragment() {
     private fun makeSelectedWordCatList(): List<WordCat> {
         val wordCatList = Main.wordCatsList.value!!.toMutableList()
         for(w in wordCatList) {
-            w.isSelected = word.cats.contains(w.id)
+            w.selected = word.cats.contains(w.id)
         }
         for(w in wordCatList) {
-            Log.i("wordCat", "isSelected = ${w.isSelected}")
+            Log.i("wordCat", "isSelected = ${w.selected}")
         }
         return wordCatList
 
@@ -117,7 +117,7 @@ class WordDetailedFragment: Fragment() {
         }
 
         b.topBar.setRightButton {
-            Pop(b.root.context).confirmationPopUp(b.topBar.btn5, ::onDeleteConfirmed)
+            popConfirmation(b.topBar.btn5, ::onDeleteConfirmed)
         }
 
         b.topBar.setBtn5IconAndVisibility(R.drawable.icon_delete, false)
@@ -143,8 +143,8 @@ class WordDetailedFragment: Fragment() {
     }
 
     private fun onWordCatClicked(wordCat: WordCat) {
-        wordCat.isSelected = !wordCat.isSelected
-        if(!wordCat.isSelected) word.cats.remove(wordCat.id)
+        wordCat.selected = !wordCat.selected
+        if(!wordCat.selected) word.cats.remove(wordCat.id)
         else word.cats.add(wordCat.id)
 
         FireWordCats.update(word.id, "cats", word.cats)

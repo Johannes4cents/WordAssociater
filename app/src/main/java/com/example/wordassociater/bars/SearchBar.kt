@@ -3,6 +3,7 @@ package com.example.wordassociater.bars
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -80,6 +81,7 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
     }
 
     fun getWords(wordList: List<Word>,  takeWordsFunc: (wordsList: List<Word>) -> Unit) {
+        val originalList = wordList.toMutableList()
         searchWords.observe(context as LifecycleOwner) {
             val foundWords = mutableListOf<Word>()
             for(word in wordList) {
@@ -87,15 +89,16 @@ class SearchBar(context: Context, attributeSet: AttributeSet): LinearLayout(cont
                     if(Helper.stripWord(word.text).startsWith(string)) foundWords.add(word)
                 }
             }
-
-            if(it.count() == 1 && it[0].length > 2 && foundWords.isEmpty()) {
-                val header = Word(id = 0)
+            if((it.count() == 1 || it.count() == 2) && it[0].length > 2 && foundWords.isEmpty()) {
+                val header = Word(id = 999999999)
                 header.isAHeader = true
                 header.text = it[0].capitalize(Locale.ROOT)
+                Log.i("searchHeader", "inside if header clause")
                 takeWordsFunc(listOf(header) + foundWords)
 
+
             }
-            else takeWordsFunc(foundWords)
+            else takeWordsFunc(if(foundWords.isNotEmpty()) foundWords else originalList)
         }
     }
 

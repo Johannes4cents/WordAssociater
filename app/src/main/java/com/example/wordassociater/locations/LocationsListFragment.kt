@@ -7,11 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
+import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentSnippetPartListsBinding
-import com.example.wordassociater.databinding.HolderSnippetPartListBinding
+import com.example.wordassociater.fire_classes.Location
+import com.example.wordassociater.fire_classes.SnippetPart
 import com.example.wordassociater.live_recycler.LiveRecycler
+import com.example.wordassociater.snippet_parts.SnippetPartDetailedFragment
 import com.example.wordassociater.utils.LiveClass
 
 class LocationsListFragment: Fragment() {
@@ -23,17 +27,21 @@ class LocationsListFragment: Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        Main.inFragment = Frags.CHARACTERLIST
+        Main.inFragment = Frags.SNIPPETPARTS
         b = FragmentSnippetPartListsBinding.inflate(layoutInflater)
         setLiveRecycler()
         setObserver()
         setClickListener()
+        setImportanceBar()
         return b.root
     }
 
     private fun setLiveRecycler() {
-        val listHolder = LocationHolderList(HolderSnippetPartListBinding.inflate(LayoutInflater.from(context), null, false))
         b.liveRecycler.initRecycler(LiveRecycler.Mode.List, LiveRecycler.Type.Location, ::onItemSelected, livePartsList)
+    }
+
+    private fun setImportanceBar() {
+        b.importanceBar.setNewSnippetPartButton(SnippetPart.Type.Location, findNavController())
     }
 
     private fun setObserver() {
@@ -47,21 +55,27 @@ class LocationsListFragment: Fragment() {
     }
 
     private fun setClickListener() {
-        b.importanceBar.setMainFunc {
+        val locationList = Main.locationList.value!!.toMutableList()
+        val mainLocations = locationList.filter { c -> c.importance == SnippetPart.Importance.Main }
+        val sideLocations = locationList.filter { c -> c.importance == SnippetPart.Importance.Side }
+        val mentionedLocations = locationList.filter { c -> c.importance == SnippetPart.Importance.Mentioned }
 
+        b.importanceBar.setMainFunc {
+            livePartsList.value = mainLocations
         }
 
         b.importanceBar.setSideFunc {
-
+            livePartsList.value = sideLocations
         }
 
         b.importanceBar.setMentionedFunc {
-
+            livePartsList.value = mentionedLocations
         }
     }
 
     private fun onItemSelected(item: LiveClass) {
-        //findNavController().navigate()
+        SnippetPartDetailedFragment.snippetPart = item as Location
+        findNavController().navigate(R.id.action_ViewPagerFragment_to_snippetPartDetailedFragment)
     }
 
 }

@@ -15,30 +15,43 @@ data class Location(
     override var description: String = ""
     override var imgUrl: String = ""
     override var image: Long = 10
+    override var importance: SnippetPart.Importance = SnippetPart.Importance.Main
     override var storyLineList: MutableList<Long> = mutableListOf()
     override var snippetsList: MutableList<Long> = mutableListOf()
     override var eventList: MutableList<Long> = mutableListOf()
     override var wordList: MutableList<Long> = mutableListOf()
 
-    @Exclude
+
+    @get:Exclude
     override var selected = false
-    @Exclude
+
+    @get:Exclude
     override var isAHeader: Boolean = false
 
-    @Exclude
+    @get:Exclude
     override var sortingOrder: Int = id.toInt()
 
-    @Exclude
-    override val liveStoryLines = MutableLiveData<List<StoryLine>>()
-    @Exclude
-    override val liveSnippets = MutableLiveData<List<Snippet>>()
-    @Exclude
-    override val liveWords = MutableLiveData<List<Word>>()
-    @Exclude
-    override val liveEvents = MutableLiveData<List<Event>>()
-    @Exclude
-    override lateinit var oldSnippetPart : SnippetPart
+    @get:Exclude
+    override val liveStoryLines = MutableLiveData<List<LiveClass>>()
 
+    @get:Exclude
+    override val liveSnippets = MutableLiveData<List<LiveClass>>()
+
+    @get:Exclude
+    override val liveWords = MutableLiveData<List<LiveClass>>()
+    @get:Exclude
+    override val liveEvents = MutableLiveData<List<LiveClass>>()
+
+    @get:Exclude
+    override val liveWordsSearch = MutableLiveData<List<Word>>()
+
+    @get:Exclude
+    override val liveStoryLinesOnly = MutableLiveData<List<StoryLine>>()
+
+    @get:Exclude
+    override var oldSnippetPart : SnippetPart? = null
+
+    @Exclude
     override fun delete() {
         for(id in snippetsList) {
             val snippet = Main.getSnippet(id)
@@ -70,7 +83,6 @@ data class Location(
         newLocation.wordList = wordList.toMutableList()
         newLocation.snippetsList = snippetsList.toMutableList()
         newLocation.connectId = connectId
-        oldSnippetPart = newLocation
         return newLocation
     }
 }

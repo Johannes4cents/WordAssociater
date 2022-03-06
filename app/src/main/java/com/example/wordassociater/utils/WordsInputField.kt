@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnKeyListener
 import android.widget.LinearLayout
-import android.widget.TableRow
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LifecycleOwner
@@ -31,7 +30,6 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     val b = InputFieldWordsBinding.inflate(LayoutInflater.from(context), this, true)
     private lateinit var oldNuws: List<Nuw>
     private var storyPart: StoryPart? = null
-    private val tableRowList = listOf<TableRow>(b.row1, b.row2, b.row3, b.row4)
     var content = ""
     private var onTypingFunc : ((content: String) -> Unit)? = null
     private var onEnterFunc: ((content: String) -> Unit)? = null
@@ -93,8 +91,12 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
         nuwInput = false
     }
 
-    fun enableOutSideEditClickCheck(boolean: Boolean) {
-        checkOutsideEditClick = boolean
+    fun disableOutSideEditClickCheck() {
+        checkOutsideEditClick = false
+    }
+
+    fun setBgToLite() {
+        b.root.setBackgroundColor(b.root.context.resources.getColor(R.color.snippetsLite))
     }
 
     private fun setClickListener() {
@@ -182,7 +184,6 @@ class WordsInputField(context: Context, attributeSet: AttributeSet): LinearLayou
     }
 
     fun showInputField() {
-
         b.inputField.setText(b.inputField.text.toString())
         b.textField.visibility = View.GONE
         b.inputField.visibility = View.VISIBLE

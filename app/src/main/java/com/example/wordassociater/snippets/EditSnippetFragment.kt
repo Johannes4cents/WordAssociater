@@ -9,13 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.FragmentEditSnippetBinding
 import com.example.wordassociater.fire_classes.*
+import com.example.wordassociater.live_recycler.LiveRecycler
+import com.example.wordassociater.popups.popLiveClass
 import com.example.wordassociater.popups.popNuwsEdit
 import com.example.wordassociater.popups.popSearchWord
-import com.example.wordassociater.popups.popSelectStoryLine
 import com.example.wordassociater.utils.Helper
+import com.example.wordassociater.utils.LiveClass
 import com.example.wordassociater.words.WordRecycler
 
 class EditSnippetFragment: Fragment() {
@@ -50,11 +51,11 @@ class EditSnippetFragment: Fragment() {
     }
 
     private fun setSnippetPartsBar() {
-        b.snippetPartsBar.setTheSnippet(snippet)
-        b.snippetPartsBar.setCharacterPopup()
-        b.snippetPartsBar.setLocationsPopup()
-        b.snippetPartsBar.setEventsPopup()
-        b.snippetPartsBar.setItemsPopup()
+        b.snippetPartsBar.initSnippetsBar()
+        b.snippetPartsBar.setCharacterPopup(snippet.liveCharacter, ::onCharacterSelected)
+        b.snippetPartsBar.setLocationsPopup(snippet.liveLocations, ::onLocationSelected)
+        b.snippetPartsBar.setEventsPopup(snippet.liveEvents, ::onEventSelected)
+        b.snippetPartsBar.setItemsPopup(snippet.liveItems, ::onItemSelected)
     }
 
     private fun setWordsInput() {
@@ -81,7 +82,7 @@ class EditSnippetFragment: Fragment() {
 
         b.topBar.setBtn2 {
             snippet.getFullWordsList()
-            popSearchWord(b.topBar.btn2, ::onWordSelected , snippet.liveWords)
+            popSearchWord(b.topBar.btn2, ::onWordSelected , snippet.liveWordsSearch, ::onHeaderSelected)
         }
 
         b.topBar.setBtn1 {
@@ -91,7 +92,7 @@ class EditSnippetFragment: Fragment() {
         }
 
         b.topBar.setBtn5 {
-            popSelectStoryLine(b.topBar.btn5, ::onStoryLineSelected, snippet.liveSelectedStoryLines, fromMiddle = false)
+            popLiveClass( LiveRecycler.Type.StoryLine, b.topBar.btn5, snippet.liveSelectedStoryLines, ::onStoryLineSelected)
         }
     }
 
@@ -113,12 +114,12 @@ class EditSnippetFragment: Fragment() {
         }
     }
 
-    private fun handleCharacterSelected(char: Character) {
-        snippet.takeCharacter(char)
+    private fun onCharacterSelected(char: LiveClass) {
+        snippet.takeCharacter(char as Character)
     }
 
-    private fun onStoryLineSelected(storyLine: StoryLine) {
-        snippet.takeStoryLine(storyLine)
+    private fun onStoryLineSelected(storyLine: LiveClass) {
+        snippet.takeStoryLine(storyLine as StoryLine)
     }
 
     private fun onWordSelected(word: Word) {
@@ -126,16 +127,20 @@ class EditSnippetFragment: Fragment() {
         snippet.takeWord(word)
     }
 
-    private fun onEventSelected(event: Event) {
-        snippet.takeEvent(event)
+    private fun onHeaderSelected(wordText: String) {
+
     }
 
-    private fun onItemSelected(item: Item) {
-        snippet.takeItem(item)
+    private fun onEventSelected(event: LiveClass) {
+        snippet.takeEvent(event as Event)
     }
 
-    private fun onLocationSelected(location: Location) {
-        snippet.takeLocation(location)
+    private fun onItemSelected(item: LiveClass) {
+        snippet.takeItem(item as Item)
+    }
+
+    private fun onLocationSelected(location: LiveClass) {
+        snippet.takeLocation(location as Location)
     }
 
     private fun saveSnippet() {
@@ -152,8 +157,8 @@ class EditSnippetFragment: Fragment() {
 
 
     private fun setRecycler() {
-        b.characterRecycler.initRecycler(CharacterRecycler.Mode.Preview, snippet.liveCharacter , null)
-        b.wordPreviewRecycler.initRecycler(WordRecycler.Mode.Preview, null, null )
+        b.characterRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.Character, null, snippet.liveCharacter )
+        b.wordPreviewRecycler.initRecycler(WordRecycler.Mode.Preview, null, null , null)
         b.wordPreviewRecycler.setLiveList(snippet.getWords())
 
     }

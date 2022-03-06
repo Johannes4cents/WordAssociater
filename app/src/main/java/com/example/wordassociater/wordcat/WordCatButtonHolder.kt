@@ -30,7 +30,7 @@ class WordCatButtonHolder(
     }
 
     private fun setContent() {
-        if(wordCat.isHeader) {
+        if(wordCat.isAHeader) {
             b.btnImage.setImageResource(R.drawable.wordcat_plus_header)
             b.descriptionText.visibility = View.GONE
         }
@@ -44,7 +44,7 @@ class WordCatButtonHolder(
 
     private fun setObserver() {
         selectedWordCat.observe(b.root.context as LifecycleOwner) {
-            if(Main.inFragment != Frags.START) b.btnImage.setImageResource(if(selectedWordCat.value != wordCat && !wordCat.isHeader) wordCat.getBg() else R.drawable.wordcat_bg_selected)
+            if(Main.inFragment != Frags.START) b.btnImage.setImageResource(if(selectedWordCat.value != wordCat && !wordCat.isAHeader) wordCat.getBg() else R.drawable.wordcat_bg_selected)
         }
 
         DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
@@ -58,7 +58,7 @@ class WordCatButtonHolder(
 
     private fun setClickListener() {
         b.root.setOnClickListener {
-            if(!wordCat.isHeader) {
+            if(!wordCat.isAHeader) {
                 selectedWordCat.value = wordCat
                 onCatClicked(wordCat)
             }

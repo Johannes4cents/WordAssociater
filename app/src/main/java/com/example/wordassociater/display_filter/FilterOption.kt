@@ -4,7 +4,7 @@ import com.example.wordassociater.R
 
 data class FilterOption(val name:String = "", val type: Type = Type.Title, val forWhat: For = For.Other, val icon: Int = 0) {
     var selected = true
-    enum class Type { ItemColorDark , BarColorDark, WordsList, CharacterList, Date, Divider,Layer, StoryLine, DramaIcon, Title, Content }
+    enum class Type { ItemColorDark , BarColorDark, WordsList, CharacterList, Date, Divider,Layer, StoryLine, DramaIcon, Title, Content, LocationList, EventList, ItemList }
     enum class For { Bar, Icon, Other, Content }
 
     companion object {
@@ -34,6 +34,12 @@ data class FilterOption(val name:String = "", val type: Type = Type.Title, val f
             filterList.add(filterDramaIcon)
             val filterItemColor = FilterOption("List Item Color", Type.ItemColorDark , For.Other, R.drawable.icon_list_item)
             filterList.add(filterItemColor)
+            val filterEventList = FilterOption("Event List", Type.CharacterList, For.Bar, R.drawable.event_icon)
+            filterList.add(filterEventList)
+            val filterLocationList = FilterOption("Location List", Type.CharacterList, For.Bar, R.drawable.icon_location)
+            filterList.add(filterLocationList)
+            val filterItemList = FilterOption("Item List", Type.CharacterList, For.Bar, R.drawable.icon_item)
+            filterList.add(filterItemList)
             return filterList
         }
 

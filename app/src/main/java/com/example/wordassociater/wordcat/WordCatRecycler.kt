@@ -64,7 +64,7 @@ class WordCatRecycler(context: Context, attributeSet: AttributeSet): RecyclerVie
                         ?.sortedBy { wc -> wc.id }?.reversed()
                 }
             val header = WordCat(0, "Manage")
-            header.isHeader = true
+            header.isAHeader = true
             if(it != null) {
                 if(headerActive) wordCatAdapter.submitList(sortedList!! + listOf(header))
                 else wordCatAdapter.submitList(sortedList)

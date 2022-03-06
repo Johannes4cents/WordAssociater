@@ -4,13 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.PopupStorylinePickerBinding
+import com.example.wordassociater.fire_classes.SnippetPart
 import com.example.wordassociater.fire_classes.StoryLine
 import com.example.wordassociater.firestore.FireStats
 import com.example.wordassociater.firestore.FireStoryLines
 import com.example.wordassociater.utils.Helper
 import java.util.*
 
-fun popCreateStoryLine(from: View) {
+fun popCreateStoryLine(from: View, type: StoryLine.Type, snippetPart: SnippetPart? = null) {
     val b = PopupStorylinePickerBinding.inflate(LayoutInflater.from(from.context), null, false)
     val pop = Helper.getPopUp(b.root, from, null, null)
     val viewList = listOf(b.bones, b.computer, b.eye, b.fire, b.friend, b.hospital, b.knife, b.letter, b.money, b.heart, b.planet, b.science)
@@ -24,6 +25,7 @@ fun popCreateStoryLine(from: View) {
     b.nameInput.setCenterGravity()
 
     val storyLine = StoryLine(id= FireStats.getStoryLineId())
+    storyLine.type = type
     b.nameInput.setTextColorToWhite()
     b.nameInput.setInputHint("New storyline")
     b.nameInput.setToRobotoBold()
@@ -111,6 +113,7 @@ fun popCreateStoryLine(from: View) {
     }
 
     b.btnSave.setOnClickListener {
+
         when {
             pickedIcon == null -> {
                 Helper.toast("please select an Icon", from.context)
@@ -120,7 +123,8 @@ fun popCreateStoryLine(from: View) {
             }
             else -> {
                 storyLine.name = b.nameInput.content.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT)
-                FireStoryLines.add(storyLine, from.context)
+                FireStoryLines.add(storyLine, from.context, snippetPart)
+
                 pop.dismiss()
             }
         }

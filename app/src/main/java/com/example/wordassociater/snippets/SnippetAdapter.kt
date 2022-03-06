@@ -13,7 +13,7 @@ class SnippetAdapter(
         private val selectSnippedFunc: (snippet: Snippet) -> Unit
 ): ListAdapter<Snippet, RecyclerView.ViewHolder>(SnippetDiff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return SnippetHolder(HolderSnippetBinding.inflate(LayoutInflater.from(parent.context)), this, selectSnippedFunc)
+        return SnippetHolder(HolderSnippetBinding.inflate(LayoutInflater.from(parent.context)), selectSnippedFunc)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

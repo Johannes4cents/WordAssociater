@@ -1,8 +1,10 @@
 package com.example.wordassociater.fire_classes
 
+import android.content.Context
 import android.util.Log
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.*
+import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.LiveClass
 import com.google.firebase.firestore.Exclude
 import java.util.*
@@ -13,20 +15,24 @@ data class Word(
         override var id: Long = 0,
         var used: Int = 0,
         var snippetsList: MutableList<Long> = mutableListOf(),
-        var dialogueList: MutableList<Long> = mutableListOf(),
         var eventList: MutableList<Long> = mutableListOf(),
-        var proseList: MutableList<Long> = mutableListOf(),
+        var storyLineList: MutableList<Long> = mutableListOf(),
         var connectId: Long = 0,
         var imgUrl: String = "",
         var famList: MutableList<Long> = mutableListOf(),
         var spheres: MutableList<Long> = mutableListOf(2),
         var wordConnectionsList: MutableList<Long> = mutableListOf(),
-        var stems: MutableList<String> = mutableListOf()
+        var stems: MutableList<String> = mutableListOf(),
+        var type: Type = Type.Other
 ): LiveClass
 {
+    enum class Type { Character, Item, Location, Event, Other }
+
+    @Exclude
+    override var name: String = text
+
     @Exclude
     override var image: Long = 0L
-
 
     @Exclude
     override var sortingOrder: Int = used
@@ -52,6 +58,16 @@ data class Word(
         }
 
         return catsList
+    }
+
+    @Exclude
+    fun getStoryLines(): List<StoryLine> {
+        val list = mutableListOf<StoryLine>()
+        for(id in storyLineList) {
+            val storyLine = Main.getStoryLine(id)
+            if(storyLine != null) list.add(storyLine)
+        }
+        return  list
     }
 
     @Exclude
@@ -119,39 +135,6 @@ data class Word(
         return events
     }
 
-    @Exclude
-    fun getProse(): List<Prose> {
-        val pList = mutableListOf<Prose>()
-        val toRemoveIds = mutableListOf<Long>()
-        for(l in proseList) {
-            var prose = Main.getProse(l)
-            if(prose != null) pList.add(prose)
-            else toRemoveIds.add(l)
-        }
-        for(id in toRemoveIds) {
-            proseList.remove(id)
-            FireWords.update(this.id, "proseList", snippetsList)
-        }
-        return pList
-    }
-
-    @Exclude
-    fun getDialogues(): List<Dialogue>{
-        val dials = mutableListOf<Dialogue>()
-        val toRemoveIds = mutableListOf<Long>()
-        for (l in dialogueList) {
-            val dialogue = Main.getDialogue(l)
-            if(dialogue != null) dials.add(dialogue)
-            else toRemoveIds.add(l)
-        }
-
-        for(id in toRemoveIds) {
-            dialogueList.remove(id)
-            FireWords.update(this.id, "dialogueList", dialogueList)
-        }
-        return dials
-    }
-
 
     @Exclude
     fun getWordConnections(): List<WordConnection> {
@@ -198,11 +181,6 @@ data class Word(
             FireSnippets.update(snippet.id, "wordList", snippet.wordList)
         }
 
-        for(dialogue in getDialogues()) {
-            dialogue.wordList.remove(id)
-            FireDialogue.update(dialogue.id, "wordList", dialogue.wordList)
-        }
-
         for(wc in getWordConnections()) {
             val words = Word.convertIdListToWord(wc.wordsList)
             for(w in words){
@@ -216,11 +194,6 @@ data class Word(
         for(event in getEvents()) {
             event.wordList.remove(id)
             FireEvents.update(event.id, "wordList", event.wordList)
-        }
-
-        for(prose in getProse()) {
-            prose.wordList.remove(id)
-            FireProse.update(prose.id, "wordList", prose.wordList)
         }
 
         for(fam in getFams()) {
@@ -238,20 +211,15 @@ data class Word(
         copy.id = id
         copy.used = used
         copy.snippetsList = snippetsList.toMutableList()
-        copy.dialogueList = dialogueList.toMutableList()
         copy.eventList = eventList.toMutableList()
-        copy.proseList = proseList.toMutableList()
         copy.connectId = connectId
         copy.imgUrl = imgUrl
         copy.famList = famList.toMutableList()
         copy.spheres = spheres.toMutableList()
         copy.wordConnectionsList = wordConnectionsList.toMutableList()
         copy.stems = stems.toMutableList()
-
         return copy
     }
-
-
 
     companion object {
         val any = Word(id = 0, text = "Any")
@@ -268,12 +236,26 @@ data class Word(
             return wordList
         }
 
-        fun fireGet(id: Long, onWordReceived: (word: Word) -> Unit) {
-            FireLists.wordsList.document(id.toString()).get().addOnSuccessListener {
-                val word = it.toObject(Word::class.java)
-                if(word != null) onWordReceived(word)
-
-            }
+        fun create(context: Context,
+                   text: String,
+                   cats: List<Long> = listOf(),
+                   snippetsList: List<Long> = listOf(),
+                   eventList: List<Long> = listOf(),
+                   proseList: List<Long> = listOf(),
+                   connectId: Long = 0,
+                   imgUrl: String = "",
+                   spheres: List<Long> = listOf() ): Word? {
+            var newWord: Word? = Word()
+            newWord!!.id = FireStats.getWordId()
+            newWord.text = Helper.stripWordLeaveWhiteSpace(text)
+            newWord.cats = cats.toMutableList()
+            newWord.snippetsList = snippetsList.toMutableList()
+            newWord.eventList = eventList.toMutableList()
+            newWord.connectId = connectId
+            newWord.imgUrl = imgUrl
+            newWord.spheres = spheres.toMutableList()
+            if(Main.getWordByText(newWord.text) != null) newWord = null
+            return newWord
         }
     }
 

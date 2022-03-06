@@ -17,6 +17,8 @@ data class Item(
     @Exclude
     override var selected = false
 
+    override var importance: SnippetPart.Importance = SnippetPart.Importance.Main
+
     @Exclude
     override var isAHeader: Boolean = false
 
@@ -28,16 +30,21 @@ data class Item(
 
     override var sortingOrder: Int = id.toInt()
 
+    @get:Exclude
+    override val liveStoryLines = MutableLiveData<List<LiveClass>>()
+    @get:Exclude
+    override val liveSnippets = MutableLiveData<List<LiveClass>>()
+    @get:Exclude
+    override val liveWords = MutableLiveData<List<LiveClass>>()
+    @get:Exclude
+    override val liveEvents = MutableLiveData<List<LiveClass>>()
+    @get:Exclude
+    override val liveWordsSearch = MutableLiveData<List<Word>>()
+    @get:Exclude
+    override val liveStoryLinesOnly = MutableLiveData<List<StoryLine>>()
+
     @Exclude
-    override val liveStoryLines = MutableLiveData<List<StoryLine>>()
-    @Exclude
-    override val liveSnippets = MutableLiveData<List<Snippet>>()
-    @Exclude
-    override val liveWords = MutableLiveData<List<Word>>()
-    @Exclude
-    override val liveEvents = MutableLiveData<List<Event>>()
-    @Exclude
-    override lateinit var oldSnippetPart : SnippetPart
+    override var oldSnippetPart : SnippetPart? = null
 
 
     override fun delete() {

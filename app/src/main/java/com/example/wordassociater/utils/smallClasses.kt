@@ -31,7 +31,7 @@ class FamCheck(val stem: String = "", val newFam: String = "") {
 
 }
 
-data class Image(override var id: Long, val name: Name, var src: Int, val type: Type): LiveClass {
+data class Image(override var id: Long, val imageName: Name, var src: Int, val type: Type): LiveClass {
     enum class Name {
         Laptop, YoungGirl, YoungWoman, OldWoman, OldMan, YoungMan,
         YoungBoy, Fire, Friends, Heart, Hospital, Bones, Computer,
@@ -42,6 +42,8 @@ data class Image(override var id: Long, val name: Name, var src: Int, val type: 
 
     override var sortingOrder: Int = 0
 
+    override var name: String = ""
+
     override var isAHeader: Boolean = false
 
     override var selected: Boolean = false
@@ -49,7 +51,7 @@ data class Image(override var id: Long, val name: Name, var src: Int, val type: 
     override var image: Long = 0L
 
     fun getDrawable(): Int {
-        return when(name) {
+        return when(imageName) {
             Name.Laptop -> R.drawable.item_laptop
             Name.YoungGirl -> R.drawable.character_young_girl
             Name.YoungWoman -> R.drawable.character_young_woman
@@ -103,7 +105,7 @@ data class Image(override var id: Long, val name: Name, var src: Int, val type: 
     }
 
     companion object {
-        private val imageList = listOf<Image>(
+        val imageList = listOf<Image>(
                 Image(1, Name.Laptop, 0, Type.Item), Image(20, Name.YoungGirl, 0, Type.Character),Image(39, Name.YoungWoman, 0, Type.Character),
                 Image(2, Name.OldWoman, 0, Type.Character),Image(21, Name.OldMan, 0, Type.Character),
                 Image(3, Name.YoungMan, 0, Type.Character),Image(22, Name.YoungBoy, 0, Type.Character),Image(40, Name. Fire, 0, Type.StoryLine),
@@ -133,7 +135,7 @@ data class Image(override var id: Long, val name: Name, var src: Int, val type: 
         }
 
         fun getImageByName(name: Image.Name): Image {
-            return imageList.find { i  -> i.name == name }!!
+            return imageList.find { i  -> i.imageName == name }!!
         }
 
     }
@@ -141,6 +143,7 @@ data class Image(override var id: Long, val name: Name, var src: Int, val type: 
 
 interface LiveClass {
     var sortingOrder: Int
+    var name: String
     var id: Long
     var isAHeader: Boolean
     var selected : Boolean

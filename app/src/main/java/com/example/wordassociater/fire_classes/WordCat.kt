@@ -4,24 +4,33 @@ import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.firestore.FireWordCats
 import com.example.wordassociater.firestore.FireWords
+import com.example.wordassociater.utils.LiveClass
 import com.google.firebase.firestore.Exclude
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 data class WordCat(
-        val id: Long = 0,
-        var name: String = "", ) {
+        override var id: Long = 0,
+        override var name: String = "", ): LiveClass {
     var color: Color = Color.Blue
     var wordList: MutableList<Long> = mutableListOf()
     var active: Boolean = true
     var type: Type = Type.Other
 
     @Exclude
-    var isHeader = false
+    override var sortingOrder: Int = 1
+
 
     @Exclude
-    var isSelected = false
+    override var isAHeader = false
+
+    @Exclude
+    override var selected = false
+
+    @Exclude
+    override var image: Long = 0
+
 
     @Exclude
     var used: Int = 0

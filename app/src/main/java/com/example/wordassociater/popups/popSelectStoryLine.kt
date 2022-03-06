@@ -11,7 +11,7 @@ fun popSelectStoryLine(from: View, onStoryLineSelected: (storyLine: StoryLine) -
     val b = PopupSelectStorylineBinding.inflate(LayoutInflater.from(from.context), null, false)
     val pop = Helper.getPopUp(b.root, from, null, null, null, null, fromMiddle)
 
-    b.storyLineRecycler.initRecycler(StoryLine.Type.Story ,liveList, onStoryLineSelected, null, false)
+    b.storyLineRecycler.initRecycler(liveList, onStoryLineSelected, null, false)
 
     b.btnRight.visibility = View.GONE
     b.btnLeft.setOnClickListener {

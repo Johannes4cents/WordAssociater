@@ -24,7 +24,6 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
     val b = BarAddWordBinding.inflate(LayoutInflater.from(context), this, true)
     lateinit var selectedWordCat: WordCat
     var newWord = Word()
-    var takesWordFunc : ((word:Word) -> Unit)? = null
 
 
     companion object {
@@ -44,10 +43,6 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
         for(wc in Main.wordCatsList.value!!) {
             if(wc.id == 0L) selectedWordCat = wc
         }
-    }
-
-    fun handleTakesWordFunc(takesWordFunc : (word : Word) -> Unit) {
-        this.takesWordFunc = takesWordFunc
     }
 
     private fun handleSphereIconColor() {
@@ -122,30 +117,35 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
             if(!newWord.cats.contains(selectedWordCat.id)) newWord.cats.add(selectedWordCat.id)
             newWord.id = FireStats.getWordId()
 
-            if(takesWordFunc == null) {
-                val existingWord = Main.getWordByText(newWord.text)
-                if(existingWord == null) {
-                    if(newWord.text != "Any" && newWord.text != "any") {
-                        //handle special wordCats
-                        val connectId = FireStats.getConnectId()
-                        handleNewCharacter(connectId, newWord)
-                        handleNewLocation(connectId, newWord)
-                        handleNewItem(connectId, newWord)
-                        handleNewEvent(connectId, newWord)
+            when(selectedWordCat.type) {
+                WordCat.Type.Location -> newWord.type = Word.Type.Location
+                WordCat.Type.Any -> newWord.type = Word.Type.Other
+                WordCat.Type.Event -> newWord.type = Word.Type.Event
+                WordCat.Type.Character -> newWord.type = Word.Type.Character
+                WordCat.Type.Item -> newWord.type = Word.Type.Item
+                WordCat.Type.Other -> newWord.type = Word.Type.Other
+            }
 
-                        handleWordLinear(newWord)
-                        makeFam(newWord)
-                        FireWords.add(newWord, context)
-                        AddStuffBar.newWordInputOpen.value = false
-                    }
-                    else {
-                        Helper.toast("Add any word. It can be any but this one", context)
-                    }
+            val existingWord = Main.getWordByText(newWord.text)
+            if(existingWord == null) {
+                if(newWord.text != "Any" && newWord.text != "any") {
+                    //handle special wordCats
+                    val connectId = FireStats.getConnectId()
+                    handleNewCharacter(connectId, newWord)
+                    handleNewLocation(connectId, newWord)
+                    handleNewItem(connectId, newWord)
+                    handleNewEvent(connectId, newWord)
+
+                    handleWordLinear(newWord)
+                    makeFam(newWord)
+                    FireWords.add(newWord, context)
+                    AddStuffBar.newWordInputOpen.value = false
+                }
+                else {
+                    Helper.toast("Add any word. It can be any but this one", context)
                 }
             }
-            else {
-                takesWordFunc!!(newWord)
-            }
+
         }
         else {
             AddStuffBar.newWordInputOpen.value = false
@@ -168,12 +168,10 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
                         name = Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString()),
                         connectId = connectId)
 
-                location.wordList = Word.convertToIdList(WordLinear.selectedWords)
                 FireLocations.add(location, context)
                 newWord.connectId = connectId
             }
             else Helper.toast("When you imagine any location - don't just imagine ANY location", context)
-
         }
     }
 
@@ -184,8 +182,6 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
                         id =  FireStats.getSnippetPartId(),
                         name = Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString()),
                         connectId = connectId)
-
-                item.wordList = Word.convertToIdList(WordLinear.selectedWords)
                 FireItems.add(item, context)
                 newWord.connectId = connectId
             }
@@ -201,9 +197,6 @@ class AddWordBar(context: Context, attrs: AttributeSet): LinearLayout(context, a
                         id =  FireStats.getSnippetPartId(),
                         name = Helper.stripWordLeaveWhiteSpace(b.wordInput.text.toString()),
                         connectId = connectId)
-
-                event.wordList = Word.convertToIdList(WordLinear.selectedWords)
-
                 FireEvents.add(event, context)
                 newWord.connectId = connectId
             }

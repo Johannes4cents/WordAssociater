@@ -15,7 +15,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/wordCatIcon"
+            android:id="@+id/wordIcon"
             android:padding="12dp"
             android:layout_width="45dp"
             android:layout_height="45dp"
@@ -83,11 +83,11 @@
             />
 
         <ImageView
-            android:id="@+id/checkbox"
+            android:id="@+id/wordCatIcon"
             android:layout_marginStart="4dp"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/checkbox_unchecked"
+            android:src="@drawable/wordcat_bg_red"
             />
     </LinearLayout>
 

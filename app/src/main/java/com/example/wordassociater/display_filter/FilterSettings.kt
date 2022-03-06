@@ -11,5 +11,8 @@ object FilterSettings {
     var storyLineShown = (true)
     var titleShown = (true)
     var contentShown = (true)
+    var locationsShown = (true)
+    var itemsShown= (true)
+    var eventsShown = (true)
 
 }

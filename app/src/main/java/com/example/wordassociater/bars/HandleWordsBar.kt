@@ -8,7 +8,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.StartFragment
-import com.example.wordassociater.character.CharacterAdapter
 import com.example.wordassociater.databinding.BarWordsButtonsBinding
 import com.example.wordassociater.fire_classes.Sphere
 import com.example.wordassociater.popups.popSelectSphere
@@ -18,7 +17,6 @@ import com.example.wordassociater.words.WordLinear.Companion.getWord
 
 class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
 
-    var wordAmount = 6
     val b = BarWordsButtonsBinding.inflate(LayoutInflater.from(context), this, true)
 
     init {
@@ -30,7 +28,7 @@ class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout
 
         b.btnClearAll.setOnClickListener {
             WordLinear.wordList = WordLinear.selectedWords.toMutableList()
-            handleCharacterRemoval()
+
             WordLinear.wordListTrigger.postValue(Unit)
         }
 
@@ -40,10 +38,9 @@ class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout
 
         b.btnRollDice.setOnClickListener {
             if(Main.wordsList.value!!.isNotEmpty()) {
+                val activeWordCats = Main.wordCatsList.value!!.filter { wc -> wc.active }
                 WordLinear.wordList = WordLinear.selectedWords.toMutableList()
-                handleCharacterRemoval()
-                for(i in 1..wordAmount) {
-                    val activeWordCats = Main.wordCatsList.value!!.filter { wc -> wc.active }
+                for(i in 1..6) {
                     if(activeWordCats.isNotEmpty()) {
                         getWord(activeWordCats.random())?.let { it1 -> WordLinear.wordList.add(it1) }
                     }
@@ -80,13 +77,6 @@ class HandleWordsBar(context: Context, attributeSet: AttributeSet): LinearLayout
 
         val newMainList = Helper.getResubmitList(sphere, Main.sphereList.value!!.toMutableList())
         Main.sphereList.value = newMainList
-    }
-
-    private fun handleCharacterRemoval() {
-        for(char in CharacterAdapter.selectedNameChars) {
-            CharacterAdapter.selectedCharacterList.remove(char)
-        }
-        CharacterAdapter.selectedNameChars.clear()
     }
 
     private fun setObserver() {

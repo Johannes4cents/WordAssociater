@@ -2,18 +2,16 @@ package com.example.wordassociater.snippets
 
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.R
-import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.HolderSnippetBinding
 import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.fire_classes.StoryLine
 import com.example.wordassociater.firestore.FireSnippets
+import com.example.wordassociater.live_recycler.LiveRecycler
 import com.example.wordassociater.utils.Date
 
-class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
+class SnippetHolder(val b: HolderSnippetBinding,
                     val clickSnippetFunc: (snippet:Snippet) -> Unit): RecyclerView.ViewHolder(b.root) {
     lateinit var snippet : Snippet
     fun onBind(snippet: Snippet) {
@@ -74,7 +72,6 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
             Toast.makeText(b.root.context, "Snippets already \n connected", Toast.LENGTH_SHORT).show()
         }
         SnippetFragment.selectedSnippet = null
-        adapter.notifyDataSetChanged()
         ConnectSnippetsFragment.snippetOne = snippetOne
         ConnectSnippetsFragment.snippetTwo = snippetTwo
         SnippetFragment.navController.navigate(R.id.action_snippetFragment_to_connectSnippetsFragment)
@@ -83,14 +80,16 @@ class SnippetHolder(val b: HolderSnippetBinding, val adapter: SnippetAdapter,
     private fun setRecycler() {
         if(snippet.characterList.isNotEmpty()) b.characterRecycler.visibility = View.VISIBLE else b.characterRecycler.visibility = View.GONE
 
-        val liveList = MutableLiveData<List<StoryLine>>()
-        b.storyLineRecycler.initRecycler(liveList)
-        liveList.value = snippet.getStoryLines()
+        b.storyLineRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.StoryLine, null, snippet.liveSelectedStoryLines)
+        snippet.getFullStoryLineList()
 
+
+        b.wordsRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.Word, null, snippet.liveWords)
+        snippet.getFullWordsList()
         b.wordsRecycler.visibility = if(snippet.wordList.isEmpty()) View.GONE else View.VISIBLE
 
+        b.characterRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.Character,null, snippet.liveCharacter)
 
-        b.characterRecycler.initRecycler(CharacterRecycler.Mode.Preview, snippet.liveCharacter, null)
         snippet.getFullCharacterList()
     }
 

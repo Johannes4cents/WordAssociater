@@ -4,56 +4,45 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
+import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.BarSnippetPartsBinding
 import com.example.wordassociater.display_filter.DisplayFilter
-import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.fire_classes.Snippet
-import com.example.wordassociater.fire_classes.StoryPart
-import com.example.wordassociater.popups.popCharacterSelector
+import com.example.wordassociater.live_recycler.LiveRecycler
+import com.example.wordassociater.popups.popLiveClass
 import com.example.wordassociater.utils.LiveClass
 
 class SnippetPartsBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = BarSnippetPartsBinding.inflate(LayoutInflater.from(context), this, true)
-    lateinit var storyPart: StoryPart
 
     fun initSnippetsBar() {
-
         setObserver()
     }
 
-    fun setTheSnippet(snippet: Snippet) {
-        this.storyPart = snippet
-    }
-
-    fun setLocationsPopup() {
+    fun setLocationsPopup(liveList: MutableLiveData<List<LiveClass>>, onItemSelected: (item: LiveClass) -> Unit) {
         b.btnLocation.setOnClickListener {
-
+            popLiveClass(LiveRecycler.Type.Location, it, liveList, onItemSelected)
         }
     }
 
-    fun setEventsPopup() {
+    fun setEventsPopup(liveList: MutableLiveData<List<LiveClass>>, onItemSelected: (item: LiveClass) -> Unit) {
         b.btnEvents.setOnClickListener {
-
+            popLiveClass(LiveRecycler.Type.Event, it, liveList, onItemSelected)
         }
     }
 
-    fun setItemsPopup() {
+    fun setItemsPopup(liveList: MutableLiveData<List<LiveClass>>, onItemSelected: (item: LiveClass) -> Unit) {
         b.btnItems.setOnClickListener {
-
+            popLiveClass(LiveRecycler.Type.Item, it, liveList, onItemSelected)
         }
     }
 
-    fun setCharacterPopup() {
+    fun setCharacterPopup(liveList: MutableLiveData<List<LiveClass>>, onItemSelected: (item: LiveClass) -> Unit) {
         b.btnCharacter.setOnClickListener {
-            popCharacterSelector(b.btnCharacter, storyPart.liveCharacter, ::onCharacterSelected)
+            popLiveClass(LiveRecycler.Type.Character, it, liveList, onItemSelected)
         }
     }
 
-    private fun onCharacterSelected(character: LiveClass) {
-        character as Character
-        storyPart.takeCharacter(character)
-    }
 
     fun setEventsFunc(func : () -> Unit) {
         b.btnEvents.setOnClickListener {

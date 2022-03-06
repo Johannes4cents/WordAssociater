@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
-import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.FragmentConnectSnippetsBinding
 import com.example.wordassociater.fire_classes.Snippet
 import com.example.wordassociater.firestore.FireSnippets
@@ -98,8 +97,6 @@ class ConnectSnippetsFragment: Fragment() {
     }
 
     private fun handleRecycler() {
-        b.characterRecycler.initRecycler(CharacterRecycler.Mode.Preview, null,null)
-        b.characterRecycler.setCharacterLiveData(newSnippet.getCharacters())
     }
 
     private fun saveSnippet() {

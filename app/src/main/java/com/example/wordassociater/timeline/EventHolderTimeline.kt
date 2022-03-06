@@ -7,7 +7,7 @@ import com.example.wordassociater.R
 import com.example.wordassociater.databinding.HolderEventBinding
 import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Event
-import com.example.wordassociater.popups.Pop
+import com.example.wordassociater.popups.popConfirmation
 
 class EventHolderTimeline(val b: HolderEventBinding): RecyclerView.ViewHolder(b.root) {
     lateinit var event: Event
@@ -28,7 +28,7 @@ class EventHolderTimeline(val b: HolderEventBinding): RecyclerView.ViewHolder(b.
     fun setClickListener() {
         b.btnDelete.setOnClickListener {
             Log.i("eventProb", "deleteButtonClicked")
-            Pop(b.btnDelete.context).confirmationPopUp(b.btnDelete, ::onDeletionConfirmed)
+            popConfirmation(b.btnDelete, ::onDeletionConfirmed)
         }
 
     }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.Main
 import com.example.wordassociater.firestore.*
 import com.example.wordassociater.utils.Date
+import com.example.wordassociater.utils.LiveClass
 import com.google.firebase.firestore.Exclude
 
  class Event(
@@ -22,14 +23,23 @@ import com.google.firebase.firestore.Exclude
          override var connectId: Long = 0
 ): StoryPart(id,name, wordList, characterList, nuwList, storyLineList, itemList, locationList, eventList, date, type), SnippetPart {
 
+     override var importance: SnippetPart.Importance = SnippetPart.Importance.Main
      override var description: String = ""
      override var imgUrl: String = ""
      override var snippetsList: MutableList<Long> = mutableListOf()
 
-     override val liveSnippets = MutableLiveData<List<Snippet>>()
-     override val liveStoryLines = MutableLiveData<List<StoryLine>>()
 
-     override lateinit var oldSnippetPart: SnippetPart
+     @get:Exclude
+     override val liveSnippets = MutableLiveData<List<LiveClass>>()
+
+     @get:Exclude
+     override val liveStoryLines = MutableLiveData<List<LiveClass>>()
+
+     @get:Exclude
+     override val liveStoryLinesOnly = MutableLiveData<List<StoryLine>>()
+
+     @Exclude
+     override var oldSnippetPart : SnippetPart? = null
 
 
      @Exclude
@@ -50,6 +60,7 @@ import com.google.firebase.firestore.Exclude
              w.selected = getWords().contains(w)
          }
          liveWords.value = allWords
+         liveWordsSearch.value = allWords
          return allWords
      }
 
@@ -62,11 +73,11 @@ import com.google.firebase.firestore.Exclude
      }
 
      override fun updateWords() {
-         Log.i("updateTest", "oldStoryPart.wordList != wordList = ${oldStoryPart.wordList != wordList}")
-         if(oldStoryPart.wordList != wordList) {
+         Log.i("updateTest", "oldStoryPart.wordList != wordList = ${oldStoryPart!!.wordList != wordList}")
+         if(oldStoryPart!!.wordList != wordList) {
              // update newly added words snippetLists
              for(id in wordList) {
-                 if(!oldStoryPart.wordList.contains(id)) {
+                 if(!oldStoryPart!!.wordList.contains(id)) {
                      val word = Main.getWord(id)
                      word!!.eventList.add(this.id)
                      FireEvents.update(word.id, "eventList", word.eventList)
@@ -74,7 +85,7 @@ import com.google.firebase.firestore.Exclude
                  }
              }
              // update removed words snippetLists
-             for(id in oldStoryPart.wordList) {
+             for(id in oldStoryPart!!.wordList) {
                  if(!wordList.contains(id)) {
                      val word = Main.getWord(id)
                      word!!.eventList.remove(this.id)
@@ -97,6 +108,15 @@ import com.google.firebase.firestore.Exclude
          return list
      }
 
+     override fun getFullStoryLineList(): List<StoryLine> {
+         val storyLines = Main.storyLineList.value!!.toMutableList()
+         for(sl in storyLines) {
+             sl.selected = storyLineList.contains(sl.id)
+         }
+         liveStoryLines.value = storyLines
+         return storyLines
+     }
+
      fun getSelectedStoryLineList(): List<StoryLine> {
          val allStoryLines = Main.storyLineList.value!!.toMutableList()
          for(sl in allStoryLines) {
@@ -113,18 +133,18 @@ import com.google.firebase.firestore.Exclude
      }
 
      override fun updateStoryLines() {
-         Log.i("updateTest", "oldStoryPart.storyLineList != storyLineList = ${oldStoryPart.storyLineList != storyLineList}")
-         if(oldStoryPart.storyLineList != storyLineList) {
+         Log.i("updateTest", "oldStoryPart.storyLineList != storyLineList = ${oldStoryPart!!.storyLineList != storyLineList}")
+         if(oldStoryPart!!.storyLineList != storyLineList) {
              // update newly added storyLines snippetLists
              for(id in storyLineList) {
-                 if(!oldStoryPart.storyLineList.contains(id)) {
+                 if(!oldStoryPart!!.storyLineList.contains(id)) {
                      val storyLine = Main.getStoryLine(id)
                      storyLine!!.eventList.add(this.id)
                      FireStoryLines.update(storyLine.id, "eventList", storyLine.eventList)
                  }
              }
              // update removed storyLines snippetLists
-             for(id in oldStoryPart.storyLineList) {
+             for(id in oldStoryPart!!.storyLineList) {
                  if(!storyLineList.contains(id)) {
                      val storyLine = Main.getStoryLine(id)
                      storyLine!!.eventList.remove(this.id)
@@ -152,18 +172,18 @@ import com.google.firebase.firestore.Exclude
      }
 
      override fun updateEvents() {
-         Log.i("updateTest", "oldStoryPart.eventList != eventList = ${oldStoryPart.eventList != eventList}")
-         if(oldStoryPart.eventList != eventList) {
+         Log.i("updateTest", "oldStoryPart.eventList != eventList = ${oldStoryPart!!.eventList != eventList}")
+         if(oldStoryPart!!.eventList != eventList) {
              // update newly added events snippetLists
              for(id in eventList) {
-                 if(!oldStoryPart.eventList.contains(id)) {
+                 if(!oldStoryPart!!.eventList.contains(id)) {
                      val event = Main.getEvent(id)
                      event!!.eventList.add(this.id)
                      FireEvents.update(event.id, "eventList", event.eventList)
                  }
              }
              // update removed events snippetLists
-             for(id in oldStoryPart.eventList) {
+             for(id in oldStoryPart!!.eventList) {
                  if(!eventList.contains(id)) {
                      val event = Main.getEvent(id)
                      event!!.eventList.remove(this.id)
@@ -177,7 +197,6 @@ import com.google.firebase.firestore.Exclude
      }
 
      override var image: Long = 1L
-    enum class Image { Airplane, Crown, Explosion, Food, Handshake, Party, Pistol, Shield , Spy}
 
     @Exclude
     fun handleWordConnections() {

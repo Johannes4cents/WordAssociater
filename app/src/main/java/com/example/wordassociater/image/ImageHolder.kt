@@ -17,13 +17,15 @@ class ImageHolder(val b: HolderImageBinding): RecyclerView.ViewHolder(b.root), L
     }
     override lateinit var item: LiveClass
 
-    override fun onBind(item: LiveClass, takeItemFunc: (item: LiveClass) -> Unit) {
+    override fun onBind(item: LiveClass, takeItemFunc:((item: LiveClass) -> Unit)?) {
         this.item = item
         item as Image
 
+        b.image.setImageResource(item.getDrawable())
+
         b.root.setOnClickListener {
             selectedImage.value = item
-            takeItemFunc(item)
+            takeItemFunc!!(item)
         }
 
         selectedImage.observe(b.root.context as LifecycleOwner) {
@@ -40,5 +42,7 @@ class ImageHolder(val b: HolderImageBinding): RecyclerView.ViewHolder(b.root), L
         val darkBar = DisplayFilter.barColorDark.value!!
         color = if(darkBar) R.color.snippets else R.color.white
     }
+
+
 
 }

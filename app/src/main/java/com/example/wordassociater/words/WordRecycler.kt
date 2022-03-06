@@ -14,7 +14,7 @@ class WordRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(c
     private lateinit var mode: Mode
     lateinit var wordAdapter: WordAdapter
 
-    fun initRecycler(mode: Mode, liveList: MutableLiveData<List<Word>>?, onWordSelected: ((word: Word) -> Unit)? ) {
+    fun initRecycler(mode: Mode, liveList: MutableLiveData<List<Word>>?, onWordSelected: ((word: Word) -> Unit)?, onHeaderClicked: ((wordText: String) -> Unit )?) {
         this.mode = mode
         this.liveList = liveList ?: MutableLiveData<List<Word>>()
         wordAdapter = WordAdapter(mode, onWordSelected)
@@ -29,8 +29,8 @@ class WordRecycler(context: Context, attributeSet: AttributeSet): RecyclerView(c
 
     private fun setObserver() {
         liveList.observe(context as LifecycleOwner) {
-            val selectedWords = it.filter { w -> w.id != 0L  }.filter { w -> w.selected }.sortedBy { w -> w.text }.sortedBy { w -> w.selected }
-            val allWords = it.filter { w -> w.id != 0L  }.sortedBy { w -> w.text }.sortedBy { w -> w.selected }.sortedBy { w -> w.isAHeader }
+            val selectedWords = it.filter { w -> w.id != 0L  }.filter { w -> w.selected }.sortedBy { w -> w.text }.sortedBy { w -> w.selected }.reversed()
+            val allWords = it.filter { w -> w.id != 0L  }.sortedBy { w -> w.text }.sortedBy { w -> w.selected }.reversed().sortedBy { w -> w.isAHeader }
 
             wordAdapter.submitList(if(mode == Mode.Preview) selectedWords else allWords)
         }

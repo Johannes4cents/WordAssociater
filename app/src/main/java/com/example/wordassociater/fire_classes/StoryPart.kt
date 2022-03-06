@@ -25,7 +25,7 @@ open class StoryPart(
         open var type: Type,
 
         ): LiveClass {
-    enum class Type { Snippet, Event, Prose, Header }
+    enum class Type { Snippet, Event, Header, Prose }
 
     @Exclude override var selected: Boolean = false
     @Exclude override var isAHeader: Boolean = false
@@ -36,32 +36,36 @@ open class StoryPart(
 
     @Exclude
     override var sortingOrder: Int = id.toInt()
+    override var name: String = ""
 
     @Exclude
-    lateinit var oldStoryPart: StoryPart
+    var oldStoryPart: StoryPart? = null
 
     @Exclude
     var isStoryPartHeader = false
 
-    @Exclude
-    val liveWords = MutableLiveData<List<Word>>()
+    @get:Exclude
+    val liveWords = MutableLiveData<List<LiveClass>>()
 
-    @Exclude
-    val liveCharacter = MutableLiveData<List<Character>>()
+    @get:Exclude
+    val liveWordsSearch = MutableLiveData<List<Word>>()
 
-    @Exclude
-    val liveSelectedStoryLines = MutableLiveData<List<StoryLine>>()
+    @get:Exclude
+    val liveCharacter = MutableLiveData<List<LiveClass>>()
 
-    @Exclude
-    val liveItems = MutableLiveData<List<Item>>()
+    @get:Exclude
+    val liveSelectedStoryLines = MutableLiveData<List<LiveClass>>()
 
-    @Exclude
-    val liveLocations = MutableLiveData<List<Location>>()
+    @get:Exclude
+    val liveItems = MutableLiveData<List<LiveClass>>()
 
-    @Exclude
-    val liveEvents = MutableLiveData<List<Event>>()
+    @get:Exclude
+    val liveLocations = MutableLiveData<List<LiveClass>>()
 
-    @Exclude
+    @get:Exclude
+    val liveEvents = MutableLiveData<List<LiveClass>>()
+
+    @get:Exclude
     var index = 0
 
 
@@ -94,11 +98,11 @@ open class StoryPart(
 
     @Exclude
     fun updateItems() {
-        Log.i("updateTest", "oldStoryPart.itemList != itemList = ${oldStoryPart.itemList != itemList}")
-        if(oldStoryPart.itemList != itemList) {
+        Log.i("updateTest", "oldStoryPart.itemList != itemList = ${oldStoryPart!!.itemList != itemList}")
+        if(oldStoryPart!!.itemList != itemList) {
             // update newly added items snippetLists
             for(id in itemList) {
-                if(!oldStoryPart.itemList.contains(id)) {
+                if(!oldStoryPart!!.itemList.contains(id)) {
                     val item = Main.getItem(id)
                     when(this) {
                         is Snippet -> {
@@ -114,7 +118,7 @@ open class StoryPart(
                 }
             }
             // update removed items snippetLists
-            for(id in oldStoryPart.itemList) {
+            for(id in oldStoryPart!!.itemList) {
                 if(!itemList.contains(id)) {
                     val item = Main.getItem(id)
                     when(this) {
@@ -169,11 +173,11 @@ open class StoryPart(
 
     @Exclude
     fun updateLocation() {
-        Log.i("updateTest", "oldStoryPart.locationList != locationList = ${oldStoryPart.locationList != locationList}")
-        if(oldStoryPart.locationList != locationList) {
+        Log.i("updateTest", "oldStoryPart.locationList != locationList = ${oldStoryPart!!.locationList != locationList}")
+        if(oldStoryPart!!.locationList != locationList) {
             // update newly added locations snippetLists
             for(id in locationList) {
-                if(!oldStoryPart.locationList.contains(id)) {
+                if(!oldStoryPart!!.locationList.contains(id)) {
                     val location = Main.getLocation(id)
                     when(this) {
                         is Snippet -> {
@@ -189,7 +193,7 @@ open class StoryPart(
                 }
             }
             // update removed locations snippetLists
-            for(id in oldStoryPart.locationList) {
+            for(id in oldStoryPart!!.locationList) {
                 if(!locationList.contains(id)) {
                     val location = Main.getLocation(id)
                     when(this) {
@@ -247,11 +251,11 @@ open class StoryPart(
 
     @Exclude
     open fun updateWords() {
-        Log.i("updateTest", "oldStoryPart.wordList != wordList = ${oldStoryPart.wordList != wordList}")
-        if(oldStoryPart.wordList != wordList) {
+        Log.i("updateTest", "oldStoryPart.wordList != wordList = ${oldStoryPart!!.wordList != wordList}")
+        if(oldStoryPart!!.wordList != wordList) {
             // update newly added words snippetLists
             for(id in wordList) {
-                if(!oldStoryPart.wordList.contains(id)) {
+                if(!oldStoryPart!!.wordList.contains(id)) {
                     val word = Main.getWord(id)
                     when(this) {
                         is Snippet -> {
@@ -269,7 +273,7 @@ open class StoryPart(
                 }
             }
             // update removed words snippetLists
-            for(id in oldStoryPart.wordList) {
+            for(id in oldStoryPart!!.wordList) {
                 if(!wordList.contains(id)) {
                     val word = Main.getWord(id)
                     when(this) {
@@ -329,11 +333,11 @@ open class StoryPart(
 
     @Exclude
     fun updateCharacter() {
-        Log.i("updateTest", "oldStoryPart.characterList != characterList = ${oldStoryPart.characterList != characterList}")
-        if(oldStoryPart.characterList != characterList) {
+        Log.i("updateTest", "oldStoryPart.characterList != characterList = ${oldStoryPart!!.characterList != characterList}")
+        if(oldStoryPart!!.characterList != characterList) {
             // update newly added characters snippetLists
             for(id in characterList) {
-                if(!oldStoryPart.characterList.contains(id)) {
+                if(!oldStoryPart!!.characterList.contains(id)) {
                     val character = Main.getCharacter(id)
                     when(this) {
                         is Snippet -> {
@@ -349,7 +353,7 @@ open class StoryPart(
                 }
             }
             // update removed characters snippetLists
-            for(id in oldStoryPart.characterList) {
+            for(id in oldStoryPart!!.characterList) {
                 if(!characterList.contains(id)) {
                     val character = Main.getCharacter(id)
                     when(this) {
@@ -404,11 +408,11 @@ open class StoryPart(
 
     @Exclude
     open fun updateStoryLines() {
-        Log.i("updateTest", "oldStoryPart.storyLineList != storyLineList = ${oldStoryPart.storyLineList != storyLineList}")
-        if(oldStoryPart.storyLineList != storyLineList) {
+        Log.i("updateTest", "oldStoryPart.storyLineList != storyLineList = ${oldStoryPart!!.storyLineList != storyLineList}")
+        if(oldStoryPart!!.storyLineList != storyLineList) {
             // update newly added storyLines snippetLists
             for(id in storyLineList) {
-                if(!oldStoryPart.storyLineList.contains(id)) {
+                if(!oldStoryPart!!.storyLineList.contains(id)) {
                     val storyLine = Main.getStoryLine(id)
                     when(this) {
                         is Snippet -> {
@@ -424,7 +428,7 @@ open class StoryPart(
                 }
             }
             // update removed storyLines snippetLists
-            for(id in oldStoryPart.storyLineList) {
+            for(id in oldStoryPart!!.storyLineList) {
                 if(!storyLineList.contains(id)) {
                     val storyLine = Main.getStoryLine(id)
                     when(this) {
@@ -479,11 +483,11 @@ open class StoryPart(
 
     @Exclude
     open fun updateEvents() {
-        Log.i("updateTest", "oldStoryPart.eventList != eventList = ${oldStoryPart.eventList != eventList}")
-        if(oldStoryPart.eventList != eventList) {
+        Log.i("updateTest", "oldStoryPart.eventList != eventList = ${oldStoryPart!!.eventList != eventList}")
+        if(oldStoryPart!!.eventList != eventList) {
             // update newly added events snippetLists
             for(id in eventList) {
-                if(!oldStoryPart.eventList.contains(id)) {
+                if(!oldStoryPart!!.eventList.contains(id)) {
                     val event = Main.getEvent(id)
                     when(this) {
                         is Snippet -> {
@@ -499,7 +503,7 @@ open class StoryPart(
                 }
             }
             // update removed events snippetLists
-            for(id in oldStoryPart.eventList) {
+            for(id in oldStoryPart!!.eventList) {
                 if(!eventList.contains(id)) {
                     val event = Main.getEvent(id)
                     when(this) {

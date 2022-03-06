@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wordassociater.databinding.HolderNoteBinding
 import com.example.wordassociater.fire_classes.Note
 import com.example.wordassociater.firestore.FireNotes
-import com.example.wordassociater.popups.Pop
+import com.example.wordassociater.popups.popConfirmation
 
 class NoteHolder(val b : HolderNoteBinding, val takeNoteFunc: (note: Note) -> Unit) : RecyclerView.ViewHolder(b.root) {
     lateinit var note: Note
@@ -20,7 +20,7 @@ class NoteHolder(val b : HolderNoteBinding, val takeNoteFunc: (note: Note) -> Un
 
     fun setClickListener() {
         b.deleteNoteBtn.setOnClickListener {
-            Pop(b.root.context).confirmationPopUp(b.deleteNoteBtn, ::deleteNote)
+            popConfirmation(b.deleteNoteBtn, ::deleteNote)
         }
 
         b.root.setOnClickListener {

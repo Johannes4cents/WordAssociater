@@ -14,10 +14,10 @@ class CharacterHolderList(val b: HolderSnippetPartListBinding): RecyclerView.Vie
     lateinit var character: Character
     override lateinit var item: LiveClass
 
-    lateinit var takeCharacterFunc: (char: Character) -> Unit
-    override fun onBind(character: LiveClass, takeCharacterFunc:( (char: LiveClass) -> Unit)) {
+    var takeItemFunc:((item: LiveClass) -> Unit)? = null
+    override fun onBind(character: LiveClass, takeItemFunc:((item: LiveClass) -> Unit)?) {
         this.character = character as Character
-        this.takeCharacterFunc = takeCharacterFunc
+        this.takeItemFunc = takeItemFunc
         setContent()
         setClickListener()
         setObserver()
@@ -32,14 +32,14 @@ class CharacterHolderList(val b: HolderSnippetPartListBinding): RecyclerView.Vie
     }
     private fun setClickListener() {
         b.root.setOnClickListener {
-            takeCharacterFunc(character)
+            takeItemFunc!!(character)
         }
     }
 
     private fun setObserver() {
         DisplayFilter.barColorDark.observe(b.root.context as LifecycleOwner) {
             b.partName.setTextColor(if(it) b.root.context.resources.getColor(R.color.white) else  b.root.context.resources.getColor(
-                R.color.black))
+                    R.color.black))
         }
         DisplayFilter.observeItemColorDark(b.root.context, b.root, listOf(b.partName))
     }
@@ -47,9 +47,9 @@ class CharacterHolderList(val b: HolderSnippetPartListBinding): RecyclerView.Vie
     private fun setBackGroundColorFirstTime() {
         var dark = DisplayFilter.itemColorDark.value!!
         b.root.setBackgroundColor(if(dark) b.root.context.resources.getColor(R.color.snippets) else b.root.context.resources.getColor(
-            R.color.white))
+                R.color.white))
         b.partName.setTextColor(if(dark) b.root.context.resources.getColor(R.color.white) else b.root.context.resources.getColor(
-            R.color.black))
+                R.color.black))
     }
 
 

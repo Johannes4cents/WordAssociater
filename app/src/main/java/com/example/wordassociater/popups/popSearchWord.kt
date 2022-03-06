@@ -3,7 +3,6 @@ package com.example.wordassociater.popups
 import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.PopupSearchWordBinding
 import com.example.wordassociater.fire_classes.Word
@@ -14,14 +13,17 @@ fun popSearchWord(
         from: View,
         takeWordFunc : (word: Word) -> Unit,
         selectedWordsList: MutableLiveData<List<Word>>,
+        onHeaderClicked: ((wordText: String) -> Unit)?,
         showSelectAll: Boolean = false) {
     val b = PopupSearchWordBinding.inflate(LayoutInflater.from(from.context), null, false)
     var allSelected = true
 
     val popUp = Helper.getPopUp(b.root, from, 700, 1000)
 
-    b.wordRecycler.initRecycler(WordRecycler.Mode.Popup, selectedWordsList, takeWordFunc)
-    if(showSelectAll) b.selectAllLinear.visibility = View.VISIBLE
+
+    b.wordRecycler.initRecycler(WordRecycler.Mode.Popup, selectedWordsList, takeWordFunc, onHeaderClicked)
+    b.selectAllLinear.visibility = if(showSelectAll) View.VISIBLE else View.GONE
+    b.searchBar.setTextColorToWhite()
 
     fun selectAll() {
         val newList = selectedWordsList.value!!.toMutableList()
@@ -57,8 +59,9 @@ fun popSearchWord(
     }
 
     fun setObserver() {
-        b.searchBar.getWords(Main.wordsList.value!!) { wordsList ->
-            selectedWordsList.value = (wordsList + selectedWordsList.value as List<Word>)
+        b.searchBar.getWords(selectedWordsList.value!!) { wordsList ->
+            if(wordsList.isNotEmpty()) selectedWordsList.value = (wordsList)
+            else
             b.wordRecycler.scrollToPosition(0)
 
         }

@@ -24,26 +24,23 @@ class Main : AppCompatActivity() {
         var characterList = MutableLiveData<List<Character>>(mutableListOf())
         var snippetList = MutableLiveData<List<Snippet>?>(mutableListOf())
         var notesList = MutableLiveData<List<Note>?>(mutableListOf())
-        var bubbleList = MutableLiveData<List<Bubble>?>(mutableListOf())
-        var dialogueList = MutableLiveData<List<Dialogue>?>(mutableListOf())
         val sphereList = MutableLiveData<List<Sphere>?>(mutableListOf())
         val wordsList = MutableLiveData<List<Word>?>(mutableListOf())
         val wordCatsList = MutableLiveData<List<WordCat>>(mutableListOf())
         val nuwsList = MutableLiveData<List<Nuw>?>(mutableListOf())
-        val activeWordCats = MutableLiveData<List<WordCat>?>(mutableListOf())
         val storyLineList = MutableLiveData<List<StoryLine>?>(mutableListOf())
         val proseList = MutableLiveData<List<Prose>?>(mutableListOf())
-        val eventList = MutableLiveData<List<Event>?>(mutableListOf())
+        val eventList = MutableLiveData<List<Event>>(mutableListOf())
         val famList = MutableLiveData<List<Fam>?>(mutableListOf())
         val itemList = MutableLiveData<List<Item>>(mutableListOf())
         val locationList = MutableLiveData<List<Location>>(mutableListOf())
 
 
         //commonWOrds
-        val commonWordsVeryGerman = MutableLiveData<List<CommonWord>?>()
-        val commonWordsSomewhatGerman = MutableLiveData<List<CommonWord>?>()
-        val commonWordsVeryEnglish = MutableLiveData<List<CommonWord>?>()
-        val commonWordsSomewhatEnglish = MutableLiveData<List<CommonWord>?>()
+        val commonWordsVeryGerman = MutableLiveData<List<CommonWord>?>(mutableListOf())
+        val commonWordsSomewhatGerman = MutableLiveData<List<CommonWord>?>(mutableListOf())
+        val commonWordsVeryEnglish = MutableLiveData<List<CommonWord>?>(mutableListOf())
+        val commonWordsSomewhatEnglish = MutableLiveData<List<CommonWord>?>(mutableListOf())
 
 
         var wordConnectionsList = mutableListOf<WordConnection>()
@@ -81,6 +78,18 @@ class Main : AppCompatActivity() {
             return locationList.value!!.find { l -> l.id == id }
         }
 
+        fun getLocationByConnectId(connectId: Long): Location? {
+            return locationList.value!!.find {l -> l.connectId == connectId }
+        }
+
+        fun getEventByConnectId(connectId: Long): Event? {
+            return eventList.value!!.find {e -> e.connectId == connectId }
+        }
+
+        fun getItemByConnectId(connectId: Long): Item? {
+            return itemList.value!!.find {i -> i.connectId == connectId }
+        }
+
         fun getFam(id:Long): Fam? {
             return famList.value!!.find { f -> f.id == id }
         }
@@ -90,8 +99,8 @@ class Main : AppCompatActivity() {
         }
         fun getCommonWordType(language: Language, text: String): CommonWord.Type {
             val allCommonWordsGerman = commonWordsVeryGerman.value!! + commonWordsSomewhatGerman.value!!
-            val allCommonWordsEnglsih = commonWordsVeryEnglish.value!! + commonWordsSomewhatEnglish.value!!
-            val list = if(language == Language.German) allCommonWordsGerman else allCommonWordsEnglsih
+            val allCommonWordsEnglish = commonWordsVeryEnglish.value!! + commonWordsSomewhatEnglish.value!!
+            val list = if(language == Language.German) allCommonWordsGerman else allCommonWordsEnglish
             val commonWord= list.find { cm -> cm.text == text }
             return when(commonWord?.type) {
                 null -> CommonWord.Type.Uncommon
@@ -155,14 +164,6 @@ class Main : AppCompatActivity() {
             return word
         }
 
-        fun getBubble(id: Long): Bubble? {
-            return bubbleList.value?.find { b -> b.id == id }
-        }
-
-        fun getDialogue(id: Long): Dialogue? {
-            return dialogueList.value?.find { d -> d.id == id }
-        }
-
         fun getSphere(id: Long): Sphere? {
             return sphereList.value?.find { s -> s.id == id }
         }
@@ -211,4 +212,4 @@ class Main : AppCompatActivity() {
 }
 
 
-enum class Frags { START, SNIPPETLIST, WRITE, SNIPPET, CHARACTERLIST, CHARACTER, CONNECTSNIPPETS, EDITSNIPPETS, WORDLIST, WORDDETAILED, NOTES, ITEMS, LOCATIONS, EVENTS, NUWSLIST}
+enum class Frags { START, SNIPPETLIST, WRITE, SNIPPET, SNIPPETPARTS, CHARACTER, CONNECTSNIPPETS, EDITSNIPPETS, WORDLIST, WORDDETAILED, NOTES, ITEMS, LOCATIONS, EVENTS, NUWSLIST}

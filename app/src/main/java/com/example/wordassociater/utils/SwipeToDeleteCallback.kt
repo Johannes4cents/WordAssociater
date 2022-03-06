@@ -1,7 +1,6 @@
 package com.example.wordassociater.utils
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wordassociater.dialogue.BubbleHeader
 
 
 class SwipeToDeleteCallback(val adapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
@@ -11,7 +10,6 @@ class SwipeToDeleteCallback(val adapter: ItemTouchHelperAdapter) : ItemTouchHelp
     ): Int {
         val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
         val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
-        if(viewHolder is BubbleHeader) return 0
         return makeMovementFlags( dragFlags, swipeFlags )
     }
 

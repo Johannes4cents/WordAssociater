@@ -13,7 +13,6 @@ import com.example.wordassociater.R
 import com.example.wordassociater.bars.NewSnippetBar
 import com.example.wordassociater.databinding.HolderWordBinding
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.utils.ListHelper
 
 class WordHolder(context: Context, attrs: AttributeSet?, val word: Word): ConstraintLayout(context, attrs) {
     val b = HolderWordBinding.inflate(LayoutInflater.from(context), this, true)
@@ -46,13 +45,11 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word): Constr
     private fun setClickListener() {
         b.root.setOnClickListener {
             word.selected = !word.selected
+            selectSnippetPart()
             if(word.selected) {
                 WordLinear.selectedWords.add(word)
-                selectCharacter()
-
             }
             else {
-                deselectCharacter()
                 WordLinear.selectedWords.remove(word)
             }
             val index = WordLinear.wordList.indexOf(word)
@@ -62,36 +59,29 @@ class WordHolder(context: Context, attrs: AttributeSet?, val word: Word): Constr
         }
     }
 
-    private fun selectCharacter() {
-        if(char) {
-            val character = Main.getCharacterByConnectId(word.connectId)
-            if(character != null) {
-                val listAlreadyThere = ListHelper.checkIfCharacterSelected(NewSnippetBar.selectedCharacterList.value!!)
-                val charList = if(!listAlreadyThere) Main.characterList.value!!.toMutableList() else NewSnippetBar.selectedCharacterList.value!!.toMutableList()
-                for(c in charList) {
-                    if(c.id == character.id) c.selected = !c.selected
-                }
-                NewSnippetBar.selectedCharacterList.value = charList
+    private fun selectSnippetPart() {
+        when(word.type) {
+            Word.Type.Character -> {
+                val character = Main.getCharacterByConnectId(word.connectId)!!
+                NewSnippetBar.newSnippet.takeCharacter(character)
+            }
+            Word.Type.Item -> {
+                val item = Main.getItemByConnectId(word.connectId)!!
+                NewSnippetBar.newSnippet.takeItem(item)
+            }
+            Word.Type.Location -> {
+                val location = Main.getLocationByConnectId(word.connectId)!!
+                NewSnippetBar.newSnippet.takeLocation(location)
+            }
+            Word.Type.Event -> {
+                val event = Main.getEventByConnectId(word.connectId)!!
+                NewSnippetBar.newSnippet.takeEvent(event)
+            }
+            Word.Type.Other -> {
             }
         }
     }
 
-    private fun deselectCharacter() {
-        if(char) {
-            val character = NewSnippetBar.selectedCharacterList.value?.find { c ->
-                c.connectId == word.connectId
-            }
-            if(character != null) {
-                val listAlreadyThere = ListHelper.checkIfCharacterSelected(NewSnippetBar.selectedCharacterList.value!!)
-                val charList = if(!listAlreadyThere) Main.characterList.value!!.toMutableList() else NewSnippetBar.selectedCharacterList.value!!.toMutableList()
-                for(c in charList) {
-                    if(c.id == character.id)c.selected = !c.selected
-                }
-                NewSnippetBar.selectedCharacterList.value = charList
-            }
-        }
-
-    }
 
     private fun setConnectIcon() {
         b.connectIcon.visibility = if(word.wordConnectionsList.count() > 0) View.VISIBLE else View.GONE

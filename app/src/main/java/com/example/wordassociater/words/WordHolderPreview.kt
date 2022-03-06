@@ -6,21 +6,23 @@ import com.example.wordassociater.R
 import com.example.wordassociater.databinding.HolderWordPreviewBinding
 import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Word
+import com.example.wordassociater.live_recycler.LiveHolder
+import com.example.wordassociater.utils.LiveClass
 
-class WordHolderPreview(val b : HolderWordPreviewBinding, private val fromStory: Boolean = false): RecyclerView.ViewHolder(b.root) {
-    private lateinit var word : Word
+class WordHolderPreview(val b : HolderWordPreviewBinding): RecyclerView.ViewHolder(b.root), LiveHolder {
+    override lateinit var item : LiveClass
 
 
-    fun onBind(word: Word) {
-        this.word = word
+    override fun onBind(item: LiveClass, takeItemFunc:((item: LiveClass) -> Unit)?) {
+        this.item = item
         setContent()
         setObserver()
         setBackGroundColorFirstTime()
     }
 
     private fun setContent() {
-        b.content.text = word.text
-        if(word.id == 0L) b.root.visibility = View.GONE
+        b.content.text = (item as Word).text
+        if(item.id == 0L) b.root.visibility = View.GONE
     }
 
     private fun setObserver() {

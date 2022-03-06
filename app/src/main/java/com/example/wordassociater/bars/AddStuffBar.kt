@@ -9,9 +9,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.example.wordassociater.Main
+import com.example.wordassociater.R
 import com.example.wordassociater.databinding.BarAddStuffBinding
 import com.example.wordassociater.fire_classes.Character
-import com.example.wordassociater.popups.popDialogueCharacterSelector
 import com.example.wordassociater.utils.Helper
 
 class AddStuffBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
@@ -44,14 +44,9 @@ class AddStuffBar(context: Context, attributeSet: AttributeSet): LinearLayout(co
 
     private fun setClickListener() {
 
-        b.btnNewDialogue.setOnClickListener {
-            selectedCharacters.clear()
-            getCharacterList()
-            popDialogueCharacterSelector(b.btnNewDialogue, navController, popUpCharacterList, ::handleSelectedCharacter)
-        }
-
         b.btnNewSnippet.setOnClickListener {
-            snippetInputOpen.value = !snippetInputOpen.value!!
+            if(snippetInputOpen.value!!) b.newSnippetBar.saveSnippet()
+            else snippetInputOpen.value = true
         }
 
         b.btnNewWord.setOnClickListener {
@@ -64,9 +59,11 @@ class AddStuffBar(context: Context, attributeSet: AttributeSet): LinearLayout(co
         snippetInputOpen.observe(context as LifecycleOwner) {
             if(it == true) {
                 b.newSnippetBar.visibility = View.VISIBLE
+                b.btnNewSnippet.setImageResource(R.drawable.btn_save)
             }
             else {
                 b.newSnippetBar.visibility = View.GONE
+                b.btnNewSnippet.setImageResource(R.drawable.btn_new_snippet)
             }
         }
     }

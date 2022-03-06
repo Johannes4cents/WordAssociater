@@ -17,15 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <ImageView
             android:layout_weight="1"
-            android:id="@+id/btnNewDialogue"
-            android:padding="10dp"
+            android:padding="12dp"
+            android:id="@+id/btnNewWord"
             android:layout_width="0dp"
             android:layout_height="45dp"
-            android:src="@drawable/btn_new_dialogue"
-            />
+            android:src="@drawable/icon_word"/>
 
         <ImageView
             android:layout_weight="1"
@@ -35,14 +33,6 @@
             android:layout_height="45dp"
             android:src="@drawable/btn_new_snippet" />
 
-
-        <ImageView
-            android:layout_weight="1"
-            android:padding="12dp"
-            android:id="@+id/btnNewWord"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:src="@drawable/icon_word"/>
     </LinearLayout>
 
     <com.example.wordassociater.bars.AddWordBar

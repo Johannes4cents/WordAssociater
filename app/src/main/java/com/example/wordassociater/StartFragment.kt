@@ -10,14 +10,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import com.example.wordassociater.bars.AddWordBar
 import com.example.wordassociater.bars.NewSnippetBar
-import com.example.wordassociater.character.CharacterAdapter
-import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.FragmentStartBinding
-import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.Sphere
 import com.example.wordassociater.fire_classes.WordCat
 import com.example.wordassociater.firestore.FireWordCats
-import com.example.wordassociater.popups.Pop
+import com.example.wordassociater.live_recycler.LiveRecycler
+import com.example.wordassociater.popups.popConfirmation
 import com.example.wordassociater.popups.popWordCatAllOptions
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.wordcat.WordCatAdapter
@@ -25,7 +23,6 @@ import com.example.wordassociater.words.WordLinear
 
 class StartFragment: Fragment() {
     lateinit var b : FragmentStartBinding
-    lateinit var adapter: CharacterAdapter
 
 
     companion object {
@@ -53,7 +50,7 @@ class StartFragment: Fragment() {
 
 
     private fun setRecycler() {
-        b.charPreviewRecycler.initRecycler(CharacterRecycler.Mode.Preview, NewSnippetBar.selectedCharacterList, null)
+        b.liveRecycler.initRecycler(LiveRecycler.Mode.Preview, LiveRecycler.Type.Character, null, NewSnippetBar.newSnippet.liveCharacter, null)
         b.connectedWordRecycler.initRecycler(WordLinear.selectedWordsLive)
         b.wordCatRecycler.setupRecycler(WordCatAdapter.Type.BTN, ::onWordCatClicked,  selectedWordCats, ::onWordCatHeaderClicked)
     }
@@ -65,7 +62,7 @@ class StartFragment: Fragment() {
     }
 
     private fun onWordCatDeleteClicked(wordCat: WordCat) {
-        Pop(b.root.context).confirmationPopUp(b.root) { confirmation ->
+        popConfirmation(b.root) { confirmation ->
             if(confirmation) {
                 wordCat.delete()
                 val newList = selectedWordCats.value!!.toMutableList()
@@ -86,20 +83,13 @@ class StartFragment: Fragment() {
     }
 
     private fun setObserver() {
-        NewSnippetBar.selectedCharacterList.observe(context as LifecycleOwner) {
-            val selectedCharacters = mutableListOf<Character>()
-            for(char in it) {
-                if(char.selected) selectedCharacters.add(char)
+        NewSnippetBar.newSnippet.liveCharacter.observe(context as LifecycleOwner) {
+            var selected = false
+            for(c in it) {
+                if(c.selected) selected = true
+                break
             }
-            if(selectedCharacters.isNotEmpty()) {
-                b.charPreviewRecycler.visibility = View.VISIBLE
-                adapter.submitList(selectedCharacters)
-                b.charPreviewRecycler.scrollToPosition(adapter.currentList.count() -1)
-                adapter.notifyDataSetChanged()
-            }
-            else {
-                b.charPreviewRecycler.visibility = View.GONE
-            }
+            b.liveRecycler.visibility = if(selected) View.VISIBLE else View.GONE
         }
     }
 

@@ -34,7 +34,7 @@ class ViewPagerMainFragment: Fragment() {
                         0
                     }
                     Page.SnippetParts -> {
-                        Main.inFragment = Frags.CHARACTERLIST
+                        Main.inFragment = Frags.SNIPPETPARTS
                         1
                     }
                     Page.Start -> {

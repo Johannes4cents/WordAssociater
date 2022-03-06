@@ -12,7 +12,10 @@ import com.example.wordassociater.Frags
 import com.example.wordassociater.Main
 import com.example.wordassociater.R
 import com.example.wordassociater.databinding.FragmentSnippetPartListsBinding
+import com.example.wordassociater.fire_classes.Character
+import com.example.wordassociater.fire_classes.SnippetPart
 import com.example.wordassociater.live_recycler.LiveRecycler
+import com.example.wordassociater.snippet_parts.SnippetPartDetailedFragment
 import com.example.wordassociater.utils.LiveClass
 
 class CharacterListFragment: Fragment() {
@@ -24,16 +27,21 @@ class CharacterListFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Main.inFragment = Frags.CHARACTERLIST
+        Main.inFragment = Frags.SNIPPETPARTS
         b = FragmentSnippetPartListsBinding.inflate(layoutInflater)
                 setLiveRecycler()
                 setObserver()
                 setClickListener()
+                setImportanceBar()
                 return b.root
     }
 
     private fun setLiveRecycler() {
         b.liveRecycler.initRecycler(LiveRecycler.Mode.List, LiveRecycler.Type.Character, ::onCharacterSelected, livePartsList)
+    }
+
+    private fun setImportanceBar() {
+        b.importanceBar.setNewSnippetPartButton(SnippetPart.Type.Character, findNavController())
     }
 
     private fun setObserver() {
@@ -48,21 +56,27 @@ class CharacterListFragment: Fragment() {
     }
 
     private fun setClickListener() {
-        b.importanceBar.setMainFunc {
+        val charList = Main.characterList.value!!.toMutableList()
+        val mainChars = charList.filter { c -> c.importance == SnippetPart.Importance.Main }
+        val sideChars = charList.filter { c -> c.importance == SnippetPart.Importance.Side }
+        val mentionedChars = charList.filter { c -> c.importance == SnippetPart.Importance.Mentioned }
 
+        b.importanceBar.setMainFunc {
+            livePartsList.value = mainChars
         }
 
         b.importanceBar.setSideFunc {
-
+            livePartsList.value = sideChars
         }
 
         b.importanceBar.setMentionedFunc {
-
+            livePartsList.value = mentionedChars
         }
     }
 
     private fun onCharacterSelected(character: LiveClass) {
-        findNavController().navigate(R.id.action_ViewPagerFragment_to_characterFragment)
+        SnippetPartDetailedFragment.snippetPart = character as Character
+        findNavController().navigate(R.id.action_ViewPagerFragment_to_snippetPartDetailedFragment)
     }
 
 }

@@ -5,9 +5,9 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.example.wordassociater.R
-import com.example.wordassociater.character.CharacterRecycler
 import com.example.wordassociater.databinding.PopupCharacterRecyclerBinding
 import com.example.wordassociater.fire_classes.Character
+import com.example.wordassociater.live_recycler.LiveRecycler
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.LiveClass
 
@@ -21,7 +21,7 @@ fun popCharacterSelector(
     val b = PopupCharacterRecyclerBinding.inflate(LayoutInflater.from(from.context), null, false)
     var pop = Helper.getPopUp(b.root, from, fromMiddle = fromMiddle)
 
-    b.characterRecycler.initRecycler(CharacterRecycler.Mode.Popup, characterList, characterClickedFunc)
+    b.characterRecycler.initRecycler(LiveRecycler.Mode.Popup, LiveRecycler.Type.Character, characterClickedFunc, characterList as MutableLiveData<List<LiveClass>>)
     var allSelected = false
 
     characterList.observe(b.root.context as LifecycleOwner) {

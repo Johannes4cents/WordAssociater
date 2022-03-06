@@ -14,7 +14,8 @@ import com.example.wordassociater.display_filter.DisplayFilter
 import com.example.wordassociater.fire_classes.Character
 import com.example.wordassociater.fire_classes.StoryPart
 import com.example.wordassociater.fire_classes.Word
-import com.example.wordassociater.popups.popCharacterSelector
+import com.example.wordassociater.live_recycler.LiveRecycler
+import com.example.wordassociater.popups.popLiveClass
 import com.example.wordassociater.popups.popSearchWord
 import com.example.wordassociater.utils.Helper
 import com.example.wordassociater.utils.ListHelper
@@ -23,7 +24,7 @@ import com.example.wordassociater.utils.LiveClass
 class StoryBar(context: Context, attributeSet: AttributeSet): LinearLayout(context, attributeSet) {
     val b = BarStoryBinding.inflate(LayoutInflater.from(context), this, true)
     val selectedWords = MutableLiveData<List<Word>>(mutableListOf())
-    val selectedCharacter = MutableLiveData<List<Character>>(mutableListOf())
+    val selectedCharacter = MutableLiveData<List<LiveClass>>(mutableListOf())
     val selectedTypes = MutableLiveData<List<StoryPart.Type>>(mutableListOf(StoryPart.Type.Snippet, StoryPart.Type.Event))
 
     init {
@@ -64,10 +65,10 @@ class StoryBar(context: Context, attributeSet: AttributeSet): LinearLayout(conte
             findNavController().navigate(R.id.action_storyLinesListFragment_to_ViewPagerFragment)
         }
         b.btnCharacter.setOnClickListener {
-            popCharacterSelector(b.btnCharacter, selectedCharacter, ::onCharacterSelected, showAny = true)
+            popLiveClass(LiveRecycler.Type.Character, b.btnCharacter, selectedCharacter, ::onCharacterSelected)
         }
         b.btnWord.setOnClickListener {
-            popSearchWord(b.btnWord, ::handleWordClick , selectedWords, showSelectAll = true)
+            popSearchWord(b.btnWord, ::handleWordClick , selectedWords, onHeaderClicked = null, showSelectAll = true)
         }
         b.iconSnippets.setOnClickListener {
             val newList = selectedTypes.value!!.toMutableList()

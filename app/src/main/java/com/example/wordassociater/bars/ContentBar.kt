@@ -20,16 +20,10 @@ class ContentBar(context: Context, attributeSet: AttributeSet): LinearLayout(con
     }
 
     private fun setClickListener() {
-        b.btnSubPlots.setOnClickListener {
-        }
-
         b.btnStoryLines.setOnClickListener {
             findNavController().navigate(R.id.action_ViewPagerFragment_to_storyLinesListFragment)
         }
 
-        b.btnDialogue.setOnClickListener {
-            findNavController().navigate(R.id.action_startFragment_to_dialogueListFragment)
-        }
 
         b.btnSnippets.setOnClickListener {
             navController.navigate(R.id.action_startFragment_to_snippetFragment)
